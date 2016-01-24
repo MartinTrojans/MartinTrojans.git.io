@@ -3,42 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Leetcode Flatten Binary Tree to Linked List | Martin&#39;s Blog</title>
+  <title>Leetcode Bitwise AND of Numbers Range | Martin&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Question:
-Given a binary tree, flatten it to a linked list in-place.
-For example,Given
-    1
-   / \
-  2   5
- / \   \
-3   4   6
-The flattened tree should look like:   1    \     2      \       3">
+Given a range [m, n] where 0 &amp;lt;= m &amp;lt;= n &amp;lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.
+For example, given the range [5, 7], you should return 4.
+It’s">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode Flatten Binary Tree to Linked List">
-<meta property="og:url" content="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/index.html">
+<meta property="og:title" content="Leetcode Bitwise AND of Numbers Range">
+<meta property="og:url" content="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/index.html">
 <meta property="og:site_name" content="Martin's Blog">
 <meta property="og:description" content="Question:
-Given a binary tree, flatten it to a linked list in-place.
-For example,Given
-    1
-   / \
-  2   5
- / \   \
-3   4   6
-The flattened tree should look like:   1    \     2      \       3">
-<meta property="og:updated_time" content="2016-01-24T22:39:25.000Z">
+Given a range [m, n] where 0 &amp;lt;= m &amp;lt;= n &amp;lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.
+For example, given the range [5, 7], you should return 4.
+It’s">
+<meta property="og:updated_time" content="2016-01-24T23:22:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leetcode Flatten Binary Tree to Linked List">
+<meta name="twitter:title" content="Leetcode Bitwise AND of Numbers Range">
 <meta name="twitter:description" content="Question:
-Given a binary tree, flatten it to a linked list in-place.
-For example,Given
-    1
-   / \
-  2   5
- / \   \
-3   4   6
-The flattened tree should look like:   1    \     2      \       3">
+Given a range [m, n] where 0 &amp;lt;= m &amp;lt;= n &amp;lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.
+For example, given the range [5, 7], you should return 4.
+It’s">
   
     <link rel="alternate" href="/atom.xml" title="Martin&#39;s Blog" type="application/atom+xml">
   
@@ -85,10 +70,10 @@ The flattened tree should look like:   1    \     2      \       3">
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-leetcode-flatten-binary-tree-to-linked-list" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Leetcode-Bitwise-AND-of-Numbers-Range" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" class="article-date">
-  <time datetime="2016-01-24T22:39:25.000Z" itemprop="datePublished">2016-01-24</time>
+    <a href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" class="article-date">
+  <time datetime="2016-01-24T23:09:04.000Z" itemprop="datePublished">2016-01-24</time>
 </a>
     
   </div>
@@ -99,7 +84,7 @@ The flattened tree should look like:   1    \     2      \       3">
         
   
     <h1 class="article-title" itemprop="name">
-      Leetcode Flatten Binary Tree to Linked List
+      Leetcode Bitwise AND of Numbers Range
     </h1>
   
 
@@ -108,58 +93,39 @@ The flattened tree should look like:   1    \     2      \       3">
     <div class="article-entry" itemprop="articleBody">
       
         <p>Question:</p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>    1
-   / \
-  2   5
- / \   \
-3   4   6
-</code></pre><p>The flattened tree should look like:<br>   1<br>    \<br>     2<br>      \<br>       3<br>        \<br>         4<br>          \<br>           5<br>            \<br>             6</p>
-<p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
-<p>Thinking: It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. Code in Java is below:</p>
-<pre><code>public class Solution {
-    public void flatten(TreeNode root) {
-        if (root == null)
-            return;
-        dfs(root);
+<p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.</p>
+<p>For example, given the range [5, 7], you should return 4.</p>
+<p>It’s bitwise operation question. Some other questions like is are Single Number, Single Number II, Reverse Bits, Repeated DNA Sequences, Grey Code and so on and so forth. This question’s point is to find all the numbers between the range and use the bitwise AND on them. For example, in the range of [5, 7], there are three numbers:<br>101        110        111<br>Result of thier bitwise is 100. What’s more, in the example of [26, 30]:<br>11010        11011        11100        11101        11110<br>The result is 11000.<br>Because bits are incresing from the right (low digits), the left of all the numbers are not going to change in the process. The thing we need to do is finding the common part of the left. There are two solutions:</p>
+<p>Solution1:<br>Idea: State a variable and make it all 1 in all digits. Make the variable left shift every time to check if it’s equal between m and n of their bitwise AND. Finally, the result of m bitwise AND with the variable is the answer.<br>Code:</p>
+<pre><code>class Solution {
+public int rangeBitwiseAnd(int m, int n) {
+        int d = Integer.MAX_VALUE;
+        while ((m &amp; d) != (n &amp; d)) {
+            d &lt;&lt;= 1;
+        }
+        return m &amp; d;
     }
-
-    public TreeNode dfs(TreeNode root){
-
-        if (root.left == null &amp;&amp; root.right == null){
-            return root;
+};
+</code></pre><p>Solution2:<br>Idea:Let m and n make left shift each time if they are different and record the times i they shift. When they are equal, the result of m left shift i is the answer.<br>Code:</p>
+<pre><code>class Solution {
+public int rangeBitwiseAnd(int m, int n) {
+        int i = 0;
+        while (m != n) {
+            m &gt;&gt;= 1;
+            n &gt;&gt;= 1;
+            ++i;
         }
-
-        TreeNode left = null;
-        TreeNode right = null;
-        TreeNode preleft = root.left;
-        TreeNode preright = root.right;
-        if (preleft == null){
-            return dfs(preright);
-        }
-        else if(preright == null){
-            root.left = null;
-            root.right = preleft;
-            return dfs(preleft);
-        }
-        else{
-            left = dfs(preleft);
-            right = dfs(preright);
-            root.left = null;
-            root.right = preleft;
-            left.right = preright;
-            return right;
-        }
+        return (m &lt;&lt; i);
     }
-}
-</code></pre>
+};
+</code></pre><p>Reference: <a href="http://www.cnblogs.com/grandyang/p/4431646.html" target="_blank" rel="external">http://www.cnblogs.com/grandyang/p/4431646.html</a></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" data-id="cijt66wf20000ffowtrzpmd8a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" data-id="cijt6chci0000hpowrya5je04" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -168,19 +134,10 @@ The flattened tree should look like:   1    \     2      \       3">
     
 <nav id="article-nav">
   
-    <a href="/2016/01/24/Leetcode-Triangle/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Leetcode Triangle
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/01/24/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/01/24/Leetcode-Triangle/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Hello World</div>
+      <div class="article-nav-title">Leetcode Triangle</div>
     </a>
   
 </nav>
@@ -267,7 +224,7 @@ The flattened tree should look like:   1    \     2      \       3">
 <script>
   var disqus_shortname = 'communitydeveloper';
   
-  var disqus_url = 'http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/';
+  var disqus_url = 'http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/';
   
   (function(){
     var dsq = document.createElement('script');

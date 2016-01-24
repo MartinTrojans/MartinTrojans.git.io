@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode Bitwise AND of Numbers Range]]></title>
+      <url>http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/</url>
+      <content type="html"><![CDATA[<p>Question:</p>
+<p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.</p>
+<p>For example, given the range [5, 7], you should return 4.</p>
+<p>It’s bitwise operation question. Some other questions like is are Single Number, Single Number II, Reverse Bits, Repeated DNA Sequences, Grey Code and so on and so forth. This question’s point is to find all the numbers between the range and use the bitwise AND on them. For example, in the range of [5, 7], there are three numbers:<br>101        110        111<br>Result of thier bitwise is 100. What’s more, in the example of [26, 30]:<br>11010        11011        11100        11101        11110<br>The result is 11000.<br>Because bits are incresing from the right (low digits), the left of all the numbers are not going to change in the process. The thing we need to do is finding the common part of the left. There are two solutions:</p>
+<p>Solution1:<br>Idea: State a variable and make it all 1 in all digits. Make the variable left shift every time to check if it’s equal between m and n of their bitwise AND. Finally, the result of m bitwise AND with the variable is the answer.<br>Code:</p>
+<pre><code>class Solution {
+public int rangeBitwiseAnd(int m, int n) {
+        int d = Integer.MAX_VALUE;
+        while ((m &amp; d) != (n &amp; d)) {
+            d &lt;&lt;= 1;
+        }
+        return m &amp; d;
+    }
+};
+</code></pre><p>Solution2:<br>Idea:Let m and n make left shift each time if they are different and record the times i they shift. When they are equal, the result of m left shift i is the answer.<br>Code:</p>
+<pre><code>class Solution {
+public int rangeBitwiseAnd(int m, int n) {
+        int i = 0;
+        while (m != n) {
+            m &gt;&gt;= 1;
+            n &gt;&gt;= 1;
+            ++i;
+        }
+        return (m &lt;&lt; i);
+    }
+};
+</code></pre><p>Reference: <a href="http://www.cnblogs.com/grandyang/p/4431646.html" target="_blank" rel="external">http://www.cnblogs.com/grandyang/p/4431646.html</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode Triangle]]></title>
       <url>http://yoursite.com/2016/01/24/Leetcode-Triangle/</url>
       <content type="html"><![CDATA[<p>Question:</p>

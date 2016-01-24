@@ -2,6 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/</loc>
+    <lastmod>2016-01-24T23:22:08.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/index.html</loc>
+    <lastmod>2016-01-24T22:44:36.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/index.html</loc>
+    <lastmod>2016-01-24T22:44:11.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/about/index.html</loc>
+    <lastmod>2016-01-24T22:44:02.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/01/24/Leetcode-Triangle/</loc>
     <lastmod>2016-01-24T22:39:32.000Z</lastmod>
   </url>
