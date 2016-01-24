@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/</loc>
+    <lastmod>2016-01-24T22:30:42.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/01/24/Leetcode-Triangle/</loc>
     <lastmod>2016-01-24T21:26:13.000Z</lastmod>
   </url>
