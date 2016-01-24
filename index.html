@@ -62,91 +62,29 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-leetcode-flatten-binary-tree-to-linked-list" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" class="article-date">
-  <time datetime="2016-01-24T22:30:42.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Leetcode_Flatten_Binary_Tree_to_Linked_List"><a href="#Leetcode_Flatten_Binary_Tree_to_Linked_List" class="headerlink" title="Leetcode Flatten Binary Tree to Linked List"></a>Leetcode Flatten Binary Tree to Linked List</h1><p>Question:</p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>    1
-   / \
-  2   5
- / \   \
-3   4   6
-</code></pre><p>The flattened tree should look like:<br>   1<br>    \<br>     2<br>      \<br>       3<br>        \<br>         4<br>          \<br>           5<br>            \<br>             6</p>
-<p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
-<p>Thinking: It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. Code in Java is below:</p>
-<pre><code>public class Solution {
-    public void flatten(TreeNode root) {
-        if (root == null)
-            return;
-        dfs(root);
-    }
-
-    public TreeNode dfs(TreeNode root){
-
-        if (root.left == null &amp;&amp; root.right == null){
-            return root;
-        }
-
-        TreeNode left = null;
-        TreeNode right = null;
-        TreeNode preleft = root.left;
-        TreeNode preright = root.right;
-        if (preleft == null){
-            return dfs(preright);
-        }
-        else if(preright == null){
-            root.left = null;
-            root.right = preleft;
-            return dfs(preleft);
-        }
-        else{
-            left = dfs(preleft);
-            right = dfs(preright);
-            root.left = null;
-            root.right = preleft;
-            left.right = preright;
-            return right;
-        }
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" data-id="cijt4d07k00019rowfb6s3fu0" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-Leetcode-Triangle" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/24/Leetcode-Triangle/" class="article-date">
-  <time datetime="2016-01-24T21:26:13.000Z" itemprop="datePublished">2016-01-24</time>
+  <time datetime="2016-01-24T22:39:32.000Z" itemprop="datePublished">2016-01-24</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/24/Leetcode-Triangle/">Leetcode Triangle</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Leetcode_Triangle"><a href="#Leetcode_Triangle" class="headerlink" title="Leetcode Triangle"></a>Leetcode Triangle</h1><p>Question:</p>
+        <p>Question:</p>
 <p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.</p>
 <p>For example, given the following triangle:<br>[<br>     [2],<br>    [3,4],<br>   [6,5,7],<br>  [4,1,8,3]<br>]</p>
 <p>The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).</p>
@@ -229,6 +167,92 @@
     <footer class="article-footer">
       <a data-url="http://yoursite.com/2016/01/24/Leetcode-Triangle/" data-id="cijt4d07c00009row3dmk8ac5" class="article-share-link">Share</a>
       
+        <a href="http://yoursite.com/2016/01/24/Leetcode-Triangle/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-leetcode-flatten-binary-tree-to-linked-list" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" class="article-date">
+  <time datetime="2016-01-24T22:39:25.000Z" itemprop="datePublished">2016-01-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/">Leetcode Flatten Binary Tree to Linked List</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Question:</p>
+<p>Given a binary tree, flatten it to a linked list in-place.</p>
+<p>For example,<br>Given</p>
+<pre><code>    1
+   / \
+  2   5
+ / \   \
+3   4   6
+</code></pre><p>The flattened tree should look like:<br>   1<br>    \<br>     2<br>      \<br>       3<br>        \<br>         4<br>          \<br>           5<br>            \<br>             6</p>
+<p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
+<p>Thinking: It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. Code in Java is below:</p>
+<pre><code>public class Solution {
+    public void flatten(TreeNode root) {
+        if (root == null)
+            return;
+        dfs(root);
+    }
+
+    public TreeNode dfs(TreeNode root){
+
+        if (root.left == null &amp;&amp; root.right == null){
+            return root;
+        }
+
+        TreeNode left = null;
+        TreeNode right = null;
+        TreeNode preleft = root.left;
+        TreeNode preright = root.right;
+        if (preleft == null){
+            return dfs(preright);
+        }
+        else if(preright == null){
+            root.left = null;
+            root.right = preleft;
+            return dfs(preleft);
+        }
+        else{
+            left = dfs(preleft);
+            right = dfs(preright);
+            root.left = null;
+            root.right = preleft;
+            left.right = preright;
+            return right;
+        }
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" data-id="cijt4d07k00019rowfb6s3fu0" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/#disqus_thread" class="article-comment-link">Comments</a>
+      
       
     </footer>
   </div>
@@ -274,6 +298,8 @@
     <footer class="article-footer">
       <a data-url="http://yoursite.com/2016/01/24/hello-world/" data-id="cijt4d07n00029roww5kp7q0o" class="article-share-link">Share</a>
       
+        <a href="http://yoursite.com/2016/01/24/hello-world/#disqus_thread" class="article-comment-link">Comments</a>
+      
       
     </footer>
   </div>
@@ -312,11 +338,11 @@
       <ul>
         
           <li>
-            <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/">(no title)</a>
+            <a href="/2016/01/24/Leetcode-Triangle/">Leetcode Triangle</a>
           </li>
         
           <li>
-            <a href="/2016/01/24/Leetcode-Triangle/">(no title)</a>
+            <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/">Leetcode Flatten Binary Tree to Linked List</a>
           </li>
         
           <li>
@@ -349,6 +375,18 @@
   
 </nav>
     
+<script>
+  var disqus_shortname = 'communitydeveloper';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
