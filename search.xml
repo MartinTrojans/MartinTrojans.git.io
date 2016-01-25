@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title><![CDATA[Leetcode Partition List]]></title>
+      <title><![CDATA[Leetcode-Partition List(Java)]]></title>
       <url>http://yoursite.com/2016/01/24/Leetcode-Partition-List/</url>
       <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</p>
