@@ -62,6 +62,137 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Search-for-a-Range-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/24/Leetcode-Search-for-a-Range-Java/" class="article-date">
+  <time datetime="2016-01-25T03:50:20.000Z" itemprop="datePublished">2016-01-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/24/Leetcode-Search-for-a-Range-Java/">Leetcode-Search for a Range(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a sorted array of integers, find the starting and ending position of a given target value.</p>
+<p>Your algorithm’s runtime complexity must be in the order of O(log n).</p>
+<p>If the target is not found in the array, return [-1, -1].</p>
+<p>For example,<br>Given [5, 7, 7, 8, 8, 10] and target value 8,<br>return [3, 4].</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s question which should use binary search because it give us a sorted array and it requires O(log n) runtime complexity. Only thing difference between this algorithm and classical binary search is that we should make the range smaller while finding the target instead of returning the index.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int low = 0;
+        int high = nums.length - 1;
+        int mid;
+        int resl = -1;
+        int resr = -1;
+        while (low &lt;= high){
+            mid = (low + high) / 2;
+            if (nums[mid] == target){
+                if (nums[low] == target){
+                    resl = low;
+                    if (resr != -1)
+                        break;
+                }    
+                else
+                    low++;
+
+                if (nums[high] == target){
+                    resr = high;
+                    if (resl != -1)
+                        break;
+                }
+                else
+                    high--;
+            }
+            else if(nums[mid] &gt; target)
+                high = mid - 1;
+            else
+                low = mid + 1;
+        }
+        int[] res = {resl, resr};
+        return res;
+    }
+
+}
+</code></pre><p>But the algorithm is not so effienct when finding the target so early. In order to make sure the runtime complexity is O(log n), we should also use binary search to find the lower bound and upper bound when finding the target in the array.<br>Reference: <a href="http://www.cnblogs.com/springfor/p/3857704.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3857704.html</a></p>
+<p>Code:<br>public int[] searchRange(int[] A, int target) {<br>        int [] res = {-1,-1};<br>        if(A == null || A.length == 0)<br>            return res;</p>
+<pre><code>    //first iteration, find target wherever it is
+    int low = 0;
+    int high = A.length-1;
+    int pos = 0;
+    while(low &lt;= high){
+        int mid = (low + high)/2;
+        pos = mid;
+        if(A[mid] &gt; target)
+            high = mid - 1;
+        else if(A[mid] &lt; target)
+            low = mid + 1;
+        else{
+            res[0] = pos;
+            res[1] = pos;
+            break;
+        }
+    }
+
+    if(A[pos] != target)
+        return res;
+
+    //second iteration, find the right boundary of this target
+    int newlow = pos;
+    int newhigh = A.length-1;
+    while(newlow &lt;= newhigh){
+        int newmid = (newlow+newhigh)/2;
+        if(A[newmid] == target)
+            newlow = newmid + 1;
+        else
+            newhigh = newmid - 1;
+    }
+    res[1] = newhigh;
+
+    //third iteration, find the left boundary of this target
+    newlow = 0;
+    newhigh = pos;
+    while(newlow &lt;= newhigh){
+        int newmid = (newlow+newhigh)/2;
+        if(A[newmid] == target)
+            newhigh = newmid - 1;
+        else
+            newlow = newmid + 1;
+    }
+    res[0] = newlow;
+
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/" data-id="cijtg3b0n0009yfow69gqmvif" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Partition-List" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/24/Leetcode-Partition-List/" class="article-date">
@@ -154,7 +285,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Partition-List/" data-id="cijtepw690009uvow85hx4l2x" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Partition-List/" data-id="cijtg3b0o000ayfowp9vp9djb" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Partition-List/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -251,7 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" data-id="cijtepw5w0004uvows8gz4ob4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" data-id="cijtg3b080004yfowwm77jqy0" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -372,7 +503,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Triangle/" data-id="cijtepw650008uvowjj42h6jh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Triangle/" data-id="cijtg3b0j0008yfowf83z50d1" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Triangle/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -458,101 +589,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/" data-id="cijtepw640007uvowwylc0jqd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/" data-id="cijtg3b0i0007yfownr3q39wi" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Unique-Binary-Search-Trees-II" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Unique-Binary-Search-Trees-II/" class="article-date">
-  <time datetime="2016-01-25T00:07:06.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Unique-Binary-Search-Trees-II/">Leetcode-Unique Binary Search Trees II(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.</p>
-<p>For example,<br>Given n = 3, your program should return all 5 unique BST’s shown below.</p>
-<pre><code>1         3     3      2      1
- \       /     /      / \      \
-  3     2     1      1   3      2
- /     /       \                 \
-2     1         2                 3
-</code></pre><p><strong>Thinking:</strong> </p>
-<p>It’s a simple dynamic programming question. For n numbers, we should consider the situation that every one become the root, and delete it from the sets and do the same thing for their children.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public List&lt;TreeNode&gt; generateTrees(int n) {
-        return dp(1, n);
-    }
-
-    public List&lt;TreeNode&gt; dp(int low, int high){
-        List&lt;TreeNode&gt; res = new ArrayList&lt;TreeNode&gt;();
-        if (low == high){
-            TreeNode n = new TreeNode(low);
-            res.add(n);
-            return res;
-        }
-        for (int i = low; i &lt;= high; i++){
-            TreeNode n = new TreeNode(i);
-            if (i == low){
-                for (TreeNode p: dp(low+1, high)){
-                    n.right = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else if (i == high){
-                for (TreeNode p: dp(low, high-1)){
-                    n.left = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else{
-                for (TreeNode p: dp(low, i-1)){
-                    for (TreeNode q: dp(i+1, high)){
-                        n.left = p;
-                        n.right = q;
-                        res.add(n);
-                        n = new TreeNode(i);
-                    }
-                }
-            }
-        }
-
-        return res;
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/" data-id="cijtepw610006uvowkz0sucaj" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -596,6 +635,10 @@
       <ul>
         
           <li>
+            <a href="/2016/01/24/Leetcode-Search-for-a-Range-Java/">Leetcode-Search for a Range(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/01/24/Leetcode-Partition-List/">Leetcode-Partition List(Java)</a>
           </li>
         
@@ -609,10 +652,6 @@
         
           <li>
             <a href="/2016/01/24/Leetcode-Unique-Paths-II-Java/">Leetcode-Unique Paths II(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/01/24/Unique-Binary-Search-Trees-II/">Leetcode-Unique Binary Search Trees II(Java)</a>
           </li>
         
       </ul>
