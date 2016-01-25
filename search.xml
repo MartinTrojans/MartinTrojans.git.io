@@ -4,6 +4,78 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode Partition List]]></title>
+      <url>http://yoursite.com/2016/01/24/Leetcode-Partition-List/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</p>
+<p>You should preserve the original relative order of the nodes in each of the two partitions.</p>
+<p>For example,<br>Given 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2 and x = 3,<br>return 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5.</p>
+<p><strong>Thinking:</strong></p>
+<p>We should preserve the original relative order of the nodes. So we need two points, one is for recording where to insert the less value node, and the other is for searching the less value node.</p>
+<p><strong>Solution1:</strong></p>
+<pre><code>public class Solution {
+    public ListNode partition(ListNode head, int x) {
+        if (head == null)
+            return null;
+        ListNode prehead = new ListNode(0);
+        prehead.next = head;
+        ListNode s = prehead;
+        ListNode l = prehead;
+        while(s != null &amp;&amp; l != null){
+            while(s.next != null){
+                if (s.next.val &gt;= x)
+                    break;
+                s = s.next;
+            }
+            l = s.next;
+            if (l == null)
+                break;
+            while(l.next != null){
+                if (l.next.val &lt; x)
+                    break;
+                l = l.next;
+            }
+            if (l.next == null)
+                break;
+            ListNode tmp = l.next;
+            l.next = l.next.next;
+            tmp.next = s.next;
+            s.next = tmp;
+        }
+
+        return prehead.next;
+    }
+
+}
+</code></pre><p>And there is another solution, which uses two lists. One is for recording less value node, and the other is for recording greater value node. And connect them:</p>
+<pre><code>public ListNode partition(ListNode head, int x) {
+        if(head==null||head.next==null)
+            return head;
+
+        ListNode small = new ListNode(-1);
+        ListNode newsmallhead = small;
+        ListNode big = new ListNode(-1);
+        ListNode newbighead = big;
+
+        while(head!=null){
+            if(head.val&lt;x){
+                small.next = head;
+                small = small.next;
+            }else{
+                big.next = head;
+                big = big.next;
+            }
+            head = head.next;
+        }
+        big.next = null;
+
+        small.next = newbighead.next;
+
+        return newsmallhead.next;
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode-Flatten Binary Tree to Linked List(Java)]]></title>
       <url>http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/</url>
       <content type="html"><![CDATA[<p><strong>Question:</strong></p>

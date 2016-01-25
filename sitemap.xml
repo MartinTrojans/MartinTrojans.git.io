@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/01/24/Leetcode-Partition-List/</loc>
+    <lastmod>2016-01-25T03:20:48.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/</loc>
     <lastmod>2016-01-25T00:52:30.000Z</lastmod>
   </url>
