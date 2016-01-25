@@ -13,7 +13,14 @@ For example,Given
   2   5
  / \   \
 3   4   6
-The flattened tree should look like:   1    \     2      \       3">
+The flattened tree should look like:
+1
+ \
+  2
+   \
+    3
+     \
+      4">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode Flatten Binary Tree to Linked List">
 <meta property="og:url" content="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/index.html">
@@ -26,8 +33,15 @@ For example,Given
   2   5
  / \   \
 3   4   6
-The flattened tree should look like:   1    \     2      \       3">
-<meta property="og:updated_time" content="2016-01-24T22:39:25.000Z">
+The flattened tree should look like:
+1
+ \
+  2
+   \
+    3
+     \
+      4">
+<meta property="og:updated_time" content="2016-01-25T00:17:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode Flatten Binary Tree to Linked List">
 <meta name="twitter:description" content="Question:
@@ -38,7 +52,14 @@ For example,Given
   2   5
  / \   \
 3   4   6
-The flattened tree should look like:   1    \     2      \       3">
+The flattened tree should look like:
+1
+ \
+  2
+   \
+    3
+     \
+      4">
   
     <link rel="alternate" href="/atom.xml" title="Martin&#39;s Blog" type="application/atom+xml">
   
@@ -88,7 +109,7 @@ The flattened tree should look like:   1    \     2      \       3">
         <section id="main"><article id="post-leetcode-flatten-binary-tree-to-linked-list" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" class="article-date">
-  <time datetime="2016-01-24T22:39:25.000Z" itemprop="datePublished">2016-01-24</time>
+  <time datetime="2016-01-25T00:17:57.000Z" itemprop="datePublished">2016-01-24</time>
 </a>
     
   </div>
@@ -107,7 +128,7 @@ The flattened tree should look like:   1    \     2      \       3">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Question:</p>
+        <p><strong>Question:</strong></p>
 <p>Given a binary tree, flatten it to a linked list in-place.</p>
 <p>For example,<br>Given</p>
 <pre><code>    1
@@ -115,9 +136,22 @@ The flattened tree should look like:   1    \     2      \       3">
   2   5
  / \   \
 3   4   6
-</code></pre><p>The flattened tree should look like:<br>   1<br>    \<br>     2<br>      \<br>       3<br>        \<br>         4<br>          \<br>           5<br>            \<br>             6</p>
-<p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
-<p>Thinking: It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. Code in Java is below:</p>
+</code></pre><p>The flattened tree should look like:</p>
+<pre><code>1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
+<p><strong>Thinking:</strong> </p>
+<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
+<p><strong>Solution:</strong></p>
 <pre><code>public class Solution {
     public void flatten(TreeNode root) {
         if (root == null)
@@ -157,7 +191,7 @@ The flattened tree should look like:   1    \     2      \       3">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" data-id="cijt66wf20000ffowtrzpmd8a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" data-id="cijt86nr90004l5ow7selvkpp" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -168,19 +202,10 @@ The flattened tree should look like:   1    \     2      \       3">
     
 <nav id="article-nav">
   
-    <a href="/2016/01/24/Leetcode-Triangle/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Leetcode Triangle
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/01/24/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/01/24/Leetcode-Triangle/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Hello World</div>
+      <div class="article-nav-title">Leetcode Triangle</div>
     </a>
   
 </nav>
@@ -223,7 +248,7 @@ The flattened tree should look like:   1    \     2      \       3">
       <ul>
         
           <li>
-            <a href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/">Leetcode Bitwise AND of Numbers Range</a>
+            <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/">Leetcode Flatten Binary Tree to Linked List</a>
           </li>
         
           <li>
@@ -231,7 +256,11 @@ The flattened tree should look like:   1    \     2      \       3">
           </li>
         
           <li>
-            <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/">Leetcode Flatten Binary Tree to Linked List</a>
+            <a href="/2016/01/24/Unique-Binary-Search-Trees-II/">Unique Binary Search Trees II</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/">Leetcode Bitwise AND of Numbers Range</a>
           </li>
         
           <li>

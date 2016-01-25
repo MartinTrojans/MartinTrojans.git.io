@@ -2,8 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/</loc>
+    <lastmod>2016-01-25T00:17:57.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/24/Leetcode-Triangle/</loc>
+    <lastmod>2016-01-25T00:16:18.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/</loc>
-    <lastmod>2016-01-24T23:36:21.000Z</lastmod>
+    <lastmod>2016-01-25T00:13:57.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/</loc>
+    <lastmod>2016-01-25T00:13:08.000Z</lastmod>
   </url>
   
   <url>
@@ -19,16 +34,6 @@
   <url>
     <loc>http://yoursite.com/about/index.html</loc>
     <lastmod>2016-01-24T22:44:02.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/01/24/Leetcode-Triangle/</loc>
-    <lastmod>2016-01-24T22:39:32.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/</loc>
-    <lastmod>2016-01-24T22:39:25.000Z</lastmod>
   </url>
   
   <url>
