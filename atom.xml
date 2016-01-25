@@ -93,15 +93,41 @@
     <link href="http://yoursite.com/2016/01/24/Sort-Algorithms/"/>
     <id>http://yoursite.com/2016/01/24/Sort-Algorithms/</id>
     <published>2016-01-25T04:07:31.000Z</published>
-    <updated>2016-01-25T04:11:34.000Z</updated>
-    <content type="html"><![CDATA[<p>##Preface:</p>
-<p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
-<p>##Insertion sort:</p>
-<p><strong>Main Idea:</strong></p>
+    <updated>2016-01-25T05:48:03.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="Preface_3A"><a href="#Preface_3A" class="headerlink" title="Preface:"></a>Preface:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
+<h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
+<p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
+<p><strong>Process:</strong> (From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
+<p><strong>Pseudocode:</strong></p>
+<pre><code>for i ← 1 to length(A) - 1
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+    end while
+end for
+</code></pre><p><strong>Implemention in Java:</strong></p>
+<pre><code>public static void InsertionSort(int[] num)
+{
+     int j;
+     int key;
+     int i;  
+
+     for (j = 1; j &lt; num.length; j++){
+        key = num[j];
+        for(i = j - 1; (i &gt;= 0) &amp;&amp; (num[i] &lt; key); i--){
+            num[i+1] = num[i];
+        }
+        num[i+1] = key;
+    }
+}
+</code></pre><p><strong>Complexity:</strong></p>
+<p><em>Runtime</em>: O(n^2)</p>
+<p><em>Memery</em>: O(1)</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>##Preface:</p>
-<p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort]]>
+    <![CDATA[<h2 id="Preface_3A"><a href="#Preface_3A" class="headerlink" title="Preface:"></a>Preface:</h2><p>This time, we talk about eight kinds of so]]>
     </summary>
     
   </entry>
