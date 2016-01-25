@@ -17,7 +17,7 @@ If the target is not fo">
 Given a sorted array of integers, find the starting and ending position of a given target value.
 Your algorithm’s runtime complexity must be in the order of O(log n).
 If the target is not fo">
-<meta property="og:updated_time" content="2016-01-25T03:59:12.000Z">
+<meta property="og:updated_time" content="2016-01-25T04:00:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode-Search for a Range(Java)">
 <meta name="twitter:description" content="Question:
@@ -137,8 +137,13 @@ If the target is not fo">
 
 }
 </code></pre><p>But the algorithm is not so effienct when finding the target so early. In order to make sure the runtime complexity is O(log n), we should also use binary search to find the lower bound and upper bound when finding the target in the array.<br>Reference: <a href="http://www.cnblogs.com/springfor/p/3857704.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3857704.html</a></p>
-<p>Code:<br>public int[] searchRange(int[] A, int target) {<br>        int [] res = {-1,-1};<br>        if(A == null || A.length == 0)<br>            return res;</p>
-<pre><code>    //first iteration, find target wherever it is
+<p>Code:</p>
+<pre><code>public int[] searchRange(int[] A, int target) {
+    int [] res = {-1,-1};
+    if(A == null || A.length == 0)
+        return res;
+
+    //first iteration, find target wherever it is
     int low = 0;
     int high = A.length-1;
     int pos = 0;
