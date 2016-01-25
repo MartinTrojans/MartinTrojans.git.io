@@ -3,18 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>about | Martin&#39;s Blog</title>
+  <title>Leetcode-Unique Paths II(Java) | Martin&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="A rookie write something just for fun.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+  <meta name="description" content="Question:
+Follow up for “Unique Paths”:
+Now consider if some obstacles are added to the grids. How many unique paths would there be?
+An obstacle and empty space is marked as 1 and 0 respectively in th">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode-Unique Paths II(Java)">
+<meta property="og:url" content="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/index.html">
 <meta property="og:site_name" content="Martin's Blog">
-<meta property="og:description" content="A rookie write something just for fun.">
-<meta property="og:updated_time" content="2016-01-24T22:44:02.000Z">
+<meta property="og:description" content="Question:
+Follow up for “Unique Paths”:
+Now consider if some obstacles are added to the grids. How many unique paths would there be?
+An obstacle and empty space is marked as 1 and 0 respectively in th">
+<meta property="og:updated_time" content="2016-01-25T00:51:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="A rookie write something just for fun.">
+<meta name="twitter:title" content="Leetcode-Unique Paths II(Java)">
+<meta name="twitter:description" content="Question:
+Follow up for “Unique Paths”:
+Now consider if some obstacles are added to the grids. How many unique paths would there be?
+An obstacle and empty space is marked as 1 and 0 respectively in th">
   
     <link rel="alternate" href="/atom.xml" title="Martin&#39;s Blog" type="application/atom+xml">
   
@@ -61,10 +70,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Leetcode-Unique-Paths-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/about/index.html" class="article-date">
-  <time datetime="2016-01-24T22:44:02.000Z" itemprop="datePublished">2016-01-24</time>
+    <a href="/2016/01/24/Leetcode-Unique-Paths-II-Java/" class="article-date">
+  <time datetime="2016-01-25T00:49:04.000Z" itemprop="datePublished">2016-01-24</time>
 </a>
     
   </div>
@@ -75,7 +84,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      about
+      Leetcode-Unique Paths II(Java)
     </h1>
   
 
@@ -83,19 +92,77 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p><strong>Question:</strong></p>
+<p>Follow up for “Unique Paths”:</p>
+<p>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
+<p>An obstacle and empty space is marked as 1 and 0 respectively in the grid.</p>
+<p>For example,<br>There is one obstacle in the middle of a 3x3 grid as illustrated below.</p>
+<pre><code>[
+  [0,0,0],
+  [0,1,0],
+  [0,0,0]
+]
+</code></pre><p>The total number of unique paths is 2.</p>
+<p>Note: m and n will be at most 100.</p>
+<p><strong>Thinking:</strong></p>
+<p>This question is similar with Unique Paths, and it’s the same methed to use dynamic programming. Only one difference is that we should check if it’s a obstacle. And if it’s a obstacle, its value of dp should be 0.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int lr = obstacleGrid.length;
+        if (lr == 0)
+            return 0;
+        int lc = obstacleGrid[0].length;
+        int[][] dp = new int[lr][lc];
+        if (obstacleGrid[0][0] == 1){
+            return 0;
+        }
+        dp[0][0] = 1;
+
+        for (int i = 1; i &lt; lr; i++){
+            if (obstacleGrid[i][0] == 1)
+                break;
+            dp[i][0] = 1;
+        }
+        for (int i = 1; i &lt; lc; i++){
+            if (obstacleGrid[0][i] == 1)
+                break;
+            dp[0][i] = 1;
+        }
+
+        for (int i = 1; i &lt; lr; i++)
+            for (int j = 1; j &lt; lc; j++){
+                if(obstacleGrid[i][j] == 1)
+                    continue;
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            }
+
+        return dp[lr-1][lc-1];
+    }
+}
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/about/index.html" data-id="cijt9dxre0003mzow5u3k2omp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/" data-id="cijt9dxrq0007mzowl26hvxsx" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/about/index.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
   </div>
   
     
+<nav id="article-nav">
+  
+  
+    <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Leetcode——Flatten Binary Tree to Linked List(Java)</div>
+    </a>
+  
+</nav>
+
   
 </article>
 
@@ -182,7 +249,7 @@
 <script>
   var disqus_shortname = 'communitydeveloper';
   
-  var disqus_url = 'http://yoursite.com/about/index.html';
+  var disqus_url = 'http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/';
   
   (function(){
     var dsq = document.createElement('script');
