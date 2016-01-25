@@ -211,6 +211,59 @@ end for
 </code></pre><p><strong>Complexity:</strong></p>
 <p><em>Runtime</em>: O(n^2)</p>
 <p><em>Memery</em>: O(1)</p>
+<hr>
+<h2 id="ShellSort_3A"><a href="#ShellSort_3A" class="headerlink" title="ShellSort:"></a>ShellSort:</h2><p><strong>Main Idea:</strong></p>
+<p>The method starts by sorting pairs of elements far apart from each other, then progressively reducing the gap between elements to be compared. Starting with far apart elements can move some out-of-place elements into position faster than a simple nearest neighbor exchange.</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif" alt=""></p>
+<p><strong>Pesedocode:</strong></p>
+<pre><code>gaps = [701, 301, 132, 57, 23, 10, 4, 1]
+
+foreach (gap in gaps)
+{
+    # Do a gapped insertion sort for this gap size.
+    # The first gap elements a[0..gap-1] are already in gapped order
+    # keep adding one more element until the entire array is gap sorted
+    for (i = gap; i &lt; n; i += 1)
+    {
+        # add a[i] to the elements that have been gap sorted
+        # save a[i] in temp and make a hole at position i
+        temp = a[i]
+        # shift earlier gap-sorted elements up until the correct location for a[i] is found
+        for (j = i; j &gt;= gap and a[j - gap] &gt; temp; j -= gap)
+        {
+            a[j] = a[j - gap]
+        }
+        # put temp (the original a[i]) in its correct location
+        a[j] = temp
+        }
+    }
+</code></pre><p> <strong>Implemention in Java:</strong></p>
+<pre><code>public void shellSort() {
+    int inner, outer;
+    long temp;
+    //find initial value of h
+    int h = 1;
+    while (h &lt;= len / 3)
+      h = h * 3 + 1; // (1, 4, 13, 40, 121, ...)
+
+    while (h &gt; 0) // decreasing h, until h=1
+    {
+      // h-sort the file
+      for (outer = h; outer &lt; len; outer++) {
+        temp = data[outer];
+        inner = outer;
+        // one subpass (eg 0, 4, 8)
+        while (inner &gt; h - 1 &amp;&amp; data[inner - h] &gt;= temp) {
+          data[inner] = data[inner - h];
+          inner -= h;
+        }
+        data[inner] = temp;
+      }
+      h = (h - 1) / 3; // decrease h
+    }
+}
+</code></pre><hr>
 
       
     </div>
