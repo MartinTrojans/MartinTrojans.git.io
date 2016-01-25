@@ -2,13 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/</loc>
-    <lastmod>2016-01-25T04:00:53.000Z</lastmod>
+    <loc>http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/</loc>
+    <lastmod>2016-01-25T05:12:33.000Z</lastmod>
   </url>
   
   <url>
     <loc>http://yoursite.com/2016/01/24/Leetcode-Partition-List/</loc>
-    <lastmod>2016-01-25T03:21:21.000Z</lastmod>
+    <lastmod>2016-01-25T04:16:31.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/24/Sort-Algorithms/</loc>
+    <lastmod>2016-01-25T04:11:34.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/</loc>
+    <lastmod>2016-01-25T04:00:53.000Z</lastmod>
   </url>
   
   <url>

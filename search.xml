@@ -4,6 +4,80 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode-Insertion Sort List(Java)]]></title>
+      <url>http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Sort a linked list using insertion sort.</p>
+<p><strong>Thinking:</strong></p>
+<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        ListNode res = new ListNode(-1);
+        res.next = head;
+        ListNode p = res;
+        ListNode next = head.next;
+        head.next = null;
+        head = next;
+        while (head != null){
+            while (p.next != null){
+                //if the value is smaller than one of the sorted list, insert behind it
+                if (head.val &lt; p.next.val){
+                    next = head.next;
+                    head.next = p.next;
+                    p.next = head;
+                    head = next;
+                    p = res;
+                    break;
+                }
+                p = p.next;
+            }
+            //if the value is bigger than anyone of the sorted list, insert after the whole list
+            if (p.next == null){
+                next = head.next;
+                p.next = head;
+                head.next = null;
+                head = next;
+                p = res;
+            }
+        }
+
+        return res.next;
+    }
+}
+</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
+<pre><code>public ListNode insertionSortList(ListNode head) {  
+    if(head == null||head.next == null)  
+        return head;  
+    ListNode sortedlisthead = new ListNode(0);  
+    ListNode cur = head;
+    while(cur!=null){  
+        ListNode next = cur.next;  
+        ListNode pre = sortedlisthead;  
+        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
+            pre = pre.next;  
+        cur.next = pre.next;  
+        pre.next = cur;  
+        cur = next;  
+    }  
+    return sortedlisthead.next;  
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Sort Algorithms]]></title>
+      <url>http://yoursite.com/2016/01/24/Sort-Algorithms/</url>
+      <content type="html"><![CDATA[<p>##Preface:</p>
+<p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
+<p>##Insertion sort:</p>
+<p><strong>Main Idea:</strong></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode-Search for a Range(Java)]]></title>
       <url>http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/</url>
       <content type="html"><![CDATA[<p><strong>Question:</strong></p>
@@ -176,6 +250,7 @@
         small.next = newbighead.next;
 
         return newsmallhead.next;
+}
 </code></pre>]]></content>
     </entry>
     

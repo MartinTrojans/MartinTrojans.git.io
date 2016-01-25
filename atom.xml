@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-01-25T04:00:53.000Z</updated>
+  <updated>2016-01-25T05:12:33.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,98 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Insertion Sort List(Java)]]></title>
+    <link href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/"/>
+    <id>http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/</id>
+    <published>2016-01-25T05:07:32.000Z</published>
+    <updated>2016-01-25T05:12:33.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Sort a linked list using insertion sort.</p>
+<p><strong>Thinking:</strong></p>
+<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        ListNode res = new ListNode(-1);
+        res.next = head;
+        ListNode p = res;
+        ListNode next = head.next;
+        head.next = null;
+        head = next;
+        while (head != null){
+            while (p.next != null){
+                //if the value is smaller than one of the sorted list, insert behind it
+                if (head.val &lt; p.next.val){
+                    next = head.next;
+                    head.next = p.next;
+                    p.next = head;
+                    head = next;
+                    p = res;
+                    break;
+                }
+                p = p.next;
+            }
+            //if the value is bigger than anyone of the sorted list, insert after the whole list
+            if (p.next == null){
+                next = head.next;
+                p.next = head;
+                head.next = null;
+                head = next;
+                p = res;
+            }
+        }
+
+        return res.next;
+    }
+}
+</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
+<pre><code>public ListNode insertionSortList(ListNode head) {  
+    if(head == null||head.next == null)  
+        return head;  
+    ListNode sortedlisthead = new ListNode(0);  
+    ListNode cur = head;
+    while(cur!=null){  
+        ListNode next = cur.next;  
+        ListNode pre = sortedlisthead;  
+        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
+            pre = pre.next;  
+        cur.next = pre.next;  
+        pre.next = cur;  
+        cur = next;  
+    }  
+    return sortedlisthead.next;  
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Sort a linked list using insertion sort.</p>
+<p><strong>Thinking:</strong></p>
+<p>As the question state]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Sort Algorithms]]></title>
+    <link href="http://yoursite.com/2016/01/24/Sort-Algorithms/"/>
+    <id>http://yoursite.com/2016/01/24/Sort-Algorithms/</id>
+    <published>2016-01-25T04:07:31.000Z</published>
+    <updated>2016-01-25T04:11:34.000Z</updated>
+    <content type="html"><![CDATA[<p>##Preface:</p>
+<p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
+<p>##Insertion sort:</p>
+<p><strong>Main Idea:</strong></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>##Preface:</p>
+<p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Search for a Range(Java)]]></title>
@@ -132,7 +224,7 @@
     <link href="http://yoursite.com/2016/01/24/Leetcode-Partition-List/"/>
     <id>http://yoursite.com/2016/01/24/Leetcode-Partition-List/</id>
     <published>2016-01-25T03:14:31.000Z</published>
-    <updated>2016-01-25T03:21:21.000Z</updated>
+    <updated>2016-01-25T04:16:31.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</p>
 <p>You should preserve the original relative order of the nodes in each of the two partitions.</p>
@@ -199,6 +291,7 @@
         small.next = newbighead.next;
 
         return newsmallhead.next;
+}
 </code></pre>]]></content>
     <summary type="html">
     <![CDATA[<p><strong>Question:</strong></p>

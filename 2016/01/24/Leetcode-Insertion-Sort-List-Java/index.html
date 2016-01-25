@@ -3,18 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>about | Martin&#39;s Blog</title>
+  <title>Leetcode-Insertion Sort List(Java) | Martin&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="A rookie write something just for fun.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+  <meta name="description" content="Question:
+Sort a linked list using insertion sort.
+Thinking:
+As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode-Insertion Sort List(Java)">
+<meta property="og:url" content="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/index.html">
 <meta property="og:site_name" content="Martin's Blog">
-<meta property="og:description" content="A rookie write something just for fun.">
-<meta property="og:updated_time" content="2016-01-24T22:44:02.000Z">
+<meta property="og:description" content="Question:
+Sort a linked list using insertion sort.
+Thinking:
+As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan">
+<meta property="og:updated_time" content="2016-01-25T05:12:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="A rookie write something just for fun.">
+<meta name="twitter:title" content="Leetcode-Insertion Sort List(Java)">
+<meta name="twitter:description" content="Question:
+Sort a linked list using insertion sort.
+Thinking:
+As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan">
   
     <link rel="alternate" href="/atom.xml" title="Martin&#39;s Blog" type="application/atom+xml">
   
@@ -61,10 +70,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Leetcode-Insertion-Sort-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/about/index.html" class="article-date">
-  <time datetime="2016-01-24T22:44:02.000Z" itemprop="datePublished">2016-01-24</time>
+    <a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" class="article-date">
+  <time datetime="2016-01-25T05:07:32.000Z" itemprop="datePublished">2016-01-24</time>
 </a>
     
   </div>
@@ -75,7 +84,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      about
+      Leetcode-Insertion Sort List(Java)
     </h1>
   
 
@@ -83,19 +92,87 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p><strong>Question:</strong></p>
+<p>Sort a linked list using insertion sort.</p>
+<p><strong>Thinking:</strong></p>
+<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        ListNode res = new ListNode(-1);
+        res.next = head;
+        ListNode p = res;
+        ListNode next = head.next;
+        head.next = null;
+        head = next;
+        while (head != null){
+            while (p.next != null){
+                //if the value is smaller than one of the sorted list, insert behind it
+                if (head.val &lt; p.next.val){
+                    next = head.next;
+                    head.next = p.next;
+                    p.next = head;
+                    head = next;
+                    p = res;
+                    break;
+                }
+                p = p.next;
+            }
+            //if the value is bigger than anyone of the sorted list, insert after the whole list
+            if (p.next == null){
+                next = head.next;
+                p.next = head;
+                head.next = null;
+                head = next;
+                p = res;
+            }
+        }
+
+        return res.next;
+    }
+}
+</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
+<pre><code>public ListNode insertionSortList(ListNode head) {  
+    if(head == null||head.next == null)  
+        return head;  
+    ListNode sortedlisthead = new ListNode(0);  
+    ListNode cur = head;
+    while(cur!=null){  
+        ListNode next = cur.next;  
+        ListNode pre = sortedlisthead;  
+        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
+            pre = pre.next;  
+        cur.next = pre.next;  
+        pre.next = cur;  
+        cur = next;  
+    }  
+    return sortedlisthead.next;  
+}
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/about/index.html" data-id="cijtipjm700031iowuvx7zrfi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="cijtipjmt000c1iowpx4bjrq1" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/about/index.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
   </div>
   
     
+<nav id="article-nav">
+  
+  
+    <a href="/2016/01/24/Sort-Algorithms/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Sort Algorithms</div>
+    </a>
+  
+</nav>
+
   
 </article>
 
@@ -182,7 +259,7 @@
 <script>
   var disqus_shortname = 'communitydeveloper';
   
-  var disqus_url = 'http://yoursite.com/about/index.html';
+  var disqus_url = 'http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/';
   
   (function(){
     var dsq = document.createElement('script');
