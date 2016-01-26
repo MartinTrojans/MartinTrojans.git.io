@@ -62,6 +62,128 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Node-js-study-note" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/25/Node-js-study-note/" class="article-date">
+  <time datetime="2016-01-26T05:11:55.000Z" itemprop="datePublished">2016-01-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/25/Node-js-study-note/">Node.js study note</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Survey:</strong></p>
+<p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
+<p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
+<hr>
+<p><strong>Content:</strong></p>
+<p>–1– Argument variables with process.argv</p>
+<pre><code>app.js
+
+function grab(flag){
+    var index = process.argv.indexOf(flag);
+    return (index === -1) ? null : process.argv[index+1];
+}
+
+var greeting = grab(&apos;--greeting&apos;);
+var user = grab(&apos;--user&apos;);
+
+if (!user || !greeting) {
+    console.log(&quot;You blew it!&quot;);
+} else {
+    console.log(`Welcome, ${user}, ${greeting}`);
+}
+</code></pre><p>In this code, we grab the arguments from shell and print it out on the console.</p>
+<p>For example, if in the shell:</p>
+<pre><code>$node app --user Martin --greeting &quot;hello hello&quot;
+</code></pre><p>Then in the console:</p>
+<pre><code>Welcome, Martin, hello hello
+</code></pre><p>And in this code, I also learned string temple which uses backticks<code>.</code>Welcome, ${user}, ${greeting}` will contain variable user and greeting.</p>
+<hr>
+<p>–2– Standard input and standard output</p>
+<pre><code> var questions = [
+&quot;What is your name?&quot;,
+&quot;What is your favorite hobby?&quot;,
+&quot;What is your preferred programming language?&quot;
+];
+
+var answers = [];
+
+function ask(i) {
+    process.stdout.write(`\n\n\n\n ${questions[i]}`);
+    process.stdout.write(&quot;  &gt;  &quot;);
+}
+
+process.stdin.on(&apos;data&apos;, function(data){
+
+    answers.push(data.toString().trim());
+
+    if (answers.length &lt; questions.length) {
+        ask(answers.length);
+    } else {
+        process.exit();
+    }
+});
+
+process.on(&apos;exit&apos;, function(){
+
+    process.stdout.write(&quot;\n\n\n\n&quot;);
+
+    process.stdout.write(`Go ${answers[1]} ${answers[0]} you can finish writing ${answers[2]} later`);
+
+    process.stdout.write(&quot;\n\n\n\n&quot;);
+
+});
+
+ask(0);
+</code></pre><p>In the shell:</p>
+<pre><code>What is your name?  &gt;  Martin
+
+
+
+
+ What is your favorite hobby?  &gt;  play games
+
+
+
+
+ What is your preferred programming language?  &gt;  python
+
+
+
+
+Go play games Martin you can finish writing python later
+</code></pre><p>Is that funny:)?</p>
+<hr>
+<p>–3– Globla timing functions</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/25/Node-js-study-note/" data-id="cijuz8x7i0008zbowtsuwoqiq" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/25/Node-js-study-note/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Insertion-Sort-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" class="article-date">
@@ -146,7 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="cijtipjmt000c1iowpx4bjrq1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="cijuz8x7t000dzbow386b511l" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -180,7 +302,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Preface_3A"><a href="#Preface_3A" class="headerlink" title="Preface:"></a>Preface:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
+        <h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
 <h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
 <p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
 <p><strong>Process:</strong> (From Wikimedia)</p>
@@ -268,7 +390,7 @@ foreach (gap in gaps)
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Sort-Algorithms/" data-id="cijtipjmi00071iowvxpewfhv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Sort-Algorithms/" data-id="cijuz8x7g0007zbow16zpcitp" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Sort-Algorithms/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -404,7 +526,7 @@ foreach (gap in gaps)
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/" data-id="cijtipjmo000a1iowy8ol7g8v" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/" data-id="cijuz8x7p000bzbow5ni96gpz" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -509,106 +631,9 @@ foreach (gap in gaps)
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Partition-List/" data-id="cijtipjmq000b1iowxnb0qgvx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Partition-List/" data-id="cijuz8x7r000czbowlvu5e75f" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Partition-List/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-leetcode-flatten-binary-tree-to-linked-list" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" class="article-date">
-  <time datetime="2016-01-25T00:52:18.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/">Leetcode-Flatten Binary Tree to Linked List(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>    1
-   / \
-  2   5
- / \   \
-3   4   6
-</code></pre><p>The flattened tree should look like:</p>
-<pre><code>1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-         \
-          6
-</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
-<p><strong>Thinking:</strong> </p>
-<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public void flatten(TreeNode root) {
-        if (root == null)
-            return;
-        dfs(root);
-    }
-
-    public TreeNode dfs(TreeNode root){
-
-        if (root.left == null &amp;&amp; root.right == null){
-            return root;
-        }
-
-        TreeNode left = null;
-        TreeNode right = null;
-        TreeNode preleft = root.left;
-        TreeNode preright = root.right;
-        if (preleft == null){
-            return dfs(preright);
-        }
-        else if(preright == null){
-            root.left = null;
-            root.right = preleft;
-            return dfs(preleft);
-        }
-        else{
-            left = dfs(preleft);
-            right = dfs(preright);
-            root.left = null;
-            root.right = preleft;
-            left.right = preright;
-            return right;
-        }
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" data-id="cijtipjm900041iowu32btomq" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -621,7 +646,7 @@ foreach (gap in gaps)
 
 
   <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -652,6 +677,10 @@ foreach (gap in gaps)
       <ul>
         
           <li>
+            <a href="/2016/01/25/Node-js-study-note/">Node.js study note</a>
+          </li>
+        
+          <li>
             <a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/">Leetcode-Insertion Sort List(Java)</a>
           </li>
         
@@ -665,10 +694,6 @@ foreach (gap in gaps)
         
           <li>
             <a href="/2016/01/24/Leetcode-Partition-List/">Leetcode-Partition List(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/">Leetcode-Flatten Binary Tree to Linked List(Java)</a>
           </li>
         
       </ul>

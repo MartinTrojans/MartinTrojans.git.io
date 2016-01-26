@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-01-25T05:12:33.000Z</updated>
+  <updated>2016-01-26T05:43:09.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,104 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Node.js study note]]></title>
+    <link href="http://yoursite.com/2016/01/25/Node-js-study-note/"/>
+    <id>http://yoursite.com/2016/01/25/Node-js-study-note/</id>
+    <published>2016-01-26T05:11:55.000Z</published>
+    <updated>2016-01-26T05:43:09.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Survey:</strong></p>
+<p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
+<p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
+<hr>
+<p><strong>Content:</strong></p>
+<p>–1– Argument variables with process.argv</p>
+<pre><code>app.js
+
+function grab(flag){
+    var index = process.argv.indexOf(flag);
+    return (index === -1) ? null : process.argv[index+1];
+}
+
+var greeting = grab(&apos;--greeting&apos;);
+var user = grab(&apos;--user&apos;);
+
+if (!user || !greeting) {
+    console.log(&quot;You blew it!&quot;);
+} else {
+    console.log(`Welcome, ${user}, ${greeting}`);
+}
+</code></pre><p>In this code, we grab the arguments from shell and print it out on the console.</p>
+<p>For example, if in the shell:</p>
+<pre><code>$node app --user Martin --greeting &quot;hello hello&quot;
+</code></pre><p>Then in the console:</p>
+<pre><code>Welcome, Martin, hello hello
+</code></pre><p>And in this code, I also learned string temple which uses backticks<code>.</code>Welcome, ${user}, ${greeting}` will contain variable user and greeting.</p>
+<hr>
+<p>–2– Standard input and standard output</p>
+<pre><code> var questions = [
+&quot;What is your name?&quot;,
+&quot;What is your favorite hobby?&quot;,
+&quot;What is your preferred programming language?&quot;
+];
+
+var answers = [];
+
+function ask(i) {
+    process.stdout.write(`\n\n\n\n ${questions[i]}`);
+    process.stdout.write(&quot;  &gt;  &quot;);
+}
+
+process.stdin.on(&apos;data&apos;, function(data){
+
+    answers.push(data.toString().trim());
+
+    if (answers.length &lt; questions.length) {
+        ask(answers.length);
+    } else {
+        process.exit();
+    }
+});
+
+process.on(&apos;exit&apos;, function(){
+
+    process.stdout.write(&quot;\n\n\n\n&quot;);
+
+    process.stdout.write(`Go ${answers[1]} ${answers[0]} you can finish writing ${answers[2]} later`);
+
+    process.stdout.write(&quot;\n\n\n\n&quot;);
+
+});
+
+ask(0);
+</code></pre><p>In the shell:</p>
+<pre><code>What is your name?  &gt;  Martin
+
+
+
+
+ What is your favorite hobby?  &gt;  play games
+
+
+
+
+ What is your preferred programming language?  &gt;  python
+
+
+
+
+Go play games Martin you can finish writing python later
+</code></pre><p>Is that funny:)?</p>
+<hr>
+<p>–3– Globla timing functions</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Survey:</strong></p>
+<p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Insertion Sort List(Java)]]></title>
@@ -93,8 +191,8 @@
     <link href="http://yoursite.com/2016/01/24/Sort-Algorithms/"/>
     <id>http://yoursite.com/2016/01/24/Sort-Algorithms/</id>
     <published>2016-01-25T04:07:31.000Z</published>
-    <updated>2016-01-25T05:56:44.000Z</updated>
-    <content type="html"><![CDATA[<h2 id="Preface_3A"><a href="#Preface_3A" class="headerlink" title="Preface:"></a>Preface:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
+    <updated>2016-01-25T05:58:58.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
 <h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
 <p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
 <p><strong>Process:</strong> (From Wikimedia)</p>
@@ -180,7 +278,7 @@ foreach (gap in gaps)
 </code></pre><hr>
 ]]></content>
     <summary type="html">
-    <![CDATA[<h2 id="Preface_3A"><a href="#Preface_3A" class="headerlink" title="Preface:"></a>Preface:</h2><p>This time, we talk about eight kinds of so]]>
+    <![CDATA[<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort a]]>
     </summary>
     
   </entry>

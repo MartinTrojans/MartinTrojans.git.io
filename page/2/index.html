@@ -62,6 +62,103 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-leetcode-flatten-binary-tree-to-linked-list" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" class="article-date">
+  <time datetime="2016-01-25T00:52:18.000Z" itemprop="datePublished">2016-01-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/">Leetcode-Flatten Binary Tree to Linked List(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a binary tree, flatten it to a linked list in-place.</p>
+<p>For example,<br>Given</p>
+<pre><code>    1
+   / \
+  2   5
+ / \   \
+3   4   6
+</code></pre><p>The flattened tree should look like:</p>
+<pre><code>1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
+<p><strong>Thinking:</strong> </p>
+<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public void flatten(TreeNode root) {
+        if (root == null)
+            return;
+        dfs(root);
+    }
+
+    public TreeNode dfs(TreeNode root){
+
+        if (root.left == null &amp;&amp; root.right == null){
+            return root;
+        }
+
+        TreeNode left = null;
+        TreeNode right = null;
+        TreeNode preleft = root.left;
+        TreeNode preright = root.right;
+        if (preleft == null){
+            return dfs(preright);
+        }
+        else if(preright == null){
+            root.left = null;
+            root.right = preleft;
+            return dfs(preleft);
+        }
+        else{
+            left = dfs(preleft);
+            right = dfs(preright);
+            root.left = null;
+            root.right = preleft;
+            left.right = preright;
+            return right;
+        }
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/" data-id="cijuz8x760004zbow4bk33t3d" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Triangle" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/24/Leetcode-Triangle/" class="article-date">
@@ -171,7 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Triangle/" data-id="cijtipjmm00091iow44zagsfs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Triangle/" data-id="cijuz8x7n000azbowahq5ux0d" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Triangle/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -257,7 +354,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/" data-id="cijtipjmj00081iow9jy92bvy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/" data-id="cijuz8x7l0009zbowz3enitka" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -349,7 +446,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/" data-id="cijtipjmf00061iowcff3rbg8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/" data-id="cijuz8x7d0006zbow2kcqw5n0" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -420,56 +517,9 @@ public int rangeBitwiseAnd(int m, int n) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" data-id="cijtipjlu00001iowvqlhpn9j" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" data-id="cijuz8x6s0000zbownjdpwa3j" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/hello-world/" class="article-date">
-  <time datetime="2016-01-24T20:59:09.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files"><a href="#Generate_static_files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites"><a href="#Deploy_to_remote_sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/hello-world/" data-id="cijtipjmc00051iowy2pay17q" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/hello-world/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -482,7 +532,7 @@ public int rangeBitwiseAnd(int m, int n) {
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -513,6 +563,10 @@ public int rangeBitwiseAnd(int m, int n) {
       <ul>
         
           <li>
+            <a href="/2016/01/25/Node-js-study-note/">Node.js study note</a>
+          </li>
+        
+          <li>
             <a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/">Leetcode-Insertion Sort List(Java)</a>
           </li>
         
@@ -526,10 +580,6 @@ public int rangeBitwiseAnd(int m, int n) {
         
           <li>
             <a href="/2016/01/24/Leetcode-Partition-List/">Leetcode-Partition List(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/">Leetcode-Flatten Binary Tree to Linked List(Java)</a>
           </li>
         
       </ul>
