@@ -4,6 +4,131 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode-3Sum Closest(Java)]]></title>
+      <url>http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
+<p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
+<p>The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</p>
+<p><strong>Thinking:</strong></p>
+<p>In order to improve the performance of algorithm, we should sort the array. Because of that, we can determine where to go using current result.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int threeSumClosest(int[] nums, int target) {
+    int l = nums.length;
+    if (l &lt; 3)
+        return 0;
+    int min = Integer.MAX_VALUE;
+    int res = 0;
+    Arrays.sort(nums);
+
+    for (int i = 0; i &lt; l; i++){
+        int j = i + 1;
+        int k = l - 1;
+
+        while (j &lt; k){
+            int sum = nums[i] + nums[j] + nums[k];
+            if (sum == target)
+                return sum;
+            int diff = Math.abs(sum - target);
+            if (diff &lt; min){
+                min = diff;
+                res = sum;
+            }
+            if (sum &gt; target)
+                k--;
+            else
+                j++;
+        }
+
+    }
+    return res;
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)]]></title>
+      <url>http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
+<p><strong>Thinking:</strong></p>
+<p>Inorder traversal will search in order: left, root, right;</p>
+<p>Postorder travelsal will search in order: left, right, root.</p>
+<p>So we can find the root in postorder and search it in inorder by the value. And find root’s left child and right child node by recursion.</p>
+<pre><code>public TreeNode buildTree(int[] inorder, int[] postorder) {
+    int l = inorder.length;
+    if (l == 0)
+        return null;
+    TreeNode root = new TreeNode(postorder[l-1]);
+    TreeNode left = null;
+    TreeNode right = null;
+    int index = 0;
+    for (; index &lt; l; index++){
+        if (inorder[index] == postorder[l-1])
+            break;
+    }
+
+
+    if (index &gt; 0){
+        int[] leftinorder = new int[index];
+        int[] leftpostorder = new int[index];
+        System.arraycopy(inorder, 0, leftinorder, 0, index);
+        System.arraycopy(postorder, 0, leftpostorder, 0, index);
+        left = buildTree(leftinorder, leftpostorder);
+    }
+    if (index &lt; l-1){
+        int[] rightinorder = new int[l-index-1];
+        int[] rightpostorder = new int[l-index-1];
+        System.arraycopy(inorder, index+1, rightinorder, 0, l-index-1);
+        System.arraycopy(postorder, index, rightpostorder, 0, l-index-1);
+        right = buildTree(rightinorder, rightpostorder);
+    }
+    root.left = left;
+    root.right = right;
+
+    return root;
+}
+</code></pre><p>By the way, this code can be improved because in Java we can not easily get the subarray and I use the System.arraycopy. It can be replaced by recording the postion of array.</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Lowest Common Ancestor of a Binary Tree(Java)]]></title>
+      <url>http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</p>
+<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</p>
+<pre><code>           _______3______
+         /              \
+  ___5__           ___1___
+    /      \         /          \
+6        2       0         8
+         /  \
+        7    4
+</code></pre><p>For example, the lowest common ancestor (LCA) of nodes 5 and 1 is 3. Another example is LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.</p>
+<p><strong>Thinking:</strong></p>
+<p>The point to find the lowest common ancestor is to find a node whose left and right childs both have the node we want to find. Because if it’s not the lowest, the node will only belong to one of their child. If search in a pre-order from the root, if one node’s left child and right child both have the keynode or if the node itself is one of the keynode which means the other node will in lower level of this node, it’s the answer we want.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == null)
+        return root;
+
+    if (root.equals(q) || root.equals(p)){
+        return root;
+    }
+
+    TreeNode l = lowestCommonAncestor(root.left, p, q);
+    TreeNode r = lowestCommonAncestor(root.right, p, q);
+    if (l != null &amp;&amp; r != null)
+        return root;
+
+    return l == null? r: l;
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Node.js study note]]></title>
       <url>http://yoursite.com/2016/01/25/Node-js-study-note/</url>
       <content type="html"><![CDATA[<p><strong>Survey:</strong></p>

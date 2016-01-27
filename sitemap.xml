@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/</loc>
+    <lastmod>2016-01-27T00:40:49.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/</loc>
+    <lastmod>2016-01-27T00:09:24.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/</loc>
+    <lastmod>2016-01-26T23:27:52.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/01/25/Node-js-study-note/</loc>
     <lastmod>2016-01-26T05:43:09.000Z</lastmod>
   </url>
