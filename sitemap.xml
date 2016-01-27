@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/01/26/HTTP-method-get-and-post/</loc>
+    <lastmod>2016-01-27T20:07:29.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/</loc>
     <lastmod>2016-01-27T06:33:49.000Z</lastmod>
   </url>

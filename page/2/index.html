@@ -62,6 +62,85 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" class="article-date">
+  <time datetime="2016-01-27T00:00:18.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/">Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
+<p><strong>Thinking:</strong></p>
+<p>Inorder traversal will search in order: left, root, right;</p>
+<p>Postorder travelsal will search in order: left, right, root.</p>
+<p>So we can find the root in postorder and search it in inorder by the value. And find root’s left child and right child node by recursion.</p>
+<pre><code>public TreeNode buildTree(int[] inorder, int[] postorder) {
+    int l = inorder.length;
+    if (l == 0)
+        return null;
+    TreeNode root = new TreeNode(postorder[l-1]);
+    TreeNode left = null;
+    TreeNode right = null;
+    int index = 0;
+    for (; index &lt; l; index++){
+        if (inorder[index] == postorder[l-1])
+            break;
+    }
+
+
+    if (index &gt; 0){
+        int[] leftinorder = new int[index];
+        int[] leftpostorder = new int[index];
+        System.arraycopy(inorder, 0, leftinorder, 0, index);
+        System.arraycopy(postorder, 0, leftpostorder, 0, index);
+        left = buildTree(leftinorder, leftpostorder);
+    }
+    if (index &lt; l-1){
+        int[] rightinorder = new int[l-index-1];
+        int[] rightpostorder = new int[l-index-1];
+        System.arraycopy(inorder, index+1, rightinorder, 0, l-index-1);
+        System.arraycopy(postorder, index, rightpostorder, 0, l-index-1);
+        right = buildTree(rightinorder, rightpostorder);
+    }
+    root.left = left;
+    root.right = right;
+
+    return root;
+}
+</code></pre><p>By the way, this code can be improved because in Java we can not easily get the subarray and I use the System.arraycopy. It can be replaced by recording the postion of array.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" data-id="cijx9kbyr000ig9owvskgaqj7" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" class="article-date">
@@ -117,7 +196,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" data-id="cijwghzd6000e3yowr7l64u6d" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" data-id="cijx9kbyk000eg9ow1rntncgn" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -239,7 +318,7 @@ Go play games Martin you can finish writing python later
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/25/Node-js-study-note/" data-id="cijwghzcr00083yowwrdvn4ok" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/25/Node-js-study-note/" data-id="cijx9kby70008g9ow2tewu37e" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/25/Node-js-study-note/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -335,7 +414,7 @@ Go play games Martin you can finish writing python later
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="cijwghzda000g3yowyinz4zn7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="cijx9kbyo000gg9ow4s4bd5lt" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -457,145 +536,9 @@ foreach (gap in gaps)
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Sort-Algorithms/" data-id="cijwghzcq00073yowt2t406gj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Sort-Algorithms/" data-id="cijx9kby50007g9ow5iys5dq1" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Sort-Algorithms/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Search-for-a-Range-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Search-for-a-Range-Java/" class="article-date">
-  <time datetime="2016-01-25T03:50:20.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Search-for-a-Range-Java/">Leetcode-Search for a Range(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a sorted array of integers, find the starting and ending position of a given target value.</p>
-<p>Your algorithm’s runtime complexity must be in the order of O(log n).</p>
-<p>If the target is not found in the array, return [-1, -1].</p>
-<p>For example,<br>Given [5, 7, 7, 8, 8, 10] and target value 8,<br>return [3, 4].</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s question which should use binary search because it give us a sorted array and it requires O(log n) runtime complexity. Only thing difference between this algorithm and classical binary search is that we should make the range smaller while finding the target instead of returning the index.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public int[] searchRange(int[] nums, int target) {
-        int low = 0;
-        int high = nums.length - 1;
-        int mid;
-        int resl = -1;
-        int resr = -1;
-        while (low &lt;= high){
-            mid = (low + high) / 2;
-            if (nums[mid] == target){
-                if (nums[low] == target){
-                    resl = low;
-                    if (resr != -1)
-                        break;
-                }    
-                else
-                    low++;
-
-                if (nums[high] == target){
-                    resr = high;
-                    if (resl != -1)
-                        break;
-                }
-                else
-                    high--;
-            }
-            else if(nums[mid] &gt; target)
-                high = mid - 1;
-            else
-                low = mid + 1;
-        }
-        int[] res = {resl, resr};
-        return res;
-    }
-
-}
-</code></pre><p>But the algorithm is not so effienct when finding the target so early. In order to make sure the runtime complexity is O(log n), we should also use binary search to find the lower bound and upper bound when finding the target in the array.<br>Reference: <a href="http://www.cnblogs.com/springfor/p/3857704.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3857704.html</a></p>
-<p>Code:</p>
-<pre><code>public int[] searchRange(int[] A, int target) {
-    int [] res = {-1,-1};
-    if(A == null || A.length == 0)
-        return res;
-
-    //first iteration, find target wherever it is
-    int low = 0;
-    int high = A.length-1;
-    int pos = 0;
-    while(low &lt;= high){
-        int mid = (low + high)/2;
-        pos = mid;
-        if(A[mid] &gt; target)
-            high = mid - 1;
-        else if(A[mid] &lt; target)
-            low = mid + 1;
-        else{
-            res[0] = pos;
-            res[1] = pos;
-            break;
-        }
-    }
-
-    if(A[pos] != target)
-        return res;
-
-    //second iteration, find the right boundary of this target
-    int newlow = pos;
-    int newhigh = A.length-1;
-    while(newlow &lt;= newhigh){
-        int newmid = (newlow+newhigh)/2;
-        if(A[newmid] == target)
-            newlow = newmid + 1;
-        else
-            newhigh = newmid - 1;
-    }
-    res[1] = newhigh;
-
-    //third iteration, find the left boundary of this target
-    newlow = 0;
-    newhigh = pos;
-    while(newlow &lt;= newhigh){
-        int newmid = (newlow+newhigh)/2;
-        if(A[newmid] == target)
-            newhigh = newmid - 1;
-        else
-            newlow = newmid + 1;
-    }
-    res[0] = newlow;
-
-    return res;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/" data-id="cijwghzcz000b3yowy885v6p2" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -639,6 +582,10 @@ foreach (gap in gaps)
       <ul>
         
           <li>
+            <a href="/2016/01/26/HTTP-method-get-and-post/">HTTP method: get and post</a>
+          </li>
+        
+          <li>
             <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/">Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)</a>
           </li>
         
@@ -652,10 +599,6 @@ foreach (gap in gaps)
         
           <li>
             <a href="/2016/01/26/Leetcode-3Sum-Closest-Java/">Leetcode-3Sum Closest(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/">Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)</a>
           </li>
         
       </ul>
