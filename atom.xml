@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-01-27T20:09:09.000Z</updated>
+  <updated>2016-01-27T22:00:19.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,11 +15,211 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Hello World]]></title>
+    <link href="http://yoursite.com/2016/01/27/hello-world/"/>
+    <id>http://yoursite.com/2016/01/27/hello-world/</id>
+    <published>2016-01-27T22:00:19.000Z</published>
+    <updated>2016-01-27T22:00:19.000Z</updated>
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate_static_files"><a href="#Generate_static_files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy_to_remote_sites"><a href="#Deploy_to_remote_sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.]]>
+    </summary>
+    
+      <category term="uncategoried" scheme="http://yoursite.com/categories/uncategoried/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Flatten Binary Tree to Linked List(Java)]]></title>
+    <link href="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/"/>
+    <id>http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/</id>
+    <published>2016-01-27T22:00:06.000Z</published>
+    <updated>2016-01-27T22:00:06.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a binary tree, flatten it to a linked list in-place.</p>
+<p>For example,<br>Given</p>
+<pre><code>    1
+   / \
+  2   5
+ / \   \
+3   4   6
+</code></pre><p>The flattened tree should look like:</p>
+<pre><code>1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
+<p><strong>Thinking:</strong> </p>
+<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public void flatten(TreeNode root) {
+        if (root == null)
+            return;
+        dfs(root);
+    }
+
+    public TreeNode dfs(TreeNode root){
+
+        if (root.left == null &amp;&amp; root.right == null){
+            return root;
+        }
+
+        TreeNode left = null;
+        TreeNode right = null;
+        TreeNode preleft = root.left;
+        TreeNode preright = root.right;
+        if (preleft == null){
+            return dfs(preright);
+        }
+        else if(preright == null){
+            root.left = null;
+            root.right = preleft;
+            return dfs(preleft);
+        }
+        else{
+            left = dfs(preleft);
+            right = dfs(preright);
+            root.left = null;
+            root.right = preleft;
+            left.right = preright;
+            return right;
+        }
+    }
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a binary tree, flatten it to a linked list in-place.</p>
+<p>For example,<br>Given</p>
+<pre><code>]]>
+    </summary>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Triangle(Java)]]></title>
+    <link href="http://yoursite.com/2016/01/27/Leetcode-Triangle/"/>
+    <id>http://yoursite.com/2016/01/27/Leetcode-Triangle/</id>
+    <published>2016-01-27T21:58:25.000Z</published>
+    <updated>2016-01-27T21:58:25.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.</p>
+<p>For example, given the following triangle:</p>
+<pre><code>[
+       [2],
+     [3,4],
+    [6,5,7],
+   [4,1,8,3]
+]
+</code></pre><p>The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).</p>
+<p>Note:<br>Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.</p>
+<p><strong>Thinking:</strong><br>It’s a simple dynamic programming question. The expression is dp[i][j] = min(d[i-1][j-1], d[i][j]) + triangle[i][j].</p>
+<p>But the first time, my code is time exceed:</p>
+<pre><code>public class Solution {
+    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
+        int lr = triangle.size();
+        if(lr == 0){
+            return 0;
+        }
+        int lc = triangle.get(lr-1).size();
+        int min = 100000;
+        for(int i = 0; i &lt; lc; i++){
+            int tmp = dp(triangle, lr-1, i);
+            if(tmp &lt; min)
+                min = tmp;
+        }
+        return min;
+    }
+
+    public int dp(List&lt;List&lt;Integer&gt;&gt; triangle, int row, int column){
+        if(row == 0){
+            return triangle.get(0).get(0);
+        }
+        int value = triangle.get(row).get(column);
+        int size = triangle.get(row-1).size();
+        if(column &gt;= size){
+            return dp(triangle, row-1, column-1) + value;
+        }
+        else if(column - 1 &lt; 0){
+            return dp(triangle, row-1, column) + value;
+        }
+        else{
+            int res1 = dp(triangle, row-1, column-1) + value;
+            int res2 = dp(triangle, row-1, column) + value;
+            if(res1 &lt; res2){
+                return res1;
+            }
+            else{
+                return res2;
+            }
+        }
+    }
+}
+</code></pre><p>Then I noticed the bonus, so I change my mind to use <em>iteration</em>:</p>
+<pre><code>public class Solution{
+    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle){
+        int lr = triangle.size();
+        int[] min = new int[lr];
+        int[] tempmin = new int[lr];
+        min[0] = triangle.get(0).get(0);
+        for(int i = 1; i &lt; lr; i++){
+            tempmin[0] = min[0] + triangle.get(i).get(0);
+            tempmin[i] = min[i-1] + triangle.get(i).get(i);
+            for(int j = 1; j &lt; i; j++){
+                int res1 = min[j-1] + triangle.get(i).get(j);
+                int res2 = min[j] + triangle.get(i).get(j);
+                if(res1 &lt; res2)
+                    tempmin[j] = res1;
+                else
+                    tempmin[j] = res2;
+            }
+            for(int k = 0; k &lt; i+1; k++){
+                min[k] = tempmin[k];
+            }
+        }
+        int m = 100000;
+        for(int i = 0; i &lt; lr; i++){
+            if(min[i] &lt; m)
+                m = min[i];
+        }
+        return m;
+    }
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numb]]>
+    </summary>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[HTTP method: get and post]]></title>
     <link href="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/"/>
     <id>http://yoursite.com/2016/01/26/HTTP-method-get-and-post/</id>
     <published>2016-01-27T07:08:43.000Z</published>
-    <updated>2016-01-27T20:09:09.000Z</updated>
+    <updated>2016-01-27T21:59:18.000Z</updated>
     <content type="html"><![CDATA[<p><strong>HTTP:</strong></p>
 <p>HTTP is the foundation of data commnication of the World Wide Web. The basic work method of http is request and response.</p>
 <p>There are two methods of HTTP request: Get and Post.</p>
@@ -98,6 +298,8 @@ name1=value1&amp;name2=value2
 <p>HTTP is the foundation of data commnication of the World Wide Web. The basic work method of http is request]]>
     </summary>
     
+      <category term="Network" scheme="http://yoursite.com/categories/Network/"/>
+    
   </entry>
   
   <entry>
@@ -105,7 +307,7 @@ name1=value1&amp;name2=value2
     <link href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/"/>
     <id>http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/</id>
     <published>2016-01-27T06:28:05.000Z</published>
-    <updated>2016-01-27T06:33:49.000Z</updated>
+    <updated>2016-01-27T21:58:44.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
 <p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
@@ -171,6 +373,8 @@ private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int
 <p>Note:<br>You may assu]]>
     </summary>
     
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
   </entry>
   
   <entry>
@@ -178,7 +382,7 @@ private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int
     <link href="http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/"/>
     <id>http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/</id>
     <published>2016-01-27T05:24:27.000Z</published>
-    <updated>2016-01-27T05:28:22.000Z</updated>
+    <updated>2016-01-27T21:58:38.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Implement pow(x, n).</p>
 <p><strong>Thinking:</strong></p>
@@ -225,6 +429,8 @@ private double dp(double x, int n){
 <p>It’s a simple but not simple question. Th]]>
     </summary>
     
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
   </entry>
   
   <entry>
@@ -232,7 +438,7 @@ private double dp(double x, int n){
     <link href="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/"/>
     <id>http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/</id>
     <published>2016-01-27T04:20:54.000Z</published>
-    <updated>2016-01-27T04:30:08.000Z</updated>
+    <updated>2016-01-27T21:58:33.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
 <p>Each element in the array represents your maximum jump length at that position.</p>
@@ -303,6 +509,8 @@ private double dp(double x, int n){
 <p>Given an array of non-negative integers, you are initially positioned at the first index of the array.<]]>
     </summary>
     
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
   </entry>
   
   <entry>
@@ -310,7 +518,7 @@ private double dp(double x, int n){
     <link href="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/"/>
     <id>http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/</id>
     <published>2016-01-27T00:38:28.000Z</published>
-    <updated>2016-01-27T00:40:49.000Z</updated>
+    <updated>2016-01-27T21:58:53.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
 <p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
@@ -354,6 +562,8 @@ private double dp(double x, int n){
 <p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number]]>
     </summary>
     
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
   </entry>
   
   <entry>
@@ -361,7 +571,7 @@ private double dp(double x, int n){
     <link href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/"/>
     <id>http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/</id>
     <published>2016-01-27T00:00:18.000Z</published>
-    <updated>2016-01-27T00:09:24.000Z</updated>
+    <updated>2016-01-27T21:58:57.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
 <p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
@@ -410,6 +620,8 @@ private double dp(double x, int n){
 <p>Note:<br>You may ass]]>
     </summary>
     
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
   </entry>
   
   <entry>
@@ -417,7 +629,7 @@ private double dp(double x, int n){
     <link href="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/"/>
     <id>http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/</id>
     <published>2016-01-26T23:18:55.000Z</published>
-    <updated>2016-01-26T23:27:52.000Z</updated>
+    <updated>2016-01-27T21:59:02.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</p>
 <p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</p>
@@ -454,6 +666,8 @@ private double dp(double x, int n){
 <p>Accor]]>
     </summary>
     
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
   </entry>
   
   <entry>
@@ -461,7 +675,7 @@ private double dp(double x, int n){
     <link href="http://yoursite.com/2016/01/25/Node-js-study-note/"/>
     <id>http://yoursite.com/2016/01/25/Node-js-study-note/</id>
     <published>2016-01-26T05:11:55.000Z</published>
-    <updated>2016-01-26T05:43:09.000Z</updated>
+    <updated>2016-01-27T21:59:10.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Survey:</strong></p>
 <p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
 <p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
@@ -552,6 +766,8 @@ Go play games Martin you can finish writing python later
 <p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications]]>
     </summary>
     
+      <category term="Web" scheme="http://yoursite.com/categories/Web/"/>
+    
   </entry>
   
   <entry>
@@ -559,7 +775,7 @@ Go play games Martin you can finish writing python later
     <link href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/"/>
     <id>http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/</id>
     <published>2016-01-25T05:07:32.000Z</published>
-    <updated>2016-01-25T05:12:33.000Z</updated>
+    <updated>2016-01-27T21:59:29.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Sort a linked list using insertion sort.</p>
 <p><strong>Thinking:</strong></p>
@@ -626,6 +842,8 @@ Go play games Martin you can finish writing python later
 <p>As the question state]]>
     </summary>
     
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
   </entry>
   
   <entry>
@@ -633,7 +851,7 @@ Go play games Martin you can finish writing python later
     <link href="http://yoursite.com/2016/01/24/Sort-Algorithms/"/>
     <id>http://yoursite.com/2016/01/24/Sort-Algorithms/</id>
     <published>2016-01-25T04:07:31.000Z</published>
-    <updated>2016-01-25T05:58:58.000Z</updated>
+    <updated>2016-01-27T21:59:37.000Z</updated>
     <content type="html"><![CDATA[<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
 <h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
 <p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
@@ -723,6 +941,8 @@ foreach (gap in gaps)
     <![CDATA[<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort a]]>
     </summary>
     
+      <category term="Algorithm" scheme="http://yoursite.com/categories/Algorithm/"/>
+    
   </entry>
   
   <entry>
@@ -730,7 +950,7 @@ foreach (gap in gaps)
     <link href="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/"/>
     <id>http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/</id>
     <published>2016-01-25T03:50:20.000Z</published>
-    <updated>2016-01-25T04:00:53.000Z</updated>
+    <updated>2016-01-27T21:59:42.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given a sorted array of integers, find the starting and ending position of a given target value.</p>
 <p>Your algorithm’s runtime complexity must be in the order of O(log n).</p>
@@ -836,6 +1056,8 @@ foreach (gap in gaps)
 <p]]>
     </summary>
     
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
   </entry>
   
   <entry>
@@ -843,7 +1065,7 @@ foreach (gap in gaps)
     <link href="http://yoursite.com/2016/01/24/Leetcode-Partition-List/"/>
     <id>http://yoursite.com/2016/01/24/Leetcode-Partition-List/</id>
     <published>2016-01-25T03:14:31.000Z</published>
-    <updated>2016-01-25T04:16:31.000Z</updated>
+    <updated>2016-01-27T21:59:46.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</p>
 <p>You should preserve the original relative order of the nodes in each of the two partitions.</p>
@@ -917,177 +1139,7 @@ foreach (gap in gaps)
 <p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes great]]>
     </summary>
     
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Flatten Binary Tree to Linked List(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/"/>
-    <id>http://yoursite.com/2016/01/24/leetcode-flatten-binary-tree-to-linked-list/</id>
-    <published>2016-01-25T00:52:18.000Z</published>
-    <updated>2016-01-25T00:52:18.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>    1
-   / \
-  2   5
- / \   \
-3   4   6
-</code></pre><p>The flattened tree should look like:</p>
-<pre><code>1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-         \
-          6
-</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
-<p><strong>Thinking:</strong> </p>
-<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public void flatten(TreeNode root) {
-        if (root == null)
-            return;
-        dfs(root);
-    }
-
-    public TreeNode dfs(TreeNode root){
-
-        if (root.left == null &amp;&amp; root.right == null){
-            return root;
-        }
-
-        TreeNode left = null;
-        TreeNode right = null;
-        TreeNode preleft = root.left;
-        TreeNode preright = root.right;
-        if (preleft == null){
-            return dfs(preright);
-        }
-        else if(preright == null){
-            root.left = null;
-            root.right = preleft;
-            return dfs(preleft);
-        }
-        else{
-            left = dfs(preleft);
-            right = dfs(preright);
-            root.left = null;
-            root.right = preleft;
-            left.right = preright;
-            return right;
-        }
-    }
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Triangle(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/24/Leetcode-Triangle/"/>
-    <id>http://yoursite.com/2016/01/24/Leetcode-Triangle/</id>
-    <published>2016-01-25T00:52:11.000Z</published>
-    <updated>2016-01-25T00:52:11.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.</p>
-<p>For example, given the following triangle:</p>
-<pre><code>[
-       [2],
-     [3,4],
-    [6,5,7],
-   [4,1,8,3]
-]
-</code></pre><p>The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).</p>
-<p>Note:<br>Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.</p>
-<p><strong>Thinking:</strong><br>It’s a simple dynamic programming question. The expression is dp[i][j] = min(d[i-1][j-1], d[i][j]) + triangle[i][j].</p>
-<p>But the first time, my code is time exceed:</p>
-<pre><code>public class Solution {
-    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
-        int lr = triangle.size();
-        if(lr == 0){
-            return 0;
-        }
-        int lc = triangle.get(lr-1).size();
-        int min = 100000;
-        for(int i = 0; i &lt; lc; i++){
-            int tmp = dp(triangle, lr-1, i);
-            if(tmp &lt; min)
-                min = tmp;
-        }
-        return min;
-    }
-
-    public int dp(List&lt;List&lt;Integer&gt;&gt; triangle, int row, int column){
-        if(row == 0){
-            return triangle.get(0).get(0);
-        }
-        int value = triangle.get(row).get(column);
-        int size = triangle.get(row-1).size();
-        if(column &gt;= size){
-            return dp(triangle, row-1, column-1) + value;
-        }
-        else if(column - 1 &lt; 0){
-            return dp(triangle, row-1, column) + value;
-        }
-        else{
-            int res1 = dp(triangle, row-1, column-1) + value;
-            int res2 = dp(triangle, row-1, column) + value;
-            if(res1 &lt; res2){
-                return res1;
-            }
-            else{
-                return res2;
-            }
-        }
-    }
-}
-</code></pre><p>Then I noticed the bonus, so I change my mind to use <em>iteration</em>:</p>
-<pre><code>public class Solution{
-    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle){
-        int lr = triangle.size();
-        int[] min = new int[lr];
-        int[] tempmin = new int[lr];
-        min[0] = triangle.get(0).get(0);
-        for(int i = 1; i &lt; lr; i++){
-            tempmin[0] = min[0] + triangle.get(i).get(0);
-            tempmin[i] = min[i-1] + triangle.get(i).get(i);
-            for(int j = 1; j &lt; i; j++){
-                int res1 = min[j-1] + triangle.get(i).get(j);
-                int res2 = min[j] + triangle.get(i).get(j);
-                if(res1 &lt; res2)
-                    tempmin[j] = res1;
-                else
-                    tempmin[j] = res2;
-            }
-            for(int k = 0; k &lt; i+1; k++){
-                min[k] = tempmin[k];
-            }
-        }
-        int m = 100000;
-        for(int i = 0; i &lt; lr; i++){
-            if(min[i] &lt; m)
-                m = min[i];
-        }
-        return m;
-    }
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numb]]>
-    </summary>
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
     
   </entry>
   
@@ -1096,7 +1148,7 @@ foreach (gap in gaps)
     <link href="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/"/>
     <id>http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/</id>
     <published>2016-01-25T00:49:04.000Z</published>
-    <updated>2016-01-25T00:51:36.000Z</updated>
+    <updated>2016-01-27T21:59:51.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Follow up for “Unique Paths”:</p>
 <p>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
@@ -1152,6 +1204,8 @@ foreach (gap in gaps)
 <p>Now consider if some obstacles are added to the grids. How many un]]>
     </summary>
     
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
   </entry>
   
   <entry>
@@ -1159,7 +1213,7 @@ foreach (gap in gaps)
     <link href="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/"/>
     <id>http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/</id>
     <published>2016-01-25T00:07:06.000Z</published>
-    <updated>2016-01-25T00:52:30.000Z</updated>
+    <updated>2016-01-27T21:59:56.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.</p>
 <p>For example,<br>Given n = 3, your program should return all 5 unique BST’s shown below.</p>
@@ -1221,6 +1275,8 @@ foreach (gap in gaps)
 <p>For]]>
     </summary>
     
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
   </entry>
   
   <entry>
@@ -1228,7 +1284,7 @@ foreach (gap in gaps)
     <link href="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/"/>
     <id>http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/</id>
     <published>2016-01-24T23:09:04.000Z</published>
-    <updated>2016-01-25T00:52:24.000Z</updated>
+    <updated>2016-01-27T22:00:01.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.</p>
 <p>For example, given the range [5, 7], you should return 4.</p>
@@ -1268,27 +1324,7 @@ public int rangeBitwiseAnd(int m, int n) {
 <p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in]]>
     </summary>
     
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Hello World]]></title>
-    <link href="http://yoursite.com/2016/01/24/hello-world/"/>
-    <id>http://yoursite.com/2016/01/24/hello-world/</id>
-    <published>2016-01-24T20:59:09.000Z</published>
-    <updated>2016-01-24T20:59:09.000Z</updated>
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files"><a href="#Generate_static_files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites"><a href="#Deploy_to_remote_sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.]]>
-    </summary>
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
     
   </entry>
   
