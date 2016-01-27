@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/</loc>
+    <lastmod>2016-01-27T06:33:49.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/</loc>
+    <lastmod>2016-01-27T05:28:22.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/</loc>
+    <lastmod>2016-01-27T04:30:08.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/</loc>
     <lastmod>2016-01-27T00:40:49.000Z</lastmod>
   </url>

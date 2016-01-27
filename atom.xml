@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-01-27T00:40:49.000Z</updated>
+  <updated>2016-01-27T06:33:49.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,211 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)]]></title>
+    <link href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/"/>
+    <id>http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/</id>
+    <published>2016-01-27T06:28:05.000Z</published>
+    <updated>2016-01-27T06:33:49.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
+<p><strong>Thinking:</strong></p>
+<p>This question is similar with Construct Binary Tree from Inorder and Postorder Traversal. We should understand the differences and the sequences of these three methods. And divide into three parts- root, left child and right child.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int l = preorder.length;
+    if (l == 0)
+        return null;
+
+
+    return dp(preorder, inorder, 0, l-1, 0, l-1);
+    }
+
+    private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if (preStart &gt; preEnd || preEnd &gt;= preorder.length || inEnd &gt;= preorder.length)
+        return null;
+    TreeNode root = new TreeNode(preorder[preStart]);
+    int index = inStart;
+    for (; index &lt; inEnd; index++){
+        if (inorder[index] == preorder[preStart])
+            break;
+    }
+
+    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
+    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
+    root.left = left;
+    root.right = right;
+
+    return root;
+}    
+</code></pre><p>This method can be improved by using HashMap to make it faster when fiding the index of root.<br>Reference:<a href="http://blog.csdn.net/linhuanmars/article/details/24389549" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24389549</a><br>Code:</p>
+<pre><code>static HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int l = preorder.length;
+    if (l == 0)
+        return null;
+    for (int i = 0; i &lt; l; i++)
+        map.put(inorder[i], i);
+
+    return dp(preorder, inorder, 0, l-1, 0, l-1);
+}
+
+private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if (preStart &gt; preEnd || inStart &gt; inEnd)
+        return null;
+    TreeNode root = new TreeNode(preorder[preStart]);
+
+    int index = map.get(preorder[preStart]);
+
+    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
+    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
+    root.left = left;
+    root.right = right;
+
+    return root;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assu]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Pow(x, n)(Java)]]></title>
+    <link href="http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/"/>
+    <id>http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/</id>
+    <published>2016-01-27T05:24:27.000Z</published>
+    <updated>2016-01-27T05:28:22.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Implement pow(x, n).</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s a simple but not simple question. There are many solutions for this problem. But how can we find the most effienct one. We can use recursion to reduce the times of multipling and check the bound of data to reduce the times of recursions. Finally, the code is below:</p>
+<pre><code>static boolean negflag = false;
+public double myPow(double x, int n) {
+    if (n &lt; 0){
+        negflag = true;
+        return 1 / dp(x, -n);
+    }
+    else
+        return dp(x, n);
+
+}
+private double dp(double x, int n){
+    if (n == 0)
+        return 1;
+    if (n == 1)
+        return x;
+    if (n == 2)
+        return x * x;
+
+    int m = n / 2;
+    int k = n % 2;
+    double v = dp(x, m);
+    if (negflag == true &amp;&amp; v &gt; 100000)
+        return 100000;
+    if (negflag == false &amp;&amp; v &lt; 0.00001)
+        return 0;
+
+    if (k == 0)
+        return v * v;
+    else
+        return v * v * x;
+}
+</code></pre><p>By the way, I have to metion that my python solution is like, lol:</p>
+<pre><code>def myPow(self, x, n):
+    return x**n
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Implement pow(x, n).</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s a simple but not simple question. Th]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Jump Game(Java)]]></title>
+    <link href="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/"/>
+    <id>http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/</id>
+    <published>2016-01-27T04:20:54.000Z</published>
+    <updated>2016-01-27T04:30:08.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
+<p>Each element in the array represents your maximum jump length at that position.</p>
+<p>Determine if you are able to reach the last index.</p>
+<p>For example:<br>A = [2,3,1,1,4], return true.</p>
+<p>A = [3,2,1,0,4], return false.</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s a problem can be solved in greedy algorithm. Because we should go as far as possible in current position until we can’t go father. And we should gurantee the value of current position + i (steps can be reached from current postion) + nums[cur + i] be as big as possible.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean canJump(int[] nums) {
+    int l = nums.length;
+    if (nums[0] == 0 &amp;&amp; l &gt; 1)
+        return false;
+    int cur = 0;
+    int temp = nums[0];
+    int step = nums[0];
+    int max = nums[0];
+    int tempcur = 0;
+
+    while (cur + step &lt; l-1){
+        for (int i = 1; i &lt;= step; i++){
+            temp = cur + i + nums[cur + i];
+            if (temp &gt;= max){//current max greedy value
+                max = temp;
+                if (max &gt;= l)
+                    return true;
+                tempcur = cur + i;
+            }
+        }
+        if (cur == tempcur)
+            return false;
+        cur = tempcur;
+        step = nums[cur];
+    }
+
+    if (max &gt;= l-1)
+        return true;
+    else
+        return false;
+}
+</code></pre><p>What’s more, we can make it easier by max the value of index. </p>
+<pre><code>public boolean canJump(int[] nums) {
+    if(nums.length &lt;= 1)
+        return true;
+
+    int max = nums[0]; //max stands for the largest index that can be reached.
+
+    for(int i=0; i&lt;nums.length; i++){
+        //if not enough to go to next
+        if(max &lt;= i &amp;&amp; nums[i] == 0) 
+            return false;
+
+        //update max    
+        if(i + nums[i] &gt; max){
+            max = i + nums[i];
+        }
+
+        //max is enough to reach the end
+        if(max &gt;= nums.length-1) 
+            return true;
+    }
+
+    return false;    
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.<]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-3Sum Closest(Java)]]></title>

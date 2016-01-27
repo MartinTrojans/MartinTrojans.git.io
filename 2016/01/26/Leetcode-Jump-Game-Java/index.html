@@ -3,30 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java) | Martin&#39;s Blog</title>
+  <title>Leetcode-Jump Game(Java) | Martin&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Question:
-Given inorder and postorder traversal of a tree, construct the binary tree.
-Note:You may assume that duplicates do not exist in the tree.
-Thinking:
-Inorder traversal will search in order: le">
+Given an array of non-negative integers, you are initially positioned at the first index of the array.
+Each element in the array represents your maximum jump length at that position.
+Determi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)">
-<meta property="og:url" content="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/index.html">
+<meta property="og:title" content="Leetcode-Jump Game(Java)">
+<meta property="og:url" content="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/index.html">
 <meta property="og:site_name" content="Martin's Blog">
 <meta property="og:description" content="Question:
-Given inorder and postorder traversal of a tree, construct the binary tree.
-Note:You may assume that duplicates do not exist in the tree.
-Thinking:
-Inorder traversal will search in order: le">
-<meta property="og:updated_time" content="2016-01-27T00:09:24.000Z">
+Given an array of non-negative integers, you are initially positioned at the first index of the array.
+Each element in the array represents your maximum jump length at that position.
+Determi">
+<meta property="og:updated_time" content="2016-01-27T04:30:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)">
+<meta name="twitter:title" content="Leetcode-Jump Game(Java)">
 <meta name="twitter:description" content="Question:
-Given inorder and postorder traversal of a tree, construct the binary tree.
-Note:You may assume that duplicates do not exist in the tree.
-Thinking:
-Inorder traversal will search in order: le">
+Given an array of non-negative integers, you are initially positioned at the first index of the array.
+Each element in the array represents your maximum jump length at that position.
+Determi">
   
     <link rel="alternate" href="/atom.xml" title="Martin&#39;s Blog" type="application/atom+xml">
   
@@ -73,10 +70,10 @@ Inorder traversal will search in order: le">
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Leetcode-Jump-Game-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" class="article-date">
-  <time datetime="2016-01-27T00:00:18.000Z" itemprop="datePublished">2016-01-26</time>
+    <a href="/2016/01/26/Leetcode-Jump-Game-Java/" class="article-date">
+  <time datetime="2016-01-27T04:20:54.000Z" itemprop="datePublished">2016-01-26</time>
 </a>
     
   </div>
@@ -87,7 +84,7 @@ Inorder traversal will search in order: le">
         
   
     <h1 class="article-title" itemprop="name">
-      Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)
+      Leetcode-Jump Game(Java)
     </h1>
   
 
@@ -96,53 +93,76 @@ Inorder traversal will search in order: le">
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
-<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
+<p>Each element in the array represents your maximum jump length at that position.</p>
+<p>Determine if you are able to reach the last index.</p>
+<p>For example:<br>A = [2,3,1,1,4], return true.</p>
+<p>A = [3,2,1,0,4], return false.</p>
 <p><strong>Thinking:</strong></p>
-<p>Inorder traversal will search in order: left, root, right;</p>
-<p>Postorder travelsal will search in order: left, right, root.</p>
-<p>So we can find the root in postorder and search it in inorder by the value. And find root’s left child and right child node by recursion.</p>
-<pre><code>public TreeNode buildTree(int[] inorder, int[] postorder) {
-    int l = inorder.length;
-    if (l == 0)
-        return null;
-    TreeNode root = new TreeNode(postorder[l-1]);
-    TreeNode left = null;
-    TreeNode right = null;
-    int index = 0;
-    for (; index &lt; l; index++){
-        if (inorder[index] == postorder[l-1])
-            break;
+<p>It’s a problem can be solved in greedy algorithm. Because we should go as far as possible in current position until we can’t go father. And we should gurantee the value of current position + i (steps can be reached from current postion) + nums[cur + i] be as big as possible.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean canJump(int[] nums) {
+    int l = nums.length;
+    if (nums[0] == 0 &amp;&amp; l &gt; 1)
+        return false;
+    int cur = 0;
+    int temp = nums[0];
+    int step = nums[0];
+    int max = nums[0];
+    int tempcur = 0;
+
+    while (cur + step &lt; l-1){
+        for (int i = 1; i &lt;= step; i++){
+            temp = cur + i + nums[cur + i];
+            if (temp &gt;= max){//current max greedy value
+                max = temp;
+                if (max &gt;= l)
+                    return true;
+                tempcur = cur + i;
+            }
+        }
+        if (cur == tempcur)
+            return false;
+        cur = tempcur;
+        step = nums[cur];
     }
 
-
-    if (index &gt; 0){
-        int[] leftinorder = new int[index];
-        int[] leftpostorder = new int[index];
-        System.arraycopy(inorder, 0, leftinorder, 0, index);
-        System.arraycopy(postorder, 0, leftpostorder, 0, index);
-        left = buildTree(leftinorder, leftpostorder);
-    }
-    if (index &lt; l-1){
-        int[] rightinorder = new int[l-index-1];
-        int[] rightpostorder = new int[l-index-1];
-        System.arraycopy(inorder, index+1, rightinorder, 0, l-index-1);
-        System.arraycopy(postorder, index, rightpostorder, 0, l-index-1);
-        right = buildTree(rightinorder, rightpostorder);
-    }
-    root.left = left;
-    root.right = right;
-
-    return root;
+    if (max &gt;= l-1)
+        return true;
+    else
+        return false;
 }
-</code></pre><p>By the way, this code can be improved because in Java we can not easily get the subarray and I use the System.arraycopy. It can be replaced by recording the postion of array.</p>
+</code></pre><p>What’s more, we can make it easier by max the value of index. </p>
+<pre><code>public boolean canJump(int[] nums) {
+    if(nums.length &lt;= 1)
+        return true;
 
+    int max = nums[0]; //max stands for the largest index that can be reached.
+
+    for(int i=0; i&lt;nums.length; i++){
+        //if not enough to go to next
+        if(max &lt;= i &amp;&amp; nums[i] == 0) 
+            return false;
+
+        //update max    
+        if(i + nums[i] &gt; max){
+            max = i + nums[i];
+        }
+
+        //max is enough to reach the end
+        if(max &gt;= nums.length-1) 
+            return true;
+    }
+
+    return false;    
+}
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" data-id="cijwghzde000i3yowot5bk5x3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/" data-id="cijwghzd8000f3yow5jxkgje1" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -151,19 +171,19 @@ Inorder traversal will search in order: le">
     
 <nav id="article-nav">
   
-    <a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/01/26/Leetcode-Pow-x-n-Java/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Leetcode-3Sum Closest(Java)
+          Leetcode-Pow(x, n)(Java)
         
       </div>
     </a>
   
   
-    <a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Leetcode-Lowest Common Ancestor of a Binary Tree(Java)</div>
+      <div class="article-nav-title">Leetcode-3Sum Closest(Java)</div>
     </a>
   
 </nav>
@@ -254,7 +274,7 @@ Inorder traversal will search in order: le">
 <script>
   var disqus_shortname = 'communitydeveloper';
   
-  var disqus_url = 'http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/';
+  var disqus_url = 'http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/';
   
   (function(){
     var dsq = document.createElement('script');

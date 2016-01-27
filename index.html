@@ -62,6 +62,280 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" class="article-date">
+  <time datetime="2016-01-27T06:28:05.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/">Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
+<p><strong>Thinking:</strong></p>
+<p>This question is similar with Construct Binary Tree from Inorder and Postorder Traversal. We should understand the differences and the sequences of these three methods. And divide into three parts- root, left child and right child.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int l = preorder.length;
+    if (l == 0)
+        return null;
+
+
+    return dp(preorder, inorder, 0, l-1, 0, l-1);
+    }
+
+    private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if (preStart &gt; preEnd || preEnd &gt;= preorder.length || inEnd &gt;= preorder.length)
+        return null;
+    TreeNode root = new TreeNode(preorder[preStart]);
+    int index = inStart;
+    for (; index &lt; inEnd; index++){
+        if (inorder[index] == preorder[preStart])
+            break;
+    }
+
+    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
+    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
+    root.left = left;
+    root.right = right;
+
+    return root;
+}    
+</code></pre><p>This method can be improved by using HashMap to make it faster when fiding the index of root.<br>Reference:<a href="http://blog.csdn.net/linhuanmars/article/details/24389549" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24389549</a><br>Code:</p>
+<pre><code>static HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int l = preorder.length;
+    if (l == 0)
+        return null;
+    for (int i = 0; i &lt; l; i++)
+        map.put(inorder[i], i);
+
+    return dp(preorder, inorder, 0, l-1, 0, l-1);
+}
+
+private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if (preStart &gt; preEnd || inStart &gt; inEnd)
+        return null;
+    TreeNode root = new TreeNode(preorder[preStart]);
+
+    int index = map.get(preorder[preStart]);
+
+    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
+    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
+    root.left = left;
+    root.right = right;
+
+    return root;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" data-id="cijwghzdc000h3yowf0r4t4mx" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Pow-x-n-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Pow-x-n-Java/" class="article-date">
+  <time datetime="2016-01-27T05:24:27.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Pow-x-n-Java/">Leetcode-Pow(x, n)(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Implement pow(x, n).</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s a simple but not simple question. There are many solutions for this problem. But how can we find the most effienct one. We can use recursion to reduce the times of multipling and check the bound of data to reduce the times of recursions. Finally, the code is below:</p>
+<pre><code>static boolean negflag = false;
+public double myPow(double x, int n) {
+    if (n &lt; 0){
+        negflag = true;
+        return 1 / dp(x, -n);
+    }
+    else
+        return dp(x, n);
+
+}
+private double dp(double x, int n){
+    if (n == 0)
+        return 1;
+    if (n == 1)
+        return x;
+    if (n == 2)
+        return x * x;
+
+    int m = n / 2;
+    int k = n % 2;
+    double v = dp(x, m);
+    if (negflag == true &amp;&amp; v &gt; 100000)
+        return 100000;
+    if (negflag == false &amp;&amp; v &lt; 0.00001)
+        return 0;
+
+    if (k == 0)
+        return v * v;
+    else
+        return v * v * x;
+}
+</code></pre><p>By the way, I have to metion that my python solution is like, lol:</p>
+<pre><code>def myPow(self, x, n):
+    return x**n
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/" data-id="cijwghzd2000c3yow588dsikg" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Jump-Game-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Jump-Game-Java/" class="article-date">
+  <time datetime="2016-01-27T04:20:54.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Jump-Game-Java/">Leetcode-Jump Game(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
+<p>Each element in the array represents your maximum jump length at that position.</p>
+<p>Determine if you are able to reach the last index.</p>
+<p>For example:<br>A = [2,3,1,1,4], return true.</p>
+<p>A = [3,2,1,0,4], return false.</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s a problem can be solved in greedy algorithm. Because we should go as far as possible in current position until we can’t go father. And we should gurantee the value of current position + i (steps can be reached from current postion) + nums[cur + i] be as big as possible.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean canJump(int[] nums) {
+    int l = nums.length;
+    if (nums[0] == 0 &amp;&amp; l &gt; 1)
+        return false;
+    int cur = 0;
+    int temp = nums[0];
+    int step = nums[0];
+    int max = nums[0];
+    int tempcur = 0;
+
+    while (cur + step &lt; l-1){
+        for (int i = 1; i &lt;= step; i++){
+            temp = cur + i + nums[cur + i];
+            if (temp &gt;= max){//current max greedy value
+                max = temp;
+                if (max &gt;= l)
+                    return true;
+                tempcur = cur + i;
+            }
+        }
+        if (cur == tempcur)
+            return false;
+        cur = tempcur;
+        step = nums[cur];
+    }
+
+    if (max &gt;= l-1)
+        return true;
+    else
+        return false;
+}
+</code></pre><p>What’s more, we can make it easier by max the value of index. </p>
+<pre><code>public boolean canJump(int[] nums) {
+    if(nums.length &lt;= 1)
+        return true;
+
+    int max = nums[0]; //max stands for the largest index that can be reached.
+
+    for(int i=0; i&lt;nums.length; i++){
+        //if not enough to go to next
+        if(max &lt;= i &amp;&amp; nums[i] == 0) 
+            return false;
+
+        //update max    
+        if(i + nums[i] &gt; max){
+            max = i + nums[i];
+        }
+
+        //max is enough to reach the end
+        if(max &gt;= nums.length-1) 
+            return true;
+    }
+
+    return false;    
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/" data-id="cijwghzd8000f3yow5jxkgje1" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-3Sum-Closest-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" class="article-date">
@@ -125,7 +399,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/" data-id="cijw3vygu0000svowlaqiwv14" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/" data-id="cijwghzc200003yowdu8mbjay" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -204,294 +478,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" data-id="cijw3vyhx000fsvow0dtuijno" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" data-id="cijwghzde000i3yowot5bk5x3" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" class="article-date">
-  <time datetime="2016-01-26T23:18:55.000Z" itemprop="datePublished">2016-01-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/">Leetcode-Lowest Common Ancestor of a Binary Tree(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</p>
-<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</p>
-<pre><code>           _______3______
-         /              \
-  ___5__           ___1___
-    /      \         /          \
-6        2       0         8
-         /  \
-        7    4
-</code></pre><p>For example, the lowest common ancestor (LCA) of nodes 5 and 1 is 3. Another example is LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.</p>
-<p><strong>Thinking:</strong></p>
-<p>The point to find the lowest common ancestor is to find a node whose left and right childs both have the node we want to find. Because if it’s not the lowest, the node will only belong to one of their child. If search in a pre-order from the root, if one node’s left child and right child both have the keynode or if the node itself is one of the keynode which means the other node will in lower level of this node, it’s the answer we want.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-    if (root == null)
-        return root;
-
-    if (root.equals(q) || root.equals(p)){
-        return root;
-    }
-
-    TreeNode l = lowestCommonAncestor(root.left, p, q);
-    TreeNode r = lowestCommonAncestor(root.right, p, q);
-    if (l != null &amp;&amp; r != null)
-        return root;
-
-    return l == null? r: l;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" data-id="cijw3vyhu000dsvowh4th74ld" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Node-js-study-note" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/25/Node-js-study-note/" class="article-date">
-  <time datetime="2016-01-26T05:11:55.000Z" itemprop="datePublished">2016-01-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/25/Node-js-study-note/">Node.js study note</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Survey:</strong></p>
-<p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
-<p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
-<hr>
-<p><strong>Content:</strong></p>
-<p>–1– Argument variables with process.argv</p>
-<pre><code>app.js
-
-function grab(flag){
-    var index = process.argv.indexOf(flag);
-    return (index === -1) ? null : process.argv[index+1];
-}
-
-var greeting = grab(&apos;--greeting&apos;);
-var user = grab(&apos;--user&apos;);
-
-if (!user || !greeting) {
-    console.log(&quot;You blew it!&quot;);
-} else {
-    console.log(`Welcome, ${user}, ${greeting}`);
-}
-</code></pre><p>In this code, we grab the arguments from shell and print it out on the console.</p>
-<p>For example, if in the shell:</p>
-<pre><code>$node app --user Martin --greeting &quot;hello hello&quot;
-</code></pre><p>Then in the console:</p>
-<pre><code>Welcome, Martin, hello hello
-</code></pre><p>And in this code, I also learned string temple which uses backticks<code>.</code>Welcome, ${user}, ${greeting}` will contain variable user and greeting.</p>
-<hr>
-<p>–2– Standard input and standard output</p>
-<pre><code> var questions = [
-&quot;What is your name?&quot;,
-&quot;What is your favorite hobby?&quot;,
-&quot;What is your preferred programming language?&quot;
-];
-
-var answers = [];
-
-function ask(i) {
-    process.stdout.write(`\n\n\n\n ${questions[i]}`);
-    process.stdout.write(&quot;  &gt;  &quot;);
-}
-
-process.stdin.on(&apos;data&apos;, function(data){
-
-    answers.push(data.toString().trim());
-
-    if (answers.length &lt; questions.length) {
-        ask(answers.length);
-    } else {
-        process.exit();
-    }
-});
-
-process.on(&apos;exit&apos;, function(){
-
-    process.stdout.write(&quot;\n\n\n\n&quot;);
-
-    process.stdout.write(`Go ${answers[1]} ${answers[0]} you can finish writing ${answers[2]} later`);
-
-    process.stdout.write(&quot;\n\n\n\n&quot;);
-
-});
-
-ask(0);
-</code></pre><p>In the shell:</p>
-<pre><code>What is your name?  &gt;  Martin
-
-
-
-
- What is your favorite hobby?  &gt;  play games
-
-
-
-
- What is your preferred programming language?  &gt;  python
-
-
-
-
-Go play games Martin you can finish writing python later
-</code></pre><p>Is that funny:)?</p>
-<hr>
-<p>–3– Globla timing functions</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/25/Node-js-study-note/" data-id="cijw3vyhk0008svow8fcc6c1q" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/25/Node-js-study-note/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Insertion-Sort-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" class="article-date">
-  <time datetime="2016-01-25T05:07:32.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/">Leetcode-Insertion Sort List(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Sort a linked list using insertion sort.</p>
-<p><strong>Thinking:</strong></p>
-<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public ListNode insertionSortList(ListNode head) {
-        if (head == null || head.next == null)
-            return head;
-        ListNode res = new ListNode(-1);
-        res.next = head;
-        ListNode p = res;
-        ListNode next = head.next;
-        head.next = null;
-        head = next;
-        while (head != null){
-            while (p.next != null){
-                //if the value is smaller than one of the sorted list, insert behind it
-                if (head.val &lt; p.next.val){
-                    next = head.next;
-                    head.next = p.next;
-                    p.next = head;
-                    head = next;
-                    p = res;
-                    break;
-                }
-                p = p.next;
-            }
-            //if the value is bigger than anyone of the sorted list, insert after the whole list
-            if (p.next == null){
-                next = head.next;
-                p.next = head;
-                head.next = null;
-                head = next;
-                p = res;
-            }
-        }
-
-        return res.next;
-    }
-}
-</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
-<pre><code>public ListNode insertionSortList(ListNode head) {  
-    if(head == null||head.next == null)  
-        return head;  
-    ListNode sortedlisthead = new ListNode(0);  
-    ListNode cur = head;
-    while(cur!=null){  
-        ListNode next = cur.next;  
-        ListNode pre = sortedlisthead;  
-        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
-            pre = pre.next;  
-        cur.next = pre.next;  
-        pre.next = cur;  
-        cur = next;  
-    }  
-    return sortedlisthead.next;  
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="cijw3vyhv000esvowrdr5rd1d" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -504,7 +493,7 @@ Go play games Martin you can finish writing python later
 
 
   <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -535,23 +524,23 @@ Go play games Martin you can finish writing python later
       <ul>
         
           <li>
+            <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/">Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/26/Leetcode-Pow-x-n-Java/">Leetcode-Pow(x, n)(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/26/Leetcode-Jump-Game-Java/">Leetcode-Jump Game(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/01/26/Leetcode-3Sum-Closest-Java/">Leetcode-3Sum Closest(Java)</a>
           </li>
         
           <li>
             <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/">Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/">Leetcode-Lowest Common Ancestor of a Binary Tree(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/01/25/Node-js-study-note/">Node.js study note</a>
-          </li>
-        
-          <li>
-            <a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/">Leetcode-Insertion Sort List(Java)</a>
           </li>
         
       </ul>

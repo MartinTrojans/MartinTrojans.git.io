@@ -3,30 +3,30 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java) | Martin&#39;s Blog</title>
+  <title>Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java) | Martin&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Question:
-Given inorder and postorder traversal of a tree, construct the binary tree.
+Given preorder and inorder traversal of a tree, construct the binary tree.
 Note:You may assume that duplicates do not exist in the tree.
 Thinking:
-Inorder traversal will search in order: le">
+This question is similar with Construct Bin">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)">
-<meta property="og:url" content="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/index.html">
+<meta property="og:title" content="Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)">
+<meta property="og:url" content="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/index.html">
 <meta property="og:site_name" content="Martin's Blog">
 <meta property="og:description" content="Question:
-Given inorder and postorder traversal of a tree, construct the binary tree.
+Given preorder and inorder traversal of a tree, construct the binary tree.
 Note:You may assume that duplicates do not exist in the tree.
 Thinking:
-Inorder traversal will search in order: le">
-<meta property="og:updated_time" content="2016-01-27T00:09:24.000Z">
+This question is similar with Construct Bin">
+<meta property="og:updated_time" content="2016-01-27T06:33:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)">
+<meta name="twitter:title" content="Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)">
 <meta name="twitter:description" content="Question:
-Given inorder and postorder traversal of a tree, construct the binary tree.
+Given preorder and inorder traversal of a tree, construct the binary tree.
 Note:You may assume that duplicates do not exist in the tree.
 Thinking:
-Inorder traversal will search in order: le">
+This question is similar with Construct Bin">
   
     <link rel="alternate" href="/atom.xml" title="Martin&#39;s Blog" type="application/atom+xml">
   
@@ -73,10 +73,10 @@ Inorder traversal will search in order: le">
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" class="article-date">
-  <time datetime="2016-01-27T00:00:18.000Z" itemprop="datePublished">2016-01-26</time>
+    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" class="article-date">
+  <time datetime="2016-01-27T06:28:05.000Z" itemprop="datePublished">2016-01-26</time>
 </a>
     
   </div>
@@ -87,7 +87,7 @@ Inorder traversal will search in order: le">
         
   
     <h1 class="article-title" itemprop="name">
-      Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)
+      Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)
     </h1>
   
 
@@ -96,53 +96,70 @@ Inorder traversal will search in order: le">
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
+<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
 <p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
 <p><strong>Thinking:</strong></p>
-<p>Inorder traversal will search in order: left, root, right;</p>
-<p>Postorder travelsal will search in order: left, right, root.</p>
-<p>So we can find the root in postorder and search it in inorder by the value. And find root’s left child and right child node by recursion.</p>
-<pre><code>public TreeNode buildTree(int[] inorder, int[] postorder) {
-    int l = inorder.length;
+<p>This question is similar with Construct Binary Tree from Inorder and Postorder Traversal. We should understand the differences and the sequences of these three methods. And divide into three parts- root, left child and right child.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int l = preorder.length;
     if (l == 0)
         return null;
-    TreeNode root = new TreeNode(postorder[l-1]);
-    TreeNode left = null;
-    TreeNode right = null;
-    int index = 0;
-    for (; index &lt; l; index++){
-        if (inorder[index] == postorder[l-1])
+
+
+    return dp(preorder, inorder, 0, l-1, 0, l-1);
+    }
+
+    private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if (preStart &gt; preEnd || preEnd &gt;= preorder.length || inEnd &gt;= preorder.length)
+        return null;
+    TreeNode root = new TreeNode(preorder[preStart]);
+    int index = inStart;
+    for (; index &lt; inEnd; index++){
+        if (inorder[index] == preorder[preStart])
             break;
     }
 
+    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
+    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
+    root.left = left;
+    root.right = right;
 
-    if (index &gt; 0){
-        int[] leftinorder = new int[index];
-        int[] leftpostorder = new int[index];
-        System.arraycopy(inorder, 0, leftinorder, 0, index);
-        System.arraycopy(postorder, 0, leftpostorder, 0, index);
-        left = buildTree(leftinorder, leftpostorder);
-    }
-    if (index &lt; l-1){
-        int[] rightinorder = new int[l-index-1];
-        int[] rightpostorder = new int[l-index-1];
-        System.arraycopy(inorder, index+1, rightinorder, 0, l-index-1);
-        System.arraycopy(postorder, index, rightpostorder, 0, l-index-1);
-        right = buildTree(rightinorder, rightpostorder);
-    }
+    return root;
+}    
+</code></pre><p>This method can be improved by using HashMap to make it faster when fiding the index of root.<br>Reference:<a href="http://blog.csdn.net/linhuanmars/article/details/24389549" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24389549</a><br>Code:</p>
+<pre><code>static HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int l = preorder.length;
+    if (l == 0)
+        return null;
+    for (int i = 0; i &lt; l; i++)
+        map.put(inorder[i], i);
+
+    return dp(preorder, inorder, 0, l-1, 0, l-1);
+}
+
+private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if (preStart &gt; preEnd || inStart &gt; inEnd)
+        return null;
+    TreeNode root = new TreeNode(preorder[preStart]);
+
+    int index = map.get(preorder[preStart]);
+
+    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
+    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
     root.left = left;
     root.right = right;
 
     return root;
 }
-</code></pre><p>By the way, this code can be improved because in Java we can not easily get the subarray and I use the System.arraycopy. It can be replaced by recording the postion of array.</p>
-
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" data-id="cijwghzde000i3yowot5bk5x3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" data-id="cijwghzdc000h3yowf0r4t4mx" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -151,19 +168,10 @@ Inorder traversal will search in order: le">
     
 <nav id="article-nav">
   
-    <a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Leetcode-3Sum Closest(Java)
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/01/26/Leetcode-Pow-x-n-Java/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Leetcode-Lowest Common Ancestor of a Binary Tree(Java)</div>
+      <div class="article-nav-title">Leetcode-Pow(x, n)(Java)</div>
     </a>
   
 </nav>
@@ -254,7 +262,7 @@ Inorder traversal will search in order: le">
 <script>
   var disqus_shortname = 'communitydeveloper';
   
-  var disqus_url = 'http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/';
+  var disqus_url = 'http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/';
   
   (function(){
     var dsq = document.createElement('script');
