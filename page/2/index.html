@@ -108,6 +108,190 @@
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2016-01-27 </div>
+			<div class="article-title"><a href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" >Leetcode-Flatten Binary Tree to Linked List(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given a binary tree, flatten it to a linked list in-place.</p>
+<p>For example,<br>Given</p>
+<pre><code>    1
+   / \
+  2   5
+ / \   \
+3   4   6
+</code></pre><p>The flattened tree should look like:</p>
+<pre><code>1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
+<p><strong>Thinking:</strong> </p>
+<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public void flatten(TreeNode root) {
+        if (root == null)
+            return;
+        dfs(root);
+    }
+
+    public TreeNode dfs(TreeNode root){
+
+        if (root.left == null &amp;&amp; root.right == null){
+            return root;
+        }
+
+        TreeNode left = null;
+        TreeNode right = null;
+        TreeNode preleft = root.left;
+        TreeNode preright = root.right;
+        if (preleft == null){
+            return dfs(preright);
+        }
+        else if(preright == null){
+            root.left = null;
+            root.right = preleft;
+            return dfs(preleft);
+        }
+        else{
+            left = dfs(preleft);
+            right = dfs(preright);
+            root.left = null;
+            root.right = preleft;
+            left.right = preright;
+            return right;
+        }
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-27 </div>
+			<div class="article-title"><a href="/2016/01/27/Leetcode-Triangle/" >Leetcode-Triangle(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.</p>
+<p>For example, given the following triangle:</p>
+<pre><code>[
+       [2],
+     [3,4],
+    [6,5,7],
+   [4,1,8,3]
+]
+</code></pre><p>The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).</p>
+<p>Note:<br>Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.</p>
+<p><strong>Thinking:</strong><br>It’s a simple dynamic programming question. The expression is dp[i][j] = min(d[i-1][j-1], d[i][j]) + triangle[i][j].</p>
+<p>But the first time, my code is time exceed:</p>
+<pre><code>public class Solution {
+    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
+        int lr = triangle.size();
+        if(lr == 0){
+            return 0;
+        }
+        int lc = triangle.get(lr-1).size();
+        int min = 100000;
+        for(int i = 0; i &lt; lc; i++){
+            int tmp = dp(triangle, lr-1, i);
+            if(tmp &lt; min)
+                min = tmp;
+        }
+        return min;
+    }
+
+    public int dp(List&lt;List&lt;Integer&gt;&gt; triangle, int row, int column){
+        if(row == 0){
+            return triangle.get(0).get(0);
+        }
+        int value = triangle.get(row).get(column);
+        int size = triangle.get(row-1).size();
+        if(column &gt;= size){
+            return dp(triangle, row-1, column-1) + value;
+        }
+        else if(column - 1 &lt; 0){
+            return dp(triangle, row-1, column) + value;
+        }
+        else{
+            int res1 = dp(triangle, row-1, column-1) + value;
+            int res2 = dp(triangle, row-1, column) + value;
+            if(res1 &lt; res2){
+                return res1;
+            }
+            else{
+                return res2;
+            }
+        }
+    }
+}
+</code></pre><p>Then I noticed the bonus, so I change my mind to use <em>iteration</em>:</p>
+<pre><code>public class Solution{
+    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle){
+        int lr = triangle.size();
+        int[] min = new int[lr];
+        int[] tempmin = new int[lr];
+        min[0] = triangle.get(0).get(0);
+        for(int i = 1; i &lt; lr; i++){
+            tempmin[0] = min[0] + triangle.get(i).get(0);
+            tempmin[i] = min[i-1] + triangle.get(i).get(i);
+            for(int j = 1; j &lt; i; j++){
+                int res1 = min[j-1] + triangle.get(i).get(j);
+                int res2 = min[j] + triangle.get(i).get(j);
+                if(res1 &lt; res2)
+                    tempmin[j] = res1;
+                else
+                    tempmin[j] = res2;
+            }
+            for(int k = 0; k &lt; i+1; k++){
+                min[k] = tempmin[k];
+            }
+        }
+        int m = 100000;
+        for(int i = 0; i &lt; lr; i++){
+            if(min[i] &lt; m)
+                m = min[i];
+        }
+        return m;
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/27/Leetcode-Triangle/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2016-01-26 </div>
 			<div class="article-title"><a href="/2016/01/26/HTTP-method-get-and-post/" >HTTP method: get and post</a></div>						
 		</h3>
@@ -335,149 +519,6 @@ private double dp(double x, int n){
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-26 </div>
-			<div class="article-title"><a href="/2016/01/26/Leetcode-Jump-Game-Java/" >Leetcode-Jump Game(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
-<p>Each element in the array represents your maximum jump length at that position.</p>
-<p>Determine if you are able to reach the last index.</p>
-<p>For example:<br>A = [2,3,1,1,4], return true.</p>
-<p>A = [3,2,1,0,4], return false.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s a problem can be solved in greedy algorithm. Because we should go as far as possible in current position until we can’t go father. And we should gurantee the value of current position + i (steps can be reached from current postion) + nums[cur + i] be as big as possible.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public boolean canJump(int[] nums) {
-    int l = nums.length;
-    if (nums[0] == 0 &amp;&amp; l &gt; 1)
-        return false;
-    int cur = 0;
-    int temp = nums[0];
-    int step = nums[0];
-    int max = nums[0];
-    int tempcur = 0;
-
-    while (cur + step &lt; l-1){
-        for (int i = 1; i &lt;= step; i++){
-            temp = cur + i + nums[cur + i];
-            if (temp &gt;= max){//current max greedy value
-                max = temp;
-                if (max &gt;= l)
-                    return true;
-                tempcur = cur + i;
-            }
-        }
-        if (cur == tempcur)
-            return false;
-        cur = tempcur;
-        step = nums[cur];
-    }
-
-    if (max &gt;= l-1)
-        return true;
-    else
-        return false;
-}
-</code></pre><p>What’s more, we can make it easier by max the value of index. </p>
-<pre><code>public boolean canJump(int[] nums) {
-    if(nums.length &lt;= 1)
-        return true;
-
-    int max = nums[0]; //max stands for the largest index that can be reached.
-
-    for(int i=0; i&lt;nums.length; i++){
-        //if not enough to go to next
-        if(max &lt;= i &amp;&amp; nums[i] == 0) 
-            return false;
-
-        //update max    
-        if(i + nums[i] &gt; max){
-            max = i + nums[i];
-        }
-
-        //max is enough to reach the end
-        if(max &gt;= nums.length-1) 
-            return true;
-    }
-
-    return false;    
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/26/Leetcode-Jump-Game-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-26 </div>
-			<div class="article-title"><a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" >Leetcode-3Sum Closest(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
-<p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
-<p>The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</p>
-<p><strong>Thinking:</strong></p>
-<p>In order to improve the performance of algorithm, we should sort the array. Because of that, we can determine where to go using current result.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int threeSumClosest(int[] nums, int target) {
-    int l = nums.length;
-    if (l &lt; 3)
-        return 0;
-    int min = Integer.MAX_VALUE;
-    int res = 0;
-    Arrays.sort(nums);
-
-    for (int i = 0; i &lt; l; i++){
-        int j = i + 1;
-        int k = l - 1;
-
-        while (j &lt; k){
-            int sum = nums[i] + nums[j] + nums[k];
-            if (sum == target)
-                return sum;
-            int diff = Math.abs(sum - target);
-            if (diff &lt; min){
-                min = diff;
-                res = sum;
-            }
-            if (sum &gt; target)
-                k--;
-            else
-                j++;
-        }
-
-    }
-    return res;
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/26/Leetcode-3Sum-Closest-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -528,7 +569,7 @@ private double dp(double x, int n){
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>1</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>16</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>18</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -541,12 +582,34 @@ private double dp(double x, int n){
 
 		
 			
+	<div class="widget">
+		<h4>標籤雲</h4>
+		<ul class="tag_box inline list-unstyled">		
+		
+			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+		
+			<li><a href="/tags/Hash-Table/">Hash Table<span>1</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>2</span></a></li>
+		
+		 
+		</ul>
+	</div>
+
 
 		
 			
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2016/01/28/Leetcode-Two-Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-Two Sum(Java)...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/28/Leetcode-Game-of-Life-Java/" ><i class="fa fa-file-o"></i>Leetcode-Game of Life(Java)...</a>
+      </li>
     
       <li>
         <a href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" ><i class="fa fa-file-o"></i>Leetcode-Letter Combination...</a>
@@ -558,14 +621,6 @@ private double dp(double x, int n){
     
       <li>
         <a href="/2016/01/27/hello-world/" ><i class="fa fa-file-o"></i>Hello World...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" ><i class="fa fa-file-o"></i>Leetcode-Flatten Binary Tre...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/27/Leetcode-Triangle/" ><i class="fa fa-file-o"></i>Leetcode-Triangle(Java)...</a>
       </li>
     
   </ul>

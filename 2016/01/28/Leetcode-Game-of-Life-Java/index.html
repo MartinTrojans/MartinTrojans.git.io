@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Leetcode-Partition List(Java) | Martin&#39;s Blog</title>
+  <title>Leetcode-Game of Life(Java) | Martin&#39;s Blog</title>
   <meta name="author" content="Martin">
   
   <meta name="description" content="A rookie write something just for fun.">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Leetcode-Partition List(Java)"/>
+  <meta property="og:title" content="Leetcode-Game of Life(Java)"/>
   <meta property="og:site_name" content="Martin&#39;s Blog"/>
 
   
@@ -90,7 +90,7 @@
 
 	
 		<div class="page-header">		
-			<h1> Leetcode-Partition List(Java)</h1>
+			<h1> Leetcode-Game of Life(Java)</h1>
 		</div>		
 	
 
@@ -108,71 +108,55 @@
 	  		
 
 	  <p><strong>Question:</strong></p>
-<p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</p>
-<p>You should preserve the original relative order of the nodes in each of the two partitions.</p>
-<p>For example,<br>Given 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2 and x = 3,<br>return 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5.</p>
-<p><strong>Thinking:</strong></p>
-<p>We should preserve the original relative order of the nodes. So we need two points, one is for recording where to insert the less value node, and the other is for searching the less value node.</p>
-<p><strong>Solution1:</strong></p>
-<pre><code>public class Solution {
-    public ListNode partition(ListNode head, int x) {
-        if (head == null)
-            return null;
-        ListNode prehead = new ListNode(0);
-        prehead.next = head;
-        ListNode s = prehead;
-        ListNode l = prehead;
-        while(s != null &amp;&amp; l != null){
-            while(s.next != null){
-                if (s.next.val &gt;= x)
-                    break;
-                s = s.next;
-            }
-            l = s.next;
-            if (l == null)
-                break;
-            while(l.next != null){
-                if (l.next.val &lt; x)
-                    break;
-                l = l.next;
-            }
-            if (l.next == null)
-                break;
-            ListNode tmp = l.next;
-            l.next = l.next.next;
-            tmp.next = s.next;
-            s.next = tmp;
-        }
+<p>According to the Wikipedia’s article: “The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.”</p>
+<p>Given a board with m by n cells, each cell has an initial state live (1) or dead (0). Each cell interacts with its eight neighbors (horizontal, vertical, diagonal) using the following four rules (taken from the above Wikipedia article):</p>
+<p>Any live cell with fewer than two live neighbors dies, as if caused by under-population.<br>Any live cell with two or three live neighbors lives on to the next generation.<br>Any live cell with more than three live neighbors dies, as if by over-population..<br>Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.<br>Write a function to compute the next state (after one update) of the board given its current state.</p>
+<p>Follow up:<br>Could you solve it in-place? Remember that the board needs to be updated at the same time: You cannot update some cells first and then use their updated values to update other cells.<br>In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches the border of the array. How would you address these problems?</p>
+<p><strong>Thinkings:</strong></p>
+<p>It’s difficult quesiont, isn’t it? We have to fully understand when cell become live or dead and try to replace them in place. One solution is to present their status using bits, the first bit represents their current status and second bit represents their next status. For example:</p>
+<p>current status is live and next status will be dead is 01<br>current status is dead and next status will be live is 10</p>
+<p>And then we can get the current status by:</p>
+<pre><code>board[i][j] &amp; 1
+</code></pre><p>Get the finnaly status by:</p>
+<pre><code>board[i][j] &gt;&gt;= 1
+</code></pre><p><strong>Solution:</strong></p>
+<pre><code>public void gameOfLife(int[][] board) {
+    int m = board.length;
+    if (m == 0)
+        return;
+    int n = board[0].length;
 
-        return prehead.next;
+    //int[][] temp = new int[m][n];
+
+
+    for (int i = 0; i &lt; m; i++){
+        for (int j = 0; j &lt; n; j++){
+            int count = 0;
+            for (int p = -1; p &lt; 2; p++)
+                for (int q = -1; q &lt; 2; q++){
+                    if (i+p&gt;=0 &amp;&amp; i+p&lt;m &amp;&amp; j+q&gt;=0 &amp;&amp; j+q&lt;n &amp;&amp; !(p==0 &amp;&amp; q==0)){
+                        if ((board[i+p][j+q] &amp; 1) == 1)
+                            count++;
+                    }
+                }
+
+            if ((board[i][j] &amp; 1) == 0 &amp;&amp; count == 3){
+                //temp[i][j] = 1;
+                board[i][j] = 2;
+            }
+            else if ((board[i][j] &amp; 1) == 1 &amp;&amp; count &lt;=3 &amp;&amp; count &gt;= 2){
+                    board[i][j] = 3;
+
+            }
+        }
     }
 
-}
-</code></pre><p>And there is another solution, which uses two lists. One is for recording less value node, and the other is for recording greater value node. And connect them:</p>
-<pre><code>public ListNode partition(ListNode head, int x) {
-        if(head==null||head.next==null)
-            return head;
-
-        ListNode small = new ListNode(-1);
-        ListNode newsmallhead = small;
-        ListNode big = new ListNode(-1);
-        ListNode newbighead = big;
-
-        while(head!=null){
-            if(head.val&lt;x){
-                small.next = head;
-                small = small.next;
-            }else{
-                big.next = head;
-                big = big.next;
-            }
-            head = head.next;
+    for (int i = 0; i &lt; m; i++){
+        for (int j = 0; j &lt; n; j++){
+            //board[i][j] = temp[i][j];
+            board[i][j] &gt;&gt;= 1;
         }
-        big.next = null;
-
-        small.next = newbighead.next;
-
-        return newsmallhead.next;
+    }
 }
 </code></pre>	  
 	</div>
@@ -183,13 +167,13 @@
 <ul class="pagination">
 	 
 				
-    	<li class="prev"><a href="/2016/01/24/Leetcode-Search-for-a-Range-Java/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
+    	<li class="prev"><a href="/2016/01/28/Leetcode-Two-Sum-Java/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
   		
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2016/01/24/Leetcode-Unique-Paths-II-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+		   <li class="next"><a href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -220,7 +204,7 @@
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2016-01-24 
+	2016-01-28 
 	</div>
 	
 
@@ -239,6 +223,14 @@
 	
 
 	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Array/">Array<span>2</span></a></li> <li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+    </ul>
+	</div>
 		
 
 	<!-- toc -->

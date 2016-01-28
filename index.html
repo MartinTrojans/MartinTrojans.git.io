@@ -108,6 +108,124 @@
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2016-01-28 </div>
+			<div class="article-title"><a href="/2016/01/28/Leetcode-Two-Sum-Java/" >Leetcode-Two Sum(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
+<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</p>
+<p>You may assume that each input would have exactly one solution.</p>
+<p>Input: numbers={2, 7, 11, 15}, target=9<br>Output: index1=1, index2=2</p>
+<p><strong>Thinking:</strong></p>
+<p>We can use hash map to store the rest of nums[i], and if we find which number is equal to the rest beofore, their sum will be target.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int[] twoSum(int[] nums, int target){
+    HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+    int[] res = new int[2];
+
+    for (int i = 0; i &lt; nums.length; i++){
+        if (map.containsKey(nums[i])){
+            res[0] = map.get(nums[i]) + 1;
+            res[1] = i+1;
+            break;
+        }
+        else{
+            map.put(target-nums[i], i);
+        }
+    }
+
+    return res;
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/28/Leetcode-Two-Sum-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-28 </div>
+			<div class="article-title"><a href="/2016/01/28/Leetcode-Game-of-Life-Java/" >Leetcode-Game of Life(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>According to the Wikipedia’s article: “The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.”</p>
+<p>Given a board with m by n cells, each cell has an initial state live (1) or dead (0). Each cell interacts with its eight neighbors (horizontal, vertical, diagonal) using the following four rules (taken from the above Wikipedia article):</p>
+<p>Any live cell with fewer than two live neighbors dies, as if caused by under-population.<br>Any live cell with two or three live neighbors lives on to the next generation.<br>Any live cell with more than three live neighbors dies, as if by over-population..<br>Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.<br>Write a function to compute the next state (after one update) of the board given its current state.</p>
+<p>Follow up:<br>Could you solve it in-place? Remember that the board needs to be updated at the same time: You cannot update some cells first and then use their updated values to update other cells.<br>In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches the border of the array. How would you address these problems?</p>
+<p><strong>Thinkings:</strong></p>
+<p>It’s difficult quesiont, isn’t it? We have to fully understand when cell become live or dead and try to replace them in place. One solution is to present their status using bits, the first bit represents their current status and second bit represents their next status. For example:</p>
+<p>current status is live and next status will be dead is 01<br>current status is dead and next status will be live is 10</p>
+<p>And then we can get the current status by:</p>
+<pre><code>board[i][j] &amp; 1
+</code></pre><p>Get the finnaly status by:</p>
+<pre><code>board[i][j] &gt;&gt;= 1
+</code></pre><p><strong>Solution:</strong></p>
+<pre><code>public void gameOfLife(int[][] board) {
+    int m = board.length;
+    if (m == 0)
+        return;
+    int n = board[0].length;
+
+    //int[][] temp = new int[m][n];
+
+
+    for (int i = 0; i &lt; m; i++){
+        for (int j = 0; j &lt; n; j++){
+            int count = 0;
+            for (int p = -1; p &lt; 2; p++)
+                for (int q = -1; q &lt; 2; q++){
+                    if (i+p&gt;=0 &amp;&amp; i+p&lt;m &amp;&amp; j+q&gt;=0 &amp;&amp; j+q&lt;n &amp;&amp; !(p==0 &amp;&amp; q==0)){
+                        if ((board[i+p][j+q] &amp; 1) == 1)
+                            count++;
+                    }
+                }
+
+            if ((board[i][j] &amp; 1) == 0 &amp;&amp; count == 3){
+                //temp[i][j] = 1;
+                board[i][j] = 2;
+            }
+            else if ((board[i][j] &amp; 1) == 1 &amp;&amp; count &lt;=3 &amp;&amp; count &gt;= 2){
+                    board[i][j] = 3;
+
+            }
+        }
+    }
+
+    for (int i = 0; i &lt; m; i++){
+        for (int j = 0; j &lt; n; j++){
+            //board[i][j] = temp[i][j];
+            board[i][j] &gt;&gt;= 1;
+        }
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/28/Leetcode-Game-of-Life-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2016-01-27 </div>
 			<div class="article-title"><a href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" >Leetcode-Letter Combinations of a Phone Number(Java)</a></div>						
 		</h3>
@@ -339,190 +457,6 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-27 </div>
-			<div class="article-title"><a href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" >Leetcode-Flatten Binary Tree to Linked List(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>    1
-   / \
-  2   5
- / \   \
-3   4   6
-</code></pre><p>The flattened tree should look like:</p>
-<pre><code>1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-         \
-          6
-</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
-<p><strong>Thinking:</strong> </p>
-<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public void flatten(TreeNode root) {
-        if (root == null)
-            return;
-        dfs(root);
-    }
-
-    public TreeNode dfs(TreeNode root){
-
-        if (root.left == null &amp;&amp; root.right == null){
-            return root;
-        }
-
-        TreeNode left = null;
-        TreeNode right = null;
-        TreeNode preleft = root.left;
-        TreeNode preright = root.right;
-        if (preleft == null){
-            return dfs(preright);
-        }
-        else if(preright == null){
-            root.left = null;
-            root.right = preleft;
-            return dfs(preleft);
-        }
-        else{
-            left = dfs(preleft);
-            right = dfs(preright);
-            root.left = null;
-            root.right = preleft;
-            left.right = preright;
-            return right;
-        }
-    }
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-27 </div>
-			<div class="article-title"><a href="/2016/01/27/Leetcode-Triangle/" >Leetcode-Triangle(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.</p>
-<p>For example, given the following triangle:</p>
-<pre><code>[
-       [2],
-     [3,4],
-    [6,5,7],
-   [4,1,8,3]
-]
-</code></pre><p>The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).</p>
-<p>Note:<br>Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.</p>
-<p><strong>Thinking:</strong><br>It’s a simple dynamic programming question. The expression is dp[i][j] = min(d[i-1][j-1], d[i][j]) + triangle[i][j].</p>
-<p>But the first time, my code is time exceed:</p>
-<pre><code>public class Solution {
-    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
-        int lr = triangle.size();
-        if(lr == 0){
-            return 0;
-        }
-        int lc = triangle.get(lr-1).size();
-        int min = 100000;
-        for(int i = 0; i &lt; lc; i++){
-            int tmp = dp(triangle, lr-1, i);
-            if(tmp &lt; min)
-                min = tmp;
-        }
-        return min;
-    }
-
-    public int dp(List&lt;List&lt;Integer&gt;&gt; triangle, int row, int column){
-        if(row == 0){
-            return triangle.get(0).get(0);
-        }
-        int value = triangle.get(row).get(column);
-        int size = triangle.get(row-1).size();
-        if(column &gt;= size){
-            return dp(triangle, row-1, column-1) + value;
-        }
-        else if(column - 1 &lt; 0){
-            return dp(triangle, row-1, column) + value;
-        }
-        else{
-            int res1 = dp(triangle, row-1, column-1) + value;
-            int res2 = dp(triangle, row-1, column) + value;
-            if(res1 &lt; res2){
-                return res1;
-            }
-            else{
-                return res2;
-            }
-        }
-    }
-}
-</code></pre><p>Then I noticed the bonus, so I change my mind to use <em>iteration</em>:</p>
-<pre><code>public class Solution{
-    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle){
-        int lr = triangle.size();
-        int[] min = new int[lr];
-        int[] tempmin = new int[lr];
-        min[0] = triangle.get(0).get(0);
-        for(int i = 1; i &lt; lr; i++){
-            tempmin[0] = min[0] + triangle.get(i).get(0);
-            tempmin[i] = min[i-1] + triangle.get(i).get(i);
-            for(int j = 1; j &lt; i; j++){
-                int res1 = min[j-1] + triangle.get(i).get(j);
-                int res2 = min[j] + triangle.get(i).get(j);
-                if(res1 &lt; res2)
-                    tempmin[j] = res1;
-                else
-                    tempmin[j] = res2;
-            }
-            for(int k = 0; k &lt; i+1; k++){
-                min[k] = tempmin[k];
-            }
-        }
-        int m = 100000;
-        for(int i = 0; i &lt; lr; i++){
-            if(min[i] &lt; m)
-                m = min[i];
-        }
-        return m;
-    }
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/27/Leetcode-Triangle/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -573,7 +507,7 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>1</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>16</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>18</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -586,12 +520,34 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
 
 		
 			
+	<div class="widget">
+		<h4>標籤雲</h4>
+		<ul class="tag_box inline list-unstyled">		
+		
+			<li><a href="/tags/Hash-Table/">Hash Table<span>1</span></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>2</span></a></li>
+		
+		 
+		</ul>
+	</div>
+
 
 		
 			
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2016/01/28/Leetcode-Two-Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-Two Sum(Java)...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/28/Leetcode-Game-of-Life-Java/" ><i class="fa fa-file-o"></i>Leetcode-Game of Life(Java)...</a>
+      </li>
     
       <li>
         <a href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" ><i class="fa fa-file-o"></i>Leetcode-Letter Combination...</a>
@@ -603,14 +559,6 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
     
       <li>
         <a href="/2016/01/27/hello-world/" ><i class="fa fa-file-o"></i>Hello World...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" ><i class="fa fa-file-o"></i>Leetcode-Flatten Binary Tre...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/27/Leetcode-Triangle/" ><i class="fa fa-file-o"></i>Leetcode-Triangle(Java)...</a>
       </li>
     
   </ul>

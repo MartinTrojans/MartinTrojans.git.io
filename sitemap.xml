@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/01/24/Sort-Algorithms/</loc>
+    <lastmod>2016-01-28T22:58:08.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/28/Leetcode-Two-Sum-Java/</loc>
+    <lastmod>2016-01-28T22:58:03.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/28/Leetcode-Game-of-Life-Java/</loc>
+    <lastmod>2016-01-28T22:36:18.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/</loc>
     <lastmod>2016-01-28T00:21:10.000Z</lastmod>
   </url>
@@ -44,11 +59,6 @@
   <url>
     <loc>http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/</loc>
     <lastmod>2016-01-27T21:59:42.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/01/24/Sort-Algorithms/</loc>
-    <lastmod>2016-01-27T21:59:37.000Z</lastmod>
   </url>
   
   <url>

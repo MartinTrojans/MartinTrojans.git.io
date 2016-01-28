@@ -4,6 +4,94 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode-Two Sum(Java)]]></title>
+      <url>http://yoursite.com/2016/01/28/Leetcode-Two-Sum-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
+<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</p>
+<p>You may assume that each input would have exactly one solution.</p>
+<p>Input: numbers={2, 7, 11, 15}, target=9<br>Output: index1=1, index2=2</p>
+<p><strong>Thinking:</strong></p>
+<p>We can use hash map to store the rest of nums[i], and if we find which number is equal to the rest beofore, their sum will be target.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int[] twoSum(int[] nums, int target){
+    HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+    int[] res = new int[2];
+
+    for (int i = 0; i &lt; nums.length; i++){
+        if (map.containsKey(nums[i])){
+            res[0] = map.get(nums[i]) + 1;
+            res[1] = i+1;
+            break;
+        }
+        else{
+            map.put(target-nums[i], i);
+        }
+    }
+
+    return res;
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Game of Life(Java)]]></title>
+      <url>http://yoursite.com/2016/01/28/Leetcode-Game-of-Life-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>According to the Wikipedia’s article: “The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.”</p>
+<p>Given a board with m by n cells, each cell has an initial state live (1) or dead (0). Each cell interacts with its eight neighbors (horizontal, vertical, diagonal) using the following four rules (taken from the above Wikipedia article):</p>
+<p>Any live cell with fewer than two live neighbors dies, as if caused by under-population.<br>Any live cell with two or three live neighbors lives on to the next generation.<br>Any live cell with more than three live neighbors dies, as if by over-population..<br>Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.<br>Write a function to compute the next state (after one update) of the board given its current state.</p>
+<p>Follow up:<br>Could you solve it in-place? Remember that the board needs to be updated at the same time: You cannot update some cells first and then use their updated values to update other cells.<br>In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches the border of the array. How would you address these problems?</p>
+<p><strong>Thinkings:</strong></p>
+<p>It’s difficult quesiont, isn’t it? We have to fully understand when cell become live or dead and try to replace them in place. One solution is to present their status using bits, the first bit represents their current status and second bit represents their next status. For example:</p>
+<p>current status is live and next status will be dead is 01<br>current status is dead and next status will be live is 10</p>
+<p>And then we can get the current status by:</p>
+<pre><code>board[i][j] &amp; 1
+</code></pre><p>Get the finnaly status by:</p>
+<pre><code>board[i][j] &gt;&gt;= 1
+</code></pre><p><strong>Solution:</strong></p>
+<pre><code>public void gameOfLife(int[][] board) {
+    int m = board.length;
+    if (m == 0)
+        return;
+    int n = board[0].length;
+
+    //int[][] temp = new int[m][n];
+
+
+    for (int i = 0; i &lt; m; i++){
+        for (int j = 0; j &lt; n; j++){
+            int count = 0;
+            for (int p = -1; p &lt; 2; p++)
+                for (int q = -1; q &lt; 2; q++){
+                    if (i+p&gt;=0 &amp;&amp; i+p&lt;m &amp;&amp; j+q&gt;=0 &amp;&amp; j+q&lt;n &amp;&amp; !(p==0 &amp;&amp; q==0)){
+                        if ((board[i+p][j+q] &amp; 1) == 1)
+                            count++;
+                    }
+                }
+
+            if ((board[i][j] &amp; 1) == 0 &amp;&amp; count == 3){
+                //temp[i][j] = 1;
+                board[i][j] = 2;
+            }
+            else if ((board[i][j] &amp; 1) == 1 &amp;&amp; count &lt;=3 &amp;&amp; count &gt;= 2){
+                    board[i][j] = 3;
+
+            }
+        }
+    }
+
+    for (int i = 0; i &lt; m; i++){
+        for (int j = 0; j &lt; n; j++){
+            //board[i][j] = temp[i][j];
+            board[i][j] &gt;&gt;= 1;
+        }
+    }
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode-Letter Combinations of a Phone Number(Java)]]></title>
       <url>http://yoursite.com/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/</url>
       <content type="html"><![CDATA[<p><strong>Question:</strong></p>
@@ -969,7 +1057,35 @@ foreach (gap in gaps)
     }
 }
 </code></pre><hr>
-]]></content>
+<h2 id="Simple_Selection_Sort"><a href="#Simple_Selection_Sort" class="headerlink" title="Simple Selection Sort"></a>Simple Selection Sort</h2><p><strong>Main Idea:</strong></p>
+<p>Find the smallest(biggest) element in array, put it in the first place. Then find the second smallest… Do these until all the element are sorted.(I suppose it’s a little similar with bubble sort)</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
+<p><strong>Pesedocode:</strong></p>
+<pre><code>for i ← 1 to length(A) - 1
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+    end while
+end for
+</code></pre><p><strong>Complexity:</strong></p>
+<p><em>Runtime:</em> O(n^2)<br><em>Memery:</em> O(1)</p>
+<h2 id="Heapsort"><a href="#Heapsort" class="headerlink" title="Heapsort"></a>Heapsort</h2><p><strong>Main Idea:</strong></p>
+<p>Use data structure heap which will store the smallest or biggest value of the array. Then pick up the root of heap   once a time to sort. </p>
+<p>Heapsort is a comparison-based sorting algorithm. Heapsort can be thought of as an improved selection sort: like that algorithm, it divides its input into a sorted and an unsorted region, and it iteratively shrinks the unsorted region by extracting the largest element and moving that to the sorted region. The improvement consists of the use of a heap data structure rather than a linear-time search to find the maximum.</p>
+<p>This sort is the most important part in this article. I’ll talk about the relative operation and its performance and all the code.</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif" alt=""></p>
+<p>In the heap view(an example offered):</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Heapsort-example.gif" alt=""></p>
+<p><strong>Data Structure:</strong></p>
+<p>Heap:</p>
+<p>A heap is built out of the data. The heap is often placed in an array with the layout of a complete binary tree. The complete binary tree maps the binary tree structure into the array indices; each array index represents a node; the index of the node’s parent, left child branch, or right child branch are simple expressions. For a zero-based array, the root node is stored at index 0; if i is the index of the current node, then</p>
+<pre><code>iParent(i)     = floor((i-1) / 2)
+iLeftChild(i)  = 2*i + 1
+iRightChild(i) = 2*i + 2
+</code></pre>]]></content>
     </entry>
     
     <entry>

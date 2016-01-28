@@ -191,7 +191,35 @@ foreach (gap in gaps)
     }
 }
 </code></pre><hr>
-	  
+<h2 id="Simple_Selection_Sort"><a href="#Simple_Selection_Sort" class="headerlink" title="Simple Selection Sort"></a>Simple Selection Sort</h2><p><strong>Main Idea:</strong></p>
+<p>Find the smallest(biggest) element in array, put it in the first place. Then find the second smallest… Do these until all the element are sorted.(I suppose it’s a little similar with bubble sort)</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
+<p><strong>Pesedocode:</strong></p>
+<pre><code>for i ← 1 to length(A) - 1
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+    end while
+end for
+</code></pre><p><strong>Complexity:</strong></p>
+<p><em>Runtime:</em> O(n^2)<br><em>Memery:</em> O(1)</p>
+<h2 id="Heapsort"><a href="#Heapsort" class="headerlink" title="Heapsort"></a>Heapsort</h2><p><strong>Main Idea:</strong></p>
+<p>Use data structure heap which will store the smallest or biggest value of the array. Then pick up the root of heap   once a time to sort. </p>
+<p>Heapsort is a comparison-based sorting algorithm. Heapsort can be thought of as an improved selection sort: like that algorithm, it divides its input into a sorted and an unsorted region, and it iteratively shrinks the unsorted region by extracting the largest element and moving that to the sorted region. The improvement consists of the use of a heap data structure rather than a linear-time search to find the maximum.</p>
+<p>This sort is the most important part in this article. I’ll talk about the relative operation and its performance and all the code.</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif" alt=""></p>
+<p>In the heap view(an example offered):</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Heapsort-example.gif" alt=""></p>
+<p><strong>Data Structure:</strong></p>
+<p>Heap:</p>
+<p>A heap is built out of the data. The heap is often placed in an array with the layout of a complete binary tree. The complete binary tree maps the binary tree structure into the array indices; each array index represents a node; the index of the node’s parent, left child branch, or right child branch are simple expressions. For a zero-based array, the root node is stored at index 0; if i is the index of the current node, then</p>
+<pre><code>iParent(i)     = floor((i-1) / 2)
+iLeftChild(i)  = 2*i + 1
+iRightChild(i) = 2*i + 2
+</code></pre>	  
 	</div>
 
 	<div>

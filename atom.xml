@@ -4,15 +4,132 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-01-28T00:21:10.000Z</updated>
+  <updated>2016-01-28T22:58:03.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
     <name><![CDATA[Martin]]></name>
-    
+    <email><![CDATA[martinglory1992@gmail.com]]></email>
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Two Sum(Java)]]></title>
+    <link href="http://yoursite.com/2016/01/28/Leetcode-Two-Sum-Java/"/>
+    <id>http://yoursite.com/2016/01/28/Leetcode-Two-Sum-Java/</id>
+    <published>2016-01-28T22:55:39.000Z</published>
+    <updated>2016-01-28T22:58:03.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
+<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</p>
+<p>You may assume that each input would have exactly one solution.</p>
+<p>Input: numbers={2, 7, 11, 15}, target=9<br>Output: index1=1, index2=2</p>
+<p><strong>Thinking:</strong></p>
+<p>We can use hash map to store the rest of nums[i], and if we find which number is equal to the rest beofore, their sum will be target.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int[] twoSum(int[] nums, int target){
+    HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+    int[] res = new int[2];
+
+    for (int i = 0; i &lt; nums.length; i++){
+        if (map.containsKey(nums[i])){
+            res[0] = map.get(nums[i]) + 1;
+            res[1] = i+1;
+            break;
+        }
+        else{
+            map.put(target-nums[i], i);
+        }
+    }
+
+    return res;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
+<p>]]>
+    </summary>
+    
+      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
+    
+      <category term="Hash Table" scheme="http://yoursite.com/tags/Hash-Table/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Game of Life(Java)]]></title>
+    <link href="http://yoursite.com/2016/01/28/Leetcode-Game-of-Life-Java/"/>
+    <id>http://yoursite.com/2016/01/28/Leetcode-Game-of-Life-Java/</id>
+    <published>2016-01-28T22:17:33.000Z</published>
+    <updated>2016-01-28T22:36:18.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>According to the Wikipedia’s article: “The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.”</p>
+<p>Given a board with m by n cells, each cell has an initial state live (1) or dead (0). Each cell interacts with its eight neighbors (horizontal, vertical, diagonal) using the following four rules (taken from the above Wikipedia article):</p>
+<p>Any live cell with fewer than two live neighbors dies, as if caused by under-population.<br>Any live cell with two or three live neighbors lives on to the next generation.<br>Any live cell with more than three live neighbors dies, as if by over-population..<br>Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.<br>Write a function to compute the next state (after one update) of the board given its current state.</p>
+<p>Follow up:<br>Could you solve it in-place? Remember that the board needs to be updated at the same time: You cannot update some cells first and then use their updated values to update other cells.<br>In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches the border of the array. How would you address these problems?</p>
+<p><strong>Thinkings:</strong></p>
+<p>It’s difficult quesiont, isn’t it? We have to fully understand when cell become live or dead and try to replace them in place. One solution is to present their status using bits, the first bit represents their current status and second bit represents their next status. For example:</p>
+<p>current status is live and next status will be dead is 01<br>current status is dead and next status will be live is 10</p>
+<p>And then we can get the current status by:</p>
+<pre><code>board[i][j] &amp; 1
+</code></pre><p>Get the finnaly status by:</p>
+<pre><code>board[i][j] &gt;&gt;= 1
+</code></pre><p><strong>Solution:</strong></p>
+<pre><code>public void gameOfLife(int[][] board) {
+    int m = board.length;
+    if (m == 0)
+        return;
+    int n = board[0].length;
+
+    //int[][] temp = new int[m][n];
+
+
+    for (int i = 0; i &lt; m; i++){
+        for (int j = 0; j &lt; n; j++){
+            int count = 0;
+            for (int p = -1; p &lt; 2; p++)
+                for (int q = -1; q &lt; 2; q++){
+                    if (i+p&gt;=0 &amp;&amp; i+p&lt;m &amp;&amp; j+q&gt;=0 &amp;&amp; j+q&lt;n &amp;&amp; !(p==0 &amp;&amp; q==0)){
+                        if ((board[i+p][j+q] &amp; 1) == 1)
+                            count++;
+                    }
+                }
+
+            if ((board[i][j] &amp; 1) == 0 &amp;&amp; count == 3){
+                //temp[i][j] = 1;
+                board[i][j] = 2;
+            }
+            else if ((board[i][j] &amp; 1) == 1 &amp;&amp; count &lt;=3 &amp;&amp; count &gt;= 2){
+                    board[i][j] = 3;
+
+            }
+        }
+    }
+
+    for (int i = 0; i &lt; m; i++){
+        for (int j = 0; j &lt; n; j++){
+            //board[i][j] = temp[i][j];
+            board[i][j] &gt;&gt;= 1;
+        }
+    }
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>According to the Wikipedia’s article: “The Game of Life, also known simply as Life, is a cellular autom]]>
+    </summary>
+    
+      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
+    
+      <category term="Bit Manipulation" scheme="http://yoursite.com/tags/Bit-Manipulation/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Letter Combinations of a Phone Number(Java)]]></title>
@@ -1047,7 +1164,7 @@ Go play games Martin you can finish writing python later
     <link href="http://yoursite.com/2016/01/24/Sort-Algorithms/"/>
     <id>http://yoursite.com/2016/01/24/Sort-Algorithms/</id>
     <published>2016-01-25T04:07:31.000Z</published>
-    <updated>2016-01-27T21:59:37.000Z</updated>
+    <updated>2016-01-28T22:58:08.000Z</updated>
     <content type="html"><![CDATA[<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
 <h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
 <p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
@@ -1132,7 +1249,35 @@ foreach (gap in gaps)
     }
 }
 </code></pre><hr>
-]]></content>
+<h2 id="Simple_Selection_Sort"><a href="#Simple_Selection_Sort" class="headerlink" title="Simple Selection Sort"></a>Simple Selection Sort</h2><p><strong>Main Idea:</strong></p>
+<p>Find the smallest(biggest) element in array, put it in the first place. Then find the second smallest… Do these until all the element are sorted.(I suppose it’s a little similar with bubble sort)</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
+<p><strong>Pesedocode:</strong></p>
+<pre><code>for i ← 1 to length(A) - 1
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+    end while
+end for
+</code></pre><p><strong>Complexity:</strong></p>
+<p><em>Runtime:</em> O(n^2)<br><em>Memery:</em> O(1)</p>
+<h2 id="Heapsort"><a href="#Heapsort" class="headerlink" title="Heapsort"></a>Heapsort</h2><p><strong>Main Idea:</strong></p>
+<p>Use data structure heap which will store the smallest or biggest value of the array. Then pick up the root of heap   once a time to sort. </p>
+<p>Heapsort is a comparison-based sorting algorithm. Heapsort can be thought of as an improved selection sort: like that algorithm, it divides its input into a sorted and an unsorted region, and it iteratively shrinks the unsorted region by extracting the largest element and moving that to the sorted region. The improvement consists of the use of a heap data structure rather than a linear-time search to find the maximum.</p>
+<p>This sort is the most important part in this article. I’ll talk about the relative operation and its performance and all the code.</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif" alt=""></p>
+<p>In the heap view(an example offered):</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Heapsort-example.gif" alt=""></p>
+<p><strong>Data Structure:</strong></p>
+<p>Heap:</p>
+<p>A heap is built out of the data. The heap is often placed in an array with the layout of a complete binary tree. The complete binary tree maps the binary tree structure into the array indices; each array index represents a node; the index of the node’s parent, left child branch, or right child branch are simple expressions. For a zero-based array, the root node is stored at index 0; if i is the index of the current node, then</p>
+<pre><code>iParent(i)     = floor((i-1) / 2)
+iLeftChild(i)  = 2*i + 1
+iRightChild(i) = 2*i + 2
+</code></pre>]]></content>
     <summary type="html">
     <![CDATA[<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort a]]>
     </summary>
@@ -1398,126 +1543,6 @@ foreach (gap in gaps)
     <![CDATA[<p><strong>Question:</strong></p>
 <p>Follow up for “Unique Paths”:</p>
 <p>Now consider if some obstacles are added to the grids. How many un]]>
-    </summary>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Unique Binary Search Trees II(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/"/>
-    <id>http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/</id>
-    <published>2016-01-25T00:07:06.000Z</published>
-    <updated>2016-01-27T21:59:56.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.</p>
-<p>For example,<br>Given n = 3, your program should return all 5 unique BST’s shown below.</p>
-<pre><code>1         3     3      2      1
- \       /     /      / \      \
-  3     2     1      1   3      2
- /     /       \                 \
-2     1         2                 3
-</code></pre><p><strong>Thinking:</strong> </p>
-<p>It’s a simple dynamic programming question. For n numbers, we should consider the situation that every one become the root, and delete it from the sets and do the same thing for their children.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public List&lt;TreeNode&gt; generateTrees(int n) {
-        return dp(1, n);
-    }
-
-    public List&lt;TreeNode&gt; dp(int low, int high){
-        List&lt;TreeNode&gt; res = new ArrayList&lt;TreeNode&gt;();
-        if (low == high){
-            TreeNode n = new TreeNode(low);
-            res.add(n);
-            return res;
-        }
-        for (int i = low; i &lt;= high; i++){
-            TreeNode n = new TreeNode(i);
-            if (i == low){
-                for (TreeNode p: dp(low+1, high)){
-                    n.right = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else if (i == high){
-                for (TreeNode p: dp(low, high-1)){
-                    n.left = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else{
-                for (TreeNode p: dp(low, i-1)){
-                    for (TreeNode q: dp(i+1, high)){
-                        n.left = p;
-                        n.right = q;
-                        res.add(n);
-                        n = new TreeNode(i);
-                    }
-                }
-            }
-        }
-
-        return res;
-    }
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.</p>
-<p>For]]>
-    </summary>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Bitwise AND of Numbers Range(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/"/>
-    <id>http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/</id>
-    <published>2016-01-24T23:09:04.000Z</published>
-    <updated>2016-01-27T22:00:01.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.</p>
-<p>For example, given the range [5, 7], you should return 4.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s bitwise operation question. Some other questions like are Single Number, Single Number II, Reverse Bits, Repeated DNA Sequences, Grey Code and so on and so forth. This question’s point is to find all the numbers between the range and use the bitwise AND on them. </p>
-<p>For example, in the range of [5, 7], there are three numbers:<br>101        110        111<br>Result of thier bitwise is 100. </p>
-<p>What’s more, in the example of [26, 30]:<br>11010        11011        11100        11101        11110<br>The result is 11000.</p>
-<p><em>Because bits are incresing from the right</em> (low digits), the left of all the numbers are not going to change in the process. The thing we need to do is finding the common part of the left. There are two solutions:</p>
-<p><strong>Solution1:</strong></p>
-<p>Idea: State a variable and make it all 1 in all digits. Make the variable left shift every time to check if it’s equal between m and n of their bitwise AND. Finally, the result of m bitwise AND with the variable is the answer.<br>Code:</p>
-<pre><code>class Solution {
-public int rangeBitwiseAnd(int m, int n) {
-        int d = Integer.MAX_VALUE;
-        while ((m &amp; d) != (n &amp; d)) {
-            d &lt;&lt;= 1;
-        }
-        return m &amp; d;
-    }
-};
-</code></pre><p><strong>Solution2:</strong></p>
-<p>Idea:Let m and n make left shift each time if they are different and record the times i they shift. When they are equal, the result of m left shift i is the answer.<br>Code:</p>
-<pre><code>class Solution {
-public int rangeBitwiseAnd(int m, int n) {
-        int i = 0;
-        while (m != n) {
-            m &gt;&gt;= 1;
-            n &gt;&gt;= 1;
-            ++i;
-        }
-        return (m &lt;&lt; i);
-    }
-};
-</code></pre><p>Reference: <a href="http://www.cnblogs.com/grandyang/p/4431646.html" target="_blank" rel="external">http://www.cnblogs.com/grandyang/p/4431646.html</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in]]>
     </summary>
     
       <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
