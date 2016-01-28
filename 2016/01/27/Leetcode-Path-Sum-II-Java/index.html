@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Node.js study note | Martin&#39;s Blog</title>
+  <title>Leetcode-Path Sum II(Java) | Martin&#39;s Blog</title>
   <meta name="author" content="Martin">
   
   <meta name="description" content="A rookie write something just for fun.">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Node.js study note"/>
+  <meta property="og:title" content="Leetcode-Path Sum II(Java)"/>
   <meta property="og:site_name" content="Martin&#39;s Blog"/>
 
   
@@ -90,7 +90,7 @@
 
 	
 		<div class="page-header">		
-			<h1> Node.js study note</h1>
+			<h1> Leetcode-Path Sum II(Java)</h1>
 		</div>		
 	
 
@@ -107,90 +107,96 @@
 	<div class="mypage">		
 	  		
 
-	  <p><strong>Survey:</strong></p>
-<p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
-<p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
-<hr>
-<p><strong>Content:</strong></p>
-<p>–1– Argument variables with process.argv</p>
-<pre><code>app.js
+	  <p><strong>Question:</strong></p>
+<p>Given a binary tree and a sum, find all root-to-leaf paths where each path’s sum equals the given sum.</p>
+<p>For example:<br>Given the below binary tree and sum = 22,</p>
+<pre><code>      5
+     / \
+    4   8
+   /   / \
+  11  13  4
+ /  \    / \
+7    2  5   1
+</code></pre><p>return</p>
+<pre><code>[
+      [5,4,11,2],
+       [5,8,4,5]
+]
+</code></pre><p><strong>Thinking:</strong></p>
+<p>We should use classic dfs method to solve this problem and record all the results.</p>
+<p><strong>Solution:</strong></p>
+<p>But my first version of solution is time limit exceeded:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int sum) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
 
-function grab(flag){
-    var index = process.argv.indexOf(flag);
-    return (index === -1) ? null : process.argv[index+1];
+    return dp(root, sum, res);
 }
 
-var greeting = grab(&apos;--greeting&apos;);
-var user = grab(&apos;--user&apos;);
-
-if (!user || !greeting) {
-    console.log(&quot;You blew it!&quot;);
-} else {
-    console.log(`Welcome, ${user}, ${greeting}`);
-}
-</code></pre><p>In this code, we grab the arguments from shell and print it out on the console.</p>
-<p>For example, if in the shell:</p>
-<pre><code>$node app --user Martin --greeting &quot;hello hello&quot;
-</code></pre><p>Then in the console:</p>
-<pre><code>Welcome, Martin, hello hello
-</code></pre><p>And in this code, I also learned string temple which uses backticks<code>.</code>Welcome, ${user}, ${greeting}` will contain variable user and greeting.</p>
-<hr>
-<p>–2– Standard input and standard output</p>
-<pre><code> var questions = [
-&quot;What is your name?&quot;,
-&quot;What is your favorite hobby?&quot;,
-&quot;What is your preferred programming language?&quot;
-];
-
-var answers = [];
-
-function ask(i) {
-    process.stdout.write(`\n\n\n\n ${questions[i]}`);
-    process.stdout.write(&quot;  &gt;  &quot;);
-}
-
-process.stdin.on(&apos;data&apos;, function(data){
-
-    answers.push(data.toString().trim());
-
-    if (answers.length &lt; questions.length) {
-        ask(answers.length);
-    } else {
-        process.exit();
+private List&lt;List&lt;Integer&gt;&gt; dp(TreeNode root, int sum, List&lt;Integer&gt; cur){
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    if (root == null)
+        return null;
+    if (root.left == null &amp;&amp; root.right == null){
+        if (root.val == sum){
+            cur.add(root.val);
+            res.add(cur);
+            return res;
+        }
+        else{
+            return res;
+        }
     }
-});
+    for (List&lt;Integer&gt; ele: dp(root.left, sum-root.val, cur)){
+        if (ele != null){
+            ele.add(0, root.val);
+            res.add(ele);
+        }
+    }
+    for (List&lt;Integer&gt; ele: dp(root.right, sum-root.val, cur)){
+        if (ele != null){
+            ele.add(0, root.val);
+            res.add(ele);
+        }
+    }
 
-process.on(&apos;exit&apos;, function(){
+    return res;
+}
+</code></pre><p>Then I have to improve the effiency of this algorithm, and the code is below:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int sum) {
+    List&lt;Integer&gt; cur = new ArrayList&lt;Integer&gt;();
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
 
-    process.stdout.write(&quot;\n\n\n\n&quot;);
+    dp(root, sum, cur, res);
 
-    process.stdout.write(`Go ${answers[1]} ${answers[0]} you can finish writing ${answers[2]} later`);
+    return res;
+}
 
-    process.stdout.write(&quot;\n\n\n\n&quot;);
+private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt;Integer&gt;&gt; res){
+    if (root == null)
+        return;
+    //preorder dfs
 
-});
-
-ask(0);
-</code></pre><p>In the shell:</p>
-<pre><code>What is your name?  &gt;  Martin
-
-
-
-
- What is your favorite hobby?  &gt;  play games
-
-
-
-
- What is your preferred programming language?  &gt;  python
-
-
-
-
-Go play games Martin you can finish writing python later
-</code></pre><p>Is that funny:)?</p>
-<hr>
-<p>–3– Globla timing functions</p>
+    sum -= root.val;
+    if (root.left == null &amp;&amp; root.right == null){
+        if (sum == 0){
+            cur.add(root.val);
+            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+            tempres.addAll(cur);
+            res.add(tempres);
+            cur.remove(cur.size() - 1);
+        }
+        return;
+    }
+    cur.add(root.val);
+    if (root.left != null){
+        dp(root.left, sum, cur, res);
+    }
+    if (root.right != null){
+        dp(root.right, sum, cur, res);
+    }
+    cur.remove(cur.size() - 1);
+}
+</code></pre><p>It’s very importatn to create a new List while put the current list data to final result, becuase if not we will only copy the address of this variable cur. Then it will be incorrect if we revise cur.</p>
 	  
 	</div>
 
@@ -200,13 +206,13 @@ Go play games Martin you can finish writing python later
 <ul class="pagination">
 	 
 				
-    	<li class="prev"><a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
+    	<li class="prev"><a href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
   		
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+		   <li class="next"><a href="/2016/01/27/hello-world/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -237,7 +243,7 @@ Go play games Martin you can finish writing python later
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2016-01-25 
+	2016-01-27 
 	</div>
 	
 
@@ -248,7 +254,7 @@ Go play games Martin you can finish writing python later
     <ul id="categorys" class="tag_box list-unstyled collapse in">
           
   <li>
-    <li><a href="/categories/Web/">Web<span>1</span></a></li>
+    <li><a href="/categories/Leetcode/">Leetcode<span>16</span></a></li>
   </li>
 
     </ul>

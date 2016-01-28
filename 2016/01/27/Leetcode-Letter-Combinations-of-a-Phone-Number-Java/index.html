@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Node.js study note | Martin&#39;s Blog</title>
+  <title>Leetcode-Letter Combinations of a Phone Number(Java) | Martin&#39;s Blog</title>
   <meta name="author" content="Martin">
   
   <meta name="description" content="A rookie write something just for fun.">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Node.js study note"/>
+  <meta property="og:title" content="Leetcode-Letter Combinations of a Phone Number(Java)"/>
   <meta property="og:site_name" content="Martin&#39;s Blog"/>
 
   
@@ -90,7 +90,7 @@
 
 	
 		<div class="page-header">		
-			<h1> Node.js study note</h1>
+			<h1> Leetcode-Letter Combinations of a Phone Number(Java)</h1>
 		</div>		
 	
 
@@ -107,91 +107,80 @@
 	<div class="mypage">		
 	  		
 
-	  <p><strong>Survey:</strong></p>
-<p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
-<p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
-<hr>
-<p><strong>Content:</strong></p>
-<p>–1– Argument variables with process.argv</p>
-<pre><code>app.js
+	  <p><strong>Question:</strong></p>
+<p>Given a digit string, return all possible letter combinations that the number could represent.</p>
+<p>A mapping of digit to letters (just like on the telephone buttons) is given below.</p>
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png" alt=""></p>
+<pre><code>Input:Digit string &quot;23&quot;
+Output: [&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;be&quot;, &quot;bf&quot;, &quot;cd&quot;, &quot;ce&quot;, &quot;cf&quot;].
+</code></pre><p>Note:<br>Although the above answer is in lexicographical order, your answer could be in any order you want.</p>
+<p><strong>Thinking:</strong></p>
+<p>We should get all the possiblities of the comibination so we need use backtracing.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
-function grab(flag){
-    var index = process.argv.indexOf(flag);
-    return (index === -1) ? null : process.argv[index+1];
-}
+public class Solution {
+    static private Map&lt;Character, char[]&gt; hmap = new HashMap&lt;Character, char[]&gt;();
 
-var greeting = grab(&apos;--greeting&apos;);
-var user = grab(&apos;--user&apos;);
+    private Character two = new Character(&apos;2&apos;);
+    private char[] twoC = {&apos;a&apos;, &apos;b&apos;, &apos;c&apos;};
+    private Character three = new Character(&apos;3&apos;);
+    private char[] threeC = {&apos;d&apos;, &apos;e&apos;, &apos;f&apos;};
+    private Character four = new Character(&apos;4&apos;);
+    private char[] fourC = {&apos;g&apos;, &apos;h&apos;, &apos;i&apos;};
+    private Character five = new Character(&apos;5&apos;);
+    private char[] fiveC = {&apos;j&apos;, &apos;k&apos;, &apos;l&apos;};
+    private Character six = new Character(&apos;6&apos;);
+    private char[] sixC = {&apos;m&apos;, &apos;n&apos;, &apos;o&apos;};
+    private Character seven = new Character(&apos;7&apos;);
+    private char[] sevenC = {&apos;p&apos;, &apos;q&apos;, &apos;r&apos;, &apos;s&apos;};
+    private Character eight = new Character(&apos;8&apos;);
+    private char[] eightC = {&apos;t&apos;, &apos;u&apos;, &apos;v&apos;};
+    private Character nine = new Character(&apos;9&apos;);
+    private char[] nineC = {&apos;w&apos;, &apos;x&apos;, &apos;y&apos;, &apos;z&apos;};
 
-if (!user || !greeting) {
-    console.log(&quot;You blew it!&quot;);
-} else {
-    console.log(`Welcome, ${user}, ${greeting}`);
-}
-</code></pre><p>In this code, we grab the arguments from shell and print it out on the console.</p>
-<p>For example, if in the shell:</p>
-<pre><code>$node app --user Martin --greeting &quot;hello hello&quot;
-</code></pre><p>Then in the console:</p>
-<pre><code>Welcome, Martin, hello hello
-</code></pre><p>And in this code, I also learned string temple which uses backticks<code>.</code>Welcome, ${user}, ${greeting}` will contain variable user and greeting.</p>
-<hr>
-<p>–2– Standard input and standard output</p>
-<pre><code> var questions = [
-&quot;What is your name?&quot;,
-&quot;What is your favorite hobby?&quot;,
-&quot;What is your preferred programming language?&quot;
-];
-
-var answers = [];
-
-function ask(i) {
-    process.stdout.write(`\n\n\n\n ${questions[i]}`);
-    process.stdout.write(&quot;  &gt;  &quot;);
-}
-
-process.stdin.on(&apos;data&apos;, function(data){
-
-    answers.push(data.toString().trim());
-
-    if (answers.length &lt; questions.length) {
-        ask(answers.length);
-    } else {
-        process.exit();
+    public Solution(){
+        hmap.put(two, twoC);
+        hmap.put(three, threeC);
+        hmap.put(four, fourC);
+        hmap.put(five, fiveC);
+        hmap.put(six, sixC);
+        hmap.put(seven, sevenC);
+        hmap.put(eight, eightC);
+        hmap.put(nine, nineC);
     }
-});
 
-process.on(&apos;exit&apos;, function(){
+    public List&lt;String&gt; letterCombinations(String digits) {
+        List&lt;String&gt; res = new ArrayList&lt;String&gt;();
 
-    process.stdout.write(&quot;\n\n\n\n&quot;);
+        backTracing(digits, 0, &quot;&quot;, res);
 
-    process.stdout.write(`Go ${answers[1]} ${answers[0]} you can finish writing ${answers[2]} later`);
+        return res;
+    }
 
-    process.stdout.write(&quot;\n\n\n\n&quot;);
-
-});
-
-ask(0);
-</code></pre><p>In the shell:</p>
-<pre><code>What is your name?  &gt;  Martin
-
-
-
-
- What is your favorite hobby?  &gt;  play games
+    private void backTracing(String digits, int index, String cur, List&lt;String&gt; res){
+        int l = digits.length();
+        if (l == 0)
+            return;
+        if (index == l){
+            res.add(cur);
+            return;
+        }
 
 
+        Character tmpc = new Character(digits.charAt(index));
+        if(hmap.containsKey(tmpc)){
+            for (char c :hmap.get(tmpc)){
+                backTracing(digits, index+1, cur+c, res);
+            }
+        }
 
-
- What is your preferred programming language?  &gt;  python
-
-
-
-
-Go play games Martin you can finish writing python later
-</code></pre><p>Is that funny:)?</p>
-<hr>
-<p>–3– Globla timing functions</p>
-	  
+    }
+}
+</code></pre>	  
 	</div>
 
 	<div>
@@ -199,14 +188,14 @@ Go play games Martin you can finish writing python later
 	<div class="pagination">
 <ul class="pagination">
 	 
-				
-    	<li class="prev"><a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
-  		
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
+        
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+		   <li class="next"><a href="/2016/01/27/Leetcode-Path-Sum-II-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -237,7 +226,7 @@ Go play games Martin you can finish writing python later
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2016-01-25 
+	2016-01-27 
 	</div>
 	
 
@@ -248,7 +237,7 @@ Go play games Martin you can finish writing python later
     <ul id="categorys" class="tag_box list-unstyled collapse in">
           
   <li>
-    <li><a href="/categories/Web/">Web<span>1</span></a></li>
+    <li><a href="/categories/Leetcode/">Leetcode<span>16</span></a></li>
   </li>
 
     </ul>

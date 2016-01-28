@@ -4,6 +4,181 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode-Letter Combinations of a Phone Number(Java)]]></title>
+      <url>http://yoursite.com/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a digit string, return all possible letter combinations that the number could represent.</p>
+<p>A mapping of digit to letters (just like on the telephone buttons) is given below.</p>
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png" alt=""></p>
+<pre><code>Input:Digit string &quot;23&quot;
+Output: [&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;be&quot;, &quot;bf&quot;, &quot;cd&quot;, &quot;ce&quot;, &quot;cf&quot;].
+</code></pre><p>Note:<br>Although the above answer is in lexicographical order, your answer could be in any order you want.</p>
+<p><strong>Thinking:</strong></p>
+<p>We should get all the possiblities of the comibination so we need use backtracing.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
+public class Solution {
+    static private Map&lt;Character, char[]&gt; hmap = new HashMap&lt;Character, char[]&gt;();
+
+    private Character two = new Character(&apos;2&apos;);
+    private char[] twoC = {&apos;a&apos;, &apos;b&apos;, &apos;c&apos;};
+    private Character three = new Character(&apos;3&apos;);
+    private char[] threeC = {&apos;d&apos;, &apos;e&apos;, &apos;f&apos;};
+    private Character four = new Character(&apos;4&apos;);
+    private char[] fourC = {&apos;g&apos;, &apos;h&apos;, &apos;i&apos;};
+    private Character five = new Character(&apos;5&apos;);
+    private char[] fiveC = {&apos;j&apos;, &apos;k&apos;, &apos;l&apos;};
+    private Character six = new Character(&apos;6&apos;);
+    private char[] sixC = {&apos;m&apos;, &apos;n&apos;, &apos;o&apos;};
+    private Character seven = new Character(&apos;7&apos;);
+    private char[] sevenC = {&apos;p&apos;, &apos;q&apos;, &apos;r&apos;, &apos;s&apos;};
+    private Character eight = new Character(&apos;8&apos;);
+    private char[] eightC = {&apos;t&apos;, &apos;u&apos;, &apos;v&apos;};
+    private Character nine = new Character(&apos;9&apos;);
+    private char[] nineC = {&apos;w&apos;, &apos;x&apos;, &apos;y&apos;, &apos;z&apos;};
+
+    public Solution(){
+        hmap.put(two, twoC);
+        hmap.put(three, threeC);
+        hmap.put(four, fourC);
+        hmap.put(five, fiveC);
+        hmap.put(six, sixC);
+        hmap.put(seven, sevenC);
+        hmap.put(eight, eightC);
+        hmap.put(nine, nineC);
+    }
+
+    public List&lt;String&gt; letterCombinations(String digits) {
+        List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+        backTracing(digits, 0, &quot;&quot;, res);
+
+        return res;
+    }
+
+    private void backTracing(String digits, int index, String cur, List&lt;String&gt; res){
+        int l = digits.length();
+        if (l == 0)
+            return;
+        if (index == l){
+            res.add(cur);
+            return;
+        }
+
+
+        Character tmpc = new Character(digits.charAt(index));
+        if(hmap.containsKey(tmpc)){
+            for (char c :hmap.get(tmpc)){
+                backTracing(digits, index+1, cur+c, res);
+            }
+        }
+
+    }
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Path Sum II(Java)]]></title>
+      <url>http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a binary tree and a sum, find all root-to-leaf paths where each path’s sum equals the given sum.</p>
+<p>For example:<br>Given the below binary tree and sum = 22,</p>
+<pre><code>      5
+     / \
+    4   8
+   /   / \
+  11  13  4
+ /  \    / \
+7    2  5   1
+</code></pre><p>return</p>
+<pre><code>[
+      [5,4,11,2],
+       [5,8,4,5]
+]
+</code></pre><p><strong>Thinking:</strong></p>
+<p>We should use classic dfs method to solve this problem and record all the results.</p>
+<p><strong>Solution:</strong></p>
+<p>But my first version of solution is time limit exceeded:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int sum) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+
+    return dp(root, sum, res);
+}
+
+private List&lt;List&lt;Integer&gt;&gt; dp(TreeNode root, int sum, List&lt;Integer&gt; cur){
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    if (root == null)
+        return null;
+    if (root.left == null &amp;&amp; root.right == null){
+        if (root.val == sum){
+            cur.add(root.val);
+            res.add(cur);
+            return res;
+        }
+        else{
+            return res;
+        }
+    }
+    for (List&lt;Integer&gt; ele: dp(root.left, sum-root.val, cur)){
+        if (ele != null){
+            ele.add(0, root.val);
+            res.add(ele);
+        }
+    }
+    for (List&lt;Integer&gt; ele: dp(root.right, sum-root.val, cur)){
+        if (ele != null){
+            ele.add(0, root.val);
+            res.add(ele);
+        }
+    }
+
+    return res;
+}
+</code></pre><p>Then I have to improve the effiency of this algorithm, and the code is below:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int sum) {
+    List&lt;Integer&gt; cur = new ArrayList&lt;Integer&gt;();
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+
+    dp(root, sum, cur, res);
+
+    return res;
+}
+
+private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt;Integer&gt;&gt; res){
+    if (root == null)
+        return;
+    //preorder dfs
+
+    sum -= root.val;
+    if (root.left == null &amp;&amp; root.right == null){
+        if (sum == 0){
+            cur.add(root.val);
+            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+            tempres.addAll(cur);
+            res.add(tempres);
+            cur.remove(cur.size() - 1);
+        }
+        return;
+    }
+    cur.add(root.val);
+    if (root.left != null){
+        dp(root.left, sum, cur, res);
+    }
+    if (root.right != null){
+        dp(root.right, sum, cur, res);
+    }
+    cur.remove(cur.size() - 1);
+}
+</code></pre><p>It’s very importatn to create a new List while put the current list data to final result, becuase if not we will only copy the address of this variable cur. Then it will be incorrect if we revise cur.</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Hello World]]></title>
       <url>http://yoursite.com/2016/01/27/hello-world/</url>
       <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
