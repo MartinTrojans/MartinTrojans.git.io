@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Leetcode-3Sum Closest(Java) | Martin&#39;s Blog</title>
+  <title>Leetcode-Binary Tree Zigzag Level Order Traversal(Java) | Martin&#39;s Blog</title>
   <meta name="author" content="Martin">
   
   <meta name="description" content="A rookie write something just for fun.">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Leetcode-3Sum Closest(Java)"/>
+  <meta property="og:title" content="Leetcode-Binary Tree Zigzag Level Order Traversal(Java)"/>
   <meta property="og:site_name" content="Martin&#39;s Blog"/>
 
   
@@ -90,7 +90,7 @@
 
 	
 		<div class="page-header">		
-			<h1> Leetcode-3Sum Closest(Java)</h1>
+			<h1> Leetcode-Binary Tree Zigzag Level Order Traversal(Java)</h1>
 		</div>		
 	
 
@@ -108,40 +108,59 @@
 	  		
 
 	  <p><strong>Question:</strong></p>
-<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
-<p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
-<p>The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</p>
-<p><strong>Thinking:</strong></p>
-<p>In order to improve the performance of algorithm, we should sort the array. Because of that, we can determine where to go using current result.</p>
+<p>Given a binary tree, return the zigzag level order traversal of its nodes’ values. (ie, from left to right, then right to left for the next level and alternate between).</p>
+<p>For example:<br>Given binary tree {3,9,20,#,#,15,7},</p>
+<pre><code>  3
+ / \
+9  20
+  /  \
+ 15   7
+</code></pre><p>return its zigzag level order traversal as:</p>
+<pre><code>[
+  [3],
+  [20,9],
+  [15,7]
+]
+</code></pre><p><strong>Thinking:</strong></p>
+<p>It’s a BFS problem. It’s fine if we need use queue, but because we have to record as a zigzag order, it’s more efficient to use stack. What’s more, we should to notice the order of left and right child.</p>
 <p><strong>Solution:</strong></p>
-<pre><code>public int threeSumClosest(int[] nums, int target) {
-    int l = nums.length;
-    if (l &lt; 3)
-        return 0;
-    int min = Integer.MAX_VALUE;
-    int res = 0;
-    Arrays.sort(nums);
-
-    for (int i = 0; i &lt; l; i++){
-        int j = i + 1;
-        int k = l - 1;
-
-        while (j &lt; k){
-            int sum = nums[i] + nums[j] + nums[k];
-            if (sum == target)
-                return sum;
-            int diff = Math.abs(sum - target);
-            if (diff &lt; min){
-                min = diff;
-                res = sum;
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; zigzagLevelOrder(TreeNode root) {
+    int flag = 0;
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+    Stack&lt;TreeNode&gt; tempstack = new Stack&lt;TreeNode&gt;();
+    if (root == null)
+        return res;
+    stack.add(root);
+    while (!stack.isEmpty() || !tempstack.isEmpty()){
+        tempstack = new Stack&lt;TreeNode&gt;();
+        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+        while (!stack.isEmpty()){
+            TreeNode node = stack.pop();
+            tempres.add(node.val);
+            if (flag == 0){
+                if (node.left != null){
+                    tempstack.add(node.left);
+                }
+                if (node.right != null){
+                    tempstack.add(node.right);
+                }
             }
-            if (sum &gt; target)
-                k--;
-            else
-                j++;
-        }
+            else{
+                if (node.right != null){
+                    tempstack.add(node.right);
+                }
+                if (node.left != null){
+                    tempstack.add(node.left);
+                }
+            }
 
+        }
+        res.add(tempres);
+        stack.addAll(tempstack);
+        flag ^= 1;
     }
+
     return res;
 }
 </code></pre>	  
@@ -152,14 +171,14 @@
 	<div class="pagination">
 <ul class="pagination">
 	 
-				
-    	<li class="prev"><a href="/2016/01/26/Leetcode-Jump-Game-Java/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
-  		
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
+        
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+		   <li class="next"><a href="/2016/01/30/Leetcode-4Sum-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -190,7 +209,7 @@
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2016-01-26 
+	2016-01-30 
 	</div>
 	
 
@@ -209,6 +228,14 @@
 	
 
 	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/BFS/">BFS<span>1</span></a></li>
+    </ul>
+	</div>
 		
 
 	<!-- toc -->

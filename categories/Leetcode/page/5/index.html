@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Leetcode-3Sum Closest(Java) | Martin&#39;s Blog</title>
+  <title>第 5 頁 | Leetcode | Martin&#39;s Blog</title>
   <meta name="author" content="Martin">
   
   <meta name="description" content="A rookie write something just for fun.">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Leetcode-3Sum Closest(Java)"/>
+  
   <meta property="og:site_name" content="Martin&#39;s Blog"/>
 
   
@@ -87,154 +87,143 @@
   	<div class="content">
     	 
 
-
-	
-		<div class="page-header">		
-			<h1> Leetcode-3Sum Closest(Java)</h1>
-		</div>		
-	
-
-
-
-<div class="row post">
-	<!-- cols -->
-	
-	<div id="top_meta"></div>
-	<div class="col-md-9">
-	
-
-	<!-- content -->
-	<div class="mypage">		
-	  		
-
-	  <p><strong>Question:</strong></p>
-<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
-<p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
-<p>The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</p>
-<p><strong>Thinking:</strong></p>
-<p>In order to improve the performance of algorithm, we should sort the array. Because of that, we can determine where to go using current result.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int threeSumClosest(int[] nums, int target) {
-    int l = nums.length;
-    if (l &lt; 3)
-        return 0;
-    int min = Integer.MAX_VALUE;
-    int res = 0;
-    Arrays.sort(nums);
-
-    for (int i = 0; i &lt; l; i++){
-        int j = i + 1;
-        int k = l - 1;
-
-        while (j &lt; k){
-            int sum = nums[i] + nums[j] + nums[k];
-            if (sum == target)
-                return sum;
-            int diff = Math.abs(sum - target);
-            if (diff &lt; min){
-                min = diff;
-                res = sum;
-            }
-            if (sum &gt; target)
-                k--;
-            else
-                j++;
-        }
-
-    }
-    return res;
-}
-</code></pre>	  
-	</div>
-
-	<div>
-  	<center>
-	<div class="pagination">
-<ul class="pagination">
-	 
-				
-    	<li class="prev"><a href="/2016/01/26/Leetcode-Jump-Game-Java/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
-  		
-
-        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
-
-		
-		   <li class="next"><a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
-        
-	
-</ul>
+<!-- title -->
+<div class="page-header">
+  <h1 class="archive-title-category">Leetcode</h1>
 </div>
 
-    </center>
-	</div>
-	
-	<!-- comment -->
-	
-<section id="comment">
-  <h2 class="title">留言</h2>
-
+<div class="row page">
+  <!-- cols -->
   
-  	 <div id="disqus_thread">
-     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  	 </div>
-  
-</section>
+  <div class="col-md-9">
+	
 
-	</div> <!-- col-md-9/col-md-12 -->
+	  <div id="top_search"></div>
+
+	  <div class="archive">
 		
-	
-	<div id="side_meta">
-		<div class="col-md-3" id="post_meta"> 
+		
+		
+			
+			
+			<h4 class="archive-ul" data-toggle="collapse" data-target="#2016">2016<b class="caret"></b></h4>
+			<ul id="2016" class="collapse in">
+			
+		
+		<li class="listing-item">
+		<span class="date_class"> 2016-01-24 </span> &raquo;
+		
+		   <span class="title"><a href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" >Leetcode-Bitwise AND of Numbers Range(Java)</a></span>
+		
+		</li>			
+		
+		</ul>
+		</div>
 
-	<!-- date -->
+</div> <!-- col-md-9/col-md-12 -->
+
+
+<div class="col-md-3">
+	<div id="sidebar">
 	
-	<div class="meta-widget">
-	<i class="fa fa-clock-o"></i>
-	2016-01-26 
+			
+  <div id="site_search">
+   <div class="form-group">
+    <input type="text" id="local-search-input" name="q" results="0" placeholder="搜尋" class="st-search-input st-default-search-input form-control"/>
+   </div>  
+  <div id="local-search-result"></div>
+  </div>
+
+
+		
+			
+	<div class="widget">
+		<h4>分類</h4>
+		<ul class="tag_box inline list-unstyled">
+		
+			<li><a href="/categories/Algorithm/">Algorithm<span>1</span></a></li>
+		
+			<li><a href="/categories/Leetcode/">Leetcode<span>21</span></a></li>
+		
+			<li><a href="/categories/Network/">Network<span>1</span></a></li>
+		
+			<li><a href="/categories/Web/">Web<span>1</span></a></li>
+		
+			<li><a href="/categories/uncategoried/">uncategoried<span>1</span></a></li>
+		
+		</ul>
 	</div>
-	
 
-	<!-- categories -->
+		
+			
+	<div class="widget">
+		<h4>標籤雲</h4>
+		<ul class="tag_box inline list-unstyled">		
+		
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>4</span></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+		
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+		 
+		</ul>
+	</div>
+
+
+		
+			
+<div class="widget">
+  <h4>最新文章</h4>
+  <ul class="entry list-unstyled">
     
-	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
-    <ul id="categorys" class="tag_box list-unstyled collapse in">
-          
-  <li>
-    <li><a href="/categories/Leetcode/">Leetcode<span>21</span></a></li>
-  </li>
+      <li>
+        <a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" ><i class="fa fa-file-o"></i>Leetcode-Binary Tree Zigzag...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/30/Leetcode-4Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-4Sum(Java)...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/28/Leetcode-3Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-3Sum(Java)...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/28/Leetcode-Two-Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-Two Sum(Java)...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/28/Leetcode-Game-of-Life-Java/" ><i class="fa fa-file-o"></i>Leetcode-Game of Life(Java)...</a>
+      </li>
+    
+  </ul>
+</div>
 
-    </ul>
-	</div>
-	
-
-	<!-- tags -->
 		
+			
+<div class="widget">
+	<h4>鏈接</h4>
+	<ul class="blogroll list-unstyled">
+	
+		<li><i class="fa fa-github"></i><a href="https://github.com/wzpan/hexo-theme-freemind" title="Freemind's Github repository." target="_blank"]);">Freemind</a></li>
+	
+		<li><i class="fa fa-github"></i><a href="https://github.com/MartinTrojans" title="My Github account." target="_blank"]);">My Github</a></li>
+	
+		<li><i class="fa fa-linkedin"></i><a href="http://www.linkedin.com/in/hahack" title="My Linkin account." target="_blank"]);">My LinkedIn</a></li>
+	
+	</ul>
+</div>
 
-	<!-- toc -->
-	<div class="meta-widget">
-	
-	</div>
-	
-    <hr>
-	
-</div><!-- col-md-3 -->
 
-	</div>
 		
+	</div> <!-- sidebar -->
+</div> <!-- col-md-3 -->
 
-</div><!-- row -->
-
-<script type="text/javascript">
-var disqus_shortname = 'communitydeveloper';
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-</script>
 
 
 

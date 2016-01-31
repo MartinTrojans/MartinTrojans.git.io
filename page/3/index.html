@@ -109,6 +109,237 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-01-26 </div>
+			<div class="article-title"><a href="/2016/01/26/HTTP-method-get-and-post/" >HTTP method: get and post</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>HTTP:</strong></p>
+<p>HTTP is the foundation of data commnication of the World Wide Web. The basic work method of http is request and response.</p>
+<p>There are two methods of HTTP request: Get and Post.</p>
+<p>Get - get request data from specific source.<br>Post - Push data which will be dealed to specific source.</p>
+<p><strong>GET:</strong></p>
+<p>Note that the query string (name/value pairs) is sent in the URL of a GET request:</p>
+<pre><code>http://www.w3schools.com/tags/ref_httpmethods.asp
+</code></pre><p>Some other notes on GET requests:</p>
+<p>GET requests can be cached</p>
+<p>GET requests remain in the browser history</p>
+<p>GET requests can be bookmarked</p>
+<p>GET requests should never be used when dealing with sensitive data</p>
+<p>GET requests have length restrictions</p>
+<p>GET requests should be used only to retrieve data</p>
+<p><strong>POST:</strong></p>
+<p>Note that the query string (name/value pairs) is sent in the HTTP message body of a POST request:</p>
+<pre><code>POST /test/demo_form.asp HTTP/1.1
+Host: w3schools.com
+name1=value1&amp;name2=value2
+</code></pre><p>Some other notes on POST requests:</p>
+<p>POST requests are never cached</p>
+<p>POST requests do not remain in the browser history</p>
+<p>POST requests cannot be bookmarked</p>
+<p>POST requests have no restrictions on data length</p>
+<p><strong>Compare GET vs. POST:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tables</th>
+<th style="text-align:center">GET</th>
+<th style="text-align:right">POST</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BACK button/Reload</td>
+<td style="text-align:center">Harmless</td>
+<td style="text-align:right">Data will be re-submitted</td>
+</tr>
+<tr>
+<td>Bookmarked</td>
+<td style="text-align:center">can be bookmarked</td>
+<td style="text-align:right">Can not be bookmarked</td>
+</tr>
+<tr>
+<td>Cached</td>
+<td style="text-align:center">Can be cached</td>
+<td style="text-align:right">Can not be cached</td>
+</tr>
+<tr>
+<td>History</td>
+<td style="text-align:center">Parameters remain in browser history</td>
+<td style="text-align:right">Parameters are not saved in browser history</td>
+</tr>
+<tr>
+<td>Restrictions on data length</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:right">No</td>
+</tr>
+<tr>
+<td>Security</td>
+<td style="text-align:center">Less secure</td>
+<td style="text-align:right">Safer</td>
+</tr>
+<tr>
+<td>Visibility</td>
+<td style="text-align:center">Visible</td>
+<td style="text-align:right">Not visible in URL</td>
+</tr>
+</tbody>
+</table>
+<p>Reference: <a href="http://www.w3schools.com/tags/ref_httpmethods.asp" target="_blank" rel="external">http://www.w3schools.com/tags/ref_httpmethods.asp</a></p>
+
+	
+	</div>
+  <a type="button" href="/2016/01/26/HTTP-method-get-and-post/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-26 </div>
+			<div class="article-title"><a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" >Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
+<p><strong>Thinking:</strong></p>
+<p>This question is similar with Construct Binary Tree from Inorder and Postorder Traversal. We should understand the differences and the sequences of these three methods. And divide into three parts- root, left child and right child.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int l = preorder.length;
+    if (l == 0)
+        return null;
+
+
+    return dp(preorder, inorder, 0, l-1, 0, l-1);
+    }
+
+    private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if (preStart &gt; preEnd || preEnd &gt;= preorder.length || inEnd &gt;= preorder.length)
+        return null;
+    TreeNode root = new TreeNode(preorder[preStart]);
+    int index = inStart;
+    for (; index &lt; inEnd; index++){
+        if (inorder[index] == preorder[preStart])
+            break;
+    }
+
+    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
+    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
+    root.left = left;
+    root.right = right;
+
+    return root;
+}    
+</code></pre><p>This method can be improved by using HashMap to make it faster when fiding the index of root.<br>Reference:<a href="http://blog.csdn.net/linhuanmars/article/details/24389549" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24389549</a><br>Code:</p>
+<pre><code>static HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int l = preorder.length;
+    if (l == 0)
+        return null;
+    for (int i = 0; i &lt; l; i++)
+        map.put(inorder[i], i);
+
+    return dp(preorder, inorder, 0, l-1, 0, l-1);
+}
+
+private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if (preStart &gt; preEnd || inStart &gt; inEnd)
+        return null;
+    TreeNode root = new TreeNode(preorder[preStart]);
+
+    int index = map.get(preorder[preStart]);
+
+    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
+    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
+    root.left = left;
+    root.right = right;
+
+    return root;
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-26 </div>
+			<div class="article-title"><a href="/2016/01/26/Leetcode-Pow-x-n-Java/" >Leetcode-Pow(x, n)(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Implement pow(x, n).</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s a simple but not simple question. There are many solutions for this problem. But how can we find the most effienct one. We can use recursion to reduce the times of multipling and check the bound of data to reduce the times of recursions. Finally, the code is below:</p>
+<pre><code>static boolean negflag = false;
+public double myPow(double x, int n) {
+    if (n &lt; 0){
+        negflag = true;
+        return 1 / dp(x, -n);
+    }
+    else
+        return dp(x, n);
+
+}
+private double dp(double x, int n){
+    if (n == 0)
+        return 1;
+    if (n == 1)
+        return x;
+    if (n == 2)
+        return x * x;
+
+    int m = n / 2;
+    int k = n % 2;
+    double v = dp(x, m);
+    if (negflag == true &amp;&amp; v &gt; 100000)
+        return 100000;
+    if (negflag == false &amp;&amp; v &lt; 0.00001)
+        return 0;
+
+    if (k == 0)
+        return v * v;
+    else
+        return v * v * x;
+}
+</code></pre><p>By the way, I have to metion that my python solution is like, lol:</p>
+<pre><code>def myPow(self, x, n):
+    return x**n
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/26/Leetcode-Pow-x-n-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-26 </div>
 			<div class="article-title"><a href="/2016/01/26/Leetcode-Jump-Game-Java/" >Leetcode-Jump Game(Java)</a></div>						
 		</h3>
 	
@@ -247,223 +478,6 @@
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-26 </div>
-			<div class="article-title"><a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" >Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
-<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
-<p><strong>Thinking:</strong></p>
-<p>Inorder traversal will search in order: left, root, right;</p>
-<p>Postorder travelsal will search in order: left, right, root.</p>
-<p>So we can find the root in postorder and search it in inorder by the value. And find root’s left child and right child node by recursion.</p>
-<pre><code>public TreeNode buildTree(int[] inorder, int[] postorder) {
-    int l = inorder.length;
-    if (l == 0)
-        return null;
-    TreeNode root = new TreeNode(postorder[l-1]);
-    TreeNode left = null;
-    TreeNode right = null;
-    int index = 0;
-    for (; index &lt; l; index++){
-        if (inorder[index] == postorder[l-1])
-            break;
-    }
-
-
-    if (index &gt; 0){
-        int[] leftinorder = new int[index];
-        int[] leftpostorder = new int[index];
-        System.arraycopy(inorder, 0, leftinorder, 0, index);
-        System.arraycopy(postorder, 0, leftpostorder, 0, index);
-        left = buildTree(leftinorder, leftpostorder);
-    }
-    if (index &lt; l-1){
-        int[] rightinorder = new int[l-index-1];
-        int[] rightpostorder = new int[l-index-1];
-        System.arraycopy(inorder, index+1, rightinorder, 0, l-index-1);
-        System.arraycopy(postorder, index, rightpostorder, 0, l-index-1);
-        right = buildTree(rightinorder, rightpostorder);
-    }
-    root.left = left;
-    root.right = right;
-
-    return root;
-}
-</code></pre><p>By the way, this code can be improved because in Java we can not easily get the subarray and I use the System.arraycopy. It can be replaced by recording the postion of array.</p>
-
-	
-	</div>
-  <a type="button" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-26 </div>
-			<div class="article-title"><a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" >Leetcode-Lowest Common Ancestor of a Binary Tree(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</p>
-<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</p>
-<pre><code>           _______3______
-         /              \
-  ___5__           ___1___
-    /      \         /          \
-6        2       0         8
-         /  \
-        7    4
-</code></pre><p>For example, the lowest common ancestor (LCA) of nodes 5 and 1 is 3. Another example is LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.</p>
-<p><strong>Thinking:</strong></p>
-<p>The point to find the lowest common ancestor is to find a node whose left and right childs both have the node we want to find. Because if it’s not the lowest, the node will only belong to one of their child. If search in a pre-order from the root, if one node’s left child and right child both have the keynode or if the node itself is one of the keynode which means the other node will in lower level of this node, it’s the answer we want.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-    if (root == null)
-        return root;
-
-    if (root.equals(q) || root.equals(p)){
-        return root;
-    }
-
-    TreeNode l = lowestCommonAncestor(root.left, p, q);
-    TreeNode r = lowestCommonAncestor(root.right, p, q);
-    if (l != null &amp;&amp; r != null)
-        return root;
-
-    return l == null? r: l;
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-25 </div>
-			<div class="article-title"><a href="/2016/01/25/Node-js-study-note/" >Node.js study note</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Survey:</strong></p>
-<p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
-<p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
-<hr>
-<p><strong>Content:</strong></p>
-<p>–1– Argument variables with process.argv</p>
-<pre><code>app.js
-
-function grab(flag){
-    var index = process.argv.indexOf(flag);
-    return (index === -1) ? null : process.argv[index+1];
-}
-
-var greeting = grab(&apos;--greeting&apos;);
-var user = grab(&apos;--user&apos;);
-
-if (!user || !greeting) {
-    console.log(&quot;You blew it!&quot;);
-} else {
-    console.log(`Welcome, ${user}, ${greeting}`);
-}
-</code></pre><p>In this code, we grab the arguments from shell and print it out on the console.</p>
-<p>For example, if in the shell:</p>
-<pre><code>$node app --user Martin --greeting &quot;hello hello&quot;
-</code></pre><p>Then in the console:</p>
-<pre><code>Welcome, Martin, hello hello
-</code></pre><p>And in this code, I also learned string temple which uses backticks<code>.</code>Welcome, ${user}, ${greeting}` will contain variable user and greeting.</p>
-<hr>
-<p>–2– Standard input and standard output</p>
-<pre><code> var questions = [
-&quot;What is your name?&quot;,
-&quot;What is your favorite hobby?&quot;,
-&quot;What is your preferred programming language?&quot;
-];
-
-var answers = [];
-
-function ask(i) {
-    process.stdout.write(`\n\n\n\n ${questions[i]}`);
-    process.stdout.write(&quot;  &gt;  &quot;);
-}
-
-process.stdin.on(&apos;data&apos;, function(data){
-
-    answers.push(data.toString().trim());
-
-    if (answers.length &lt; questions.length) {
-        ask(answers.length);
-    } else {
-        process.exit();
-    }
-});
-
-process.on(&apos;exit&apos;, function(){
-
-    process.stdout.write(&quot;\n\n\n\n&quot;);
-
-    process.stdout.write(`Go ${answers[1]} ${answers[0]} you can finish writing ${answers[2]} later`);
-
-    process.stdout.write(&quot;\n\n\n\n&quot;);
-
-});
-
-ask(0);
-</code></pre><p>In the shell:</p>
-<pre><code>What is your name?  &gt;  Martin
-
-
-
-
- What is your favorite hobby?  &gt;  play games
-
-
-
-
- What is your preferred programming language?  &gt;  python
-
-
-
-
-Go play games Martin you can finish writing python later
-</code></pre><p>Is that funny:)?</p>
-<hr>
-<p>–3– Globla timing functions</p>
-
-	
-	</div>
-  <a type="button" href="/2016/01/25/Node-js-study-note/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -514,7 +528,7 @@ Go play games Martin you can finish writing python later
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>1</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>18</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>21</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -531,11 +545,15 @@ Go play games Martin you can finish writing python later
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>4</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
+		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
-			<li><a href="/tags/Array/">Array<span>2</span></a></li>
-		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>1</span></a></li>
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
 		
 		 
 		</ul>
@@ -549,23 +567,23 @@ Go play games Martin you can finish writing python later
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" ><i class="fa fa-file-o"></i>Leetcode-Binary Tree Zigzag...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/30/Leetcode-4Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-4Sum(Java)...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/28/Leetcode-3Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-3Sum(Java)...</a>
+      </li>
+    
+      <li>
         <a href="/2016/01/28/Leetcode-Two-Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-Two Sum(Java)...</a>
       </li>
     
       <li>
         <a href="/2016/01/28/Leetcode-Game-of-Life-Java/" ><i class="fa fa-file-o"></i>Leetcode-Game of Life(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" ><i class="fa fa-file-o"></i>Leetcode-Letter Combination...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/27/Leetcode-Path-Sum-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Path Sum II(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/27/hello-world/" ><i class="fa fa-file-o"></i>Hello World...</a>
       </li>
     
   </ul>
