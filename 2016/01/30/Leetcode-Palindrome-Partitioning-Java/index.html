@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Leetcode-Pow(x, n)(Java) | Martin&#39;s Blog</title>
+  <title>Leetcode-Palindrome Partitioning(Java) | Martin&#39;s Blog</title>
   <meta name="author" content="Martin">
   
   <meta name="description" content="A rookie write something just for fun.">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Leetcode-Pow(x, n)(Java)"/>
+  <meta property="og:title" content="Leetcode-Palindrome Partitioning(Java)"/>
   <meta property="og:site_name" content="Martin&#39;s Blog"/>
 
   
@@ -90,7 +90,7 @@
 
 	
 		<div class="page-header">		
-			<h1> Leetcode-Pow(x, n)(Java)</h1>
+			<h1> Leetcode-Palindrome Partitioning(Java)</h1>
 		</div>		
 	
 
@@ -108,43 +108,48 @@
 	  		
 
 	  <p><strong>Question:</strong></p>
-<p>Implement pow(x, n).</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s a simple but not simple question. There are many solutions for this problem. But how can we find the most effienct one. We can use recursion to reduce the times of multipling and check the bound of data to reduce the times of recursions. Finally, the code is below:</p>
-<pre><code>static boolean negflag = false;
-public double myPow(double x, int n) {
-    if (n &lt; 0){
-        negflag = true;
-        return 1 / dp(x, -n);
+<p>Given a string s, partition s such that every substring of the partition is a palindrome.</p>
+<p>Return all possible palindrome partitioning of s.</p>
+<p>For example, given s = “aab”,<br>Return</p>
+<pre><code>[
+  [&quot;aa&quot;,&quot;b&quot;],
+  [&quot;a&quot;,&quot;a&quot;,&quot;b&quot;]
+]
+</code></pre><p><strong>Thinking:</strong></p>
+<p>We should get all the possible partition, it’s obvious we should use backtracing. We partition the string from beginning, and check if it’s palindrome, then check the rest of the substring. If all the substrings are palindrome, we put them in the result. We have to notice the API of Java substring(beginIndex, endIndex) that beginIndex is inclusive but endIndex is exclusive.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;List&lt;String&gt;&gt; partition(String s) {
+    List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;List&lt;String&gt;&gt;();
+    int len = s.length();
+    if (palindrome(s)){
+        List&lt;String&gt; tempres = new ArrayList&lt;String&gt;();
+        tempres.add(s);
+        res.add(tempres);
     }
-    else
-        return dp(x, n);
-
+    for (int i = 1; i &lt; len; i++){
+        if (palindrome(s.substring(0, i))){
+            for (List&lt;String&gt; list: partition(s.substring(i))){
+                list.add(0, s.substring(0, i));
+                res.add(list);
+            }
+        }
+    }
+    return res;
 }
-private double dp(double x, int n){
-    if (n == 0)
-        return 1;
-    if (n == 1)
-        return x;
-    if (n == 2)
-        return x * x;
 
-    int m = n / 2;
-    int k = n % 2;
-    double v = dp(x, m);
-    if (negflag == true &amp;&amp; v &gt; 100000)
-        return 100000;
-    if (negflag == false &amp;&amp; v &lt; 0.00001)
-        return 0;
-
-    if (k == 0)
-        return v * v;
-    else
-        return v * v * x;
+private boolean palindrome(String s){
+    int len = s.length();
+    int left = 0;
+    int right = len - 1;
+    while (left &lt; right){
+        if (s.charAt(left) != s.charAt(right)){
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
 }
-</code></pre><p>By the way, I have to metion that my python solution is like, lol:</p>
-<pre><code>def myPow(self, x, n):
-    return x**n
 </code></pre>	  
 	</div>
 
@@ -154,13 +159,13 @@ private double dp(double x, int n){
 <ul class="pagination">
 	 
 				
-    	<li class="prev"><a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
+    	<li class="prev"><a href="/2016/01/30/VIM/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
   		
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2016/01/26/Leetcode-Jump-Game-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+		   <li class="next"><a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -191,7 +196,7 @@ private double dp(double x, int n){
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2016-01-26 
+	2016-01-30 
 	</div>
 	
 
@@ -210,6 +215,14 @@ private double dp(double x, int n){
 	
 
 	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Backtracing/">Backtracing<span>1</span></a></li>
+    </ul>
+	</div>
 		
 
 	<!-- toc -->

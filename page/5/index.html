@@ -109,6 +109,218 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-01-24 </div>
+			<div class="article-title"><a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" >Leetcode-Insertion Sort List(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Sort a linked list using insertion sort.</p>
+<p><strong>Thinking:</strong></p>
+<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        ListNode res = new ListNode(-1);
+        res.next = head;
+        ListNode p = res;
+        ListNode next = head.next;
+        head.next = null;
+        head = next;
+        while (head != null){
+            while (p.next != null){
+                //if the value is smaller than one of the sorted list, insert behind it
+                if (head.val &lt; p.next.val){
+                    next = head.next;
+                    head.next = p.next;
+                    p.next = head;
+                    head = next;
+                    p = res;
+                    break;
+                }
+                p = p.next;
+            }
+            //if the value is bigger than anyone of the sorted list, insert after the whole list
+            if (p.next == null){
+                next = head.next;
+                p.next = head;
+                head.next = null;
+                head = next;
+                p = res;
+            }
+        }
+
+        return res.next;
+    }
+}
+</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
+<pre><code>public ListNode insertionSortList(ListNode head) {  
+    if(head == null||head.next == null)  
+        return head;  
+    ListNode sortedlisthead = new ListNode(0);  
+    ListNode cur = head;
+    while(cur!=null){  
+        ListNode next = cur.next;  
+        ListNode pre = sortedlisthead;  
+        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
+            pre = pre.next;  
+        cur.next = pre.next;  
+        pre.next = cur;  
+        cur = next;  
+    }  
+    return sortedlisthead.next;  
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-24 </div>
+			<div class="article-title"><a href="/2016/01/24/Sort-Algorithms/" >Sort Algorithms</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
+<h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
+<p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
+<p><strong>Process:</strong> (From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
+<p><strong>Pseudocode:</strong></p>
+<pre><code>for i ← 1 to length(A) - 1
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+    end while
+end for
+</code></pre><p><strong>Implemention in Java:</strong></p>
+<pre><code>public static void InsertionSort(int[] num)
+{
+     int j;
+     int key;
+     int i;  
+
+     for (j = 1; j &lt; num.length; j++){
+        key = num[j];
+        for(i = j - 1; (i &gt;= 0) &amp;&amp; (num[i] &lt; key); i--){
+            num[i+1] = num[i];
+        }
+        num[i+1] = key;
+    }
+}
+</code></pre><p><strong>Complexity:</strong></p>
+<p><em>Runtime</em>: O(n^2)</p>
+<p><em>Memery</em>: O(1)</p>
+<hr>
+<h2 id="ShellSort_3A"><a href="#ShellSort_3A" class="headerlink" title="ShellSort:"></a>ShellSort:</h2><p><strong>Main Idea:</strong></p>
+<p>The method starts by sorting pairs of elements far apart from each other, then progressively reducing the gap between elements to be compared. Starting with far apart elements can move some out-of-place elements into position faster than a simple nearest neighbor exchange.</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif" alt=""></p>
+<p><strong>Pesedocode:</strong></p>
+<pre><code>gaps = [701, 301, 132, 57, 23, 10, 4, 1]
+
+foreach (gap in gaps)
+{
+    # Do a gapped insertion sort for this gap size.
+    # The first gap elements a[0..gap-1] are already in gapped order
+    # keep adding one more element until the entire array is gap sorted
+    for (i = gap; i &lt; n; i += 1)
+    {
+        # add a[i] to the elements that have been gap sorted
+        # save a[i] in temp and make a hole at position i
+        temp = a[i]
+        # shift earlier gap-sorted elements up until the correct location for a[i] is found
+        for (j = i; j &gt;= gap and a[j - gap] &gt; temp; j -= gap)
+        {
+            a[j] = a[j - gap]
+        }
+        # put temp (the original a[i]) in its correct location
+        a[j] = temp
+        }
+    }
+</code></pre><p> <strong>Implemention in Java:</strong></p>
+<pre><code>public void shellSort() {
+    int inner, outer;
+    long temp;
+    //find initial value of h
+    int h = 1;
+    while (h &lt;= len / 3)
+      h = h * 3 + 1; // (1, 4, 13, 40, 121, ...)
+
+    while (h &gt; 0) // decreasing h, until h=1
+    {
+      // h-sort the file
+      for (outer = h; outer &lt; len; outer++) {
+        temp = data[outer];
+        inner = outer;
+        // one subpass (eg 0, 4, 8)
+        while (inner &gt; h - 1 &amp;&amp; data[inner - h] &gt;= temp) {
+          data[inner] = data[inner - h];
+          inner -= h;
+        }
+        data[inner] = temp;
+      }
+      h = (h - 1) / 3; // decrease h
+    }
+}
+</code></pre><hr>
+<h2 id="Simple_Selection_Sort"><a href="#Simple_Selection_Sort" class="headerlink" title="Simple Selection Sort"></a>Simple Selection Sort</h2><p><strong>Main Idea:</strong></p>
+<p>Find the smallest(biggest) element in array, put it in the first place. Then find the second smallest… Do these until all the element are sorted.(I suppose it’s a little similar with bubble sort)</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
+<p><strong>Pesedocode:</strong></p>
+<pre><code>for i ← 1 to length(A) - 1
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+    end while
+end for
+</code></pre><p><strong>Complexity:</strong></p>
+<p><em>Runtime:</em> O(n^2)<br><em>Memery:</em> O(1)</p>
+<h2 id="Heapsort"><a href="#Heapsort" class="headerlink" title="Heapsort"></a>Heapsort</h2><p><strong>Main Idea:</strong></p>
+<p>Use data structure heap which will store the smallest or biggest value of the array. Then pick up the root of heap   once a time to sort. </p>
+<p>Heapsort is a comparison-based sorting algorithm. Heapsort can be thought of as an improved selection sort: like that algorithm, it divides its input into a sorted and an unsorted region, and it iteratively shrinks the unsorted region by extracting the largest element and moving that to the sorted region. The improvement consists of the use of a heap data structure rather than a linear-time search to find the maximum.</p>
+<p>This sort is the most important part in this article. I’ll talk about the relative operation and its performance and all the code.</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif" alt=""></p>
+<p>In the heap view(an example offered):</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Heapsort-example.gif" alt=""></p>
+<p><strong>Data Structure:</strong></p>
+<p>Heap:</p>
+<p>A heap is built out of the data. The heap is often placed in an array with the layout of a complete binary tree. The complete binary tree maps the binary tree structure into the array indices; each array index represents a node; the index of the node’s parent, left child branch, or right child branch are simple expressions. For a zero-based array, the root node is stored at index 0; if i is the index of the current node, then</p>
+<pre><code>iParent(i)     = floor((i-1) / 2)
+iLeftChild(i)  = 2*i + 1
+iRightChild(i) = 2*i + 2
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/24/Sort-Algorithms/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-24 </div>
 			<div class="article-title"><a href="/2016/01/24/Leetcode-Search-for-a-Range-Java/" >Leetcode-Search for a Range(Java)</a></div>						
 		</h3>
 	
@@ -380,135 +592,6 @@
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-24 </div>
-			<div class="article-title"><a href="/2016/01/24/Unique-Binary-Search-Trees-II/" >Leetcode-Unique Binary Search Trees II(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.</p>
-<p>For example,<br>Given n = 3, your program should return all 5 unique BST’s shown below.</p>
-<pre><code>1         3     3      2      1
- \       /     /      / \      \
-  3     2     1      1   3      2
- /     /       \                 \
-2     1         2                 3
-</code></pre><p><strong>Thinking:</strong> </p>
-<p>It’s a simple dynamic programming question. For n numbers, we should consider the situation that every one become the root, and delete it from the sets and do the same thing for their children.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public List&lt;TreeNode&gt; generateTrees(int n) {
-        return dp(1, n);
-    }
-
-    public List&lt;TreeNode&gt; dp(int low, int high){
-        List&lt;TreeNode&gt; res = new ArrayList&lt;TreeNode&gt;();
-        if (low == high){
-            TreeNode n = new TreeNode(low);
-            res.add(n);
-            return res;
-        }
-        for (int i = low; i &lt;= high; i++){
-            TreeNode n = new TreeNode(i);
-            if (i == low){
-                for (TreeNode p: dp(low+1, high)){
-                    n.right = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else if (i == high){
-                for (TreeNode p: dp(low, high-1)){
-                    n.left = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else{
-                for (TreeNode p: dp(low, i-1)){
-                    for (TreeNode q: dp(i+1, high)){
-                        n.left = p;
-                        n.right = q;
-                        res.add(n);
-                        n = new TreeNode(i);
-                    }
-                }
-            }
-        }
-
-        return res;
-    }
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/24/Unique-Binary-Search-Trees-II/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-24 </div>
-			<div class="article-title"><a href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" >Leetcode-Bitwise AND of Numbers Range(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.</p>
-<p>For example, given the range [5, 7], you should return 4.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s bitwise operation question. Some other questions like are Single Number, Single Number II, Reverse Bits, Repeated DNA Sequences, Grey Code and so on and so forth. This question’s point is to find all the numbers between the range and use the bitwise AND on them. </p>
-<p>For example, in the range of [5, 7], there are three numbers:<br>101        110        111<br>Result of thier bitwise is 100. </p>
-<p>What’s more, in the example of [26, 30]:<br>11010        11011        11100        11101        11110<br>The result is 11000.</p>
-<p><em>Because bits are incresing from the right</em> (low digits), the left of all the numbers are not going to change in the process. The thing we need to do is finding the common part of the left. There are two solutions:</p>
-<p><strong>Solution1:</strong></p>
-<p>Idea: State a variable and make it all 1 in all digits. Make the variable left shift every time to check if it’s equal between m and n of their bitwise AND. Finally, the result of m bitwise AND with the variable is the answer.<br>Code:</p>
-<pre><code>class Solution {
-public int rangeBitwiseAnd(int m, int n) {
-        int d = Integer.MAX_VALUE;
-        while ((m &amp; d) != (n &amp; d)) {
-            d &lt;&lt;= 1;
-        }
-        return m &amp; d;
-    }
-};
-</code></pre><p><strong>Solution2:</strong></p>
-<p>Idea:Let m and n make left shift each time if they are different and record the times i they shift. When they are equal, the result of m left shift i is the answer.<br>Code:</p>
-<pre><code>class Solution {
-public int rangeBitwiseAnd(int m, int n) {
-        int i = 0;
-        while (m != n) {
-            m &gt;&gt;= 1;
-            n &gt;&gt;= 1;
-            ++i;
-        }
-        return (m &lt;&lt; i);
-    }
-};
-</code></pre><p>Reference: <a href="http://www.cnblogs.com/grandyang/p/4431646.html" target="_blank" rel="external">http://www.cnblogs.com/grandyang/p/4431646.html</a></p>
-
-	
-	</div>
-  <a type="button" href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -525,7 +608,7 @@ public int rangeBitwiseAnd(int m, int n) {
         <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
 
 		
-          <li class="next disabled"><a>下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>
+		   <li class="next"> <a href="/page/6/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a> </li>          
         
 	
 </ul>
@@ -559,7 +642,7 @@ public int rangeBitwiseAnd(int m, int n) {
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>1</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>21</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>22</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -576,15 +659,17 @@ public int rangeBitwiseAnd(int m, int n) {
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
-		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+			<li><a href="/tags/Backtracing/">Backtracing<span>1</span></a></li>
 		
 			<li><a href="/tags/Array/">Array<span>4</span></a></li>
 		
 			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
 		
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
 			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -598,6 +683,14 @@ public int rangeBitwiseAnd(int m, int n) {
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2016/01/30/VIM/" ><i class="fa fa-file-o"></i>VIM...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" ><i class="fa fa-file-o"></i>Leetcode-Palindrome Partiti...</a>
+      </li>
+    
+      <li>
         <a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" ><i class="fa fa-file-o"></i>Leetcode-Binary Tree Zigzag...</a>
       </li>
     
@@ -607,14 +700,6 @@ public int rangeBitwiseAnd(int m, int n) {
     
       <li>
         <a href="/2016/01/28/Leetcode-3Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-3Sum(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/28/Leetcode-Two-Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-Two Sum(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/28/Leetcode-Game-of-Life-Java/" ><i class="fa fa-file-o"></i>Leetcode-Game of Life(Java)...</a>
       </li>
     
   </ul>

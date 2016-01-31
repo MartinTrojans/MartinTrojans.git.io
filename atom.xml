@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-01-31T05:29:07.000Z</updated>
+  <updated>2016-01-31T07:05:27.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,97 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[VIM]]></title>
+    <link href="http://yoursite.com/2016/01/30/VIM/"/>
+    <id>http://yoursite.com/2016/01/30/VIM/</id>
+    <published>2016-01-31T06:54:24.000Z</published>
+    <updated>2016-01-31T07:05:27.000Z</updated>
+    <content type="html"><![CDATA[<p>一、打开文件、保存、关闭文件(vi命令模式下使用)<br>:w       //保存文件<br>:w vpser.net //保存至vpser.net文件<br>:q          //退出编辑器，如果文件已修改请使用下面的命令<br>:q!        //退出编辑器，且不保存<br>:wq         //退出编辑器，且保存文件</p>
+<p>二、插入文本或行(vi命令模式下使用，执行下面命令后将进入插入模式，按ESC键可退出插入模式)<br>一般使用i<br>a      //在当前光标位置的右边添加文本<br>i       //在当前光标位置的左边添加文本<br>A     //在当前行的末尾位置添加文本<br>I      //在当前行的开始处添加文本(非空字符的行首)<br>O     //在当前行的上面新建一行<br>o     //在当前行的下面新建一行<br>R    //替换(覆盖)当前光标位置及后面的若干文本<br>J    //合并光标所在行及下一行为一行(依然在命令模式)</p>
+<p>三、移动光标(vi命令模式下使用)<br>1、使用上下左右方向键</p>
+<p>2、命令模式下：h   向左、j   向下 、k   向上、l  向右。<br>空格键 向右、Backspace  向左、Enter  移动到下一行首、-  移动到上一行首。</p>
+<p>四、删除、恢复字符或行(vi命令模式下使用)<br>x         //删除当前字符<br>nx         //删除从光标开始的n个字符<br>dd      //删除当前行<br>ndd   //向下删除当前行在内的n行<br>u       //撤销上一步操作<br>U      //撤销对当前行的所有操作</p>
+<p>五、搜索(vi命令模式下使用)<br>/vpser     //向光标下搜索vpser字符串，vpser可以是正则表达式<br>?vpser     //向光标上搜索vpser字符串<br>n           //向下搜索前一个搜素动作<br>N         //向上搜索前一个搜索动作</p>
+<p>*(#)      //当光标停留在某个单词上时, 输入这条命令表示查找与该单词匹配的下(上)一个单词. 同样, 再输入 n 查找下一个匹配处, 输入 N 反方向查找.</p>
+<p>g*(g#)        //此命令与上条命令相似, 只不过它不完全匹配光标所在处的单词, 而是匹配包含该单词的所有字符串.</p>
+<p>六、跳至指定行(vi命令模式下使用)<br>n+        //向下跳n行<br>n-         //向上跳n行<br>nG        //跳到行号为n的行<br>G           //跳至文件的底部</p>
+<p>七、设置行号(vi命令模式下使用)<br>:set  nu     //显示行号<br>:set nonu    //取消显示行号</p>
+<p>八、复制、粘贴(vi命令模式下使用)<br>yy    //将当前行复制到缓存区，也可以用 “ayy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>nyy   //将当前行向下n行复制到缓冲区，也可以用 “anyy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>yw    //复制从光标开始到词尾的字符。<br>nyw   //复制从光标开始的n个单词。<br>y^      //复制从光标到行首的内容。  VPS侦探<br>y$      //复制从光标到行尾的内容。<br>p        //粘贴剪切板里的内容在光标后，如果使用了前面的自定义缓冲区，建议使用”ap 进行粘贴。<br>P        //粘贴剪切板里的内容在光标前，如果使用了前面的自定义缓冲区，建议使用”aP 进行粘贴。</p>
+<p>九、替换(vi命令模式下使用)<br>:s/old/new      //用new替换行中首次出现的old<br>:s/old/new/g         //用new替换行中所有的old<br>:n,m s/old/new/g     //用new替换从n到m行里所有的old<br>:%s/old/new/g      //用new替换当前文件里所有的old</p>
+<p>十、编辑其他文件<br>:e otherfilename    //编辑文件名为otherfilename的文件。</p>
+<p>十一、修改文件格式<br>:set fileformat=unix   //将文件修改为unix格式，如win下面的文本文件在linux下会出现^M。</p>
+<p>十二、查找帮助<br>当你不知道怎么处理时，直接输入help可以看到帮助文档的起点，ZZ是退出或者：q，不建议使用<br>查找关于某个字母的命令 ：help x   查找关于x的命令。</p>
+<p>参考：<a href="http://blog.csdn.net/chenxiaochen32/article/details/7378127" target="_blank" rel="external">http://blog.csdn.net/chenxiaochen32/article/details/7378127</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>一、打开文件、保存、关闭文件(vi命令模式下使用)<br>:w       //保存文件<br>:w vpser.net //保存至vpser.net文件<br>:q          //退出编辑器，如果文件已修改请使用下面的命令<br>:q!        //退出编辑]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Palindrome Partitioning(Java)]]></title>
+    <link href="http://yoursite.com/2016/01/30/Leetcode-Palindrome-Partitioning-Java/"/>
+    <id>http://yoursite.com/2016/01/30/Leetcode-Palindrome-Partitioning-Java/</id>
+    <published>2016-01-31T06:25:26.000Z</published>
+    <updated>2016-01-31T06:51:07.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a string s, partition s such that every substring of the partition is a palindrome.</p>
+<p>Return all possible palindrome partitioning of s.</p>
+<p>For example, given s = “aab”,<br>Return</p>
+<pre><code>[
+  [&quot;aa&quot;,&quot;b&quot;],
+  [&quot;a&quot;,&quot;a&quot;,&quot;b&quot;]
+]
+</code></pre><p><strong>Thinking:</strong></p>
+<p>We should get all the possible partition, it’s obvious we should use backtracing. We partition the string from beginning, and check if it’s palindrome, then check the rest of the substring. If all the substrings are palindrome, we put them in the result. We have to notice the API of Java substring(beginIndex, endIndex) that beginIndex is inclusive but endIndex is exclusive.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;List&lt;String&gt;&gt; partition(String s) {
+    List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;List&lt;String&gt;&gt;();
+    int len = s.length();
+    if (palindrome(s)){
+        List&lt;String&gt; tempres = new ArrayList&lt;String&gt;();
+        tempres.add(s);
+        res.add(tempres);
+    }
+    for (int i = 1; i &lt; len; i++){
+        if (palindrome(s.substring(0, i))){
+            for (List&lt;String&gt; list: partition(s.substring(i))){
+                list.add(0, s.substring(0, i));
+                res.add(list);
+            }
+        }
+    }
+    return res;
+}
+
+private boolean palindrome(String s){
+    int len = s.length();
+    int left = 0;
+    int right = len - 1;
+    while (left &lt; right){
+        if (s.charAt(left) != s.charAt(right)){
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a string s, partition s such that every substring of the partition is a palindrome.</p>
+<p>Return]]>
+    </summary>
+    
+      <category term="Backtracing" scheme="http://yoursite.com/tags/Backtracing/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Binary Tree Zigzag Level Order Traversal(Java)]]></title>
@@ -1352,7 +1443,7 @@ private double dp(double x, int n){
     <link href="http://yoursite.com/2016/01/25/Node-js-study-note/"/>
     <id>http://yoursite.com/2016/01/25/Node-js-study-note/</id>
     <published>2016-01-26T05:11:55.000Z</published>
-    <updated>2016-01-31T05:21:27.000Z</updated>
+    <updated>2016-01-31T08:34:30.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Survey:</strong></p>
 <p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
 <p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
@@ -1495,7 +1586,51 @@ util.log(v8.getHeapStatistics());
   total_available_size: 1491271696,
   used_heap_size: 4094992,
   heap_size_limit: 1535115264 }
-</code></pre><p>–5– Collecting information with Readline 11m 30s</p>
+</code></pre><p>–5– Collecting information with Readline</p>
+<p>Realine is a module of Node.js, it should get the input stream and output stream. Then you can use the API to operate the input and output such as setPrompt, prompt, on and etc. A string in the string can be replaced as s% like in the C, and the JSON string will be replaced as j%.</p>
+<p>Code:</p>
+<pre><code>var readline = require(&apos;readline&apos;);
+
+var rl = readline.createInterface(process.stdin, process.stdout);
+
+var realPerson = {
+    name: &apos;&apos;,
+    sayings: []
+};
+
+rl.question(&quot;What is the name of a real person?&quot;, function(answer){
+
+    realPerson.name = answer;
+
+    rl.setPrompt(`What would ${realPerson.name} say? `);
+
+    rl.prompt();
+
+    rl.on(&apos;line&apos;, function(sayings){
+
+        realPerson.sayings.push(sayings.trim());
+
+        if (sayings.toLowerCase().trim() == &apos;exit&apos;){
+            rl.close();
+        }
+        else{
+        rl.setPrompt(`What else would ${realPerson.name} say? (&apos;exit&apos; to leave)`);
+        rl.prompt();
+        }
+    });
+
+});
+
+rl.on(&apos;close&apos;, function(){
+     console.log(&quot;%s is a real person that says j%&quot;,     realPerson.name, realPerson.sayings);
+})
+</code></pre><p>In the shell:</p>
+<pre><code>What is the name of a real person?Martin
+What would Martin say? haha
+What else would Martin say? (&apos;exit&apos; to leave)heihei
+What else would Martin say? (&apos;exit&apos; to leave)exit
+Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &apos;exit&apos; ]
+</code></pre><p>–6– Handling events with EventEmitter</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p><strong>Survey:</strong></p>
@@ -1503,209 +1638,6 @@ util.log(v8.getHeapStatistics());
     </summary>
     
       <category term="Web" scheme="http://yoursite.com/categories/Web/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Insertion Sort List(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/"/>
-    <id>http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/</id>
-    <published>2016-01-25T05:07:32.000Z</published>
-    <updated>2016-01-27T21:59:29.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Sort a linked list using insertion sort.</p>
-<p><strong>Thinking:</strong></p>
-<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public ListNode insertionSortList(ListNode head) {
-        if (head == null || head.next == null)
-            return head;
-        ListNode res = new ListNode(-1);
-        res.next = head;
-        ListNode p = res;
-        ListNode next = head.next;
-        head.next = null;
-        head = next;
-        while (head != null){
-            while (p.next != null){
-                //if the value is smaller than one of the sorted list, insert behind it
-                if (head.val &lt; p.next.val){
-                    next = head.next;
-                    head.next = p.next;
-                    p.next = head;
-                    head = next;
-                    p = res;
-                    break;
-                }
-                p = p.next;
-            }
-            //if the value is bigger than anyone of the sorted list, insert after the whole list
-            if (p.next == null){
-                next = head.next;
-                p.next = head;
-                head.next = null;
-                head = next;
-                p = res;
-            }
-        }
-
-        return res.next;
-    }
-}
-</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
-<pre><code>public ListNode insertionSortList(ListNode head) {  
-    if(head == null||head.next == null)  
-        return head;  
-    ListNode sortedlisthead = new ListNode(0);  
-    ListNode cur = head;
-    while(cur!=null){  
-        ListNode next = cur.next;  
-        ListNode pre = sortedlisthead;  
-        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
-            pre = pre.next;  
-        cur.next = pre.next;  
-        pre.next = cur;  
-        cur = next;  
-    }  
-    return sortedlisthead.next;  
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Sort a linked list using insertion sort.</p>
-<p><strong>Thinking:</strong></p>
-<p>As the question state]]>
-    </summary>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Sort Algorithms]]></title>
-    <link href="http://yoursite.com/2016/01/24/Sort-Algorithms/"/>
-    <id>http://yoursite.com/2016/01/24/Sort-Algorithms/</id>
-    <published>2016-01-25T04:07:31.000Z</published>
-    <updated>2016-01-29T00:48:55.000Z</updated>
-    <content type="html"><![CDATA[<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
-<h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
-<p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
-<p><strong>Process:</strong> (From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
-<p><strong>Pseudocode:</strong></p>
-<pre><code>for i ← 1 to length(A) - 1
-    j ← i
-    while j &gt; 0 and A[j-1] &gt; A[j]
-        swap A[j] and A[j-1]
-        j ← j - 1
-    end while
-end for
-</code></pre><p><strong>Implemention in Java:</strong></p>
-<pre><code>public static void InsertionSort(int[] num)
-{
-     int j;
-     int key;
-     int i;  
-
-     for (j = 1; j &lt; num.length; j++){
-        key = num[j];
-        for(i = j - 1; (i &gt;= 0) &amp;&amp; (num[i] &lt; key); i--){
-            num[i+1] = num[i];
-        }
-        num[i+1] = key;
-    }
-}
-</code></pre><p><strong>Complexity:</strong></p>
-<p><em>Runtime</em>: O(n^2)</p>
-<p><em>Memery</em>: O(1)</p>
-<hr>
-<h2 id="ShellSort_3A"><a href="#ShellSort_3A" class="headerlink" title="ShellSort:"></a>ShellSort:</h2><p><strong>Main Idea:</strong></p>
-<p>The method starts by sorting pairs of elements far apart from each other, then progressively reducing the gap between elements to be compared. Starting with far apart elements can move some out-of-place elements into position faster than a simple nearest neighbor exchange.</p>
-<p><strong>Process:</strong>(From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif" alt=""></p>
-<p><strong>Pesedocode:</strong></p>
-<pre><code>gaps = [701, 301, 132, 57, 23, 10, 4, 1]
-
-foreach (gap in gaps)
-{
-    # Do a gapped insertion sort for this gap size.
-    # The first gap elements a[0..gap-1] are already in gapped order
-    # keep adding one more element until the entire array is gap sorted
-    for (i = gap; i &lt; n; i += 1)
-    {
-        # add a[i] to the elements that have been gap sorted
-        # save a[i] in temp and make a hole at position i
-        temp = a[i]
-        # shift earlier gap-sorted elements up until the correct location for a[i] is found
-        for (j = i; j &gt;= gap and a[j - gap] &gt; temp; j -= gap)
-        {
-            a[j] = a[j - gap]
-        }
-        # put temp (the original a[i]) in its correct location
-        a[j] = temp
-        }
-    }
-</code></pre><p> <strong>Implemention in Java:</strong></p>
-<pre><code>public void shellSort() {
-    int inner, outer;
-    long temp;
-    //find initial value of h
-    int h = 1;
-    while (h &lt;= len / 3)
-      h = h * 3 + 1; // (1, 4, 13, 40, 121, ...)
-
-    while (h &gt; 0) // decreasing h, until h=1
-    {
-      // h-sort the file
-      for (outer = h; outer &lt; len; outer++) {
-        temp = data[outer];
-        inner = outer;
-        // one subpass (eg 0, 4, 8)
-        while (inner &gt; h - 1 &amp;&amp; data[inner - h] &gt;= temp) {
-          data[inner] = data[inner - h];
-          inner -= h;
-        }
-        data[inner] = temp;
-      }
-      h = (h - 1) / 3; // decrease h
-    }
-}
-</code></pre><hr>
-<h2 id="Simple_Selection_Sort"><a href="#Simple_Selection_Sort" class="headerlink" title="Simple Selection Sort"></a>Simple Selection Sort</h2><p><strong>Main Idea:</strong></p>
-<p>Find the smallest(biggest) element in array, put it in the first place. Then find the second smallest… Do these until all the element are sorted.(I suppose it’s a little similar with bubble sort)</p>
-<p><strong>Process:</strong>(From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
-<p><strong>Pesedocode:</strong></p>
-<pre><code>for i ← 1 to length(A) - 1
-    j ← i
-    while j &gt; 0 and A[j-1] &gt; A[j]
-        swap A[j] and A[j-1]
-        j ← j - 1
-    end while
-end for
-</code></pre><p><strong>Complexity:</strong></p>
-<p><em>Runtime:</em> O(n^2)<br><em>Memery:</em> O(1)</p>
-<h2 id="Heapsort"><a href="#Heapsort" class="headerlink" title="Heapsort"></a>Heapsort</h2><p><strong>Main Idea:</strong></p>
-<p>Use data structure heap which will store the smallest or biggest value of the array. Then pick up the root of heap   once a time to sort. </p>
-<p>Heapsort is a comparison-based sorting algorithm. Heapsort can be thought of as an improved selection sort: like that algorithm, it divides its input into a sorted and an unsorted region, and it iteratively shrinks the unsorted region by extracting the largest element and moving that to the sorted region. The improvement consists of the use of a heap data structure rather than a linear-time search to find the maximum.</p>
-<p>This sort is the most important part in this article. I’ll talk about the relative operation and its performance and all the code.</p>
-<p><strong>Process:</strong>(From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif" alt=""></p>
-<p>In the heap view(an example offered):</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Heapsort-example.gif" alt=""></p>
-<p><strong>Data Structure:</strong></p>
-<p>Heap:</p>
-<p>A heap is built out of the data. The heap is often placed in an array with the layout of a complete binary tree. The complete binary tree maps the binary tree structure into the array indices; each array index represents a node; the index of the node’s parent, left child branch, or right child branch are simple expressions. For a zero-based array, the root node is stored at index 0; if i is the index of the current node, then</p>
-<pre><code>iParent(i)     = floor((i-1) / 2)
-iLeftChild(i)  = 2*i + 1
-iRightChild(i) = 2*i + 2
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort a]]>
-    </summary>
-    
-      <category term="Algorithm" scheme="http://yoursite.com/categories/Algorithm/"/>
     
   </entry>
   

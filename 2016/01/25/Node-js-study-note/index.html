@@ -249,7 +249,51 @@ util.log(v8.getHeapStatistics());
   total_available_size: 1491271696,
   used_heap_size: 4094992,
   heap_size_limit: 1535115264 }
-</code></pre><p>–5– Collecting information with Readline 11m 30s</p>
+</code></pre><p>–5– Collecting information with Readline</p>
+<p>Realine is a module of Node.js, it should get the input stream and output stream. Then you can use the API to operate the input and output such as setPrompt, prompt, on and etc. A string in the string can be replaced as s% like in the C, and the JSON string will be replaced as j%.</p>
+<p>Code:</p>
+<pre><code>var readline = require(&apos;readline&apos;);
+
+var rl = readline.createInterface(process.stdin, process.stdout);
+
+var realPerson = {
+    name: &apos;&apos;,
+    sayings: []
+};
+
+rl.question(&quot;What is the name of a real person?&quot;, function(answer){
+
+    realPerson.name = answer;
+
+    rl.setPrompt(`What would ${realPerson.name} say? `);
+
+    rl.prompt();
+
+    rl.on(&apos;line&apos;, function(sayings){
+
+        realPerson.sayings.push(sayings.trim());
+
+        if (sayings.toLowerCase().trim() == &apos;exit&apos;){
+            rl.close();
+        }
+        else{
+        rl.setPrompt(`What else would ${realPerson.name} say? (&apos;exit&apos; to leave)`);
+        rl.prompt();
+        }
+    });
+
+});
+
+rl.on(&apos;close&apos;, function(){
+     console.log(&quot;%s is a real person that says j%&quot;,     realPerson.name, realPerson.sayings);
+})
+</code></pre><p>In the shell:</p>
+<pre><code>What is the name of a real person?Martin
+What would Martin say? haha
+What else would Martin say? (&apos;exit&apos; to leave)heihei
+What else would Martin say? (&apos;exit&apos; to leave)exit
+Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &apos;exit&apos; ]
+</code></pre><p>–6– Handling events with EventEmitter</p>
 	  
 	</div>
 
