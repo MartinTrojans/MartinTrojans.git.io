@@ -4,6 +4,187 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode-Kth Largest Element in an Array(Java)]]></title>
+      <url>http://yoursite.com/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.</p>
+<p>For example,<br>Given [3,2,1,5,6,4] and k = 2, return 5.</p>
+<p>Note:<br>You may assume k is always valid, 1 ≤ k ≤ array’s length.</p>
+<p><strong>Thinking:</strong></p>
+<p>There are three ways to solve this problem:</p>
+<ol>
+<li>The first one is to build a max heap with size n, and get the top of the heap k times.</li>
+<li>The second one is to build a min heap with size k, and keep the biggest top k elements of this array. Finally, get the top of it.</li>
+<li>The third one is to use a method called quickselect which uses function partition. It first use a pivot to split the array into two parts, then accroding to this index, choose which part to select.</li>
+</ol>
+<p><strong>Solution:</strong></p>
+<p>Max heap:</p>
+<pre><code>public int findKthLargest1(int[] nums, int k) {
+    int len = nums.length;
+    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;(len, new HeapComparator());
+    for (int i = 0; i &lt; len; i++){
+        heap.add(nums[i]);
+    }
+    for (int i = 0; i &lt; k-1; i++){
+        heap.poll();
+    }
+    return heap.peek();
+}
+
+class HeapComparator implements Comparator {
+
+    @Override
+    public int compare(Object o1, Object o2) {
+        // TODO Auto-generated method stub
+        int i1 = (int)o1;
+        int i2 = (int)o2;
+        if (i1 &gt; i2)
+            return -1;
+        else if (i1 == i2)
+            return 0;
+        else
+            return 1;
+    }
+
+}
+</code></pre><p>Min heap:</p>
+<pre><code>public int findKthLargest2(int[] nums, int k) {
+    int len = nums.length;
+    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;(k);
+    for (int i = 0; i &lt; k; i++){
+        heap.add(nums[i]);
+    }
+    for (int i = k; i &lt; len; i++){
+        if (nums[i] &gt; heap.peek()){
+            heap.poll();
+            heap.add(nums[i]);
+        }
+    }
+    return heap.peek();
+}
+</code></pre><p>Quickselect:</p>
+<pre><code>public int findKthLargest3(int[] nums, int k) {
+    int len = nums.length;
+    return quickselect(nums, 0, len-1, k);
+}
+
+private int quickselect(int[] nums, int left, int right, int k){
+    int pivotIndex = partition(nums, left, right, left);
+    if (pivotIndex == k-1){
+        return nums[pivotIndex];
+    }
+    else if(pivotIndex &lt; k){
+        return quickselect(nums, pivotIndex+1, right, k);
+    }
+    else{
+        return quickselect(nums, left, pivotIndex-1, k);
+    }
+}
+
+private int partition(int[] nums, int left, int right, int index){
+    int pivotvalue = nums[index];
+    int storeindex = left;
+    nums[index] = nums[right];
+    for (int i = left; i &lt; right; i++){
+        if (nums[i] &gt; pivotvalue){
+            int temp = nums[i];
+            nums[i] = nums[storeindex];
+            nums[storeindex++] = temp;
+        }
+    }
+    nums[right] = nums[storeindex];
+    nums[storeindex] = pivotvalue;
+    return storeindex;
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Permutations II(Java)]]></title>
+      <url>http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a collection of numbers that might contain duplicates, return all possible unique permutations.</p>
+<p>For example,<br>[1,1,2] have the following unique permutations:<br>[1,1,2], [1,2,1], and [2,1,1].</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s very similiar with the question permutation, we should use backtracing to go through all the possibilities. For example, we pick the first element of the array, and get the permutation of the rest of this array, and put the first element in every possible position. The only difference bewteen the permutation is that we don’t allow duplicate. We can use hashset to solve this problem.</p>
+<p>By the way, I made a mistake this time which I used to make. It’s that in the loop of this:</p>
+<pre><code>for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
+    for (int i = 0; i &lt;= list.size(); i++){
+        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
+        tempres.add(i, nums[index]);
+        tres.add(tempres);
+    }
+}
+</code></pre><p>I shouldn’t use the temporary variable list to operate, because<br>1) the size of it will change;<br>2) we should use it several times instead of once.<br>Then that means we should build another temporary variable. In this case, it’s tempres.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
+    return backtracing(nums, 0);
+}
+
+private List&lt;List&lt;Integer&gt;&gt; backtracing(int[] nums, int index) {
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    HashSet&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
+    int len = nums.length;
+
+    if (index &gt;= len){
+        return res;
+    }
+
+    if (index == len - 1){
+        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+        tempres.add(nums[index]);
+        res.add(tempres);
+        return res;
+    }
+
+    for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
+        for (int i = 0; i &lt;= list.size(); i++){
+            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
+            tempres.add(i, nums[index]);
+            tres.add(tempres);
+        }
+    }
+
+    res.addAll(tres);
+    return res;
+}
+</code></pre><p>There is another solution is much faster than me. Because it use extra space to record which element is used and use sort to reduce the extra cost to make sure unique. What’s more, the process of adding first and removing after dfs is usually used by people. I suppose I should learn from it.</p>
+<p>Code:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    if(nums==null || nums.length==0) return res;
+    boolean[] used = new boolean[nums.length];
+    List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+    Arrays.sort(nums);
+    dfs(nums, used, list, res);
+    return res;
+}
+
+public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;List&lt;Integer&gt;&gt; res){
+    if(list.size()==nums.length){
+        res.add(new ArrayList&lt;Integer&gt;(list));
+        return;
+    }
+    for(int i=0;i&lt;nums.length;i++){
+        if(used[i]) continue;
+        if(i&gt;0 &amp;&amp;nums[i-1]==nums[i] &amp;&amp; !used[i-1]) continue;
+        used[i]=true;
+        list.add(nums[i]);
+        dfs(nums,used,list,res);
+        used[i]=false;
+        list.remove(list.size()-1);
+    }
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Algorithm Note]]></title>
+      <url>http://yoursite.com/2016/01/31/Algorithm-Note/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[VIM]]></title>
       <url>http://yoursite.com/2016/01/30/VIM/</url>
       <content type="html"><![CDATA[<p>一、打开文件、保存、关闭文件(vi命令模式下使用)<br>:w       //保存文件<br>:w vpser.net //保存至vpser.net文件<br>:q          //退出编辑器，如果文件已修改请使用下面的命令<br>:q!        //退出编辑器，且不保存<br>:wq         //退出编辑器，且保存文件</p>

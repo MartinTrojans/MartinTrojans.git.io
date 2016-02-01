@@ -2,8 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/</loc>
+    <lastmod>2016-02-01T06:15:05.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/</loc>
+    <lastmod>2016-02-01T01:26:48.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/01/25/Node-js-study-note/</loc>
-    <lastmod>2016-01-31T08:34:30.000Z</lastmod>
+    <lastmod>2016-02-01T01:10:34.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/31/Algorithm-Note/</loc>
+    <lastmod>2016-02-01T00:21:38.000Z</lastmod>
   </url>
   
   <url>

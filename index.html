@@ -108,6 +108,232 @@
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2016-01-31 </div>
+			<div class="article-title"><a href="/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/" >Leetcode-Kth Largest Element in an Array(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.</p>
+<p>For example,<br>Given [3,2,1,5,6,4] and k = 2, return 5.</p>
+<p>Note:<br>You may assume k is always valid, 1 ≤ k ≤ array’s length.</p>
+<p><strong>Thinking:</strong></p>
+<p>There are three ways to solve this problem:</p>
+<ol>
+<li>The first one is to build a max heap with size n, and get the top of the heap k times.</li>
+<li>The second one is to build a min heap with size k, and keep the biggest top k elements of this array. Finally, get the top of it.</li>
+<li>The third one is to use a method called quickselect which uses function partition. It first use a pivot to split the array into two parts, then accroding to this index, choose which part to select.</li>
+</ol>
+<p><strong>Solution:</strong></p>
+<p>Max heap:</p>
+<pre><code>public int findKthLargest1(int[] nums, int k) {
+    int len = nums.length;
+    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;(len, new HeapComparator());
+    for (int i = 0; i &lt; len; i++){
+        heap.add(nums[i]);
+    }
+    for (int i = 0; i &lt; k-1; i++){
+        heap.poll();
+    }
+    return heap.peek();
+}
+
+class HeapComparator implements Comparator {
+
+    @Override
+    public int compare(Object o1, Object o2) {
+        // TODO Auto-generated method stub
+        int i1 = (int)o1;
+        int i2 = (int)o2;
+        if (i1 &gt; i2)
+            return -1;
+        else if (i1 == i2)
+            return 0;
+        else
+            return 1;
+    }
+
+}
+</code></pre><p>Min heap:</p>
+<pre><code>public int findKthLargest2(int[] nums, int k) {
+    int len = nums.length;
+    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;(k);
+    for (int i = 0; i &lt; k; i++){
+        heap.add(nums[i]);
+    }
+    for (int i = k; i &lt; len; i++){
+        if (nums[i] &gt; heap.peek()){
+            heap.poll();
+            heap.add(nums[i]);
+        }
+    }
+    return heap.peek();
+}
+</code></pre><p>Quickselect:</p>
+<pre><code>public int findKthLargest3(int[] nums, int k) {
+    int len = nums.length;
+    return quickselect(nums, 0, len-1, k);
+}
+
+private int quickselect(int[] nums, int left, int right, int k){
+    int pivotIndex = partition(nums, left, right, left);
+    if (pivotIndex == k-1){
+        return nums[pivotIndex];
+    }
+    else if(pivotIndex &lt; k){
+        return quickselect(nums, pivotIndex+1, right, k);
+    }
+    else{
+        return quickselect(nums, left, pivotIndex-1, k);
+    }
+}
+
+private int partition(int[] nums, int left, int right, int index){
+    int pivotvalue = nums[index];
+    int storeindex = left;
+    nums[index] = nums[right];
+    for (int i = left; i &lt; right; i++){
+        if (nums[i] &gt; pivotvalue){
+            int temp = nums[i];
+            nums[i] = nums[storeindex];
+            nums[storeindex++] = temp;
+        }
+    }
+    nums[right] = nums[storeindex];
+    nums[storeindex] = pivotvalue;
+    return storeindex;
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-31 </div>
+			<div class="article-title"><a href="/2016/01/31/Leetcode-Permutations-II-Java/" >Leetcode-Permutations II(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given a collection of numbers that might contain duplicates, return all possible unique permutations.</p>
+<p>For example,<br>[1,1,2] have the following unique permutations:<br>[1,1,2], [1,2,1], and [2,1,1].</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s very similiar with the question permutation, we should use backtracing to go through all the possibilities. For example, we pick the first element of the array, and get the permutation of the rest of this array, and put the first element in every possible position. The only difference bewteen the permutation is that we don’t allow duplicate. We can use hashset to solve this problem.</p>
+<p>By the way, I made a mistake this time which I used to make. It’s that in the loop of this:</p>
+<pre><code>for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
+    for (int i = 0; i &lt;= list.size(); i++){
+        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
+        tempres.add(i, nums[index]);
+        tres.add(tempres);
+    }
+}
+</code></pre><p>I shouldn’t use the temporary variable list to operate, because<br>1) the size of it will change;<br>2) we should use it several times instead of once.<br>Then that means we should build another temporary variable. In this case, it’s tempres.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
+    return backtracing(nums, 0);
+}
+
+private List&lt;List&lt;Integer&gt;&gt; backtracing(int[] nums, int index) {
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    HashSet&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
+    int len = nums.length;
+
+    if (index &gt;= len){
+        return res;
+    }
+
+    if (index == len - 1){
+        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+        tempres.add(nums[index]);
+        res.add(tempres);
+        return res;
+    }
+
+    for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
+        for (int i = 0; i &lt;= list.size(); i++){
+            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
+            tempres.add(i, nums[index]);
+            tres.add(tempres);
+        }
+    }
+
+    res.addAll(tres);
+    return res;
+}
+</code></pre><p>There is another solution is much faster than me. Because it use extra space to record which element is used and use sort to reduce the extra cost to make sure unique. What’s more, the process of adding first and removing after dfs is usually used by people. I suppose I should learn from it.</p>
+<p>Code:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    if(nums==null || nums.length==0) return res;
+    boolean[] used = new boolean[nums.length];
+    List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+    Arrays.sort(nums);
+    dfs(nums, used, list, res);
+    return res;
+}
+
+public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;List&lt;Integer&gt;&gt; res){
+    if(list.size()==nums.length){
+        res.add(new ArrayList&lt;Integer&gt;(list));
+        return;
+    }
+    for(int i=0;i&lt;nums.length;i++){
+        if(used[i]) continue;
+        if(i&gt;0 &amp;&amp;nums[i-1]==nums[i] &amp;&amp; !used[i-1]) continue;
+        used[i]=true;
+        list.add(nums[i]);
+        dfs(nums,used,list,res);
+        used[i]=false;
+        list.remove(list.size()-1);
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/31/Leetcode-Permutations-II-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-31 </div>
+			<div class="article-title"><a href="/2016/01/31/Algorithm-Note/" >Algorithm Note</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		
+	
+	</div>
+  <a type="button" href="/2016/01/31/Algorithm-Note/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2016-01-30 </div>
 			<div class="article-title"><a href="/2016/01/30/VIM/" >VIM</a></div>						
 		</h3>
@@ -205,373 +431,6 @@ private boolean palindrome(String s){
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-30 </div>
-			<div class="article-title"><a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" >Leetcode-Binary Tree Zigzag Level Order Traversal(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given a binary tree, return the zigzag level order traversal of its nodes’ values. (ie, from left to right, then right to left for the next level and alternate between).</p>
-<p>For example:<br>Given binary tree {3,9,20,#,#,15,7},</p>
-<pre><code>  3
- / \
-9  20
-  /  \
- 15   7
-</code></pre><p>return its zigzag level order traversal as:</p>
-<pre><code>[
-  [3],
-  [20,9],
-  [15,7]
-]
-</code></pre><p><strong>Thinking:</strong></p>
-<p>It’s a BFS problem. It’s fine if we need use queue, but because we have to record as a zigzag order, it’s more efficient to use stack. What’s more, we should to notice the order of left and right child.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; zigzagLevelOrder(TreeNode root) {
-    int flag = 0;
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
-    Stack&lt;TreeNode&gt; tempstack = new Stack&lt;TreeNode&gt;();
-    if (root == null)
-        return res;
-    stack.add(root);
-    while (!stack.isEmpty() || !tempstack.isEmpty()){
-        tempstack = new Stack&lt;TreeNode&gt;();
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-        while (!stack.isEmpty()){
-            TreeNode node = stack.pop();
-            tempres.add(node.val);
-            if (flag == 0){
-                if (node.left != null){
-                    tempstack.add(node.left);
-                }
-                if (node.right != null){
-                    tempstack.add(node.right);
-                }
-            }
-            else{
-                if (node.right != null){
-                    tempstack.add(node.right);
-                }
-                if (node.left != null){
-                    tempstack.add(node.left);
-                }
-            }
-
-        }
-        res.add(tempres);
-        stack.addAll(tempstack);
-        flag ^= 1;
-    }
-
-    return res;
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-30 </div>
-			<div class="article-title"><a href="/2016/01/30/Leetcode-4Sum-Java/" >Leetcode-4Sum(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, are there elements a, b, c, and d in S such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.</p>
-<p>Note:<br>Elements in a quadruplet (a,b,c,d) must be in non-descending order. (ie, a ≤ b ≤ c ≤ d)<br>The solution set must not contain duplicate quadruplets.<br>    For example, given array S = {1 0 -1 0 -2 2}, and target = 0.</p>
-<pre><code>A solution set is:
-(-1,  0, 0, 1)
-(-2, -1, 1, 2)
-(-2,  0, 0, 2)
-</code></pre><p><strong>Thinking</strong>:</p>
-<p>This questions is very similar with 2Sum and 3Sum. There are several way to solve it. </p>
-<p><strong>Solution1:</strong></p>
-<p>The most common method may use the method of 3Sum, and do that n times.</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum1(int[] nums, int target) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-    Arrays.sort(nums);
-    int len = nums.length;
-
-
-    for (int i = 0; i &lt; len-3; i++){
-        for (int j = i+1; j &lt; len-2; j++){
-            for (int k = j+1; k &lt; len-1; k++){
-                int l = len-1;
-                while (k &lt; l){
-                    int sum = nums[i] + nums[j] + nums[k] + nums[l];
-                    if (sum == target){
-                        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-                        tempres.add(nums[i]);
-                        tempres.add(nums[j]);
-                        tempres.add(nums[k]);
-                        tempres.add(nums[l]);
-                        tres.add(tempres);
-                        k++;
-                        l--;
-                    }
-                    else if (sum &gt; target){
-                        l--;
-                    }
-                    else{
-                        k++;
-                    }
-                    while (k &lt; l &amp;&amp; nums[k+1] == nums[k]){
-                        k++;
-                    }
-                    while (k &lt; l &amp;&amp; nums[l-1] == nums[l]){
-                        l--;
-                    }
-                }
-            }
-        }
-    }
-
-    res.addAll(tres);
-    return res;
-}
-</code></pre><p><strong>Solution2:</strong></p>
-<p>The second solution is to combine every two numbers as a pair, and make it as a 2sum problem. But for implementing this method, we have to define the data structure by ourself and implement the interface of Comparator to sort the sum of them.</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum2(int[] nums, int target){
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    int len = nums.length;
-    if (len &lt; 4)
-        return res;
-    Pair[] pairSum = new Pair[len*(len-1)/2];
-    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-
-    int count = 0;
-    for (int i = 0; i &lt; len-1; i++){
-        for (int j = i+1; j &lt; len; j++){
-            Pair ele = new Pair(nums[i], nums[j], i, j);
-            pairSum[count++] = ele;
-        }
-    }
-    Arrays.sort(pairSum, new SumComparator());
-
-    int left = 0;
-    int right = pairSum.length - 1;
-    while (left &lt; right){
-        int sum = pairSum[left].getSum() + pairSum[right].getSum();
-        if (sum == target){
-            int endl = left;
-            int endr = right;
-            while (pairSum[endl].getSum() == pairSum[endl+1].getSum() &amp;&amp; endl+1 &lt; endr){
-                endl++;
-            }
-            while (pairSum[endr].getSum() == pairSum[endr-1].getSum() &amp;&amp; endl &lt; endr-1){
-                endr--;
-            }
-            for (int i = left; i &lt;= endl; i++){
-                for (int j = right; j&gt;= endr; j--){
-                    int i1 = pairSum[i].geti();
-                    int i2 = pairSum[j].geti();
-                    int j1 = pairSum[i].getj();
-                    int j2 = pairSum[j].getj();
-                    if (i1 == i2 || i1 == j2 || j1 == i2 || j1 == j2){
-                        continue;
-                    }
-                    int[] temp = new int[4];
-                    temp[0] = pairSum[i].getN1();
-                    temp[1] = pairSum[i].getN2();
-                    temp[2] = pairSum[j].getN1();
-                    temp[3] = pairSum[j].getN2();
-                    Arrays.sort(temp);
-                    List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-                    tempres.add(temp[0]);
-                    tempres.add(temp[1]);
-                    tempres.add(temp[2]);
-                    tempres.add(temp[3]);
-                    tres.add(tempres);
-                }
-            }
-            left = endl+1;
-            right = endr-1;
-        }
-        else if (sum &gt; target){
-            right--;
-        }
-        else{
-            left++;
-        }
-    }
-
-    res.addAll(tres);
-    return res;
-}
-
-class SumComparator implements Comparator{
-
-    @Override
-    public final int compare(Object o1, Object o2) {
-        // TODO Auto-generated method stub
-        Pair l1 = (Pair)o1;
-        Pair l2 = (Pair)o2;
-        if (l1.getSum() &gt; l2.getSum())
-            return 1;
-        else if (l1.getSum() &lt; l2.getSum())
-            return -1;
-        else
-            return 0;
-    }
-}
-
-class Pair{
-    int i;
-    int j;
-    int n1;
-    int n2;
-    int sum;
-    Pair(int num1, int num2, int i, int j){
-        this.n1 = num1;
-        this.n2 = num2;
-        this.sum = num1 + num2;
-        this.i = i;
-        this.j = j;
-    }
-    public int getSum(){
-        return this.sum;
-    }
-    public int getN1(){
-        return this.n1;
-    }
-    public int getN2(){
-        return this.n2;
-    }
-    public int geti(){
-        return this.i;
-    }
-    public int getj(){
-        return this.j;
-    }
-}
-</code></pre><p>Reference: <a href="http://blog.csdn.net/linhuanmars/article/details/24826871" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24826871</a></p>
-<p><strong>Solution3:</strong></p>
-<p>The third method is the most efficient method. It has two loop of two points and use some method to break or return early. It really improve the performance of time running.</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum3(int[] nums, int target) {
-    List&lt;List&lt;Integer&gt;&gt; list = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Arrays.sort(nums);
-    int second = 0, third = 0, nexti = 0, nextj = 0;
-    for(int i=0, L=nums.length; i&lt;L-3; i++) {
-        if(nums[i]&lt;&lt;2 &gt; target) return list; // return immediately
-        for(int j=L-1; j&gt;i+2; j--) {
-            if(nums[j]&lt;&lt;2 &lt; target) break; // break immediately
-            int rem = target-nums[i]-nums[j];
-            int lo = i+1, hi=j-1;
-            while(lo&lt;hi) {
-                int sum = nums[lo] + nums[hi];
-                if(sum&gt;rem) --hi;
-                else if(sum&lt;rem) ++lo;
-                else {
-                    list.add(Arrays.asList(nums[i],nums[lo],nums[hi],nums[j]));
-                    while(++lo&lt;=hi &amp;&amp; nums[lo-1]==nums[lo]) continue; // avoid duplicate results
-                    while(--hi&gt;=lo &amp;&amp; nums[hi]==nums[hi+1]) continue; // avoid duplicate results
-                }
-            }
-            while(j&gt;=1 &amp;&amp; nums[j]==nums[j-1]) --j; // skip inner loop
-        }
-        while(i&lt;L-1 &amp;&amp; nums[i]==nums[i+1]) ++i; // skip outer loop
-    }
-    return list;
-}
-</code></pre><p>Reference: <a href="https://leetcode.com/discuss/78276/java-little-bit-faster-than-other-common-methods-9ms-beats-95%25" target="_blank" rel="external">https://leetcode.com/discuss/78276/java-little-bit-faster-than-other-common-methods-9ms-beats-95%25</a></p>
-
-	
-	</div>
-  <a type="button" href="/2016/01/30/Leetcode-4Sum-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-28 </div>
-			<div class="article-title"><a href="/2016/01/28/Leetcode-3Sum-Java/" >Leetcode-3Sum(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.</p>
-<p>Note:<br>Elements in a triplet (a,b,c) must be in non-descending order. (ie, a ≤ b ≤ c)<br>The solution set must not contain duplicate triplets.<br>    For example, given array S = {-1 0 1 2 -1 -4},</p>
-<pre><code>A solution set is:
-(-1, 0, 1)
-(-1, -1, 2)
-</code></pre><p><strong>Thinking:</strong></p>
-<p>Sort the array first. Pick a number from the array, and use other two points to record the position of the array and determine which one should change by the sum of them. What’s more, the result set should has no duplicate, so we can use hashset here.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) {
-    int l = nums.length;
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-
-    if (l &lt; 3)
-        return res;
-
-    Arrays.sort(nums);
-
-    for (int i = 0; i &lt; l-2; i++){
-        int k = l-1;
-        for (int j = i+1; j &lt; l; j++){
-            while (j &lt; k){
-                int sum = nums[i] + nums[j] + nums[k];
-                if (sum == 0){
-                    List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-                    tempres.add(nums[i]);
-                    tempres.add(nums[j]);
-                    tempres.add(nums[k]);
-                    tres.add(tempres);
-                    while (j &lt; k &amp;&amp; nums[j] == tempres.get(1)){
-                        j++;
-                    }
-                    k--;
-                }
-                else if (sum &gt; 0){
-                    k--;
-                }
-                else{
-                    j++;
-                }
-
-            }
-        }
-    }
-    res.addAll(tres);
-
-    return res;
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/28/Leetcode-3Sum-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -622,7 +481,7 @@ class Pair{
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>1</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>22</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>24</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -639,17 +498,21 @@ class Pair{
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
 		
-			<li><a href="/tags/Array/">Array<span>4</span></a></li>
-		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
-		
-			<li><a href="/tags/Backtracing/">Backtracing<span>1</span></a></li>
+			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
 		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
+		
 			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/Backtracing/">Backtracing<span>2</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>4</span></a></li>
 		
 		 
 		</ul>
@@ -663,23 +526,23 @@ class Pair{
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/" ><i class="fa fa-file-o"></i>Leetcode-Kth Largest Elemen...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/31/Leetcode-Permutations-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Permutations II(Ja...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/31/Algorithm-Note/" ><i class="fa fa-file-o"></i>Algorithm Note...</a>
+      </li>
+    
+      <li>
         <a href="/2016/01/30/VIM/" ><i class="fa fa-file-o"></i>VIM...</a>
       </li>
     
       <li>
         <a href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" ><i class="fa fa-file-o"></i>Leetcode-Palindrome Partiti...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" ><i class="fa fa-file-o"></i>Leetcode-Binary Tree Zigzag...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/30/Leetcode-4Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-4Sum(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/28/Leetcode-3Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-3Sum(Java)...</a>
       </li>
     
   </ul>

@@ -109,6 +109,241 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-01-27 </div>
+			<div class="article-title"><a href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" >Leetcode-Letter Combinations of a Phone Number(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given a digit string, return all possible letter combinations that the number could represent.</p>
+<p>A mapping of digit to letters (just like on the telephone buttons) is given below.</p>
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png" alt=""></p>
+<pre><code>Input:Digit string &quot;23&quot;
+Output: [&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;be&quot;, &quot;bf&quot;, &quot;cd&quot;, &quot;ce&quot;, &quot;cf&quot;].
+</code></pre><p>Note:<br>Although the above answer is in lexicographical order, your answer could be in any order you want.</p>
+<p><strong>Thinking:</strong></p>
+<p>We should get all the possiblities of the comibination so we need use backtracing.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
+public class Solution {
+    static private Map&lt;Character, char[]&gt; hmap = new HashMap&lt;Character, char[]&gt;();
+
+    private Character two = new Character(&apos;2&apos;);
+    private char[] twoC = {&apos;a&apos;, &apos;b&apos;, &apos;c&apos;};
+    private Character three = new Character(&apos;3&apos;);
+    private char[] threeC = {&apos;d&apos;, &apos;e&apos;, &apos;f&apos;};
+    private Character four = new Character(&apos;4&apos;);
+    private char[] fourC = {&apos;g&apos;, &apos;h&apos;, &apos;i&apos;};
+    private Character five = new Character(&apos;5&apos;);
+    private char[] fiveC = {&apos;j&apos;, &apos;k&apos;, &apos;l&apos;};
+    private Character six = new Character(&apos;6&apos;);
+    private char[] sixC = {&apos;m&apos;, &apos;n&apos;, &apos;o&apos;};
+    private Character seven = new Character(&apos;7&apos;);
+    private char[] sevenC = {&apos;p&apos;, &apos;q&apos;, &apos;r&apos;, &apos;s&apos;};
+    private Character eight = new Character(&apos;8&apos;);
+    private char[] eightC = {&apos;t&apos;, &apos;u&apos;, &apos;v&apos;};
+    private Character nine = new Character(&apos;9&apos;);
+    private char[] nineC = {&apos;w&apos;, &apos;x&apos;, &apos;y&apos;, &apos;z&apos;};
+
+    public Solution(){
+        hmap.put(two, twoC);
+        hmap.put(three, threeC);
+        hmap.put(four, fourC);
+        hmap.put(five, fiveC);
+        hmap.put(six, sixC);
+        hmap.put(seven, sevenC);
+        hmap.put(eight, eightC);
+        hmap.put(nine, nineC);
+    }
+
+    public List&lt;String&gt; letterCombinations(String digits) {
+        List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+        backTracing(digits, 0, &quot;&quot;, res);
+
+        return res;
+    }
+
+    private void backTracing(String digits, int index, String cur, List&lt;String&gt; res){
+        int l = digits.length();
+        if (l == 0)
+            return;
+        if (index == l){
+            res.add(cur);
+            return;
+        }
+
+
+        Character tmpc = new Character(digits.charAt(index));
+        if(hmap.containsKey(tmpc)){
+            for (char c :hmap.get(tmpc)){
+                backTracing(digits, index+1, cur+c, res);
+            }
+        }
+
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-27 </div>
+			<div class="article-title"><a href="/2016/01/27/Leetcode-Path-Sum-II-Java/" >Leetcode-Path Sum II(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given a binary tree and a sum, find all root-to-leaf paths where each path’s sum equals the given sum.</p>
+<p>For example:<br>Given the below binary tree and sum = 22,</p>
+<pre><code>      5
+     / \
+    4   8
+   /   / \
+  11  13  4
+ /  \    / \
+7    2  5   1
+</code></pre><p>return</p>
+<pre><code>[
+      [5,4,11,2],
+       [5,8,4,5]
+]
+</code></pre><p><strong>Thinking:</strong></p>
+<p>We should use classic dfs method to solve this problem and record all the results.</p>
+<p><strong>Solution:</strong></p>
+<p>But my first version of solution is time limit exceeded:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int sum) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+
+    return dp(root, sum, res);
+}
+
+private List&lt;List&lt;Integer&gt;&gt; dp(TreeNode root, int sum, List&lt;Integer&gt; cur){
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    if (root == null)
+        return null;
+    if (root.left == null &amp;&amp; root.right == null){
+        if (root.val == sum){
+            cur.add(root.val);
+            res.add(cur);
+            return res;
+        }
+        else{
+            return res;
+        }
+    }
+    for (List&lt;Integer&gt; ele: dp(root.left, sum-root.val, cur)){
+        if (ele != null){
+            ele.add(0, root.val);
+            res.add(ele);
+        }
+    }
+    for (List&lt;Integer&gt; ele: dp(root.right, sum-root.val, cur)){
+        if (ele != null){
+            ele.add(0, root.val);
+            res.add(ele);
+        }
+    }
+
+    return res;
+}
+</code></pre><p>Then I have to improve the effiency of this algorithm, and the code is below:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int sum) {
+    List&lt;Integer&gt; cur = new ArrayList&lt;Integer&gt;();
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+
+    dp(root, sum, cur, res);
+
+    return res;
+}
+
+private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt;Integer&gt;&gt; res){
+    if (root == null)
+        return;
+    //preorder dfs
+
+    sum -= root.val;
+    if (root.left == null &amp;&amp; root.right == null){
+        if (sum == 0){
+            cur.add(root.val);
+            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+            tempres.addAll(cur);
+            res.add(tempres);
+            cur.remove(cur.size() - 1);
+        }
+        return;
+    }
+    cur.add(root.val);
+    if (root.left != null){
+        dp(root.left, sum, cur, res);
+    }
+    if (root.right != null){
+        dp(root.right, sum, cur, res);
+    }
+    cur.remove(cur.size() - 1);
+}
+</code></pre><p>It’s very importatn to create a new List while put the current list data to final result, becuase if not we will only copy the address of this variable cur. Then it will be incorrect if we revise cur.</p>
+
+	
+	</div>
+  <a type="button" href="/2016/01/27/Leetcode-Path-Sum-II-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-27 </div>
+			<div class="article-title"><a href="/2016/01/27/hello-world/" >Hello World</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate_static_files"><a href="#Generate_static_files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy_to_remote_sites"><a href="#Deploy_to_remote_sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+
+	
+	</div>
+  <a type="button" href="/2016/01/27/hello-world/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-27 </div>
 			<div class="article-title"><a href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" >Leetcode-Flatten Binary Tree to Linked List(Java)</a></div>						
 		</h3>
 	
@@ -288,237 +523,6 @@
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-26 </div>
-			<div class="article-title"><a href="/2016/01/26/HTTP-method-get-and-post/" >HTTP method: get and post</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>HTTP:</strong></p>
-<p>HTTP is the foundation of data commnication of the World Wide Web. The basic work method of http is request and response.</p>
-<p>There are two methods of HTTP request: Get and Post.</p>
-<p>Get - get request data from specific source.<br>Post - Push data which will be dealed to specific source.</p>
-<p><strong>GET:</strong></p>
-<p>Note that the query string (name/value pairs) is sent in the URL of a GET request:</p>
-<pre><code>http://www.w3schools.com/tags/ref_httpmethods.asp
-</code></pre><p>Some other notes on GET requests:</p>
-<p>GET requests can be cached</p>
-<p>GET requests remain in the browser history</p>
-<p>GET requests can be bookmarked</p>
-<p>GET requests should never be used when dealing with sensitive data</p>
-<p>GET requests have length restrictions</p>
-<p>GET requests should be used only to retrieve data</p>
-<p><strong>POST:</strong></p>
-<p>Note that the query string (name/value pairs) is sent in the HTTP message body of a POST request:</p>
-<pre><code>POST /test/demo_form.asp HTTP/1.1
-Host: w3schools.com
-name1=value1&amp;name2=value2
-</code></pre><p>Some other notes on POST requests:</p>
-<p>POST requests are never cached</p>
-<p>POST requests do not remain in the browser history</p>
-<p>POST requests cannot be bookmarked</p>
-<p>POST requests have no restrictions on data length</p>
-<p><strong>Compare GET vs. POST:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">GET</th>
-<th style="text-align:right">POST</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>BACK button/Reload</td>
-<td style="text-align:center">Harmless</td>
-<td style="text-align:right">Data will be re-submitted</td>
-</tr>
-<tr>
-<td>Bookmarked</td>
-<td style="text-align:center">can be bookmarked</td>
-<td style="text-align:right">Can not be bookmarked</td>
-</tr>
-<tr>
-<td>Cached</td>
-<td style="text-align:center">Can be cached</td>
-<td style="text-align:right">Can not be cached</td>
-</tr>
-<tr>
-<td>History</td>
-<td style="text-align:center">Parameters remain in browser history</td>
-<td style="text-align:right">Parameters are not saved in browser history</td>
-</tr>
-<tr>
-<td>Restrictions on data length</td>
-<td style="text-align:center">Yes</td>
-<td style="text-align:right">No</td>
-</tr>
-<tr>
-<td>Security</td>
-<td style="text-align:center">Less secure</td>
-<td style="text-align:right">Safer</td>
-</tr>
-<tr>
-<td>Visibility</td>
-<td style="text-align:center">Visible</td>
-<td style="text-align:right">Not visible in URL</td>
-</tr>
-</tbody>
-</table>
-<p>Reference: <a href="http://www.w3schools.com/tags/ref_httpmethods.asp" target="_blank" rel="external">http://www.w3schools.com/tags/ref_httpmethods.asp</a></p>
-
-	
-	</div>
-  <a type="button" href="/2016/01/26/HTTP-method-get-and-post/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-26 </div>
-			<div class="article-title"><a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" >Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
-<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
-<p><strong>Thinking:</strong></p>
-<p>This question is similar with Construct Binary Tree from Inorder and Postorder Traversal. We should understand the differences and the sequences of these three methods. And divide into three parts- root, left child and right child.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public TreeNode buildTree(int[] preorder, int[] inorder) {
-    int l = preorder.length;
-    if (l == 0)
-        return null;
-
-
-    return dp(preorder, inorder, 0, l-1, 0, l-1);
-    }
-
-    private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
-    if (preStart &gt; preEnd || preEnd &gt;= preorder.length || inEnd &gt;= preorder.length)
-        return null;
-    TreeNode root = new TreeNode(preorder[preStart]);
-    int index = inStart;
-    for (; index &lt; inEnd; index++){
-        if (inorder[index] == preorder[preStart])
-            break;
-    }
-
-    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
-    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
-    root.left = left;
-    root.right = right;
-
-    return root;
-}    
-</code></pre><p>This method can be improved by using HashMap to make it faster when fiding the index of root.<br>Reference:<a href="http://blog.csdn.net/linhuanmars/article/details/24389549" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24389549</a><br>Code:</p>
-<pre><code>static HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-    int l = preorder.length;
-    if (l == 0)
-        return null;
-    for (int i = 0; i &lt; l; i++)
-        map.put(inorder[i], i);
-
-    return dp(preorder, inorder, 0, l-1, 0, l-1);
-}
-
-private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
-    if (preStart &gt; preEnd || inStart &gt; inEnd)
-        return null;
-    TreeNode root = new TreeNode(preorder[preStart]);
-
-    int index = map.get(preorder[preStart]);
-
-    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
-    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
-    root.left = left;
-    root.right = right;
-
-    return root;
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-26 </div>
-			<div class="article-title"><a href="/2016/01/26/Leetcode-Pow-x-n-Java/" >Leetcode-Pow(x, n)(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Implement pow(x, n).</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s a simple but not simple question. There are many solutions for this problem. But how can we find the most effienct one. We can use recursion to reduce the times of multipling and check the bound of data to reduce the times of recursions. Finally, the code is below:</p>
-<pre><code>static boolean negflag = false;
-public double myPow(double x, int n) {
-    if (n &lt; 0){
-        negflag = true;
-        return 1 / dp(x, -n);
-    }
-    else
-        return dp(x, n);
-
-}
-private double dp(double x, int n){
-    if (n == 0)
-        return 1;
-    if (n == 1)
-        return x;
-    if (n == 2)
-        return x * x;
-
-    int m = n / 2;
-    int k = n % 2;
-    double v = dp(x, m);
-    if (negflag == true &amp;&amp; v &gt; 100000)
-        return 100000;
-    if (negflag == false &amp;&amp; v &lt; 0.00001)
-        return 0;
-
-    if (k == 0)
-        return v * v;
-    else
-        return v * v * x;
-}
-</code></pre><p>By the way, I have to metion that my python solution is like, lol:</p>
-<pre><code>def myPow(self, x, n):
-    return x**n
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/26/Leetcode-Pow-x-n-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -569,7 +573,7 @@ private double dp(double x, int n){
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>1</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>22</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>24</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -586,17 +590,21 @@ private double dp(double x, int n){
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
+			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
 		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
 		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
-			<li><a href="/tags/Array/">Array<span>4</span></a></li>
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+		
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
 		
 			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
 		
-			<li><a href="/tags/Backtracing/">Backtracing<span>1</span></a></li>
+			<li><a href="/tags/Backtracing/">Backtracing<span>2</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>4</span></a></li>
 		
 		 
 		</ul>
@@ -610,23 +618,23 @@ private double dp(double x, int n){
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/" ><i class="fa fa-file-o"></i>Leetcode-Kth Largest Elemen...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/31/Leetcode-Permutations-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Permutations II(Ja...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/01/31/Algorithm-Note/" ><i class="fa fa-file-o"></i>Algorithm Note...</a>
+      </li>
+    
+      <li>
         <a href="/2016/01/30/VIM/" ><i class="fa fa-file-o"></i>VIM...</a>
       </li>
     
       <li>
         <a href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" ><i class="fa fa-file-o"></i>Leetcode-Palindrome Partiti...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" ><i class="fa fa-file-o"></i>Leetcode-Binary Tree Zigzag...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/30/Leetcode-4Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-4Sum(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/01/28/Leetcode-3Sum-Java/" ><i class="fa fa-file-o"></i>Leetcode-3Sum(Java)...</a>
       </li>
     
   </ul>
