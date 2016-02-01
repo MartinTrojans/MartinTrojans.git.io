@@ -181,7 +181,11 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
     <entry>
       <title><![CDATA[Algorithm Note]]></title>
       <url>http://yoursite.com/2016/01/31/Algorithm-Note/</url>
-      <content type="html"></content>
+      <content type="html"><![CDATA[<ol>
+<li>Chapter 3 Exercises 6中有两个点， 一个是如果一个图的DFS树中没有出现的边，边的两个顶点一定是祖先与孩子的关系；一个是如果一个图的BFS树的BFS树中没有出现的边，边的两个顶点在BFS树中的层数差不会大于1.</li>
+<li>如果一个图的DFS树，或者BFS树和图相同，那么原图就没有环，否则就找他们最低的祖先，构成一个环。</li>
+</ol>
+]]></content>
     </entry>
     
     <entry>
