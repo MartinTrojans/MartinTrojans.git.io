@@ -109,6 +109,74 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-02-02 </div>
+			<div class="article-title"><a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" >Leetcode-Restore IP Addresses(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given a string containing only digits, restore it by returning all possible valid IP address combinations.</p>
+<p>For example:<br>Given “25525511135”,</p>
+<p>return [“255.255.11.135”, “255.255.111.35”]. (Order does not matter)</p>
+<p><strong>Thinking:</strong></p>
+<p>Valid IP address is between 0 and 255, so we can once detect one to three digits of the string. What’s more, it’s not valid if there is number like “001”. Use bactracing select one to three digits once, and go farther until all the substrings are selected and there are four parts of the result. Then put the result in the list. We should also detect the length of the String because if the length is not between 4 and 12, it’s invalid.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;String&gt; restoreIpAddresses(String s) {
+    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+    if (s.length() &lt; 4)
+        return res;
+    if (s.length() &gt; 12)
+        return res;
+
+    backtracing(s, 0, new ArrayList&lt;String&gt;(), res);
+
+    return res;
+}
+
+public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt;String&gt; res){
+    if (start == s.length()){
+        if (tempres.size() == 4){
+            String tempstr = &quot;&quot;;
+            tempstr = tempres.get(0) + &quot;.&quot; + tempres.get(1) + &quot;.&quot; + tempres.get(2) + &quot;.&quot; + tempres.get(3);
+            res.add(tempstr);
+        }
+        else{
+            return;
+        }
+    }
+
+    for (int i = start+1; i &lt;= s.length(); i++){
+        if (s.charAt(start) == &apos;0&apos; &amp;&amp; i != start+1)
+            continue;
+        if (i - start &gt; 3)
+            break;
+        int num = Integer.parseInt(s.substring(start, i));
+        if (num &gt; 255)
+            break;
+        else{
+            tempres.add(s.substring(start, i));
+            backtracing(s, i, tempres, res);
+            tempres.remove(tempres.size() - 1);
+        }
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-02-02 </div>
 			<div class="article-title"><a href="/2016/02/02/Leetcode-Combination-Sum-II-Java/" >Leetcode-Combination Sum II(Java)</a></div>						
 		</h3>
 	
@@ -118,7 +186,88 @@
   <div class="row">
 	
 	
-		
+		<p><strong>Question:</strong></p>
+<p>Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.</p>
+<p>Each number in C may only be used once in the combination.</p>
+<p>Note:<br>All numbers (including target) will be positive integers.<br>Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).<br>The solution set must not contain duplicate combinations.<br>For example, given candidate set 10,1,2,7,6,1,5 and target 8,<br>A solution set is:<br>[1, 7]<br>[1, 2, 5]<br>[2, 6]<br>[1, 1, 6] </p>
+<p><strong>Thinking:</strong></p>
+<p>We should use backtracing to trace all the possible answers. In order to remove duplicate, there are two methods. One is to use hashset, the other is to build a visited array, if the same value is not visited, then don’t visit the value. And there two ways to backtracing, one is to use the return value, and the other is to pass the fucntion value.</p>
+<p><strong>Solution1:</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) {
+    Arrays.sort(candidates);
+    return backtracing(candidates, target, 0);
+}
+
+public List&lt;List&lt;Integer&gt;&gt; backtracing(int [] candidates, int target, int left){
+    HashSet&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    int right = candidates.length-1;
+
+    if (left &gt; right){
+        return res;
+    }
+    if (target &lt; candidates[left]){
+        return res;
+    }
+    if (target == candidates[left]){
+        List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+        list.add(candidates[left]);
+        res.add(list);
+        return res;
+    }
+    if (left == right){
+        return res;
+    }
+
+    for (int i = left; i &lt;= right; i++){
+        for (List&lt;Integer&gt; list: backtracing(candidates, target-candidates[i], i+1)){
+            list.add(0, candidates[i]);
+            tres.add(list);
+        }
+        for (List&lt;Integer&gt; list: backtracing(candidates, target, i+1)){
+            tres.add(list);
+        }
+    }
+
+    res.addAll(tres);
+    return res;
+}
+</code></pre><p><strong>Solution2:</strong></p>
+<pre><code>public static ArrayList&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) {  
+    ArrayList&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();  
+    ArrayList&lt;Integer&gt; item = new ArrayList&lt;Integer&gt;();
+    if(candidates == null || candidates.length==0)  
+        return res; 
+
+    Arrays.sort(candidates);  
+    boolean [] visited = new boolean[candidates.length];
+    helper(candidates,target, 0, item ,res, visited);  
+    return res;  
+}  
+
+private static void helper(int[] candidates, int target, int start, List&lt;Integer&gt; item,   
+ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){  
+    if(target&lt;0)  
+        return;  
+    if(target==0){  
+        res.add(new ArrayList&lt;Integer&gt;(item));  
+        return;
+    }
+
+    for(int i=start;i&lt;candidates.length;i++){
+        if(!visited[i]){
+            if(i&gt;0 &amp;&amp; candidates[i] == candidates[i-1] &amp;&amp; visited[i-1]==false)//deal with dupicate
+                continue;  
+            item.add(candidates[i]);
+            visited[i]=true;
+            int newtarget = target - candidates[i];
+            helper(candidates,newtarget,i+1,item,res,visited);  
+            visited[i]=false;
+            item.remove(item.size()-1);  
+        }
+    }  
+}
+</code></pre>
 	
 	</div>
   <a type="button" href="/2016/02/02/Leetcode-Combination-Sum-II-Java/#more" class="btn btn-default more">閱讀本文</a>
@@ -332,54 +481,6 @@
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-02-01 </div>
-			<div class="article-title"><a href="/2016/02/01/AI-Note/" >AI Note</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Lecture 1:</strong></p>
-<p><strong>Lecture 2:</strong></p>
-<ol>
-<li>What’s Agent?</li>
-<li>PEAS</li>
-</ol>
-<p><strong>Lecture 3:</strong></p>
-<ol>
-<li>Difference between tree search and graph search:<br> Graph search will record the explored nodes, and won’t explore them again.</li>
-</ol>
-<p><strong>Lecture 4:</strong></p>
-<ol>
-<li>DFS, BFS, uniform-cost search, interative deepening search, evaluating search performance about completeness, optimality, time and space complexity</li>
-<li>BFS:<br> Completeness: Yes(When b is finite)<br> Optimality: Yes(If path is nondecreasing)<br> Time: O(b^d)<br> Space: O(b^d)</li>
-<li>DFS:<br> Completeness: Yes(If graph search version)<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b*m)</li>
-<li>Uniform-cost search:<br> Completeness: Yes<br> Optimality: Yes(If path is nondecreasing)<br> Uniform-cost search not optimal if it is terminated when some node in the queue has goal state.</li>
-<li>Iterative deepening search:<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^d)<br> Space: O(bd)</li>
-</ol>
-<p><strong>Lecture 5:</strong></p>
-<ol>
-<li>Uniformed search, bi-directional search, informed search, greedy best first search, A*, interative deepening A*, recursive best first search, simplified memory-bounded A*</li>
-<li>Bidirectional search:<br> Search forward from initial state, and backward from goal.<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^(d/2)<br> Space: O(b^(d/2)</li>
-<li>Greedy best first search:<br> Greedy BFS keeps all the nodes generated in the<br>Frontier, which is sorted based on h(n).<br> Completeness: No<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b^m)</li>
-<li>A* Search:<br> Use (approximate) total path cost to guide search<br> Admissible Heurisitic: A heuristic is admissible if it never overestimates the cost to reach the goal<br> e.g. hSLD(n) is admissible because it never overestimates the actual road distance<br> Admissible heuristics does not guarantee that the chosen path is optimal<br> A heuristic is consistent if for every node n and every successor n’ of n generated by any action a<br>h(n) ≤ c(n,a,n’) + h(n’)<br> That is, f(n) is nondecreasing along every path.<br> Completeness: Yes<br> Optimality: Yes(if admissible in tree search or consistent in graph search)</li>
-<li>Recursive Best-Frist Search:<br> Keep track of f value (f-limit) of best sibling of path currently exploring<br> Space: O(bd)</li>
-<li>Memory-Bounded A*:<br>  I.e., expand best leaves until available memory is full;When full, SMA* drops worst leaf node (highest f-value);Like RBFS, backup forgotten node value to its parent</li>
-</ol>
-
-	
-	</div>
-  <a type="button" href="/2016/02/01/AI-Note/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -430,7 +531,7 @@
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>2</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>27</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>29</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -447,29 +548,31 @@
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Array/">Array<span>4</span></a></li>
-		
-			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
-		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
-		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
-		
-			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
 		
 			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
-		
-			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
-		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
 		
 			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
 		
 			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
 		
+			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
+		
+			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
+		
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/String/">String<span>1</span></a></li>
+		
+			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
+		
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
+		
+			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
-			<li><a href="/tags/Backtracing/">Backtracing<span>2</span></a></li>
+			<li><a href="/tags/Array/">Array<span>5</span></a></li>
 		
 		 
 		</ul>
@@ -481,6 +584,10 @@
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" ><i class="fa fa-file-o"></i>Leetcode-Restore IP Address...</a>
+      </li>
     
       <li>
         <a href="/2016/02/02/Leetcode-Combination-Sum-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Combination Sum II...</a>
@@ -496,10 +603,6 @@
     
       <li>
         <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Verify Preorder Se...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/01/AI-Note/" ><i class="fa fa-file-o"></i>AI Note...</a>
       </li>
     
   </ul>

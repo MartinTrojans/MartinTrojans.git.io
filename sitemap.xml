@@ -2,13 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/</loc>
-    <lastmod>2016-02-02T23:09:54.000Z</lastmod>
+    <loc>http://yoursite.com/2016/02/02/Leetcode-Restore-IP-Addresses-Java/</loc>
+    <lastmod>2016-02-02T23:53:47.000Z</lastmod>
   </url>
   
   <url>
     <loc>http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/</loc>
-    <lastmod>2016-02-02T23:09:18.000Z</lastmod>
+    <lastmod>2016-02-02T23:15:50.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/</loc>
+    <lastmod>2016-02-02T23:09:54.000Z</lastmod>
   </url>
   
   <url>

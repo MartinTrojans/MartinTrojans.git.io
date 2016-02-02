@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-02-02T23:09:18.000Z</updated>
+  <updated>2016-02-02T23:53:47.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,15 +15,170 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Leetcode-Restore IP Addresses(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/02/Leetcode-Restore-IP-Addresses-Java/"/>
+    <id>http://yoursite.com/2016/02/02/Leetcode-Restore-IP-Addresses-Java/</id>
+    <published>2016-02-02T23:49:57.000Z</published>
+    <updated>2016-02-02T23:53:47.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a string containing only digits, restore it by returning all possible valid IP address combinations.</p>
+<p>For example:<br>Given “25525511135”,</p>
+<p>return [“255.255.11.135”, “255.255.111.35”]. (Order does not matter)</p>
+<p><strong>Thinking:</strong></p>
+<p>Valid IP address is between 0 and 255, so we can once detect one to three digits of the string. What’s more, it’s not valid if there is number like “001”. Use bactracing select one to three digits once, and go farther until all the substrings are selected and there are four parts of the result. Then put the result in the list. We should also detect the length of the String because if the length is not between 4 and 12, it’s invalid.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;String&gt; restoreIpAddresses(String s) {
+    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+    if (s.length() &lt; 4)
+        return res;
+    if (s.length() &gt; 12)
+        return res;
+
+    backtracing(s, 0, new ArrayList&lt;String&gt;(), res);
+
+    return res;
+}
+
+public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt;String&gt; res){
+    if (start == s.length()){
+        if (tempres.size() == 4){
+            String tempstr = &quot;&quot;;
+            tempstr = tempres.get(0) + &quot;.&quot; + tempres.get(1) + &quot;.&quot; + tempres.get(2) + &quot;.&quot; + tempres.get(3);
+            res.add(tempstr);
+        }
+        else{
+            return;
+        }
+    }
+
+    for (int i = start+1; i &lt;= s.length(); i++){
+        if (s.charAt(start) == &apos;0&apos; &amp;&amp; i != start+1)
+            continue;
+        if (i - start &gt; 3)
+            break;
+        int num = Integer.parseInt(s.substring(start, i));
+        if (num &gt; 255)
+            break;
+        else{
+            tempres.add(s.substring(start, i));
+            backtracing(s, i, tempres, res);
+            tempres.remove(tempres.size() - 1);
+        }
+    }
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a string containing only digits, restore it by returning all possible valid IP address combinatio]]>
+    </summary>
+    
+      <category term="Backtracing" scheme="http://yoursite.com/tags/Backtracing/"/>
+    
+      <category term="String" scheme="http://yoursite.com/tags/String/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Leetcode-Combination Sum II(Java)]]></title>
     <link href="http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/"/>
     <id>http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/</id>
     <published>2016-02-02T23:09:18.000Z</published>
-    <updated>2016-02-02T23:09:18.000Z</updated>
-    <content type="html"></content>
+    <updated>2016-02-02T23:15:50.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.</p>
+<p>Each number in C may only be used once in the combination.</p>
+<p>Note:<br>All numbers (including target) will be positive integers.<br>Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).<br>The solution set must not contain duplicate combinations.<br>For example, given candidate set 10,1,2,7,6,1,5 and target 8,<br>A solution set is:<br>[1, 7]<br>[1, 2, 5]<br>[2, 6]<br>[1, 1, 6] </p>
+<p><strong>Thinking:</strong></p>
+<p>We should use backtracing to trace all the possible answers. In order to remove duplicate, there are two methods. One is to use hashset, the other is to build a visited array, if the same value is not visited, then don’t visit the value. And there two ways to backtracing, one is to use the return value, and the other is to pass the fucntion value.</p>
+<p><strong>Solution1:</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) {
+    Arrays.sort(candidates);
+    return backtracing(candidates, target, 0);
+}
+
+public List&lt;List&lt;Integer&gt;&gt; backtracing(int [] candidates, int target, int left){
+    HashSet&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    int right = candidates.length-1;
+
+    if (left &gt; right){
+        return res;
+    }
+    if (target &lt; candidates[left]){
+        return res;
+    }
+    if (target == candidates[left]){
+        List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+        list.add(candidates[left]);
+        res.add(list);
+        return res;
+    }
+    if (left == right){
+        return res;
+    }
+
+    for (int i = left; i &lt;= right; i++){
+        for (List&lt;Integer&gt; list: backtracing(candidates, target-candidates[i], i+1)){
+            list.add(0, candidates[i]);
+            tres.add(list);
+        }
+        for (List&lt;Integer&gt; list: backtracing(candidates, target, i+1)){
+            tres.add(list);
+        }
+    }
+
+    res.addAll(tres);
+    return res;
+}
+</code></pre><p><strong>Solution2:</strong></p>
+<pre><code>public static ArrayList&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) {  
+    ArrayList&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();  
+    ArrayList&lt;Integer&gt; item = new ArrayList&lt;Integer&gt;();
+    if(candidates == null || candidates.length==0)  
+        return res; 
+
+    Arrays.sort(candidates);  
+    boolean [] visited = new boolean[candidates.length];
+    helper(candidates,target, 0, item ,res, visited);  
+    return res;  
+}  
+
+private static void helper(int[] candidates, int target, int start, List&lt;Integer&gt; item,   
+ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){  
+    if(target&lt;0)  
+        return;  
+    if(target==0){  
+        res.add(new ArrayList&lt;Integer&gt;(item));  
+        return;
+    }
+
+    for(int i=start;i&lt;candidates.length;i++){
+        if(!visited[i]){
+            if(i&gt;0 &amp;&amp; candidates[i] == candidates[i-1] &amp;&amp; visited[i-1]==false)//deal with dupicate
+                continue;  
+            item.add(candidates[i]);
+            visited[i]=true;
+            int newtarget = target - candidates[i];
+            helper(candidates,newtarget,i+1,item,res,visited);  
+            visited[i]=false;
+            item.remove(item.size()-1);  
+        }
+    }  
+}
+</code></pre>]]></content>
     <summary type="html">
-    
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C ]]>
     </summary>
+    
+      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
+    
+      <category term="Backtracing" scheme="http://yoursite.com/tags/Backtracing/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
     
   </entry>
   
@@ -1358,105 +1513,6 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
 <p>Given a binary tree, flatten it to a linked list in-place.</p>
 <p>For example,<br>Given</p>
 <pre><code>]]>
-    </summary>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Triangle(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/27/Leetcode-Triangle/"/>
-    <id>http://yoursite.com/2016/01/27/Leetcode-Triangle/</id>
-    <published>2016-01-27T21:58:25.000Z</published>
-    <updated>2016-01-27T21:58:25.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.</p>
-<p>For example, given the following triangle:</p>
-<pre><code>[
-       [2],
-     [3,4],
-    [6,5,7],
-   [4,1,8,3]
-]
-</code></pre><p>The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).</p>
-<p>Note:<br>Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.</p>
-<p><strong>Thinking:</strong><br>It’s a simple dynamic programming question. The expression is dp[i][j] = min(d[i-1][j-1], d[i][j]) + triangle[i][j].</p>
-<p>But the first time, my code is time exceed:</p>
-<pre><code>public class Solution {
-    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
-        int lr = triangle.size();
-        if(lr == 0){
-            return 0;
-        }
-        int lc = triangle.get(lr-1).size();
-        int min = 100000;
-        for(int i = 0; i &lt; lc; i++){
-            int tmp = dp(triangle, lr-1, i);
-            if(tmp &lt; min)
-                min = tmp;
-        }
-        return min;
-    }
-
-    public int dp(List&lt;List&lt;Integer&gt;&gt; triangle, int row, int column){
-        if(row == 0){
-            return triangle.get(0).get(0);
-        }
-        int value = triangle.get(row).get(column);
-        int size = triangle.get(row-1).size();
-        if(column &gt;= size){
-            return dp(triangle, row-1, column-1) + value;
-        }
-        else if(column - 1 &lt; 0){
-            return dp(triangle, row-1, column) + value;
-        }
-        else{
-            int res1 = dp(triangle, row-1, column-1) + value;
-            int res2 = dp(triangle, row-1, column) + value;
-            if(res1 &lt; res2){
-                return res1;
-            }
-            else{
-                return res2;
-            }
-        }
-    }
-}
-</code></pre><p>Then I noticed the bonus, so I change my mind to use <em>iteration</em>:</p>
-<pre><code>public class Solution{
-    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle){
-        int lr = triangle.size();
-        int[] min = new int[lr];
-        int[] tempmin = new int[lr];
-        min[0] = triangle.get(0).get(0);
-        for(int i = 1; i &lt; lr; i++){
-            tempmin[0] = min[0] + triangle.get(i).get(0);
-            tempmin[i] = min[i-1] + triangle.get(i).get(i);
-            for(int j = 1; j &lt; i; j++){
-                int res1 = min[j-1] + triangle.get(i).get(j);
-                int res2 = min[j] + triangle.get(i).get(j);
-                if(res1 &lt; res2)
-                    tempmin[j] = res1;
-                else
-                    tempmin[j] = res2;
-            }
-            for(int k = 0; k &lt; i+1; k++){
-                min[k] = tempmin[k];
-            }
-        }
-        int m = 100000;
-        for(int i = 0; i &lt; lr; i++){
-            if(min[i] &lt; m)
-                m = min[i];
-        }
-        return m;
-    }
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numb]]>
     </summary>
     
       <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>

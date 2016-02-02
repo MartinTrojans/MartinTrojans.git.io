@@ -109,6 +109,64 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-01-26 </div>
+			<div class="article-title"><a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" >Leetcode-3Sum Closest(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
+<p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
+<p>The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</p>
+<p><strong>Thinking:</strong></p>
+<p>In order to improve the performance of algorithm, we should sort the array. Because of that, we can determine where to go using current result.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int threeSumClosest(int[] nums, int target) {
+    int l = nums.length;
+    if (l &lt; 3)
+        return 0;
+    int min = Integer.MAX_VALUE;
+    int res = 0;
+    Arrays.sort(nums);
+
+    for (int i = 0; i &lt; l; i++){
+        int j = i + 1;
+        int k = l - 1;
+
+        while (j &lt; k){
+            int sum = nums[i] + nums[j] + nums[k];
+            if (sum == target)
+                return sum;
+            int diff = Math.abs(sum - target);
+            if (diff &lt; min){
+                min = diff;
+                res = sum;
+            }
+            if (sum &gt; target)
+                k--;
+            else
+                j++;
+        }
+
+    }
+    return res;
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/26/Leetcode-3Sum-Closest-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-26 </div>
 			<div class="article-title"><a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" >Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)</a></div>						
 		</h3>
 	
@@ -503,139 +561,6 @@ Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &ap
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-24 </div>
-			<div class="article-title"><a href="/2016/01/24/Sort-Algorithms/" >Sort Algorithms</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
-<h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
-<p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
-<p><strong>Process:</strong> (From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
-<p><strong>Pseudocode:</strong></p>
-<pre><code>for i ← 1 to length(A) - 1
-    j ← i
-    while j &gt; 0 and A[j-1] &gt; A[j]
-        swap A[j] and A[j-1]
-        j ← j - 1
-    end while
-end for
-</code></pre><p><strong>Implemention in Java:</strong></p>
-<pre><code>public static void InsertionSort(int[] num)
-{
-     int j;
-     int key;
-     int i;  
-
-     for (j = 1; j &lt; num.length; j++){
-        key = num[j];
-        for(i = j - 1; (i &gt;= 0) &amp;&amp; (num[i] &lt; key); i--){
-            num[i+1] = num[i];
-        }
-        num[i+1] = key;
-    }
-}
-</code></pre><p><strong>Complexity:</strong></p>
-<p><em>Runtime</em>: O(n^2)</p>
-<p><em>Memery</em>: O(1)</p>
-<hr>
-<h2 id="ShellSort_3A"><a href="#ShellSort_3A" class="headerlink" title="ShellSort:"></a>ShellSort:</h2><p><strong>Main Idea:</strong></p>
-<p>The method starts by sorting pairs of elements far apart from each other, then progressively reducing the gap between elements to be compared. Starting with far apart elements can move some out-of-place elements into position faster than a simple nearest neighbor exchange.</p>
-<p><strong>Process:</strong>(From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif" alt=""></p>
-<p><strong>Pesedocode:</strong></p>
-<pre><code>gaps = [701, 301, 132, 57, 23, 10, 4, 1]
-
-foreach (gap in gaps)
-{
-    # Do a gapped insertion sort for this gap size.
-    # The first gap elements a[0..gap-1] are already in gapped order
-    # keep adding one more element until the entire array is gap sorted
-    for (i = gap; i &lt; n; i += 1)
-    {
-        # add a[i] to the elements that have been gap sorted
-        # save a[i] in temp and make a hole at position i
-        temp = a[i]
-        # shift earlier gap-sorted elements up until the correct location for a[i] is found
-        for (j = i; j &gt;= gap and a[j - gap] &gt; temp; j -= gap)
-        {
-            a[j] = a[j - gap]
-        }
-        # put temp (the original a[i]) in its correct location
-        a[j] = temp
-        }
-    }
-</code></pre><p> <strong>Implemention in Java:</strong></p>
-<pre><code>public void shellSort() {
-    int inner, outer;
-    long temp;
-    //find initial value of h
-    int h = 1;
-    while (h &lt;= len / 3)
-      h = h * 3 + 1; // (1, 4, 13, 40, 121, ...)
-
-    while (h &gt; 0) // decreasing h, until h=1
-    {
-      // h-sort the file
-      for (outer = h; outer &lt; len; outer++) {
-        temp = data[outer];
-        inner = outer;
-        // one subpass (eg 0, 4, 8)
-        while (inner &gt; h - 1 &amp;&amp; data[inner - h] &gt;= temp) {
-          data[inner] = data[inner - h];
-          inner -= h;
-        }
-        data[inner] = temp;
-      }
-      h = (h - 1) / 3; // decrease h
-    }
-}
-</code></pre><hr>
-<h2 id="Simple_Selection_Sort"><a href="#Simple_Selection_Sort" class="headerlink" title="Simple Selection Sort"></a>Simple Selection Sort</h2><p><strong>Main Idea:</strong></p>
-<p>Find the smallest(biggest) element in array, put it in the first place. Then find the second smallest… Do these until all the element are sorted.(I suppose it’s a little similar with bubble sort)</p>
-<p><strong>Process:</strong>(From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
-<p><strong>Pesedocode:</strong></p>
-<pre><code>for i ← 1 to length(A) - 1
-    j ← i
-    while j &gt; 0 and A[j-1] &gt; A[j]
-        swap A[j] and A[j-1]
-        j ← j - 1
-    end while
-end for
-</code></pre><p><strong>Complexity:</strong></p>
-<p><em>Runtime:</em> O(n^2)<br><em>Memery:</em> O(1)</p>
-<h2 id="Heapsort"><a href="#Heapsort" class="headerlink" title="Heapsort"></a>Heapsort</h2><p><strong>Main Idea:</strong></p>
-<p>Use data structure heap which will store the smallest or biggest value of the array. Then pick up the root of heap   once a time to sort. </p>
-<p>Heapsort is a comparison-based sorting algorithm. Heapsort can be thought of as an improved selection sort: like that algorithm, it divides its input into a sorted and an unsorted region, and it iteratively shrinks the unsorted region by extracting the largest element and moving that to the sorted region. The improvement consists of the use of a heap data structure rather than a linear-time search to find the maximum.</p>
-<p>This sort is the most important part in this article. I’ll talk about the relative operation and its performance and all the code.</p>
-<p><strong>Process:</strong>(From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif" alt=""></p>
-<p>In the heap view(an example offered):</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Heapsort-example.gif" alt=""></p>
-<p><strong>Data Structure:</strong></p>
-<p>Heap:</p>
-<p>A heap is built out of the data. The heap is often placed in an array with the layout of a complete binary tree. The complete binary tree maps the binary tree structure into the array indices; each array index represents a node; the index of the node’s parent, left child branch, or right child branch are simple expressions. For a zero-based array, the root node is stored at index 0; if i is the index of the current node, then</p>
-<pre><code>iParent(i)     = floor((i-1) / 2)
-iLeftChild(i)  = 2*i + 1
-iRightChild(i) = 2*i + 2
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/24/Sort-Algorithms/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -686,7 +611,7 @@ iRightChild(i) = 2*i + 2
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>2</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>27</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>29</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -703,29 +628,31 @@ iRightChild(i) = 2*i + 2
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
-		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
+			<li><a href="/tags/Array/">Array<span>5</span></a></li>
 		
 			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
 		
-			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
-		
 			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
 		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
-		
-			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
-		
-			<li><a href="/tags/Array/">Array<span>4</span></a></li>
-		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
 		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
+			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+		
+			<li><a href="/tags/String/">String<span>1</span></a></li>
+		
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
+		
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+		
 			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
 		
-			<li><a href="/tags/Backtracing/">Backtracing<span>2</span></a></li>
+			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -737,6 +664,10 @@ iRightChild(i) = 2*i + 2
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" ><i class="fa fa-file-o"></i>Leetcode-Restore IP Address...</a>
+      </li>
     
       <li>
         <a href="/2016/02/02/Leetcode-Combination-Sum-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Combination Sum II...</a>
@@ -752,10 +683,6 @@ iRightChild(i) = 2*i + 2
     
       <li>
         <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Verify Preorder Se...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/01/AI-Note/" ><i class="fa fa-file-o"></i>AI Note...</a>
       </li>
     
   </ul>
