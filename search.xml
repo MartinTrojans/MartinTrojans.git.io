@@ -4,6 +4,207 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode-Combination Sum II(Java)]]></title>
+      <url>http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Reverse Linked List II(Java)]]></title>
+      <url>http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Reverse a linked list from position m to n. Do it in-place and in one-pass.</p>
+<p>For example:<br>Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, m = 2 and n = 4,</p>
+<p>return 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;NULL.</p>
+<p>Note:<br>Given m, n satisfy the following condition:<br>1 ≤ m ≤ n ≤ length of list.</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s similar with Reverse Linked List, only thing different is to limit the range. So we should to find the start of the reversed linked list and record its previous node. Also, we should add a dummy node for easily operator with the first node. Then use three points as usual pre, cur and next to operate and change the nodes’ next pointers.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public ListNode reverseBetween(ListNode head, int m, int n) {
+    if (m == n)
+        return head;
+    ListNode prehead = new ListNode(0);//dummy
+    prehead.next = head;
+    ListNode pre = prehead;
+    ListNode cur = head;
+    int idx = 1;
+
+    while (idx &lt; m) {
+        pre = cur;
+        cur = cur.next;
+        idx++;
+    }
+    ListNode prerever = pre;
+    ListNode next = null;
+    pre = cur;
+    cur = cur.next;
+    while (idx &lt; n) {
+        next = cur.next;
+        cur.next = pre;
+        pre = cur;
+        cur = next;
+        idx++;
+    }
+    prerever.next.next = cur;
+    prerever.next = pre;
+
+
+    return prehead.next;
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Patching Array(Java)]]></title>
+      <url>http://yoursite.com/2016/02/02/Patching-Array-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a sorted positive integer array nums and an integer n, add/patch elements to the array such that any number in range [1, n] inclusive can be formed by the sum of some elements in the array. Return the minimum number of patches required.</p>
+<p>Example 1:<br>nums = [1, 3], n = 6<br>Return 1.</p>
+<p>Combinations of nums are [1], [3], [1,3], which form possible sums of: 1, 3, 4.<br>Now if we add/patch 2 to nums, the combinations are: [1], [2], [3], [1,3], [2,3], [1,2,3].<br>Possible sums are 1, 2, 3, 4, 5, 6, which now covers the range [1, 6].<br>So we only need 1 patch.</p>
+<p>Example 2:<br>nums = [1, 5, 10], n = 20<br>Return 2.<br>The two patches can be [2, 4].</p>
+<p>Example 3:<br>nums = [1, 2, 2], n = 5<br>Return 0.</p>
+<p><strong>Thinking:</strong></p>
+<p>The first range we can cover of an array is total, then if we add a new element to this array and this element add &lt;= total, then the new range is [1, add+total). We should also care about the java maxint value, so if we use bit manipulation, it means it is bigger than maxint if total is smaller than zero.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int minPatches(int[] nums, int n) {
+    int total = 1; //total is the upper bound of the sum
+    int count = 0;
+    int index = 0;
+    int len = nums.length;
+
+    while (total &lt;= n) {
+        if (index &lt; len &amp;&amp; nums[index] &lt;= total){
+            total += nums[index++];
+        }
+        else{
+            total &lt;&lt;= 1;
+            count++;
+            if (total &lt; 0)
+                break;
+        }
+    }
+
+
+    return count;
+} 
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Verify Preorder Serialization of a Binary Tree(Java)]]></title>
+      <url>http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/</url>
+      <content type="html"><![CDATA[<p>One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node’s value. If it is a null node, we record using a sentinel value such as #.</p>
+<pre><code>     _9_
+    /   \
+   3     2
+  / \   / \
+ 4   1  #  6
+/ \ / \   / \
+# # # #   # #
+</code></pre><p>For example, the above binary tree can be serialized to the string “9,3,4,#,#,1,#,#,2,#,6,#,#”, where # represents a null node.</p>
+<p>Given a string of comma separated values, verify whether it is a correct preorder traversal serialization of a binary tree. Find an algorithm without reconstructing the tree.</p>
+<p>Each comma separated value in the string must be either an integer or a character ‘#’ representing null pointer.</p>
+<p>You may assume that the input format is always valid, for example it could never contain two consecutive commas such as “1,,3”.</p>
+<p>Example 1:<br>“9,3,4,#,#,1,#,#,2,#,6,#,#”<br>Return true</p>
+<p>Example 2:<br>“1,#”<br>Return false</p>
+<p>Example 3:<br>“9,#,#,1”<br>Return false</p>
+<p><strong>Thinking:</strong></p>
+<p>Accroding to the correct answer given, we can find the pattern. We should start from # and use stack to store it. When get two #, we should get another element from the string. </p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean isValidSerialization(String preorder) {
+    String[] strlist = preorder.split(&quot;,&quot;);
+    Stack&lt;String&gt; stack = new Stack&lt;String&gt;();
+    Stack&lt;String&gt; tempstack = new Stack&lt;String&gt;();
+
+    for (String s: strlist) {
+        stack.push(s);
+    }
+    while (!stack.isEmpty()) {
+        while (!stack.isEmpty() &amp;&amp; stack.peek().equals(&quot;#&quot;)){
+            tempstack.push(stack.pop());
+        }
+        if (tempstack.size() &lt; 2)
+            break;
+        while (tempstack.size() &gt;= 2 &amp;&amp; !stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
+            tempstack.pop();
+            tempstack.pop();
+            if (!stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
+                stack.pop();
+                tempstack.push(&quot;#&quot;);
+            }
+        }
+    }
+
+    if (tempstack.size() == 1 &amp;&amp; stack.isEmpty())
+        return true;
+    else
+        return false;
+}
+</code></pre><p>There is another simpler solution:</p>
+<pre><code>public boolean isValidSerialization(String preorder) {
+    String[] p = preorder.split(&quot;,&quot;);
+    int idx = 0; // stack
+    for (int i = 0; i &lt; p.length; i++) {
+    if (p[i].equals(&quot;#&quot;)) {
+        idx--;
+    } else {
+        if (idx &lt; 0) { // check
+          return false;
+        }
+        p[idx++] = p[i];
+      }
+    }
+    return idx == -1; // check
+  }
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/83903/share-my-java-solution" target="_blank" rel="external">https://leetcode.com/discuss/83903/share-my-java-solution</a></p>
+<p>And another much simplier solution which caculate the indegree and outdegree:</p>
+<pre><code>public boolean isValidSerialization2(String preorder) {
+    String[] nodes = preorder.split(&quot;,&quot;);
+    int diff = 1;
+    for (String node: nodes) {
+        if (--diff &lt; 0) return false;
+        if (!node.equals(&quot;#&quot;)) diff += 2;
+    }
+    return diff == 0;
+}
+</code></pre><p>Reference: <a href="https://www.hrwhisper.me/leetcode-algorithm-solution/" target="_blank" rel="external">https://www.hrwhisper.me/leetcode-algorithm-solution/</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[AI Note]]></title>
+      <url>http://yoursite.com/2016/02/01/AI-Note/</url>
+      <content type="html"><![CDATA[<p><strong>Lecture 1:</strong></p>
+<p><strong>Lecture 2:</strong></p>
+<ol>
+<li>What’s Agent?</li>
+<li>PEAS</li>
+</ol>
+<p><strong>Lecture 3:</strong></p>
+<ol>
+<li>Difference between tree search and graph search:<br> Graph search will record the explored nodes, and won’t explore them again.</li>
+</ol>
+<p><strong>Lecture 4:</strong></p>
+<ol>
+<li>DFS, BFS, uniform-cost search, interative deepening search, evaluating search performance about completeness, optimality, time and space complexity</li>
+<li>BFS:<br> Completeness: Yes(When b is finite)<br> Optimality: Yes(If path is nondecreasing)<br> Time: O(b^d)<br> Space: O(b^d)</li>
+<li>DFS:<br> Completeness: Yes(If graph search version)<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b*m)</li>
+<li>Uniform-cost search:<br> Completeness: Yes<br> Optimality: Yes(If path is nondecreasing)<br> Uniform-cost search not optimal if it is terminated when some node in the queue has goal state.</li>
+<li>Iterative deepening search:<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^d)<br> Space: O(bd)</li>
+</ol>
+<p><strong>Lecture 5:</strong></p>
+<ol>
+<li>Uniformed search, bi-directional search, informed search, greedy best first search, A*, interative deepening A*, recursive best first search, simplified memory-bounded A*</li>
+<li>Bidirectional search:<br> Search forward from initial state, and backward from goal.<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^(d/2)<br> Space: O(b^(d/2)</li>
+<li>Greedy best first search:<br> Greedy BFS keeps all the nodes generated in the<br>Frontier, which is sorted based on h(n).<br> Completeness: No<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b^m)</li>
+<li>A* Search:<br> Use (approximate) total path cost to guide search<br> Admissible Heurisitic: A heuristic is admissible if it never overestimates the cost to reach the goal<br> e.g. hSLD(n) is admissible because it never overestimates the actual road distance<br> Admissible heuristics does not guarantee that the chosen path is optimal<br> A heuristic is consistent if for every node n and every successor n’ of n generated by any action a<br>h(n) ≤ c(n,a,n’) + h(n’)<br> That is, f(n) is nondecreasing along every path.<br> Completeness: Yes<br> Optimality: Yes(if admissible in tree search or consistent in graph search)</li>
+<li>Recursive Best-Frist Search:<br> Keep track of f value (f-limit) of best sibling of path currently exploring<br> Space: O(bd)</li>
+<li>Memory-Bounded A*:<br>  I.e., expand best leaves until available memory is full;When full, SMA* drops worst leaf node (highest f-value);Like RBFS, backup forgotten node value to its parent</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode-Kth Largest Element in an Array(Java)]]></title>
       <url>http://yoursite.com/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/</url>
       <content type="html"><![CDATA[<p><strong>Question:</strong></p>

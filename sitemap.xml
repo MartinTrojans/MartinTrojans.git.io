@@ -2,6 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/</loc>
+    <lastmod>2016-02-02T23:09:54.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/</loc>
+    <lastmod>2016-02-02T23:09:18.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/02/Patching-Array-Java/</loc>
+    <lastmod>2016-02-02T21:18:49.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/</loc>
+    <lastmod>2016-02-02T07:18:34.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/01/AI-Note/</loc>
+    <lastmod>2016-02-02T00:56:02.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/01/31/Algorithm-Note/</loc>
     <lastmod>2016-02-01T07:10:43.000Z</lastmod>
   </url>

@@ -108,8 +108,8 @@
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2016-01-24 </div>
-			<div class="article-title"><a href="/2016/01/24/Leetcode-Search-for-a-Range-Java/" >Leetcode-Search for a Range(Java)</a></div>						
+			<div class="date"> 2016-01-26 </div>
+			<div class="article-title"><a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" >Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)</a></div>						
 		</h3>
 	
 
@@ -119,107 +119,50 @@
 	
 	
 		<p><strong>Question:</strong></p>
-<p>Given a sorted array of integers, find the starting and ending position of a given target value.</p>
-<p>Your algorithm’s runtime complexity must be in the order of O(log n).</p>
-<p>If the target is not found in the array, return [-1, -1].</p>
-<p>For example,<br>Given [5, 7, 7, 8, 8, 10] and target value 8,<br>return [3, 4].</p>
+<p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
 <p><strong>Thinking:</strong></p>
-<p>It’s question which should use binary search because it give us a sorted array and it requires O(log n) runtime complexity. Only thing difference between this algorithm and classical binary search is that we should make the range smaller while finding the target instead of returning the index.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public int[] searchRange(int[] nums, int target) {
-        int low = 0;
-        int high = nums.length - 1;
-        int mid;
-        int resl = -1;
-        int resr = -1;
-        while (low &lt;= high){
-            mid = (low + high) / 2;
-            if (nums[mid] == target){
-                if (nums[low] == target){
-                    resl = low;
-                    if (resr != -1)
-                        break;
-                }    
-                else
-                    low++;
-
-                if (nums[high] == target){
-                    resr = high;
-                    if (resl != -1)
-                        break;
-                }
-                else
-                    high--;
-            }
-            else if(nums[mid] &gt; target)
-                high = mid - 1;
-            else
-                low = mid + 1;
-        }
-        int[] res = {resl, resr};
-        return res;
-    }
-
-}
-</code></pre><p>But the algorithm is not so effienct when finding the target so early. In order to make sure the runtime complexity is O(log n), we should also use binary search to find the lower bound and upper bound when finding the target in the array.<br>Reference: <a href="http://www.cnblogs.com/springfor/p/3857704.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3857704.html</a></p>
-<p>Code:</p>
-<pre><code>public int[] searchRange(int[] A, int target) {
-    int [] res = {-1,-1};
-    if(A == null || A.length == 0)
-        return res;
-
-    //first iteration, find target wherever it is
-    int low = 0;
-    int high = A.length-1;
-    int pos = 0;
-    while(low &lt;= high){
-        int mid = (low + high)/2;
-        pos = mid;
-        if(A[mid] &gt; target)
-            high = mid - 1;
-        else if(A[mid] &lt; target)
-            low = mid + 1;
-        else{
-            res[0] = pos;
-            res[1] = pos;
+<p>Inorder traversal will search in order: left, root, right;</p>
+<p>Postorder travelsal will search in order: left, right, root.</p>
+<p>So we can find the root in postorder and search it in inorder by the value. And find root’s left child and right child node by recursion.</p>
+<pre><code>public TreeNode buildTree(int[] inorder, int[] postorder) {
+    int l = inorder.length;
+    if (l == 0)
+        return null;
+    TreeNode root = new TreeNode(postorder[l-1]);
+    TreeNode left = null;
+    TreeNode right = null;
+    int index = 0;
+    for (; index &lt; l; index++){
+        if (inorder[index] == postorder[l-1])
             break;
-        }
     }
 
-    if(A[pos] != target)
-        return res;
 
-    //second iteration, find the right boundary of this target
-    int newlow = pos;
-    int newhigh = A.length-1;
-    while(newlow &lt;= newhigh){
-        int newmid = (newlow+newhigh)/2;
-        if(A[newmid] == target)
-            newlow = newmid + 1;
-        else
-            newhigh = newmid - 1;
+    if (index &gt; 0){
+        int[] leftinorder = new int[index];
+        int[] leftpostorder = new int[index];
+        System.arraycopy(inorder, 0, leftinorder, 0, index);
+        System.arraycopy(postorder, 0, leftpostorder, 0, index);
+        left = buildTree(leftinorder, leftpostorder);
     }
-    res[1] = newhigh;
-
-    //third iteration, find the left boundary of this target
-    newlow = 0;
-    newhigh = pos;
-    while(newlow &lt;= newhigh){
-        int newmid = (newlow+newhigh)/2;
-        if(A[newmid] == target)
-            newhigh = newmid - 1;
-        else
-            newlow = newmid + 1;
+    if (index &lt; l-1){
+        int[] rightinorder = new int[l-index-1];
+        int[] rightpostorder = new int[l-index-1];
+        System.arraycopy(inorder, index+1, rightinorder, 0, l-index-1);
+        System.arraycopy(postorder, index, rightpostorder, 0, l-index-1);
+        right = buildTree(rightinorder, rightpostorder);
     }
-    res[0] = newlow;
+    root.left = left;
+    root.right = right;
 
-    return res;
+    return root;
 }
-</code></pre>
+</code></pre><p>By the way, this code can be improved because in Java we can not easily get the subarray and I use the System.arraycopy. It can be replaced by recording the postion of array.</p>
+
 	
 	</div>
-  <a type="button" href="/2016/01/24/Leetcode-Search-for-a-Range-Java/#more" class="btn btn-default more">閱讀本文</a>
+  <a type="button" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/#more" class="btn btn-default more">閱讀本文</a>
 </div>
 
 		
@@ -227,8 +170,8 @@
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2016-01-24 </div>
-			<div class="article-title"><a href="/2016/01/24/Leetcode-Partition-List/" >Leetcode-Partition List(Java)</a></div>						
+			<div class="date"> 2016-01-26 </div>
+			<div class="article-title"><a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" >Leetcode-Lowest Common Ancestor of a Binary Tree(Java)</a></div>						
 		</h3>
 	
 
@@ -238,76 +181,325 @@
 	
 	
 		<p><strong>Question:</strong></p>
-<p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</p>
-<p>You should preserve the original relative order of the nodes in each of the two partitions.</p>
-<p>For example,<br>Given 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2 and x = 3,<br>return 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5.</p>
+<p>Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</p>
+<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</p>
+<pre><code>           _______3______
+         /              \
+  ___5__           ___1___
+    /      \         /          \
+6        2       0         8
+         /  \
+        7    4
+</code></pre><p>For example, the lowest common ancestor (LCA) of nodes 5 and 1 is 3. Another example is LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.</p>
 <p><strong>Thinking:</strong></p>
-<p>We should preserve the original relative order of the nodes. So we need two points, one is for recording where to insert the less value node, and the other is for searching the less value node.</p>
-<p><strong>Solution1:</strong></p>
-<pre><code>public class Solution {
-    public ListNode partition(ListNode head, int x) {
-        if (head == null)
-            return null;
-        ListNode prehead = new ListNode(0);
-        prehead.next = head;
-        ListNode s = prehead;
-        ListNode l = prehead;
-        while(s != null &amp;&amp; l != null){
-            while(s.next != null){
-                if (s.next.val &gt;= x)
-                    break;
-                s = s.next;
-            }
-            l = s.next;
-            if (l == null)
-                break;
-            while(l.next != null){
-                if (l.next.val &lt; x)
-                    break;
-                l = l.next;
-            }
-            if (l.next == null)
-                break;
-            ListNode tmp = l.next;
-            l.next = l.next.next;
-            tmp.next = s.next;
-            s.next = tmp;
-        }
+<p>The point to find the lowest common ancestor is to find a node whose left and right childs both have the node we want to find. Because if it’s not the lowest, the node will only belong to one of their child. If search in a pre-order from the root, if one node’s left child and right child both have the keynode or if the node itself is one of the keynode which means the other node will in lower level of this node, it’s the answer we want.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == null)
+        return root;
 
-        return prehead.next;
+    if (root.equals(q) || root.equals(p)){
+        return root;
     }
 
+    TreeNode l = lowestCommonAncestor(root.left, p, q);
+    TreeNode r = lowestCommonAncestor(root.right, p, q);
+    if (l != null &amp;&amp; r != null)
+        return root;
+
+    return l == null? r: l;
 }
-</code></pre><p>And there is another solution, which uses two lists. One is for recording less value node, and the other is for recording greater value node. And connect them:</p>
-<pre><code>public ListNode partition(ListNode head, int x) {
-        if(head==null||head.next==null)
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-25 </div>
+			<div class="article-title"><a href="/2016/01/25/Node-js-study-note/" >Node.js study note</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Survey:</strong></p>
+<p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
+<p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
+<hr>
+<p><strong>Content:</strong></p>
+<p>–1– Argument variables with process.argv</p>
+<pre><code>app.js
+
+function grab(flag){
+    var index = process.argv.indexOf(flag);
+    return (index === -1) ? null : process.argv[index+1];
+}
+
+var greeting = grab(&apos;--greeting&apos;);
+var user = grab(&apos;--user&apos;);
+
+if (!user || !greeting) {
+    console.log(&quot;You blew it!&quot;);
+} else {
+    console.log(`Welcome, ${user}, ${greeting}`);
+}
+</code></pre><p>In this code, we grab the arguments from shell and print it out on the console.</p>
+<p>For example, if in the shell:</p>
+<pre><code>$node app --user Martin --greeting &quot;hello hello&quot;
+</code></pre><p>Then in the console:</p>
+<pre><code>Welcome, Martin, hello hello
+</code></pre><p>And in this code, I also learned string temple which uses backticks<code>.</code>Welcome, ${user}, ${greeting}` will contain variable user and greeting.</p>
+<hr>
+<p>–2– Standard input and standard output</p>
+<pre><code> var questions = [
+&quot;What is your name?&quot;,
+&quot;What is your favorite hobby?&quot;,
+&quot;What is your preferred programming language?&quot;
+];
+
+var answers = [];
+
+function ask(i) {
+    process.stdout.write(`\n\n\n\n ${questions[i]}`);
+    process.stdout.write(&quot;  &gt;  &quot;);
+}
+
+process.stdin.on(&apos;data&apos;, function(data){
+
+    answers.push(data.toString().trim());
+
+    if (answers.length &lt; questions.length) {
+        ask(answers.length);
+    } else {
+        process.exit();
+    }
+});
+
+process.on(&apos;exit&apos;, function(){
+
+    process.stdout.write(&quot;\n\n\n\n&quot;);
+
+    process.stdout.write(`Go ${answers[1]} ${answers[0]} you can finish writing ${answers[2]} later`);
+
+    process.stdout.write(&quot;\n\n\n\n&quot;);
+
+});
+
+ask(0);
+</code></pre><p>In the shell:</p>
+<pre><code>What is your name?  &gt;  Martin
+
+
+
+
+ What is your favorite hobby?  &gt;  play games
+
+
+
+
+ What is your preferred programming language?  &gt;  python
+
+
+
+
+Go play games Martin you can finish writing python later
+</code></pre><p>Is that funny:)?</p>
+<hr>
+<p>–3– Global timing functions</p>
+<p>There are several functions about the timing such as setInterval, setTimeout and clearInterval. It’s useful while developing web interactive program. </p>
+<p>Code:</p>
+<pre><code>var waitTime = 3000;
+var currentTime = 0;
+var waitInterval = 10;
+var percentWaited = 0;
+
+function writeWaitingPercent(p){
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+    process.stdout.write(`waiting ... ${p}%`);
+
+}
+
+
+var interval = setInterval(function(){
+    currentTime += waitInterval;
+    percentWaited = Math.floor((currentTime/    waitTime)*100);
+    //console.log(`waiting ${currentTime/1000} seconds`);
+    writeWaitingPercent(percentWaited);
+}, waitInterval);
+
+setTimeout(function(){
+
+    clearInterval(interval);
+    console.log(&quot;\ndone&quot;);
+}, waitTime);
+
+process.stdout.write(&quot;\n\n&quot;);
+writeWaitingPercent(percentWaited);
+</code></pre><p>In the shell:</p>
+<pre><code>waiting ... 81%
+done
+</code></pre><p>–4– Core modules:</p>
+<p>Node.js use require function to get modules. This section is going to show some modules of Node.js.</p>
+<p>Code:</p>
+<pre><code>var path = require(&apos;path&apos;);
+var util = require(&apos;util&apos;);
+var v8 = require(&apos;v8&apos;)
+
+
+util.log( path.basename(__filename) );
+
+var dirUploads = path.join(__dirname, &apos;www&apos;, &apos;fileds&apos;, &apos;uploads&apos;);
+
+util.log(dirUploads);
+
+util.log(v8.getHeapStatistics());
+</code></pre><p>In the shell:</p>
+<pre><code>node core
+28 Jan 23:34:37 - core.js
+28 Jan 23:34:37 - /Users/Martin/Documents/martin/    Study/Node/www/fileds/uploads
+28 Jan 23:34:37 - { total_heap_size: 7523616,
+  total_heap_size_executable: 5242880,
+  total_physical_size: 7523616,
+  total_available_size: 1491271696,
+  used_heap_size: 4094992,
+  heap_size_limit: 1535115264 }
+</code></pre><p>–5– Collecting information with Readline</p>
+<p>Realine is a module of Node.js, it should get the input stream and output stream. Then you can use the API to operate the input and output such as setPrompt, prompt, on and etc. A string in the string can be replaced as s% like in the C, and the JSON string will be replaced as j%.</p>
+<p>Code:</p>
+<pre><code>var readline = require(&apos;readline&apos;);
+
+var rl = readline.createInterface(process.stdin, process.stdout);
+
+var realPerson = {
+    name: &apos;&apos;,
+    sayings: []
+};
+
+rl.question(&quot;What is the name of a real person?&quot;, function(answer){
+
+    realPerson.name = answer;
+
+    rl.setPrompt(`What would ${realPerson.name} say? `);
+
+    rl.prompt();
+
+    rl.on(&apos;line&apos;, function(sayings){
+
+        realPerson.sayings.push(sayings.trim());
+
+        if (sayings.toLowerCase().trim() == &apos;exit&apos;){
+            rl.close();
+        }
+        else{
+        rl.setPrompt(`What else would ${realPerson.name} say? (&apos;exit&apos; to leave)`);
+        rl.prompt();
+        }
+    });
+
+});
+
+rl.on(&apos;close&apos;, function(){
+     console.log(&quot;%s is a real person that says j%&quot;,     realPerson.name, realPerson.sayings);
+})
+</code></pre><p>In the shell:</p>
+<pre><code>What is the name of a real person?Martin
+What would Martin say? haha
+What else would Martin say? (&apos;exit&apos; to leave)heihei
+What else would Martin say? (&apos;exit&apos; to leave)exit
+Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &apos;exit&apos; ]
+</code></pre><p>–6– Handling events with EventEmitter</p>
+
+	
+	</div>
+  <a type="button" href="/2016/01/25/Node-js-study-note/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-24 </div>
+			<div class="article-title"><a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" >Leetcode-Insertion Sort List(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Sort a linked list using insertion sort.</p>
+<p><strong>Thinking:</strong></p>
+<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null)
             return head;
-
-        ListNode small = new ListNode(-1);
-        ListNode newsmallhead = small;
-        ListNode big = new ListNode(-1);
-        ListNode newbighead = big;
-
-        while(head!=null){
-            if(head.val&lt;x){
-                small.next = head;
-                small = small.next;
-            }else{
-                big.next = head;
-                big = big.next;
+        ListNode res = new ListNode(-1);
+        res.next = head;
+        ListNode p = res;
+        ListNode next = head.next;
+        head.next = null;
+        head = next;
+        while (head != null){
+            while (p.next != null){
+                //if the value is smaller than one of the sorted list, insert behind it
+                if (head.val &lt; p.next.val){
+                    next = head.next;
+                    head.next = p.next;
+                    p.next = head;
+                    head = next;
+                    p = res;
+                    break;
+                }
+                p = p.next;
             }
-            head = head.next;
+            //if the value is bigger than anyone of the sorted list, insert after the whole list
+            if (p.next == null){
+                next = head.next;
+                p.next = head;
+                head.next = null;
+                head = next;
+                p = res;
+            }
         }
-        big.next = null;
 
-        small.next = newbighead.next;
-
-        return newsmallhead.next;
+        return res.next;
+    }
+}
+</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
+<pre><code>public ListNode insertionSortList(ListNode head) {  
+    if(head == null||head.next == null)  
+        return head;  
+    ListNode sortedlisthead = new ListNode(0);  
+    ListNode cur = head;
+    while(cur!=null){  
+        ListNode next = cur.next;  
+        ListNode pre = sortedlisthead;  
+        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
+            pre = pre.next;  
+        cur.next = pre.next;  
+        pre.next = cur;  
+        cur = next;  
+    }  
+    return sortedlisthead.next;  
 }
 </code></pre>
 	
 	</div>
-  <a type="button" href="/2016/01/24/Leetcode-Partition-List/#more" class="btn btn-default more">閱讀本文</a>
+  <a type="button" href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/#more" class="btn btn-default more">閱讀本文</a>
 </div>
 
 		
@@ -316,7 +508,7 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-01-24 </div>
-			<div class="article-title"><a href="/2016/01/24/Leetcode-Unique-Paths-II-Java/" >Leetcode-Unique Paths II(Java)</a></div>						
+			<div class="article-title"><a href="/2016/01/24/Sort-Algorithms/" >Sort Algorithms</a></div>						
 		</h3>
 	
 
@@ -325,187 +517,122 @@
   <div class="row">
 	
 	
-		<p><strong>Question:</strong></p>
-<p>Follow up for “Unique Paths”:</p>
-<p>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
-<p>An obstacle and empty space is marked as 1 and 0 respectively in the grid.</p>
-<p>For example,<br>There is one obstacle in the middle of a 3x3 grid as illustrated below.</p>
-<pre><code>[
-  [0,0,0],
-  [0,1,0],
-  [0,0,0]
-]
-</code></pre><p>The total number of unique paths is 2.</p>
-<p>Note: m and n will be at most 100.</p>
-<p><strong>Thinking:</strong></p>
-<p>This question is similar with Unique Paths, and it’s the same methed to use dynamic programming. Only one difference is that we should check if it’s a obstacle. And if it’s a obstacle, its value of dp should be 0.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        int lr = obstacleGrid.length;
-        if (lr == 0)
-            return 0;
-        int lc = obstacleGrid[0].length;
-        int[][] dp = new int[lr][lc];
-        if (obstacleGrid[0][0] == 1){
-            return 0;
-        }
-        dp[0][0] = 1;
+		<h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
+<h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
+<p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
+<p><strong>Process:</strong> (From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
+<p><strong>Pseudocode:</strong></p>
+<pre><code>for i ← 1 to length(A) - 1
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+    end while
+end for
+</code></pre><p><strong>Implemention in Java:</strong></p>
+<pre><code>public static void InsertionSort(int[] num)
+{
+     int j;
+     int key;
+     int i;  
 
-        for (int i = 1; i &lt; lr; i++){
-            if (obstacleGrid[i][0] == 1)
-                break;
-            dp[i][0] = 1;
+     for (j = 1; j &lt; num.length; j++){
+        key = num[j];
+        for(i = j - 1; (i &gt;= 0) &amp;&amp; (num[i] &lt; key); i--){
+            num[i+1] = num[i];
         }
-        for (int i = 1; i &lt; lc; i++){
-            if (obstacleGrid[0][i] == 1)
-                break;
-            dp[0][i] = 1;
-        }
-
-        for (int i = 1; i &lt; lr; i++)
-            for (int j = 1; j &lt; lc; j++){
-                if(obstacleGrid[i][j] == 1)
-                    continue;
-                dp[i][j] = dp[i-1][j] + dp[i][j-1];
-            }
-
-        return dp[lr-1][lc-1];
+        num[i+1] = key;
     }
 }
+</code></pre><p><strong>Complexity:</strong></p>
+<p><em>Runtime</em>: O(n^2)</p>
+<p><em>Memery</em>: O(1)</p>
+<hr>
+<h2 id="ShellSort_3A"><a href="#ShellSort_3A" class="headerlink" title="ShellSort:"></a>ShellSort:</h2><p><strong>Main Idea:</strong></p>
+<p>The method starts by sorting pairs of elements far apart from each other, then progressively reducing the gap between elements to be compared. Starting with far apart elements can move some out-of-place elements into position faster than a simple nearest neighbor exchange.</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif" alt=""></p>
+<p><strong>Pesedocode:</strong></p>
+<pre><code>gaps = [701, 301, 132, 57, 23, 10, 4, 1]
+
+foreach (gap in gaps)
+{
+    # Do a gapped insertion sort for this gap size.
+    # The first gap elements a[0..gap-1] are already in gapped order
+    # keep adding one more element until the entire array is gap sorted
+    for (i = gap; i &lt; n; i += 1)
+    {
+        # add a[i] to the elements that have been gap sorted
+        # save a[i] in temp and make a hole at position i
+        temp = a[i]
+        # shift earlier gap-sorted elements up until the correct location for a[i] is found
+        for (j = i; j &gt;= gap and a[j - gap] &gt; temp; j -= gap)
+        {
+            a[j] = a[j - gap]
+        }
+        # put temp (the original a[i]) in its correct location
+        a[j] = temp
+        }
+    }
+</code></pre><p> <strong>Implemention in Java:</strong></p>
+<pre><code>public void shellSort() {
+    int inner, outer;
+    long temp;
+    //find initial value of h
+    int h = 1;
+    while (h &lt;= len / 3)
+      h = h * 3 + 1; // (1, 4, 13, 40, 121, ...)
+
+    while (h &gt; 0) // decreasing h, until h=1
+    {
+      // h-sort the file
+      for (outer = h; outer &lt; len; outer++) {
+        temp = data[outer];
+        inner = outer;
+        // one subpass (eg 0, 4, 8)
+        while (inner &gt; h - 1 &amp;&amp; data[inner - h] &gt;= temp) {
+          data[inner] = data[inner - h];
+          inner -= h;
+        }
+        data[inner] = temp;
+      }
+      h = (h - 1) / 3; // decrease h
+    }
+}
+</code></pre><hr>
+<h2 id="Simple_Selection_Sort"><a href="#Simple_Selection_Sort" class="headerlink" title="Simple Selection Sort"></a>Simple Selection Sort</h2><p><strong>Main Idea:</strong></p>
+<p>Find the smallest(biggest) element in array, put it in the first place. Then find the second smallest… Do these until all the element are sorted.(I suppose it’s a little similar with bubble sort)</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
+<p><strong>Pesedocode:</strong></p>
+<pre><code>for i ← 1 to length(A) - 1
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+    end while
+end for
+</code></pre><p><strong>Complexity:</strong></p>
+<p><em>Runtime:</em> O(n^2)<br><em>Memery:</em> O(1)</p>
+<h2 id="Heapsort"><a href="#Heapsort" class="headerlink" title="Heapsort"></a>Heapsort</h2><p><strong>Main Idea:</strong></p>
+<p>Use data structure heap which will store the smallest or biggest value of the array. Then pick up the root of heap   once a time to sort. </p>
+<p>Heapsort is a comparison-based sorting algorithm. Heapsort can be thought of as an improved selection sort: like that algorithm, it divides its input into a sorted and an unsorted region, and it iteratively shrinks the unsorted region by extracting the largest element and moving that to the sorted region. The improvement consists of the use of a heap data structure rather than a linear-time search to find the maximum.</p>
+<p>This sort is the most important part in this article. I’ll talk about the relative operation and its performance and all the code.</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif" alt=""></p>
+<p>In the heap view(an example offered):</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Heapsort-example.gif" alt=""></p>
+<p><strong>Data Structure:</strong></p>
+<p>Heap:</p>
+<p>A heap is built out of the data. The heap is often placed in an array with the layout of a complete binary tree. The complete binary tree maps the binary tree structure into the array indices; each array index represents a node; the index of the node’s parent, left child branch, or right child branch are simple expressions. For a zero-based array, the root node is stored at index 0; if i is the index of the current node, then</p>
+<pre><code>iParent(i)     = floor((i-1) / 2)
+iLeftChild(i)  = 2*i + 1
+iRightChild(i) = 2*i + 2
 </code></pre>
 	
 	</div>
-  <a type="button" href="/2016/01/24/Leetcode-Unique-Paths-II-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-24 </div>
-			<div class="article-title"><a href="/2016/01/24/Unique-Binary-Search-Trees-II/" >Leetcode-Unique Binary Search Trees II(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.</p>
-<p>For example,<br>Given n = 3, your program should return all 5 unique BST’s shown below.</p>
-<pre><code>1         3     3      2      1
- \       /     /      / \      \
-  3     2     1      1   3      2
- /     /       \                 \
-2     1         2                 3
-</code></pre><p><strong>Thinking:</strong> </p>
-<p>It’s a simple dynamic programming question. For n numbers, we should consider the situation that every one become the root, and delete it from the sets and do the same thing for their children.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public List&lt;TreeNode&gt; generateTrees(int n) {
-        return dp(1, n);
-    }
-
-    public List&lt;TreeNode&gt; dp(int low, int high){
-        List&lt;TreeNode&gt; res = new ArrayList&lt;TreeNode&gt;();
-        if (low == high){
-            TreeNode n = new TreeNode(low);
-            res.add(n);
-            return res;
-        }
-        for (int i = low; i &lt;= high; i++){
-            TreeNode n = new TreeNode(i);
-            if (i == low){
-                for (TreeNode p: dp(low+1, high)){
-                    n.right = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else if (i == high){
-                for (TreeNode p: dp(low, high-1)){
-                    n.left = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else{
-                for (TreeNode p: dp(low, i-1)){
-                    for (TreeNode q: dp(i+1, high)){
-                        n.left = p;
-                        n.right = q;
-                        res.add(n);
-                        n = new TreeNode(i);
-                    }
-                }
-            }
-        }
-
-        return res;
-    }
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/24/Unique-Binary-Search-Trees-II/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-24 </div>
-			<div class="article-title"><a href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" >Leetcode-Bitwise AND of Numbers Range(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.</p>
-<p>For example, given the range [5, 7], you should return 4.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s bitwise operation question. Some other questions like are Single Number, Single Number II, Reverse Bits, Repeated DNA Sequences, Grey Code and so on and so forth. This question’s point is to find all the numbers between the range and use the bitwise AND on them. </p>
-<p>For example, in the range of [5, 7], there are three numbers:<br>101        110        111<br>Result of thier bitwise is 100. </p>
-<p>What’s more, in the example of [26, 30]:<br>11010        11011        11100        11101        11110<br>The result is 11000.</p>
-<p><em>Because bits are incresing from the right</em> (low digits), the left of all the numbers are not going to change in the process. The thing we need to do is finding the common part of the left. There are two solutions:</p>
-<p><strong>Solution1:</strong></p>
-<p>Idea: State a variable and make it all 1 in all digits. Make the variable left shift every time to check if it’s equal between m and n of their bitwise AND. Finally, the result of m bitwise AND with the variable is the answer.<br>Code:</p>
-<pre><code>class Solution {
-public int rangeBitwiseAnd(int m, int n) {
-        int d = Integer.MAX_VALUE;
-        while ((m &amp; d) != (n &amp; d)) {
-            d &lt;&lt;= 1;
-        }
-        return m &amp; d;
-    }
-};
-</code></pre><p><strong>Solution2:</strong></p>
-<p>Idea:Let m and n make left shift each time if they are different and record the times i they shift. When they are equal, the result of m left shift i is the answer.<br>Code:</p>
-<pre><code>class Solution {
-public int rangeBitwiseAnd(int m, int n) {
-        int i = 0;
-        while (m != n) {
-            m &gt;&gt;= 1;
-            n &gt;&gt;= 1;
-            ++i;
-        }
-        return (m &lt;&lt; i);
-    }
-};
-</code></pre><p>Reference: <a href="http://www.cnblogs.com/grandyang/p/4431646.html" target="_blank" rel="external">http://www.cnblogs.com/grandyang/p/4431646.html</a></p>
-
-	
-	</div>
-  <a type="button" href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/#more" class="btn btn-default more">閱讀本文</a>
+  <a type="button" href="/2016/01/24/Sort-Algorithms/#more" class="btn btn-default more">閱讀本文</a>
 </div>
 
 		
@@ -525,7 +652,7 @@ public int rangeBitwiseAnd(int m, int n) {
         <li><a href="/"><i class="fa fa-home"></i>Home</a></li>
 
 		
-          <li class="next disabled"><a>下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>
+		   <li class="next"> <a href="/page/7/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a> </li>          
         
 	
 </ul>
@@ -559,7 +686,7 @@ public int rangeBitwiseAnd(int m, int n) {
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>2</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>24</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>27</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -576,21 +703,29 @@ public int rangeBitwiseAnd(int m, int n) {
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
+		
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
+		
+			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
+		
+			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
+		
+			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
+		
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+		
+			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>4</span></a></li>
+		
 			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
 		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
-			<li><a href="/tags/Backtracing/">Backtracing<span>2</span></a></li>
-		
-			<li><a href="/tags/Array/">Array<span>4</span></a></li>
-		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
-		
-			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
-		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
-		
 			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
+		
+			<li><a href="/tags/Backtracing/">Backtracing<span>2</span></a></li>
 		
 		 
 		</ul>
@@ -604,23 +739,23 @@ public int rangeBitwiseAnd(int m, int n) {
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/" ><i class="fa fa-file-o"></i>Leetcode-Kth Largest Elemen...</a>
+        <a href="/2016/02/02/Leetcode-Combination-Sum-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Combination Sum II...</a>
       </li>
     
       <li>
-        <a href="/2016/01/31/Leetcode-Permutations-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Permutations II(Ja...</a>
+        <a href="/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/" ><i class="fa fa-file-o"></i>Reverse Linked List II(Java...</a>
       </li>
     
       <li>
-        <a href="/2016/01/31/Algorithm-Note/" ><i class="fa fa-file-o"></i>Algorithm Note...</a>
+        <a href="/2016/02/02/Patching-Array-Java/" ><i class="fa fa-file-o"></i>Patching Array(Java)...</a>
       </li>
     
       <li>
-        <a href="/2016/01/30/VIM/" ><i class="fa fa-file-o"></i>VIM...</a>
+        <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Verify Preorder Se...</a>
       </li>
     
       <li>
-        <a href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" ><i class="fa fa-file-o"></i>Leetcode-Palindrome Partiti...</a>
+        <a href="/2016/02/01/AI-Note/" ><i class="fa fa-file-o"></i>AI Note...</a>
       </li>
     
   </ul>

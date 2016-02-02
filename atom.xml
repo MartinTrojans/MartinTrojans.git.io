@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-02-01T06:15:05.000Z</updated>
+  <updated>2016-02-02T23:09:18.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,265 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Combination Sum II(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/"/>
+    <id>http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/</id>
+    <published>2016-02-02T23:09:18.000Z</published>
+    <updated>2016-02-02T23:09:18.000Z</updated>
+    <content type="html"></content>
+    <summary type="html">
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Reverse Linked List II(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/"/>
+    <id>http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/</id>
+    <published>2016-02-02T21:50:10.000Z</published>
+    <updated>2016-02-02T23:09:54.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Reverse a linked list from position m to n. Do it in-place and in one-pass.</p>
+<p>For example:<br>Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, m = 2 and n = 4,</p>
+<p>return 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;NULL.</p>
+<p>Note:<br>Given m, n satisfy the following condition:<br>1 ≤ m ≤ n ≤ length of list.</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s similar with Reverse Linked List, only thing different is to limit the range. So we should to find the start of the reversed linked list and record its previous node. Also, we should add a dummy node for easily operator with the first node. Then use three points as usual pre, cur and next to operate and change the nodes’ next pointers.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public ListNode reverseBetween(ListNode head, int m, int n) {
+    if (m == n)
+        return head;
+    ListNode prehead = new ListNode(0);//dummy
+    prehead.next = head;
+    ListNode pre = prehead;
+    ListNode cur = head;
+    int idx = 1;
+
+    while (idx &lt; m) {
+        pre = cur;
+        cur = cur.next;
+        idx++;
+    }
+    ListNode prerever = pre;
+    ListNode next = null;
+    pre = cur;
+    cur = cur.next;
+    while (idx &lt; n) {
+        next = cur.next;
+        cur.next = pre;
+        pre = cur;
+        cur = next;
+        idx++;
+    }
+    prerever.next.next = cur;
+    prerever.next = pre;
+
+
+    return prehead.next;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Reverse a linked list from position m to n. Do it in-place and in one-pass.</p>
+<p>For example:<br>Give]]>
+    </summary>
+    
+      <category term="Linked List" scheme="http://yoursite.com/tags/Linked-List/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Patching Array(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/02/Patching-Array-Java/"/>
+    <id>http://yoursite.com/2016/02/02/Patching-Array-Java/</id>
+    <published>2016-02-02T21:13:27.000Z</published>
+    <updated>2016-02-02T21:18:49.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a sorted positive integer array nums and an integer n, add/patch elements to the array such that any number in range [1, n] inclusive can be formed by the sum of some elements in the array. Return the minimum number of patches required.</p>
+<p>Example 1:<br>nums = [1, 3], n = 6<br>Return 1.</p>
+<p>Combinations of nums are [1], [3], [1,3], which form possible sums of: 1, 3, 4.<br>Now if we add/patch 2 to nums, the combinations are: [1], [2], [3], [1,3], [2,3], [1,2,3].<br>Possible sums are 1, 2, 3, 4, 5, 6, which now covers the range [1, 6].<br>So we only need 1 patch.</p>
+<p>Example 2:<br>nums = [1, 5, 10], n = 20<br>Return 2.<br>The two patches can be [2, 4].</p>
+<p>Example 3:<br>nums = [1, 2, 2], n = 5<br>Return 0.</p>
+<p><strong>Thinking:</strong></p>
+<p>The first range we can cover of an array is total, then if we add a new element to this array and this element add &lt;= total, then the new range is [1, add+total). We should also care about the java maxint value, so if we use bit manipulation, it means it is bigger than maxint if total is smaller than zero.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int minPatches(int[] nums, int n) {
+    int total = 1; //total is the upper bound of the sum
+    int count = 0;
+    int index = 0;
+    int len = nums.length;
+
+    while (total &lt;= n) {
+        if (index &lt; len &amp;&amp; nums[index] &lt;= total){
+            total += nums[index++];
+        }
+        else{
+            total &lt;&lt;= 1;
+            count++;
+            if (total &lt; 0)
+                break;
+        }
+    }
+
+
+    return count;
+} 
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a sorted positive integer array nums and an integer n, add/patch elements to the array such that ]]>
+    </summary>
+    
+      <category term="Greedy" scheme="http://yoursite.com/tags/Greedy/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Verify Preorder Serialization of a Binary Tree(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/"/>
+    <id>http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/</id>
+    <published>2016-02-02T06:40:06.000Z</published>
+    <updated>2016-02-02T07:18:34.000Z</updated>
+    <content type="html"><![CDATA[<p>One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node’s value. If it is a null node, we record using a sentinel value such as #.</p>
+<pre><code>     _9_
+    /   \
+   3     2
+  / \   / \
+ 4   1  #  6
+/ \ / \   / \
+# # # #   # #
+</code></pre><p>For example, the above binary tree can be serialized to the string “9,3,4,#,#,1,#,#,2,#,6,#,#”, where # represents a null node.</p>
+<p>Given a string of comma separated values, verify whether it is a correct preorder traversal serialization of a binary tree. Find an algorithm without reconstructing the tree.</p>
+<p>Each comma separated value in the string must be either an integer or a character ‘#’ representing null pointer.</p>
+<p>You may assume that the input format is always valid, for example it could never contain two consecutive commas such as “1,,3”.</p>
+<p>Example 1:<br>“9,3,4,#,#,1,#,#,2,#,6,#,#”<br>Return true</p>
+<p>Example 2:<br>“1,#”<br>Return false</p>
+<p>Example 3:<br>“9,#,#,1”<br>Return false</p>
+<p><strong>Thinking:</strong></p>
+<p>Accroding to the correct answer given, we can find the pattern. We should start from # and use stack to store it. When get two #, we should get another element from the string. </p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean isValidSerialization(String preorder) {
+    String[] strlist = preorder.split(&quot;,&quot;);
+    Stack&lt;String&gt; stack = new Stack&lt;String&gt;();
+    Stack&lt;String&gt; tempstack = new Stack&lt;String&gt;();
+
+    for (String s: strlist) {
+        stack.push(s);
+    }
+    while (!stack.isEmpty()) {
+        while (!stack.isEmpty() &amp;&amp; stack.peek().equals(&quot;#&quot;)){
+            tempstack.push(stack.pop());
+        }
+        if (tempstack.size() &lt; 2)
+            break;
+        while (tempstack.size() &gt;= 2 &amp;&amp; !stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
+            tempstack.pop();
+            tempstack.pop();
+            if (!stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
+                stack.pop();
+                tempstack.push(&quot;#&quot;);
+            }
+        }
+    }
+
+    if (tempstack.size() == 1 &amp;&amp; stack.isEmpty())
+        return true;
+    else
+        return false;
+}
+</code></pre><p>There is another simpler solution:</p>
+<pre><code>public boolean isValidSerialization(String preorder) {
+    String[] p = preorder.split(&quot;,&quot;);
+    int idx = 0; // stack
+    for (int i = 0; i &lt; p.length; i++) {
+    if (p[i].equals(&quot;#&quot;)) {
+        idx--;
+    } else {
+        if (idx &lt; 0) { // check
+          return false;
+        }
+        p[idx++] = p[i];
+      }
+    }
+    return idx == -1; // check
+  }
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/83903/share-my-java-solution" target="_blank" rel="external">https://leetcode.com/discuss/83903/share-my-java-solution</a></p>
+<p>And another much simplier solution which caculate the indegree and outdegree:</p>
+<pre><code>public boolean isValidSerialization2(String preorder) {
+    String[] nodes = preorder.split(&quot;,&quot;);
+    int diff = 1;
+    for (String node: nodes) {
+        if (--diff &lt; 0) return false;
+        if (!node.equals(&quot;#&quot;)) diff += 2;
+    }
+    return diff == 0;
+}
+</code></pre><p>Reference: <a href="https://www.hrwhisper.me/leetcode-algorithm-solution/" target="_blank" rel="external">https://www.hrwhisper.me/leetcode-algorithm-solution/</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node’s value. If it is]]>
+    </summary>
+    
+      <category term="Graph" scheme="http://yoursite.com/tags/Graph/"/>
+    
+      <category term="Stack" scheme="http://yoursite.com/tags/Stack/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[AI Note]]></title>
+    <link href="http://yoursite.com/2016/02/01/AI-Note/"/>
+    <id>http://yoursite.com/2016/02/01/AI-Note/</id>
+    <published>2016-02-01T23:25:11.000Z</published>
+    <updated>2016-02-02T00:56:02.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Lecture 1:</strong></p>
+<p><strong>Lecture 2:</strong></p>
+<ol>
+<li>What’s Agent?</li>
+<li>PEAS</li>
+</ol>
+<p><strong>Lecture 3:</strong></p>
+<ol>
+<li>Difference between tree search and graph search:<br> Graph search will record the explored nodes, and won’t explore them again.</li>
+</ol>
+<p><strong>Lecture 4:</strong></p>
+<ol>
+<li>DFS, BFS, uniform-cost search, interative deepening search, evaluating search performance about completeness, optimality, time and space complexity</li>
+<li>BFS:<br> Completeness: Yes(When b is finite)<br> Optimality: Yes(If path is nondecreasing)<br> Time: O(b^d)<br> Space: O(b^d)</li>
+<li>DFS:<br> Completeness: Yes(If graph search version)<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b*m)</li>
+<li>Uniform-cost search:<br> Completeness: Yes<br> Optimality: Yes(If path is nondecreasing)<br> Uniform-cost search not optimal if it is terminated when some node in the queue has goal state.</li>
+<li>Iterative deepening search:<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^d)<br> Space: O(bd)</li>
+</ol>
+<p><strong>Lecture 5:</strong></p>
+<ol>
+<li>Uniformed search, bi-directional search, informed search, greedy best first search, A*, interative deepening A*, recursive best first search, simplified memory-bounded A*</li>
+<li>Bidirectional search:<br> Search forward from initial state, and backward from goal.<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^(d/2)<br> Space: O(b^(d/2)</li>
+<li>Greedy best first search:<br> Greedy BFS keeps all the nodes generated in the<br>Frontier, which is sorted based on h(n).<br> Completeness: No<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b^m)</li>
+<li>A* Search:<br> Use (approximate) total path cost to guide search<br> Admissible Heurisitic: A heuristic is admissible if it never overestimates the cost to reach the goal<br> e.g. hSLD(n) is admissible because it never overestimates the actual road distance<br> Admissible heuristics does not guarantee that the chosen path is optimal<br> A heuristic is consistent if for every node n and every successor n’ of n generated by any action a<br>h(n) ≤ c(n,a,n’) + h(n’)<br> That is, f(n) is nondecreasing along every path.<br> Completeness: Yes<br> Optimality: Yes(if admissible in tree search or consistent in graph search)</li>
+<li>Recursive Best-Frist Search:<br> Keep track of f value (f-limit) of best sibling of path currently exploring<br> Space: O(bd)</li>
+<li>Memory-Bounded A*:<br>  I.e., expand best leaves until available memory is full;When full, SMA* drops worst leaf node (highest f-value);Like RBFS, backup forgotten node value to its parent</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Lecture 1:</strong></p>
+<p><strong>Lecture 2:</strong></p>
+<ol>
+<li>What’s Agent?</li>
+<li>PEAS</li>
+</ol>
+<p><strong>Lecture 3:<]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Kth Largest Element in an Array(Java)]]></title>
@@ -1198,358 +1457,6 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
     <summary type="html">
     <![CDATA[<p><strong>Question:</strong></p>
 <p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numb]]>
-    </summary>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[HTTP method: get and post]]></title>
-    <link href="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/"/>
-    <id>http://yoursite.com/2016/01/26/HTTP-method-get-and-post/</id>
-    <published>2016-01-27T07:08:43.000Z</published>
-    <updated>2016-01-27T21:59:18.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>HTTP:</strong></p>
-<p>HTTP is the foundation of data commnication of the World Wide Web. The basic work method of http is request and response.</p>
-<p>There are two methods of HTTP request: Get and Post.</p>
-<p>Get - get request data from specific source.<br>Post - Push data which will be dealed to specific source.</p>
-<p><strong>GET:</strong></p>
-<p>Note that the query string (name/value pairs) is sent in the URL of a GET request:</p>
-<pre><code>http://www.w3schools.com/tags/ref_httpmethods.asp
-</code></pre><p>Some other notes on GET requests:</p>
-<p>GET requests can be cached</p>
-<p>GET requests remain in the browser history</p>
-<p>GET requests can be bookmarked</p>
-<p>GET requests should never be used when dealing with sensitive data</p>
-<p>GET requests have length restrictions</p>
-<p>GET requests should be used only to retrieve data</p>
-<p><strong>POST:</strong></p>
-<p>Note that the query string (name/value pairs) is sent in the HTTP message body of a POST request:</p>
-<pre><code>POST /test/demo_form.asp HTTP/1.1
-Host: w3schools.com
-name1=value1&amp;name2=value2
-</code></pre><p>Some other notes on POST requests:</p>
-<p>POST requests are never cached</p>
-<p>POST requests do not remain in the browser history</p>
-<p>POST requests cannot be bookmarked</p>
-<p>POST requests have no restrictions on data length</p>
-<p><strong>Compare GET vs. POST:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">GET</th>
-<th style="text-align:right">POST</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>BACK button/Reload</td>
-<td style="text-align:center">Harmless</td>
-<td style="text-align:right">Data will be re-submitted</td>
-</tr>
-<tr>
-<td>Bookmarked</td>
-<td style="text-align:center">can be bookmarked</td>
-<td style="text-align:right">Can not be bookmarked</td>
-</tr>
-<tr>
-<td>Cached</td>
-<td style="text-align:center">Can be cached</td>
-<td style="text-align:right">Can not be cached</td>
-</tr>
-<tr>
-<td>History</td>
-<td style="text-align:center">Parameters remain in browser history</td>
-<td style="text-align:right">Parameters are not saved in browser history</td>
-</tr>
-<tr>
-<td>Restrictions on data length</td>
-<td style="text-align:center">Yes</td>
-<td style="text-align:right">No</td>
-</tr>
-<tr>
-<td>Security</td>
-<td style="text-align:center">Less secure</td>
-<td style="text-align:right">Safer</td>
-</tr>
-<tr>
-<td>Visibility</td>
-<td style="text-align:center">Visible</td>
-<td style="text-align:right">Not visible in URL</td>
-</tr>
-</tbody>
-</table>
-<p>Reference: <a href="http://www.w3schools.com/tags/ref_httpmethods.asp" target="_blank" rel="external">http://www.w3schools.com/tags/ref_httpmethods.asp</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>HTTP:</strong></p>
-<p>HTTP is the foundation of data commnication of the World Wide Web. The basic work method of http is request]]>
-    </summary>
-    
-      <category term="Network" scheme="http://yoursite.com/categories/Network/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/"/>
-    <id>http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/</id>
-    <published>2016-01-27T06:28:05.000Z</published>
-    <updated>2016-01-27T21:58:44.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
-<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
-<p><strong>Thinking:</strong></p>
-<p>This question is similar with Construct Binary Tree from Inorder and Postorder Traversal. We should understand the differences and the sequences of these three methods. And divide into three parts- root, left child and right child.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public TreeNode buildTree(int[] preorder, int[] inorder) {
-    int l = preorder.length;
-    if (l == 0)
-        return null;
-
-
-    return dp(preorder, inorder, 0, l-1, 0, l-1);
-    }
-
-    private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
-    if (preStart &gt; preEnd || preEnd &gt;= preorder.length || inEnd &gt;= preorder.length)
-        return null;
-    TreeNode root = new TreeNode(preorder[preStart]);
-    int index = inStart;
-    for (; index &lt; inEnd; index++){
-        if (inorder[index] == preorder[preStart])
-            break;
-    }
-
-    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
-    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
-    root.left = left;
-    root.right = right;
-
-    return root;
-}    
-</code></pre><p>This method can be improved by using HashMap to make it faster when fiding the index of root.<br>Reference:<a href="http://blog.csdn.net/linhuanmars/article/details/24389549" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24389549</a><br>Code:</p>
-<pre><code>static HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-    int l = preorder.length;
-    if (l == 0)
-        return null;
-    for (int i = 0; i &lt; l; i++)
-        map.put(inorder[i], i);
-
-    return dp(preorder, inorder, 0, l-1, 0, l-1);
-}
-
-private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
-    if (preStart &gt; preEnd || inStart &gt; inEnd)
-        return null;
-    TreeNode root = new TreeNode(preorder[preStart]);
-
-    int index = map.get(preorder[preStart]);
-
-    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
-    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
-    root.left = left;
-    root.right = right;
-
-    return root;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
-<p>Note:<br>You may assu]]>
-    </summary>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Pow(x, n)(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/"/>
-    <id>http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/</id>
-    <published>2016-01-27T05:24:27.000Z</published>
-    <updated>2016-01-27T21:58:38.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Implement pow(x, n).</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s a simple but not simple question. There are many solutions for this problem. But how can we find the most effienct one. We can use recursion to reduce the times of multipling and check the bound of data to reduce the times of recursions. Finally, the code is below:</p>
-<pre><code>static boolean negflag = false;
-public double myPow(double x, int n) {
-    if (n &lt; 0){
-        negflag = true;
-        return 1 / dp(x, -n);
-    }
-    else
-        return dp(x, n);
-
-}
-private double dp(double x, int n){
-    if (n == 0)
-        return 1;
-    if (n == 1)
-        return x;
-    if (n == 2)
-        return x * x;
-
-    int m = n / 2;
-    int k = n % 2;
-    double v = dp(x, m);
-    if (negflag == true &amp;&amp; v &gt; 100000)
-        return 100000;
-    if (negflag == false &amp;&amp; v &lt; 0.00001)
-        return 0;
-
-    if (k == 0)
-        return v * v;
-    else
-        return v * v * x;
-}
-</code></pre><p>By the way, I have to metion that my python solution is like, lol:</p>
-<pre><code>def myPow(self, x, n):
-    return x**n
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Implement pow(x, n).</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s a simple but not simple question. Th]]>
-    </summary>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Jump Game(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/"/>
-    <id>http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/</id>
-    <published>2016-01-27T04:20:54.000Z</published>
-    <updated>2016-01-27T21:58:33.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
-<p>Each element in the array represents your maximum jump length at that position.</p>
-<p>Determine if you are able to reach the last index.</p>
-<p>For example:<br>A = [2,3,1,1,4], return true.</p>
-<p>A = [3,2,1,0,4], return false.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s a problem can be solved in greedy algorithm. Because we should go as far as possible in current position until we can’t go father. And we should gurantee the value of current position + i (steps can be reached from current postion) + nums[cur + i] be as big as possible.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public boolean canJump(int[] nums) {
-    int l = nums.length;
-    if (nums[0] == 0 &amp;&amp; l &gt; 1)
-        return false;
-    int cur = 0;
-    int temp = nums[0];
-    int step = nums[0];
-    int max = nums[0];
-    int tempcur = 0;
-
-    while (cur + step &lt; l-1){
-        for (int i = 1; i &lt;= step; i++){
-            temp = cur + i + nums[cur + i];
-            if (temp &gt;= max){//current max greedy value
-                max = temp;
-                if (max &gt;= l)
-                    return true;
-                tempcur = cur + i;
-            }
-        }
-        if (cur == tempcur)
-            return false;
-        cur = tempcur;
-        step = nums[cur];
-    }
-
-    if (max &gt;= l-1)
-        return true;
-    else
-        return false;
-}
-</code></pre><p>What’s more, we can make it easier by max the value of index. </p>
-<pre><code>public boolean canJump(int[] nums) {
-    if(nums.length &lt;= 1)
-        return true;
-
-    int max = nums[0]; //max stands for the largest index that can be reached.
-
-    for(int i=0; i&lt;nums.length; i++){
-        //if not enough to go to next
-        if(max &lt;= i &amp;&amp; nums[i] == 0) 
-            return false;
-
-        //update max    
-        if(i + nums[i] &gt; max){
-            max = i + nums[i];
-        }
-
-        //max is enough to reach the end
-        if(max &gt;= nums.length-1) 
-            return true;
-    }
-
-    return false;    
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.<]]>
-    </summary>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-3Sum Closest(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/"/>
-    <id>http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/</id>
-    <published>2016-01-27T00:38:28.000Z</published>
-    <updated>2016-01-27T21:58:53.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
-<p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
-<p>The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</p>
-<p><strong>Thinking:</strong></p>
-<p>In order to improve the performance of algorithm, we should sort the array. Because of that, we can determine where to go using current result.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int threeSumClosest(int[] nums, int target) {
-    int l = nums.length;
-    if (l &lt; 3)
-        return 0;
-    int min = Integer.MAX_VALUE;
-    int res = 0;
-    Arrays.sort(nums);
-
-    for (int i = 0; i &lt; l; i++){
-        int j = i + 1;
-        int k = l - 1;
-
-        while (j &lt; k){
-            int sum = nums[i] + nums[j] + nums[k];
-            if (sum == target)
-                return sum;
-            int diff = Math.abs(sum - target);
-            if (diff &lt; min){
-                min = diff;
-                res = sum;
-            }
-            if (sum &gt; target)
-                k--;
-            else
-                j++;
-        }
-
-    }
-    return res;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number]]>
     </summary>
     
       <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>

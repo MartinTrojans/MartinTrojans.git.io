@@ -108,8 +108,8 @@
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2016-01-30 </div>
-			<div class="article-title"><a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" >Leetcode-Binary Tree Zigzag Level Order Traversal(Java)</a></div>						
+			<div class="date"> 2016-01-31 </div>
+			<div class="article-title"><a href="/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/" >Leetcode-Kth Largest Element in an Array(Java)</a></div>						
 		</h3>
 	
 
@@ -119,355 +119,99 @@
 	
 	
 		<p><strong>Question:</strong></p>
-<p>Given a binary tree, return the zigzag level order traversal of its nodes’ values. (ie, from left to right, then right to left for the next level and alternate between).</p>
-<p>For example:<br>Given binary tree {3,9,20,#,#,15,7},</p>
-<pre><code>  3
- / \
-9  20
-  /  \
- 15   7
-</code></pre><p>return its zigzag level order traversal as:</p>
-<pre><code>[
-  [3],
-  [20,9],
-  [15,7]
-]
-</code></pre><p><strong>Thinking:</strong></p>
-<p>It’s a BFS problem. It’s fine if we need use queue, but because we have to record as a zigzag order, it’s more efficient to use stack. What’s more, we should to notice the order of left and right child.</p>
+<p>Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.</p>
+<p>For example,<br>Given [3,2,1,5,6,4] and k = 2, return 5.</p>
+<p>Note:<br>You may assume k is always valid, 1 ≤ k ≤ array’s length.</p>
+<p><strong>Thinking:</strong></p>
+<p>There are three ways to solve this problem:</p>
+<ol>
+<li>The first one is to build a max heap with size n, and get the top of the heap k times.</li>
+<li>The second one is to build a min heap with size k, and keep the biggest top k elements of this array. Finally, get the top of it.</li>
+<li>The third one is to use a method called quickselect which uses function partition. It first use a pivot to split the array into two parts, then accroding to this index, choose which part to select.</li>
+</ol>
 <p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; zigzagLevelOrder(TreeNode root) {
-    int flag = 0;
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
-    Stack&lt;TreeNode&gt; tempstack = new Stack&lt;TreeNode&gt;();
-    if (root == null)
-        return res;
-    stack.add(root);
-    while (!stack.isEmpty() || !tempstack.isEmpty()){
-        tempstack = new Stack&lt;TreeNode&gt;();
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-        while (!stack.isEmpty()){
-            TreeNode node = stack.pop();
-            tempres.add(node.val);
-            if (flag == 0){
-                if (node.left != null){
-                    tempstack.add(node.left);
-                }
-                if (node.right != null){
-                    tempstack.add(node.right);
-                }
-            }
-            else{
-                if (node.right != null){
-                    tempstack.add(node.right);
-                }
-                if (node.left != null){
-                    tempstack.add(node.left);
-                }
-            }
-
-        }
-        res.add(tempres);
-        stack.addAll(tempstack);
-        flag ^= 1;
-    }
-
-    return res;
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-30 </div>
-			<div class="article-title"><a href="/2016/01/30/Leetcode-4Sum-Java/" >Leetcode-4Sum(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, are there elements a, b, c, and d in S such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.</p>
-<p>Note:<br>Elements in a quadruplet (a,b,c,d) must be in non-descending order. (ie, a ≤ b ≤ c ≤ d)<br>The solution set must not contain duplicate quadruplets.<br>    For example, given array S = {1 0 -1 0 -2 2}, and target = 0.</p>
-<pre><code>A solution set is:
-(-1,  0, 0, 1)
-(-2, -1, 1, 2)
-(-2,  0, 0, 2)
-</code></pre><p><strong>Thinking</strong>:</p>
-<p>This questions is very similar with 2Sum and 3Sum. There are several way to solve it. </p>
-<p><strong>Solution1:</strong></p>
-<p>The most common method may use the method of 3Sum, and do that n times.</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum1(int[] nums, int target) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-    Arrays.sort(nums);
+<p>Max heap:</p>
+<pre><code>public int findKthLargest1(int[] nums, int k) {
     int len = nums.length;
-
-
-    for (int i = 0; i &lt; len-3; i++){
-        for (int j = i+1; j &lt; len-2; j++){
-            for (int k = j+1; k &lt; len-1; k++){
-                int l = len-1;
-                while (k &lt; l){
-                    int sum = nums[i] + nums[j] + nums[k] + nums[l];
-                    if (sum == target){
-                        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-                        tempres.add(nums[i]);
-                        tempres.add(nums[j]);
-                        tempres.add(nums[k]);
-                        tempres.add(nums[l]);
-                        tres.add(tempres);
-                        k++;
-                        l--;
-                    }
-                    else if (sum &gt; target){
-                        l--;
-                    }
-                    else{
-                        k++;
-                    }
-                    while (k &lt; l &amp;&amp; nums[k+1] == nums[k]){
-                        k++;
-                    }
-                    while (k &lt; l &amp;&amp; nums[l-1] == nums[l]){
-                        l--;
-                    }
-                }
-            }
-        }
+    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;(len, new HeapComparator());
+    for (int i = 0; i &lt; len; i++){
+        heap.add(nums[i]);
     }
-
-    res.addAll(tres);
-    return res;
-}
-</code></pre><p><strong>Solution2:</strong></p>
-<p>The second solution is to combine every two numbers as a pair, and make it as a 2sum problem. But for implementing this method, we have to define the data structure by ourself and implement the interface of Comparator to sort the sum of them.</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum2(int[] nums, int target){
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    int len = nums.length;
-    if (len &lt; 4)
-        return res;
-    Pair[] pairSum = new Pair[len*(len-1)/2];
-    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-
-    int count = 0;
-    for (int i = 0; i &lt; len-1; i++){
-        for (int j = i+1; j &lt; len; j++){
-            Pair ele = new Pair(nums[i], nums[j], i, j);
-            pairSum[count++] = ele;
-        }
+    for (int i = 0; i &lt; k-1; i++){
+        heap.poll();
     }
-    Arrays.sort(pairSum, new SumComparator());
-
-    int left = 0;
-    int right = pairSum.length - 1;
-    while (left &lt; right){
-        int sum = pairSum[left].getSum() + pairSum[right].getSum();
-        if (sum == target){
-            int endl = left;
-            int endr = right;
-            while (pairSum[endl].getSum() == pairSum[endl+1].getSum() &amp;&amp; endl+1 &lt; endr){
-                endl++;
-            }
-            while (pairSum[endr].getSum() == pairSum[endr-1].getSum() &amp;&amp; endl &lt; endr-1){
-                endr--;
-            }
-            for (int i = left; i &lt;= endl; i++){
-                for (int j = right; j&gt;= endr; j--){
-                    int i1 = pairSum[i].geti();
-                    int i2 = pairSum[j].geti();
-                    int j1 = pairSum[i].getj();
-                    int j2 = pairSum[j].getj();
-                    if (i1 == i2 || i1 == j2 || j1 == i2 || j1 == j2){
-                        continue;
-                    }
-                    int[] temp = new int[4];
-                    temp[0] = pairSum[i].getN1();
-                    temp[1] = pairSum[i].getN2();
-                    temp[2] = pairSum[j].getN1();
-                    temp[3] = pairSum[j].getN2();
-                    Arrays.sort(temp);
-                    List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-                    tempres.add(temp[0]);
-                    tempres.add(temp[1]);
-                    tempres.add(temp[2]);
-                    tempres.add(temp[3]);
-                    tres.add(tempres);
-                }
-            }
-            left = endl+1;
-            right = endr-1;
-        }
-        else if (sum &gt; target){
-            right--;
-        }
-        else{
-            left++;
-        }
-    }
-
-    res.addAll(tres);
-    return res;
+    return heap.peek();
 }
 
-class SumComparator implements Comparator{
+class HeapComparator implements Comparator {
 
     @Override
-    public final int compare(Object o1, Object o2) {
+    public int compare(Object o1, Object o2) {
         // TODO Auto-generated method stub
-        Pair l1 = (Pair)o1;
-        Pair l2 = (Pair)o2;
-        if (l1.getSum() &gt; l2.getSum())
-            return 1;
-        else if (l1.getSum() &lt; l2.getSum())
+        int i1 = (int)o1;
+        int i2 = (int)o2;
+        if (i1 &gt; i2)
             return -1;
-        else
+        else if (i1 == i2)
             return 0;
+        else
+            return 1;
     }
+
 }
-
-class Pair{
-    int i;
-    int j;
-    int n1;
-    int n2;
-    int sum;
-    Pair(int num1, int num2, int i, int j){
-        this.n1 = num1;
-        this.n2 = num2;
-        this.sum = num1 + num2;
-        this.i = i;
-        this.j = j;
+</code></pre><p>Min heap:</p>
+<pre><code>public int findKthLargest2(int[] nums, int k) {
+    int len = nums.length;
+    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;(k);
+    for (int i = 0; i &lt; k; i++){
+        heap.add(nums[i]);
     }
-    public int getSum(){
-        return this.sum;
-    }
-    public int getN1(){
-        return this.n1;
-    }
-    public int getN2(){
-        return this.n2;
-    }
-    public int geti(){
-        return this.i;
-    }
-    public int getj(){
-        return this.j;
-    }
-}
-</code></pre><p>Reference: <a href="http://blog.csdn.net/linhuanmars/article/details/24826871" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24826871</a></p>
-<p><strong>Solution3:</strong></p>
-<p>The third method is the most efficient method. It has two loop of two points and use some method to break or return early. It really improve the performance of time running.</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum3(int[] nums, int target) {
-    List&lt;List&lt;Integer&gt;&gt; list = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Arrays.sort(nums);
-    int second = 0, third = 0, nexti = 0, nextj = 0;
-    for(int i=0, L=nums.length; i&lt;L-3; i++) {
-        if(nums[i]&lt;&lt;2 &gt; target) return list; // return immediately
-        for(int j=L-1; j&gt;i+2; j--) {
-            if(nums[j]&lt;&lt;2 &lt; target) break; // break immediately
-            int rem = target-nums[i]-nums[j];
-            int lo = i+1, hi=j-1;
-            while(lo&lt;hi) {
-                int sum = nums[lo] + nums[hi];
-                if(sum&gt;rem) --hi;
-                else if(sum&lt;rem) ++lo;
-                else {
-                    list.add(Arrays.asList(nums[i],nums[lo],nums[hi],nums[j]));
-                    while(++lo&lt;=hi &amp;&amp; nums[lo-1]==nums[lo]) continue; // avoid duplicate results
-                    while(--hi&gt;=lo &amp;&amp; nums[hi]==nums[hi+1]) continue; // avoid duplicate results
-                }
-            }
-            while(j&gt;=1 &amp;&amp; nums[j]==nums[j-1]) --j; // skip inner loop
-        }
-        while(i&lt;L-1 &amp;&amp; nums[i]==nums[i+1]) ++i; // skip outer loop
-    }
-    return list;
-}
-</code></pre><p>Reference: <a href="https://leetcode.com/discuss/78276/java-little-bit-faster-than-other-common-methods-9ms-beats-95%25" target="_blank" rel="external">https://leetcode.com/discuss/78276/java-little-bit-faster-than-other-common-methods-9ms-beats-95%25</a></p>
-
-	
-	</div>
-  <a type="button" href="/2016/01/30/Leetcode-4Sum-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-28 </div>
-			<div class="article-title"><a href="/2016/01/28/Leetcode-3Sum-Java/" >Leetcode-3Sum(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.</p>
-<p>Note:<br>Elements in a triplet (a,b,c) must be in non-descending order. (ie, a ≤ b ≤ c)<br>The solution set must not contain duplicate triplets.<br>    For example, given array S = {-1 0 1 2 -1 -4},</p>
-<pre><code>A solution set is:
-(-1, 0, 1)
-(-1, -1, 2)
-</code></pre><p><strong>Thinking:</strong></p>
-<p>Sort the array first. Pick a number from the array, and use other two points to record the position of the array and determine which one should change by the sum of them. What’s more, the result set should has no duplicate, so we can use hashset here.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) {
-    int l = nums.length;
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-
-    if (l &lt; 3)
-        return res;
-
-    Arrays.sort(nums);
-
-    for (int i = 0; i &lt; l-2; i++){
-        int k = l-1;
-        for (int j = i+1; j &lt; l; j++){
-            while (j &lt; k){
-                int sum = nums[i] + nums[j] + nums[k];
-                if (sum == 0){
-                    List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-                    tempres.add(nums[i]);
-                    tempres.add(nums[j]);
-                    tempres.add(nums[k]);
-                    tres.add(tempres);
-                    while (j &lt; k &amp;&amp; nums[j] == tempres.get(1)){
-                        j++;
-                    }
-                    k--;
-                }
-                else if (sum &gt; 0){
-                    k--;
-                }
-                else{
-                    j++;
-                }
-
-            }
+    for (int i = k; i &lt; len; i++){
+        if (nums[i] &gt; heap.peek()){
+            heap.poll();
+            heap.add(nums[i]);
         }
     }
-    res.addAll(tres);
+    return heap.peek();
+}
+</code></pre><p>Quickselect:</p>
+<pre><code>public int findKthLargest3(int[] nums, int k) {
+    int len = nums.length;
+    return quickselect(nums, 0, len-1, k);
+}
 
-    return res;
+private int quickselect(int[] nums, int left, int right, int k){
+    int pivotIndex = partition(nums, left, right, left);
+    if (pivotIndex == k-1){
+        return nums[pivotIndex];
+    }
+    else if(pivotIndex &lt; k){
+        return quickselect(nums, pivotIndex+1, right, k);
+    }
+    else{
+        return quickselect(nums, left, pivotIndex-1, k);
+    }
+}
+
+private int partition(int[] nums, int left, int right, int index){
+    int pivotvalue = nums[index];
+    int storeindex = left;
+    nums[index] = nums[right];
+    for (int i = left; i &lt; right; i++){
+        if (nums[i] &gt; pivotvalue){
+            int temp = nums[i];
+            nums[i] = nums[storeindex];
+            nums[storeindex++] = temp;
+        }
+    }
+    nums[right] = nums[storeindex];
+    nums[storeindex] = pivotvalue;
+    return storeindex;
 }
 </code></pre>
 	
 	</div>
-  <a type="button" href="/2016/01/28/Leetcode-3Sum-Java/#more" class="btn btn-default more">閱讀本文</a>
+  <a type="button" href="/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/#more" class="btn btn-default more">閱讀本文</a>
 </div>
 
 		
@@ -475,8 +219,8 @@ class Pair{
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2016-01-28 </div>
-			<div class="article-title"><a href="/2016/01/28/Leetcode-Two-Sum-Java/" >Leetcode-Two Sum(Java)</a></div>						
+			<div class="date"> 2016-01-31 </div>
+			<div class="article-title"><a href="/2016/01/31/Leetcode-Permutations-II-Java/" >Leetcode-Permutations II(Java)</a></div>						
 		</h3>
 	
 
@@ -486,34 +230,82 @@ class Pair{
 	
 	
 		<p><strong>Question:</strong></p>
-<p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
-<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</p>
-<p>You may assume that each input would have exactly one solution.</p>
-<p>Input: numbers={2, 7, 11, 15}, target=9<br>Output: index1=1, index2=2</p>
+<p>Given a collection of numbers that might contain duplicates, return all possible unique permutations.</p>
+<p>For example,<br>[1,1,2] have the following unique permutations:<br>[1,1,2], [1,2,1], and [2,1,1].</p>
 <p><strong>Thinking:</strong></p>
-<p>We can use hash map to store the rest of nums[i], and if we find which number is equal to the rest beofore, their sum will be target.</p>
+<p>It’s very similiar with the question permutation, we should use backtracing to go through all the possibilities. For example, we pick the first element of the array, and get the permutation of the rest of this array, and put the first element in every possible position. The only difference bewteen the permutation is that we don’t allow duplicate. We can use hashset to solve this problem.</p>
+<p>By the way, I made a mistake this time which I used to make. It’s that in the loop of this:</p>
+<pre><code>for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
+    for (int i = 0; i &lt;= list.size(); i++){
+        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
+        tempres.add(i, nums[index]);
+        tres.add(tempres);
+    }
+}
+</code></pre><p>I shouldn’t use the temporary variable list to operate, because<br>1) the size of it will change;<br>2) we should use it several times instead of once.<br>Then that means we should build another temporary variable. In this case, it’s tempres.</p>
 <p><strong>Solution:</strong></p>
-<pre><code>public int[] twoSum(int[] nums, int target){
-    HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
-    int[] res = new int[2];
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
+    return backtracing(nums, 0);
+}
 
-    for (int i = 0; i &lt; nums.length; i++){
-        if (map.containsKey(nums[i])){
-            res[0] = map.get(nums[i]) + 1;
-            res[1] = i+1;
-            break;
-        }
-        else{
-            map.put(target-nums[i], i);
+private List&lt;List&lt;Integer&gt;&gt; backtracing(int[] nums, int index) {
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    HashSet&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
+    int len = nums.length;
+
+    if (index &gt;= len){
+        return res;
+    }
+
+    if (index == len - 1){
+        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+        tempres.add(nums[index]);
+        res.add(tempres);
+        return res;
+    }
+
+    for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
+        for (int i = 0; i &lt;= list.size(); i++){
+            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
+            tempres.add(i, nums[index]);
+            tres.add(tempres);
         }
     }
 
+    res.addAll(tres);
     return res;
+}
+</code></pre><p>There is another solution is much faster than me. Because it use extra space to record which element is used and use sort to reduce the extra cost to make sure unique. What’s more, the process of adding first and removing after dfs is usually used by people. I suppose I should learn from it.</p>
+<p>Code:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    if(nums==null || nums.length==0) return res;
+    boolean[] used = new boolean[nums.length];
+    List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+    Arrays.sort(nums);
+    dfs(nums, used, list, res);
+    return res;
+}
+
+public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;List&lt;Integer&gt;&gt; res){
+    if(list.size()==nums.length){
+        res.add(new ArrayList&lt;Integer&gt;(list));
+        return;
+    }
+    for(int i=0;i&lt;nums.length;i++){
+        if(used[i]) continue;
+        if(i&gt;0 &amp;&amp;nums[i-1]==nums[i] &amp;&amp; !used[i-1]) continue;
+        used[i]=true;
+        list.add(nums[i]);
+        dfs(nums,used,list,res);
+        used[i]=false;
+        list.remove(list.size()-1);
+    }
 }
 </code></pre>
 	
 	</div>
-  <a type="button" href="/2016/01/28/Leetcode-Two-Sum-Java/#more" class="btn btn-default more">閱讀本文</a>
+  <a type="button" href="/2016/01/31/Leetcode-Permutations-II-Java/#more" class="btn btn-default more">閱讀本文</a>
 </div>
 
 		
@@ -521,8 +313,70 @@ class Pair{
 	
 	<!-- display as entry -->	
 		<h3 class="title">
-			<div class="date"> 2016-01-28 </div>
-			<div class="article-title"><a href="/2016/01/28/Leetcode-Game-of-Life-Java/" >Leetcode-Game of Life(Java)</a></div>						
+			<div class="date"> 2016-01-31 </div>
+			<div class="article-title"><a href="/2016/01/31/Algorithm-Note/" >Algorithm Note</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<ol>
+<li>Chapter 3 Exercises 6中有两个点， 一个是如果一个图的DFS树中没有出现的边，边的两个顶点一定是祖先与孩子的关系；一个是如果一个图的BFS树的BFS树中没有出现的边，边的两个顶点在BFS树中的层数差不会大于1.</li>
+<li>如果一个图的DFS树，或者BFS树和图相同，那么原图就没有环，否则就找他们最低的祖先，构成一个环。</li>
+</ol>
+
+	
+	</div>
+  <a type="button" href="/2016/01/31/Algorithm-Note/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-30 </div>
+			<div class="article-title"><a href="/2016/01/30/VIM/" >VIM</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>一、打开文件、保存、关闭文件(vi命令模式下使用)<br>:w       //保存文件<br>:w vpser.net //保存至vpser.net文件<br>:q          //退出编辑器，如果文件已修改请使用下面的命令<br>:q!        //退出编辑器，且不保存<br>:wq         //退出编辑器，且保存文件</p>
+<p>二、插入文本或行(vi命令模式下使用，执行下面命令后将进入插入模式，按ESC键可退出插入模式)<br>一般使用i<br>a      //在当前光标位置的右边添加文本<br>i       //在当前光标位置的左边添加文本<br>A     //在当前行的末尾位置添加文本<br>I      //在当前行的开始处添加文本(非空字符的行首)<br>O     //在当前行的上面新建一行<br>o     //在当前行的下面新建一行<br>R    //替换(覆盖)当前光标位置及后面的若干文本<br>J    //合并光标所在行及下一行为一行(依然在命令模式)</p>
+<p>三、移动光标(vi命令模式下使用)<br>1、使用上下左右方向键</p>
+<p>2、命令模式下：h   向左、j   向下 、k   向上、l  向右。<br>空格键 向右、Backspace  向左、Enter  移动到下一行首、-  移动到上一行首。</p>
+<p>四、删除、恢复字符或行(vi命令模式下使用)<br>x         //删除当前字符<br>nx         //删除从光标开始的n个字符<br>dd      //删除当前行<br>ndd   //向下删除当前行在内的n行<br>u       //撤销上一步操作<br>U      //撤销对当前行的所有操作</p>
+<p>五、搜索(vi命令模式下使用)<br>/vpser     //向光标下搜索vpser字符串，vpser可以是正则表达式<br>?vpser     //向光标上搜索vpser字符串<br>n           //向下搜索前一个搜素动作<br>N         //向上搜索前一个搜索动作</p>
+<p>*(#)      //当光标停留在某个单词上时, 输入这条命令表示查找与该单词匹配的下(上)一个单词. 同样, 再输入 n 查找下一个匹配处, 输入 N 反方向查找.</p>
+<p>g*(g#)        //此命令与上条命令相似, 只不过它不完全匹配光标所在处的单词, 而是匹配包含该单词的所有字符串.</p>
+<p>六、跳至指定行(vi命令模式下使用)<br>n+        //向下跳n行<br>n-         //向上跳n行<br>nG        //跳到行号为n的行<br>G           //跳至文件的底部</p>
+<p>七、设置行号(vi命令模式下使用)<br>:set  nu     //显示行号<br>:set nonu    //取消显示行号</p>
+<p>八、复制、粘贴(vi命令模式下使用)<br>yy    //将当前行复制到缓存区，也可以用 “ayy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>nyy   //将当前行向下n行复制到缓冲区，也可以用 “anyy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>yw    //复制从光标开始到词尾的字符。<br>nyw   //复制从光标开始的n个单词。<br>y^      //复制从光标到行首的内容。  VPS侦探<br>y$      //复制从光标到行尾的内容。<br>p        //粘贴剪切板里的内容在光标后，如果使用了前面的自定义缓冲区，建议使用”ap 进行粘贴。<br>P        //粘贴剪切板里的内容在光标前，如果使用了前面的自定义缓冲区，建议使用”aP 进行粘贴。</p>
+<p>九、替换(vi命令模式下使用)<br>:s/old/new      //用new替换行中首次出现的old<br>:s/old/new/g         //用new替换行中所有的old<br>:n,m s/old/new/g     //用new替换从n到m行里所有的old<br>:%s/old/new/g      //用new替换当前文件里所有的old</p>
+<p>十、编辑其他文件<br>:e otherfilename    //编辑文件名为otherfilename的文件。</p>
+<p>十一、修改文件格式<br>:set fileformat=unix   //将文件修改为unix格式，如win下面的文本文件在linux下会出现^M。</p>
+<p>十二、查找帮助<br>当你不知道怎么处理时，直接输入help可以看到帮助文档的起点，ZZ是退出或者：q，不建议使用<br>查找关于某个字母的命令 ：help x   查找关于x的命令。</p>
+<p>参考：<a href="http://blog.csdn.net/chenxiaochen32/article/details/7378127" target="_blank" rel="external">http://blog.csdn.net/chenxiaochen32/article/details/7378127</a></p>
+
+	
+	</div>
+  <a type="button" href="/2016/01/30/VIM/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-30 </div>
+			<div class="article-title"><a href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" >Leetcode-Palindrome Partitioning(Java)</a></div>						
 		</h3>
 	
 
@@ -532,60 +386,52 @@ class Pair{
 	
 	
 		<p><strong>Question:</strong></p>
-<p>According to the Wikipedia’s article: “The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.”</p>
-<p>Given a board with m by n cells, each cell has an initial state live (1) or dead (0). Each cell interacts with its eight neighbors (horizontal, vertical, diagonal) using the following four rules (taken from the above Wikipedia article):</p>
-<p>Any live cell with fewer than two live neighbors dies, as if caused by under-population.<br>Any live cell with two or three live neighbors lives on to the next generation.<br>Any live cell with more than three live neighbors dies, as if by over-population..<br>Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.<br>Write a function to compute the next state (after one update) of the board given its current state.</p>
-<p>Follow up:<br>Could you solve it in-place? Remember that the board needs to be updated at the same time: You cannot update some cells first and then use their updated values to update other cells.<br>In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches the border of the array. How would you address these problems?</p>
-<p><strong>Thinkings:</strong></p>
-<p>It’s difficult quesiont, isn’t it? We have to fully understand when cell become live or dead and try to replace them in place. One solution is to present their status using bits, the first bit represents their current status and second bit represents their next status. For example:</p>
-<p>current status is live and next status will be dead is 01<br>current status is dead and next status will be live is 10</p>
-<p>And then we can get the current status by:</p>
-<pre><code>board[i][j] &amp; 1
-</code></pre><p>Get the finnaly status by:</p>
-<pre><code>board[i][j] &gt;&gt;= 1
-</code></pre><p><strong>Solution:</strong></p>
-<pre><code>public void gameOfLife(int[][] board) {
-    int m = board.length;
-    if (m == 0)
-        return;
-    int n = board[0].length;
-
-    //int[][] temp = new int[m][n];
-
-
-    for (int i = 0; i &lt; m; i++){
-        for (int j = 0; j &lt; n; j++){
-            int count = 0;
-            for (int p = -1; p &lt; 2; p++)
-                for (int q = -1; q &lt; 2; q++){
-                    if (i+p&gt;=0 &amp;&amp; i+p&lt;m &amp;&amp; j+q&gt;=0 &amp;&amp; j+q&lt;n &amp;&amp; !(p==0 &amp;&amp; q==0)){
-                        if ((board[i+p][j+q] &amp; 1) == 1)
-                            count++;
-                    }
-                }
-
-            if ((board[i][j] &amp; 1) == 0 &amp;&amp; count == 3){
-                //temp[i][j] = 1;
-                board[i][j] = 2;
-            }
-            else if ((board[i][j] &amp; 1) == 1 &amp;&amp; count &lt;=3 &amp;&amp; count &gt;= 2){
-                    board[i][j] = 3;
-
+<p>Given a string s, partition s such that every substring of the partition is a palindrome.</p>
+<p>Return all possible palindrome partitioning of s.</p>
+<p>For example, given s = “aab”,<br>Return</p>
+<pre><code>[
+  [&quot;aa&quot;,&quot;b&quot;],
+  [&quot;a&quot;,&quot;a&quot;,&quot;b&quot;]
+]
+</code></pre><p><strong>Thinking:</strong></p>
+<p>We should get all the possible partition, it’s obvious we should use backtracing. We partition the string from beginning, and check if it’s palindrome, then check the rest of the substring. If all the substrings are palindrome, we put them in the result. We have to notice the API of Java substring(beginIndex, endIndex) that beginIndex is inclusive but endIndex is exclusive.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;List&lt;String&gt;&gt; partition(String s) {
+    List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;List&lt;String&gt;&gt;();
+    int len = s.length();
+    if (palindrome(s)){
+        List&lt;String&gt; tempres = new ArrayList&lt;String&gt;();
+        tempres.add(s);
+        res.add(tempres);
+    }
+    for (int i = 1; i &lt; len; i++){
+        if (palindrome(s.substring(0, i))){
+            for (List&lt;String&gt; list: partition(s.substring(i))){
+                list.add(0, s.substring(0, i));
+                res.add(list);
             }
         }
     }
+    return res;
+}
 
-    for (int i = 0; i &lt; m; i++){
-        for (int j = 0; j &lt; n; j++){
-            //board[i][j] = temp[i][j];
-            board[i][j] &gt;&gt;= 1;
+private boolean palindrome(String s){
+    int len = s.length();
+    int left = 0;
+    int right = len - 1;
+    while (left &lt; right){
+        if (s.charAt(left) != s.charAt(right)){
+            return false;
         }
+        left++;
+        right--;
     }
+    return true;
 }
 </code></pre>
 	
 	</div>
-  <a type="button" href="/2016/01/28/Leetcode-Game-of-Life-Java/#more" class="btn btn-default more">閱讀本文</a>
+  <a type="button" href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/#more" class="btn btn-default more">閱讀本文</a>
 </div>
 
 		
@@ -639,7 +485,7 @@ class Pair{
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>2</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>24</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>27</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -656,21 +502,29 @@ class Pair{
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
-		
-			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
-		
 			<li><a href="/tags/Array/">Array<span>4</span></a></li>
-		
-			<li><a href="/tags/Backtracing/">Backtracing<span>2</span></a></li>
 		
 			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
 		
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/Backtracing/">Backtracing<span>2</span></a></li>
+		
+			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
+		
 			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
+		
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+		
+			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
+		
+			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
 		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -684,23 +538,23 @@ class Pair{
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/" ><i class="fa fa-file-o"></i>Leetcode-Kth Largest Elemen...</a>
+        <a href="/2016/02/02/Leetcode-Combination-Sum-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Combination Sum II...</a>
       </li>
     
       <li>
-        <a href="/2016/01/31/Leetcode-Permutations-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Permutations II(Ja...</a>
+        <a href="/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/" ><i class="fa fa-file-o"></i>Reverse Linked List II(Java...</a>
       </li>
     
       <li>
-        <a href="/2016/01/31/Algorithm-Note/" ><i class="fa fa-file-o"></i>Algorithm Note...</a>
+        <a href="/2016/02/02/Patching-Array-Java/" ><i class="fa fa-file-o"></i>Patching Array(Java)...</a>
       </li>
     
       <li>
-        <a href="/2016/01/30/VIM/" ><i class="fa fa-file-o"></i>VIM...</a>
+        <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Verify Preorder Se...</a>
       </li>
     
       <li>
-        <a href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" ><i class="fa fa-file-o"></i>Leetcode-Palindrome Partiti...</a>
+        <a href="/2016/02/01/AI-Note/" ><i class="fa fa-file-o"></i>AI Note...</a>
       </li>
     
   </ul>
