@@ -109,6 +109,102 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-02-01 </div>
+			<div class="article-title"><a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" >Leetcode-Verify Preorder Serialization of a Binary Tree(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node’s value. If it is a null node, we record using a sentinel value such as #.</p>
+<pre><code>     _9_
+    /   \
+   3     2
+  / \   / \
+ 4   1  #  6
+/ \ / \   / \
+# # # #   # #
+</code></pre><p>For example, the above binary tree can be serialized to the string “9,3,4,#,#,1,#,#,2,#,6,#,#”, where # represents a null node.</p>
+<p>Given a string of comma separated values, verify whether it is a correct preorder traversal serialization of a binary tree. Find an algorithm without reconstructing the tree.</p>
+<p>Each comma separated value in the string must be either an integer or a character ‘#’ representing null pointer.</p>
+<p>You may assume that the input format is always valid, for example it could never contain two consecutive commas such as “1,,3”.</p>
+<p>Example 1:<br>“9,3,4,#,#,1,#,#,2,#,6,#,#”<br>Return true</p>
+<p>Example 2:<br>“1,#”<br>Return false</p>
+<p>Example 3:<br>“9,#,#,1”<br>Return false</p>
+<p><strong>Thinking:</strong></p>
+<p>Accroding to the correct answer given, we can find the pattern. We should start from # and use stack to store it. When get two #, we should get another element from the string. </p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean isValidSerialization(String preorder) {
+    String[] strlist = preorder.split(&quot;,&quot;);
+    Stack&lt;String&gt; stack = new Stack&lt;String&gt;();
+    Stack&lt;String&gt; tempstack = new Stack&lt;String&gt;();
+
+    for (String s: strlist) {
+        stack.push(s);
+    }
+    while (!stack.isEmpty()) {
+        while (!stack.isEmpty() &amp;&amp; stack.peek().equals(&quot;#&quot;)){
+            tempstack.push(stack.pop());
+        }
+        if (tempstack.size() &lt; 2)
+            break;
+        while (tempstack.size() &gt;= 2 &amp;&amp; !stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
+            tempstack.pop();
+            tempstack.pop();
+            if (!stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
+                stack.pop();
+                tempstack.push(&quot;#&quot;);
+            }
+        }
+    }
+
+    if (tempstack.size() == 1 &amp;&amp; stack.isEmpty())
+        return true;
+    else
+        return false;
+}
+</code></pre><p>There is another simpler solution:</p>
+<pre><code>public boolean isValidSerialization(String preorder) {
+    String[] p = preorder.split(&quot;,&quot;);
+    int idx = 0; // stack
+    for (int i = 0; i &lt; p.length; i++) {
+    if (p[i].equals(&quot;#&quot;)) {
+        idx--;
+    } else {
+        if (idx &lt; 0) { // check
+          return false;
+        }
+        p[idx++] = p[i];
+      }
+    }
+    return idx == -1; // check
+  }
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/83903/share-my-java-solution" target="_blank" rel="external">https://leetcode.com/discuss/83903/share-my-java-solution</a></p>
+<p>And another much simplier solution which caculate the indegree and outdegree:</p>
+<pre><code>public boolean isValidSerialization2(String preorder) {
+    String[] nodes = preorder.split(&quot;,&quot;);
+    int diff = 1;
+    for (String node: nodes) {
+        if (--diff &lt; 0) return false;
+        if (!node.equals(&quot;#&quot;)) diff += 2;
+    }
+    return diff == 0;
+}
+</code></pre><p>Reference: <a href="https://www.hrwhisper.me/leetcode-algorithm-solution/" target="_blank" rel="external">https://www.hrwhisper.me/leetcode-algorithm-solution/</a></p>
+
+	
+	</div>
+  <a type="button" href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-02-01 </div>
 			<div class="article-title"><a href="/2016/02/01/AI-Note/" >AI Note</a></div>						
 		</h3>
 	
@@ -382,43 +478,6 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-30 </div>
-			<div class="article-title"><a href="/2016/01/30/VIM/" >VIM</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>一、打开文件、保存、关闭文件(vi命令模式下使用)<br>:w       //保存文件<br>:w vpser.net //保存至vpser.net文件<br>:q          //退出编辑器，如果文件已修改请使用下面的命令<br>:q!        //退出编辑器，且不保存<br>:wq         //退出编辑器，且保存文件</p>
-<p>二、插入文本或行(vi命令模式下使用，执行下面命令后将进入插入模式，按ESC键可退出插入模式)<br>一般使用i<br>a      //在当前光标位置的右边添加文本<br>i       //在当前光标位置的左边添加文本<br>A     //在当前行的末尾位置添加文本<br>I      //在当前行的开始处添加文本(非空字符的行首)<br>O     //在当前行的上面新建一行<br>o     //在当前行的下面新建一行<br>R    //替换(覆盖)当前光标位置及后面的若干文本<br>J    //合并光标所在行及下一行为一行(依然在命令模式)</p>
-<p>三、移动光标(vi命令模式下使用)<br>1、使用上下左右方向键</p>
-<p>2、命令模式下：h   向左、j   向下 、k   向上、l  向右。<br>空格键 向右、Backspace  向左、Enter  移动到下一行首、-  移动到上一行首。</p>
-<p>四、删除、恢复字符或行(vi命令模式下使用)<br>x         //删除当前字符<br>nx         //删除从光标开始的n个字符<br>dd      //删除当前行<br>ndd   //向下删除当前行在内的n行<br>u       //撤销上一步操作<br>U      //撤销对当前行的所有操作</p>
-<p>五、搜索(vi命令模式下使用)<br>/vpser     //向光标下搜索vpser字符串，vpser可以是正则表达式<br>?vpser     //向光标上搜索vpser字符串<br>n           //向下搜索前一个搜素动作<br>N         //向上搜索前一个搜索动作</p>
-<p>*(#)      //当光标停留在某个单词上时, 输入这条命令表示查找与该单词匹配的下(上)一个单词. 同样, 再输入 n 查找下一个匹配处, 输入 N 反方向查找.</p>
-<p>g*(g#)        //此命令与上条命令相似, 只不过它不完全匹配光标所在处的单词, 而是匹配包含该单词的所有字符串.</p>
-<p>六、跳至指定行(vi命令模式下使用)<br>n+        //向下跳n行<br>n-         //向上跳n行<br>nG        //跳到行号为n的行<br>G           //跳至文件的底部</p>
-<p>七、设置行号(vi命令模式下使用)<br>:set  nu     //显示行号<br>:set nonu    //取消显示行号</p>
-<p>八、复制、粘贴(vi命令模式下使用)<br>yy    //将当前行复制到缓存区，也可以用 “ayy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>nyy   //将当前行向下n行复制到缓冲区，也可以用 “anyy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>yw    //复制从光标开始到词尾的字符。<br>nyw   //复制从光标开始的n个单词。<br>y^      //复制从光标到行首的内容。  VPS侦探<br>y$      //复制从光标到行尾的内容。<br>p        //粘贴剪切板里的内容在光标后，如果使用了前面的自定义缓冲区，建议使用”ap 进行粘贴。<br>P        //粘贴剪切板里的内容在光标前，如果使用了前面的自定义缓冲区，建议使用”aP 进行粘贴。</p>
-<p>九、替换(vi命令模式下使用)<br>:s/old/new      //用new替换行中首次出现的old<br>:s/old/new/g         //用new替换行中所有的old<br>:n,m s/old/new/g     //用new替换从n到m行里所有的old<br>:%s/old/new/g      //用new替换当前文件里所有的old</p>
-<p>十、编辑其他文件<br>:e otherfilename    //编辑文件名为otherfilename的文件。</p>
-<p>十一、修改文件格式<br>:set fileformat=unix   //将文件修改为unix格式，如win下面的文本文件在linux下会出现^M。</p>
-<p>十二、查找帮助<br>当你不知道怎么处理时，直接输入help可以看到帮助文档的起点，ZZ是退出或者：q，不建议使用<br>查找关于某个字母的命令 ：help x   查找关于x的命令。</p>
-<p>参考：<a href="http://blog.csdn.net/chenxiaochen32/article/details/7378127" target="_blank" rel="external">http://blog.csdn.net/chenxiaochen32/article/details/7378127</a></p>
-
-	
-	</div>
-  <a type="button" href="/2016/01/30/VIM/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -486,31 +545,31 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
+			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
+		
 			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
 		
 			<li><a href="/tags/String/">String<span>1</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>5</span></a></li>
 		
 			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
 		
 			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
 		
-			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
+			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+		
+			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
 		
 			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
 		
-			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
 		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
-		
-			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
+			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
 		
 			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
 		
-			<li><a href="/tags/Array/">Array<span>5</span></a></li>
-		
-			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
-		
-			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -522,6 +581,10 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2016/02/02/Git-Note/" ><i class="fa fa-file-o"></i>Git Note...</a>
+      </li>
     
       <li>
         <a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" ><i class="fa fa-file-o"></i>Leetcode-Restore IP Address...</a>
@@ -537,10 +600,6 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
     
       <li>
         <a href="/2016/02/02/Patching-Array-Java/" ><i class="fa fa-file-o"></i>Patching Array(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Verify Preorder Se...</a>
       </li>
     
   </ul>

@@ -109,6 +109,86 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-01-27 </div>
+			<div class="article-title"><a href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" >Leetcode-Flatten Binary Tree to Linked List(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given a binary tree, flatten it to a linked list in-place.</p>
+<p>For example,<br>Given</p>
+<pre><code>    1
+   / \
+  2   5
+ / \   \
+3   4   6
+</code></pre><p>The flattened tree should look like:</p>
+<pre><code>1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
+<p><strong>Thinking:</strong> </p>
+<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public void flatten(TreeNode root) {
+        if (root == null)
+            return;
+        dfs(root);
+    }
+
+    public TreeNode dfs(TreeNode root){
+
+        if (root.left == null &amp;&amp; root.right == null){
+            return root;
+        }
+
+        TreeNode left = null;
+        TreeNode right = null;
+        TreeNode preleft = root.left;
+        TreeNode preright = root.right;
+        if (preleft == null){
+            return dfs(preright);
+        }
+        else if(preright == null){
+            root.left = null;
+            root.right = preleft;
+            return dfs(preleft);
+        }
+        else{
+            left = dfs(preleft);
+            right = dfs(preright);
+            root.left = null;
+            root.right = preleft;
+            left.right = preright;
+            return right;
+        }
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-27 </div>
 			<div class="article-title"><a href="/2016/01/27/Leetcode-Triangle/" >Leetcode-Triangle(Java)</a></div>						
 		</h3>
 	
@@ -439,91 +519,6 @@ private double dp(double x, int n){
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-26 </div>
-			<div class="article-title"><a href="/2016/01/26/Leetcode-Jump-Game-Java/" >Leetcode-Jump Game(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
-<p>Each element in the array represents your maximum jump length at that position.</p>
-<p>Determine if you are able to reach the last index.</p>
-<p>For example:<br>A = [2,3,1,1,4], return true.</p>
-<p>A = [3,2,1,0,4], return false.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s a problem can be solved in greedy algorithm. Because we should go as far as possible in current position until we can’t go father. And we should gurantee the value of current position + i (steps can be reached from current postion) + nums[cur + i] be as big as possible.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public boolean canJump(int[] nums) {
-    int l = nums.length;
-    if (nums[0] == 0 &amp;&amp; l &gt; 1)
-        return false;
-    int cur = 0;
-    int temp = nums[0];
-    int step = nums[0];
-    int max = nums[0];
-    int tempcur = 0;
-
-    while (cur + step &lt; l-1){
-        for (int i = 1; i &lt;= step; i++){
-            temp = cur + i + nums[cur + i];
-            if (temp &gt;= max){//current max greedy value
-                max = temp;
-                if (max &gt;= l)
-                    return true;
-                tempcur = cur + i;
-            }
-        }
-        if (cur == tempcur)
-            return false;
-        cur = tempcur;
-        step = nums[cur];
-    }
-
-    if (max &gt;= l-1)
-        return true;
-    else
-        return false;
-}
-</code></pre><p>What’s more, we can make it easier by max the value of index. </p>
-<pre><code>public boolean canJump(int[] nums) {
-    if(nums.length &lt;= 1)
-        return true;
-
-    int max = nums[0]; //max stands for the largest index that can be reached.
-
-    for(int i=0; i&lt;nums.length; i++){
-        //if not enough to go to next
-        if(max &lt;= i &amp;&amp; nums[i] == 0) 
-            return false;
-
-        //update max    
-        if(i + nums[i] &gt; max){
-            max = i + nums[i];
-        }
-
-        //max is enough to reach the end
-        if(max &gt;= nums.length-1) 
-            return true;
-    }
-
-    return false;    
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/26/Leetcode-Jump-Game-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -591,31 +586,31 @@ private double dp(double x, int n){
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
-		
-			<li><a href="/tags/Array/">Array<span>5</span></a></li>
-		
-			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
-		
-			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
 		
 			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
 		
-			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
-		
-			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
-		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
-		
 			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
 		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
 		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
+			<li><a href="/tags/String/">String<span>1</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>5</span></a></li>
+		
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
+		
 			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
 		
-			<li><a href="/tags/String/">String<span>1</span></a></li>
+			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
+		
+			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
+		
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -627,6 +622,10 @@ private double dp(double x, int n){
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2016/02/02/Git-Note/" ><i class="fa fa-file-o"></i>Git Note...</a>
+      </li>
     
       <li>
         <a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" ><i class="fa fa-file-o"></i>Leetcode-Restore IP Address...</a>
@@ -642,10 +641,6 @@ private double dp(double x, int n){
     
       <li>
         <a href="/2016/02/02/Patching-Array-Java/" ><i class="fa fa-file-o"></i>Patching Array(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Verify Preorder Se...</a>
       </li>
     
   </ul>

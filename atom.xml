@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-02-02T23:53:47.000Z</updated>
+  <updated>2016-02-03T06:10:46.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Git Note]]></title>
+    <link href="http://yoursite.com/2016/02/02/Git-Note/"/>
+    <id>http://yoursite.com/2016/02/02/Git-Note/</id>
+    <published>2016-02-03T03:13:02.000Z</published>
+    <updated>2016-02-03T06:10:46.000Z</updated>
+    <content type="html"><![CDATA[<ol>
+<li>git branch [-a] look at the branches you’ve visited</li>
+<li>git branch <branch_name> create a new branch from the current commit version</branch_name></li>
+<li>git checkout -b <branch_name></branch_name></li>
+<li>git -d branch_name</li>
+<li>git merge</li>
+<li>git stash</li>
+<li>git push -f</li>
+<li>git checkout <commit_id></commit_id></li>
+<li>git checkout -b new_master</li>
+<li>git branch -d master</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<ol>
+<li>git branch [-a] look at the branches you’ve visited</li>
+<li>git branch <branch_name> create a new branch from the current commit v]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Restore IP Addresses(Java)]]></title>
@@ -1439,83 +1466,6 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
     </summary>
     
       <category term="uncategoried" scheme="http://yoursite.com/categories/uncategoried/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Flatten Binary Tree to Linked List(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/"/>
-    <id>http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/</id>
-    <published>2016-01-27T22:00:06.000Z</published>
-    <updated>2016-01-27T22:00:06.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>    1
-   / \
-  2   5
- / \   \
-3   4   6
-</code></pre><p>The flattened tree should look like:</p>
-<pre><code>1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-         \
-          6
-</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
-<p><strong>Thinking:</strong> </p>
-<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public void flatten(TreeNode root) {
-        if (root == null)
-            return;
-        dfs(root);
-    }
-
-    public TreeNode dfs(TreeNode root){
-
-        if (root.left == null &amp;&amp; root.right == null){
-            return root;
-        }
-
-        TreeNode left = null;
-        TreeNode right = null;
-        TreeNode preleft = root.left;
-        TreeNode preright = root.right;
-        if (preleft == null){
-            return dfs(preright);
-        }
-        else if(preright == null){
-            root.left = null;
-            root.right = preleft;
-            return dfs(preleft);
-        }
-        else{
-            left = dfs(preleft);
-            right = dfs(preright);
-            root.left = null;
-            root.right = preleft;
-            left.right = preright;
-            return right;
-        }
-    }
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>]]>
-    </summary>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
     
   </entry>
   

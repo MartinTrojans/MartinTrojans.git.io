@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Leetcode-Restore IP Addresses(Java) | Martin&#39;s Blog</title>
+  <title>Git Note | Martin&#39;s Blog</title>
   <meta name="author" content="Martin">
   
   <meta name="description" content="A rookie write something just for fun.">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Leetcode-Restore IP Addresses(Java)"/>
+  <meta property="og:title" content="Git Note"/>
   <meta property="og:site_name" content="Martin&#39;s Blog"/>
 
   
@@ -90,7 +90,7 @@
 
 	
 		<div class="page-header">		
-			<h1> Leetcode-Restore IP Addresses(Java)</h1>
+			<h1> Git Note</h1>
 		</div>		
 	
 
@@ -107,54 +107,19 @@
 	<div class="mypage">		
 	  		
 
-	  <p><strong>Question:</strong></p>
-<p>Given a string containing only digits, restore it by returning all possible valid IP address combinations.</p>
-<p>For example:<br>Given “25525511135”,</p>
-<p>return [“255.255.11.135”, “255.255.111.35”]. (Order does not matter)</p>
-<p><strong>Thinking:</strong></p>
-<p>Valid IP address is between 0 and 255, so we can once detect one to three digits of the string. What’s more, it’s not valid if there is number like “001”. Use bactracing select one to three digits once, and go farther until all the substrings are selected and there are four parts of the result. Then put the result in the list. We should also detect the length of the String because if the length is not between 4 and 12, it’s invalid.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;String&gt; restoreIpAddresses(String s) {
-    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
-
-    if (s.length() &lt; 4)
-        return res;
-    if (s.length() &gt; 12)
-        return res;
-
-    backtracing(s, 0, new ArrayList&lt;String&gt;(), res);
-
-    return res;
-}
-
-public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt;String&gt; res){
-    if (start == s.length()){
-        if (tempres.size() == 4){
-            String tempstr = &quot;&quot;;
-            tempstr = tempres.get(0) + &quot;.&quot; + tempres.get(1) + &quot;.&quot; + tempres.get(2) + &quot;.&quot; + tempres.get(3);
-            res.add(tempstr);
-        }
-        else{
-            return;
-        }
-    }
-
-    for (int i = start+1; i &lt;= s.length(); i++){
-        if (s.charAt(start) == &apos;0&apos; &amp;&amp; i != start+1)
-            continue;
-        if (i - start &gt; 3)
-            break;
-        int num = Integer.parseInt(s.substring(start, i));
-        if (num &gt; 255)
-            break;
-        else{
-            tempres.add(s.substring(start, i));
-            backtracing(s, i, tempres, res);
-            tempres.remove(tempres.size() - 1);
-        }
-    }
-}
-</code></pre>	  
+	  <ol>
+<li>git branch [-a] look at the branches you’ve visited</li>
+<li>git branch <branch_name> create a new branch from the current commit version</branch_name></li>
+<li>git checkout -b <branch_name></branch_name></li>
+<li>git -d branch_name</li>
+<li>git merge</li>
+<li>git stash</li>
+<li>git push -f</li>
+<li>git checkout <commit_id></commit_id></li>
+<li>git checkout -b new_master</li>
+<li>git branch -d master</li>
+</ol>
+	  
 	</div>
 
 	<div>
@@ -162,14 +127,14 @@ public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt
 	<div class="pagination">
 <ul class="pagination">
 	 
-				
-    	<li class="prev"><a href="/2016/02/02/Git-Note/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
-  		
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
+        
 
         <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
 
 		
-		   <li class="next"><a href="/2016/02/02/Leetcode-Combination-Sum-II-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+		   <li class="next"><a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
         
 	
 </ul>
@@ -206,27 +171,8 @@ public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt
 
 	<!-- categories -->
     
-	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
-    <ul id="categorys" class="tag_box list-unstyled collapse in">
-          
-  <li>
-    <li><a href="/categories/Leetcode/">Leetcode<span>29</span></a></li>
-  </li>
-
-    </ul>
-	</div>
-	
 
 	<!-- tags -->
-	
-	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
-    <ul id="tags" class="tag_box list-unstyled collapse in">	  
-	    
-  <li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li> <li><a href="/tags/String/">String<span>1</span></a></li>
-    </ul>
-	</div>
 		
 
 	<!-- toc -->

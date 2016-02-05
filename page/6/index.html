@@ -109,6 +109,91 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-01-26 </div>
+			<div class="article-title"><a href="/2016/01/26/Leetcode-Jump-Game-Java/" >Leetcode-Jump Game(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
+<p>Each element in the array represents your maximum jump length at that position.</p>
+<p>Determine if you are able to reach the last index.</p>
+<p>For example:<br>A = [2,3,1,1,4], return true.</p>
+<p>A = [3,2,1,0,4], return false.</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s a problem can be solved in greedy algorithm. Because we should go as far as possible in current position until we can’t go father. And we should gurantee the value of current position + i (steps can be reached from current postion) + nums[cur + i] be as big as possible.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean canJump(int[] nums) {
+    int l = nums.length;
+    if (nums[0] == 0 &amp;&amp; l &gt; 1)
+        return false;
+    int cur = 0;
+    int temp = nums[0];
+    int step = nums[0];
+    int max = nums[0];
+    int tempcur = 0;
+
+    while (cur + step &lt; l-1){
+        for (int i = 1; i &lt;= step; i++){
+            temp = cur + i + nums[cur + i];
+            if (temp &gt;= max){//current max greedy value
+                max = temp;
+                if (max &gt;= l)
+                    return true;
+                tempcur = cur + i;
+            }
+        }
+        if (cur == tempcur)
+            return false;
+        cur = tempcur;
+        step = nums[cur];
+    }
+
+    if (max &gt;= l-1)
+        return true;
+    else
+        return false;
+}
+</code></pre><p>What’s more, we can make it easier by max the value of index. </p>
+<pre><code>public boolean canJump(int[] nums) {
+    if(nums.length &lt;= 1)
+        return true;
+
+    int max = nums[0]; //max stands for the largest index that can be reached.
+
+    for(int i=0; i&lt;nums.length; i++){
+        //if not enough to go to next
+        if(max &lt;= i &amp;&amp; nums[i] == 0) 
+            return false;
+
+        //update max    
+        if(i + nums[i] &gt; max){
+            max = i + nums[i];
+        }
+
+        //max is enough to reach the end
+        if(max &gt;= nums.length-1) 
+            return true;
+    }
+
+    return false;    
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/26/Leetcode-Jump-Game-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-26 </div>
 			<div class="article-title"><a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" >Leetcode-3Sum Closest(Java)</a></div>						
 		</h3>
 	
@@ -475,89 +560,86 @@ What else would Martin say? (&apos;exit&apos; to leave)heihei
 What else would Martin say? (&apos;exit&apos; to leave)exit
 Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &apos;exit&apos; ]
 </code></pre><p>–6– Handling events with EventEmitter</p>
+<p>There are two modules I have learned from this class. One is event and the other is util. Event has two functions which called on and emit. The fucntion on is for naming the event, and the function emit is for triggling the event. The module util is for inheriting from other class.</p>
+<p>Code:</p>
+<pre><code>var events = require(&apos;events&apos;);
+
+var emitter = new events.EventEmitter();
+
+emitter.on(&apos;customEvent&apos;, function(message, status){
+
+    console.log(`${status}: ${message}`);
+
+});
+
+emitter.emit(&apos;customEvent&apos;, &quot;Hellow World&quot;, 200);
+</code></pre><p>And</p>
+<pre><code>node BenFranklin.js 
+Ben Franklin: You may delay, but time will not.
+</code></pre><p>–7–Exporting custom modules</p>
+<p>In this class, I learned that in one js file, we can conclude a export sentence to export a file to become a module. For example, “module.exports = Person;”</p>
+<p>Code:</p>
+<pre><code>var EventEmitter = require(&apos;events&apos;).EventEmitter;
+var util = require(&apos;util&apos;);
+
+var Person = function(name) {
+    this.name = name;
+};
+
+util.inherits(Person, EventEmitter);
+
+module.exports = Person;
+</code></pre><p>–8–Creating child process with exec</p>
+<p>In this class, I learned the module called child_process. And it has a function called exec which is aiming at execute the command in the command line.</p>
+<p>Code:</p>
+<pre><code>var exec = require(&quot;child_process&quot;).exec;
+
+exec(&quot;ls&quot;, function(err, stdout){
+
+    if (err){
+        throw err;
+    }
+
+    console.log(&quot;Listing Finished&quot;);
+
+    console.log(stdout);
+
+});
+</code></pre><p>–9–Creating child process with spawn</p>
+<p>Spawn can deal with the situation that you want run serval commands or deal with the stdout and stdin.</p>
+<p>Code:</p>
+<pre><code>var spawn = require(&quot;child_process&quot;).spawn;
+
+var cp = spawn(&quot;node&quot;, [&quot;alwaysTalking&quot;]);
+
+cp.stdout.on(&quot;data&quot;, function(data){
+    console.log(`STDOUT: ${data.toString()}`);
+});
+
+cp.on(&quot;close&quot;, function() {
+
+    console.log(&quot;Child Process has ended&quot;);
+
+    process.exit();
+
+});
+
+setTimeout(function () {
+
+    cp.stdin.write(&quot;stop&quot;);
+
+}, 4000);
+</code></pre><p>–10–Listing directory files</p>
+<p>What’s the differences between synchronously and asynchronously:</p>
+<p>When you execute something synchronously, you wait for it to finish before moving on to another task. When you execute something asynchronously, you can move on to another task before it finishes.</p>
+<p>That being, said, in the context of computers this translates into executing a process or task on another “thread.” A thread is a series of commands–a block of code–that exists as a unit of work. The operating system can manage multiple threads and assign a thread a piece (“slice”) of processor time before switching to another thread to give it a turn to do some work. At its core (pardon the pun), a processor can simply execute a command–it has no concept of doing two things at one time. The operating system simulates this by allocating slices of time to different threads.</p>
+<p>Now, if you introduce multiple cores/processors into the mix, then things CAN actually happen at the same time. The operating system can allocate time to one thread on the first processor, then allocate the same block of time to another thread on a different processor.</p>
+<p>All of this is about allowing the operating system to manage the completion of your task while you can go on in your code and do other things. Asynchronous programming is a complicated topic because of the semantics of how things tie together when you can do them at the same time. There are numerous articles and books on the subject; have a look!</p>
+<p>Reference: <a href="http://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean" target="_blank" rel="external">http://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean</a></p>
 
 	
 	</div>
   <a type="button" href="/2016/01/25/Node-js-study-note/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-24 </div>
-			<div class="article-title"><a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" >Leetcode-Insertion Sort List(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Sort a linked list using insertion sort.</p>
-<p><strong>Thinking:</strong></p>
-<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public ListNode insertionSortList(ListNode head) {
-        if (head == null || head.next == null)
-            return head;
-        ListNode res = new ListNode(-1);
-        res.next = head;
-        ListNode p = res;
-        ListNode next = head.next;
-        head.next = null;
-        head = next;
-        while (head != null){
-            while (p.next != null){
-                //if the value is smaller than one of the sorted list, insert behind it
-                if (head.val &lt; p.next.val){
-                    next = head.next;
-                    head.next = p.next;
-                    p.next = head;
-                    head = next;
-                    p = res;
-                    break;
-                }
-                p = p.next;
-            }
-            //if the value is bigger than anyone of the sorted list, insert after the whole list
-            if (p.next == null){
-                next = head.next;
-                p.next = head;
-                head.next = null;
-                head = next;
-                p = res;
-            }
-        }
-
-        return res.next;
-    }
-}
-</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
-<pre><code>public ListNode insertionSortList(ListNode head) {  
-    if(head == null||head.next == null)  
-        return head;  
-    ListNode sortedlisthead = new ListNode(0);  
-    ListNode cur = head;
-    while(cur!=null){  
-        ListNode next = cur.next;  
-        ListNode pre = sortedlisthead;  
-        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
-            pre = pre.next;  
-        cur.next = pre.next;  
-        pre.next = cur;  
-        cur = next;  
-    }  
-    return sortedlisthead.next;  
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/#more" class="btn btn-default more">閱讀本文</a>
 </div>
 
 		
@@ -630,29 +712,29 @@ Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &ap
 		
 			<li><a href="/tags/Array/">Array<span>5</span></a></li>
 		
-			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
-		
-			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
-		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
-		
-			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
-		
 			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
-		
-			<li><a href="/tags/String/">String<span>1</span></a></li>
-		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
 		
 			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
 		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
 		
-			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
 		
 			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
 		
-			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
+			<li><a href="/tags/String/">String<span>1</span></a></li>
+		
+			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
+		
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+		
+			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
+		
+			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -664,6 +746,10 @@ Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &ap
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2016/02/02/Git-Note/" ><i class="fa fa-file-o"></i>Git Note...</a>
+      </li>
     
       <li>
         <a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" ><i class="fa fa-file-o"></i>Leetcode-Restore IP Address...</a>
@@ -679,10 +765,6 @@ Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &ap
     
       <li>
         <a href="/2016/02/02/Patching-Array-Java/" ><i class="fa fa-file-o"></i>Patching Array(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Verify Preorder Se...</a>
       </li>
     
   </ul>

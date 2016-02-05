@@ -109,6 +109,39 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-02-02 </div>
+			<div class="article-title"><a href="/2016/02/02/Git-Note/" >Git Note</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<ol>
+<li>git branch [-a] look at the branches you’ve visited</li>
+<li>git branch <branch_name> create a new branch from the current commit version</branch_name></li>
+<li>git checkout -b <branch_name></branch_name></li>
+<li>git -d branch_name</li>
+<li>git merge</li>
+<li>git stash</li>
+<li>git push -f</li>
+<li>git checkout <commit_id></commit_id></li>
+<li>git checkout -b new_master</li>
+<li>git branch -d master</li>
+</ol>
+
+	
+	</div>
+  <a type="button" href="/2016/02/02/Git-Note/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-02-02 </div>
 			<div class="article-title"><a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" >Leetcode-Restore IP Addresses(Java)</a></div>						
 		</h3>
 	
@@ -385,102 +418,6 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-02-01 </div>
-			<div class="article-title"><a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" >Leetcode-Verify Preorder Serialization of a Binary Tree(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node’s value. If it is a null node, we record using a sentinel value such as #.</p>
-<pre><code>     _9_
-    /   \
-   3     2
-  / \   / \
- 4   1  #  6
-/ \ / \   / \
-# # # #   # #
-</code></pre><p>For example, the above binary tree can be serialized to the string “9,3,4,#,#,1,#,#,2,#,6,#,#”, where # represents a null node.</p>
-<p>Given a string of comma separated values, verify whether it is a correct preorder traversal serialization of a binary tree. Find an algorithm without reconstructing the tree.</p>
-<p>Each comma separated value in the string must be either an integer or a character ‘#’ representing null pointer.</p>
-<p>You may assume that the input format is always valid, for example it could never contain two consecutive commas such as “1,,3”.</p>
-<p>Example 1:<br>“9,3,4,#,#,1,#,#,2,#,6,#,#”<br>Return true</p>
-<p>Example 2:<br>“1,#”<br>Return false</p>
-<p>Example 3:<br>“9,#,#,1”<br>Return false</p>
-<p><strong>Thinking:</strong></p>
-<p>Accroding to the correct answer given, we can find the pattern. We should start from # and use stack to store it. When get two #, we should get another element from the string. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public boolean isValidSerialization(String preorder) {
-    String[] strlist = preorder.split(&quot;,&quot;);
-    Stack&lt;String&gt; stack = new Stack&lt;String&gt;();
-    Stack&lt;String&gt; tempstack = new Stack&lt;String&gt;();
-
-    for (String s: strlist) {
-        stack.push(s);
-    }
-    while (!stack.isEmpty()) {
-        while (!stack.isEmpty() &amp;&amp; stack.peek().equals(&quot;#&quot;)){
-            tempstack.push(stack.pop());
-        }
-        if (tempstack.size() &lt; 2)
-            break;
-        while (tempstack.size() &gt;= 2 &amp;&amp; !stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
-            tempstack.pop();
-            tempstack.pop();
-            if (!stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
-                stack.pop();
-                tempstack.push(&quot;#&quot;);
-            }
-        }
-    }
-
-    if (tempstack.size() == 1 &amp;&amp; stack.isEmpty())
-        return true;
-    else
-        return false;
-}
-</code></pre><p>There is another simpler solution:</p>
-<pre><code>public boolean isValidSerialization(String preorder) {
-    String[] p = preorder.split(&quot;,&quot;);
-    int idx = 0; // stack
-    for (int i = 0; i &lt; p.length; i++) {
-    if (p[i].equals(&quot;#&quot;)) {
-        idx--;
-    } else {
-        if (idx &lt; 0) { // check
-          return false;
-        }
-        p[idx++] = p[i];
-      }
-    }
-    return idx == -1; // check
-  }
-</code></pre><p>Reference: <a href="https://leetcode.com/discuss/83903/share-my-java-solution" target="_blank" rel="external">https://leetcode.com/discuss/83903/share-my-java-solution</a></p>
-<p>And another much simplier solution which caculate the indegree and outdegree:</p>
-<pre><code>public boolean isValidSerialization2(String preorder) {
-    String[] nodes = preorder.split(&quot;,&quot;);
-    int diff = 1;
-    for (String node: nodes) {
-        if (--diff &lt; 0) return false;
-        if (!node.equals(&quot;#&quot;)) diff += 2;
-    }
-    return diff == 0;
-}
-</code></pre><p>Reference: <a href="https://www.hrwhisper.me/leetcode-algorithm-solution/" target="_blank" rel="external">https://www.hrwhisper.me/leetcode-algorithm-solution/</a></p>
-
-	
-	</div>
-  <a type="button" href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -548,31 +485,31 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
-		
-			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
-		
-			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
-		
-			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
-		
-			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
-		
-			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
-		
 			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
-		
-			<li><a href="/tags/String/">String<span>1</span></a></li>
 		
 			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
 		
+			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
+		
+			<li><a href="/tags/String/">String<span>1</span></a></li>
+		
+			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
+		
 			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
 		
-			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
 		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+		
+			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+		
 			<li><a href="/tags/Array/">Array<span>5</span></a></li>
+		
+			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -584,6 +521,10 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2016/02/02/Git-Note/" ><i class="fa fa-file-o"></i>Git Note...</a>
+      </li>
     
       <li>
         <a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" ><i class="fa fa-file-o"></i>Leetcode-Restore IP Address...</a>
@@ -599,10 +540,6 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
     
       <li>
         <a href="/2016/02/02/Patching-Array-Java/" ><i class="fa fa-file-o"></i>Patching Array(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Verify Preorder Se...</a>
       </li>
     
   </ul>

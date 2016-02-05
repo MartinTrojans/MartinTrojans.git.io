@@ -109,6 +109,52 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-01-28 </div>
+			<div class="article-title"><a href="/2016/01/28/Leetcode-Two-Sum-Java/" >Leetcode-Two Sum(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
+<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</p>
+<p>You may assume that each input would have exactly one solution.</p>
+<p>Input: numbers={2, 7, 11, 15}, target=9<br>Output: index1=1, index2=2</p>
+<p><strong>Thinking:</strong></p>
+<p>We can use hash map to store the rest of nums[i], and if we find which number is equal to the rest beofore, their sum will be target.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int[] twoSum(int[] nums, int target){
+    HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+    int[] res = new int[2];
+
+    for (int i = 0; i &lt; nums.length; i++){
+        if (map.containsKey(nums[i])){
+            res[0] = map.get(nums[i]) + 1;
+            res[1] = i+1;
+            break;
+        }
+        else{
+            map.put(target-nums[i], i);
+        }
+    }
+
+    return res;
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/28/Leetcode-Two-Sum-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-28 </div>
 			<div class="article-title"><a href="/2016/01/28/Leetcode-Game-of-Life-Java/" >Leetcode-Game of Life(Java)</a></div>						
 		</h3>
 	
@@ -411,86 +457,6 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-27 </div>
-			<div class="article-title"><a href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" >Leetcode-Flatten Binary Tree to Linked List(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>    1
-   / \
-  2   5
- / \   \
-3   4   6
-</code></pre><p>The flattened tree should look like:</p>
-<pre><code>1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-         \
-          6
-</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
-<p><strong>Thinking:</strong> </p>
-<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public void flatten(TreeNode root) {
-        if (root == null)
-            return;
-        dfs(root);
-    }
-
-    public TreeNode dfs(TreeNode root){
-
-        if (root.left == null &amp;&amp; root.right == null){
-            return root;
-        }
-
-        TreeNode left = null;
-        TreeNode right = null;
-        TreeNode preleft = root.left;
-        TreeNode preright = root.right;
-        if (preleft == null){
-            return dfs(preright);
-        }
-        else if(preright == null){
-            root.left = null;
-            root.right = preleft;
-            return dfs(preleft);
-        }
-        else{
-            left = dfs(preleft);
-            right = dfs(preright);
-            root.left = null;
-            root.right = preleft;
-            left.right = preright;
-            return right;
-        }
-    }
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -558,31 +524,31 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
-		
-			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
-		
-			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
-		
-			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
-		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
-		
 			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
 		
-			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
-		
-			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
-		
-			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
+			<li><a href="/tags/String/">String<span>1</span></a></li>
 		
 			<li><a href="/tags/Array/">Array<span>5</span></a></li>
 		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
+			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
 		
 			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
 		
-			<li><a href="/tags/String/">String<span>1</span></a></li>
+			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+		
+			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
+		
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
+		
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
+		
+			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+		
+			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -594,6 +560,10 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2016/02/02/Git-Note/" ><i class="fa fa-file-o"></i>Git Note...</a>
+      </li>
     
       <li>
         <a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" ><i class="fa fa-file-o"></i>Leetcode-Restore IP Address...</a>
@@ -609,10 +579,6 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
     
       <li>
         <a href="/2016/02/02/Patching-Array-Java/" ><i class="fa fa-file-o"></i>Patching Array(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Verify Preorder Se...</a>
       </li>
     
   </ul>

@@ -294,6 +294,82 @@ What else would Martin say? (&apos;exit&apos; to leave)heihei
 What else would Martin say? (&apos;exit&apos; to leave)exit
 Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &apos;exit&apos; ]
 </code></pre><p>–6– Handling events with EventEmitter</p>
+<p>There are two modules I have learned from this class. One is event and the other is util. Event has two functions which called on and emit. The fucntion on is for naming the event, and the function emit is for triggling the event. The module util is for inheriting from other class.</p>
+<p>Code:</p>
+<pre><code>var events = require(&apos;events&apos;);
+
+var emitter = new events.EventEmitter();
+
+emitter.on(&apos;customEvent&apos;, function(message, status){
+
+    console.log(`${status}: ${message}`);
+
+});
+
+emitter.emit(&apos;customEvent&apos;, &quot;Hellow World&quot;, 200);
+</code></pre><p>And</p>
+<pre><code>node BenFranklin.js 
+Ben Franklin: You may delay, but time will not.
+</code></pre><p>–7–Exporting custom modules</p>
+<p>In this class, I learned that in one js file, we can conclude a export sentence to export a file to become a module. For example, “module.exports = Person;”</p>
+<p>Code:</p>
+<pre><code>var EventEmitter = require(&apos;events&apos;).EventEmitter;
+var util = require(&apos;util&apos;);
+
+var Person = function(name) {
+    this.name = name;
+};
+
+util.inherits(Person, EventEmitter);
+
+module.exports = Person;
+</code></pre><p>–8–Creating child process with exec</p>
+<p>In this class, I learned the module called child_process. And it has a function called exec which is aiming at execute the command in the command line.</p>
+<p>Code:</p>
+<pre><code>var exec = require(&quot;child_process&quot;).exec;
+
+exec(&quot;ls&quot;, function(err, stdout){
+
+    if (err){
+        throw err;
+    }
+
+    console.log(&quot;Listing Finished&quot;);
+
+    console.log(stdout);
+
+});
+</code></pre><p>–9–Creating child process with spawn</p>
+<p>Spawn can deal with the situation that you want run serval commands or deal with the stdout and stdin.</p>
+<p>Code:</p>
+<pre><code>var spawn = require(&quot;child_process&quot;).spawn;
+
+var cp = spawn(&quot;node&quot;, [&quot;alwaysTalking&quot;]);
+
+cp.stdout.on(&quot;data&quot;, function(data){
+    console.log(`STDOUT: ${data.toString()}`);
+});
+
+cp.on(&quot;close&quot;, function() {
+
+    console.log(&quot;Child Process has ended&quot;);
+
+    process.exit();
+
+});
+
+setTimeout(function () {
+
+    cp.stdin.write(&quot;stop&quot;);
+
+}, 4000);
+</code></pre><p>–10–Listing directory files</p>
+<p>What’s the differences between synchronously and asynchronously:</p>
+<p>When you execute something synchronously, you wait for it to finish before moving on to another task. When you execute something asynchronously, you can move on to another task before it finishes.</p>
+<p>That being, said, in the context of computers this translates into executing a process or task on another “thread.” A thread is a series of commands–a block of code–that exists as a unit of work. The operating system can manage multiple threads and assign a thread a piece (“slice”) of processor time before switching to another thread to give it a turn to do some work. At its core (pardon the pun), a processor can simply execute a command–it has no concept of doing two things at one time. The operating system simulates this by allocating slices of time to different threads.</p>
+<p>Now, if you introduce multiple cores/processors into the mix, then things CAN actually happen at the same time. The operating system can allocate time to one thread on the first processor, then allocate the same block of time to another thread on a different processor.</p>
+<p>All of this is about allowing the operating system to manage the completion of your task while you can go on in your code and do other things. Asynchronous programming is a complicated topic because of the semantics of how things tie together when you can do them at the same time. There are numerous articles and books on the subject; have a look!</p>
+<p>Reference: <a href="http://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean" target="_blank" rel="external">http://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean</a></p>
 	  
 	</div>
 

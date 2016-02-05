@@ -109,6 +109,81 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-01-24 </div>
+			<div class="article-title"><a href="/2016/01/24/Unique-Binary-Search-Trees-II/" >Leetcode-Unique Binary Search Trees II(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.</p>
+<p>For example,<br>Given n = 3, your program should return all 5 unique BST’s shown below.</p>
+<pre><code>1         3     3      2      1
+ \       /     /      / \      \
+  3     2     1      1   3      2
+ /     /       \                 \
+2     1         2                 3
+</code></pre><p><strong>Thinking:</strong> </p>
+<p>It’s a simple dynamic programming question. For n numbers, we should consider the situation that every one become the root, and delete it from the sets and do the same thing for their children.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public List&lt;TreeNode&gt; generateTrees(int n) {
+        return dp(1, n);
+    }
+
+    public List&lt;TreeNode&gt; dp(int low, int high){
+        List&lt;TreeNode&gt; res = new ArrayList&lt;TreeNode&gt;();
+        if (low == high){
+            TreeNode n = new TreeNode(low);
+            res.add(n);
+            return res;
+        }
+        for (int i = low; i &lt;= high; i++){
+            TreeNode n = new TreeNode(i);
+            if (i == low){
+                for (TreeNode p: dp(low+1, high)){
+                    n.right = p;
+                    res.add(n);
+                    n = new TreeNode(i);
+                }
+            }
+            else if (i == high){
+                for (TreeNode p: dp(low, high-1)){
+                    n.left = p;
+                    res.add(n);
+                    n = new TreeNode(i);
+                }
+            }
+            else{
+                for (TreeNode p: dp(low, i-1)){
+                    for (TreeNode q: dp(i+1, high)){
+                        n.left = p;
+                        n.right = q;
+                        res.add(n);
+                        n = new TreeNode(i);
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/24/Unique-Binary-Search-Trees-II/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-01-24 </div>
 			<div class="article-title"><a href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" >Leetcode-Bitwise AND of Numbers Range(Java)</a></div>						
 		</h3>
 	
@@ -225,31 +300,31 @@ public int rangeBitwiseAnd(int m, int n) {
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
-		
 			<li><a href="/tags/Greedy/">Greedy<span>1</span></a></li>
-		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
-		
-			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
 		
 			<li><a href="/tags/Linked-List/">Linked List<span>1</span></a></li>
 		
-			<li><a href="/tags/String/">String<span>1</span></a></li>
-		
-			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
-		
-			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
-		
-			<li><a href="/tags/Array/">Array<span>5</span></a></li>
-		
-			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
+			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
 		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
-			<li><a href="/tags/Heap/">Heap<span>1</span></a></li>
+			<li><a href="/tags/Array/">Array<span>5</span></a></li>
+		
+			<li><a href="/tags/String/">String<span>1</span></a></li>
+		
+			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>1</span></a></li>
 		
 			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+		
+			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+		
+			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
+		
+			<li><a href="/tags/Hash-Table/">Hash Table<span>2</span></a></li>
 		
 		 
 		</ul>
@@ -261,6 +336,10 @@ public int rangeBitwiseAnd(int m, int n) {
 <div class="widget">
   <h4>最新文章</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2016/02/02/Git-Note/" ><i class="fa fa-file-o"></i>Git Note...</a>
+      </li>
     
       <li>
         <a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" ><i class="fa fa-file-o"></i>Leetcode-Restore IP Address...</a>
@@ -276,10 +355,6 @@ public int rangeBitwiseAnd(int m, int n) {
     
       <li>
         <a href="/2016/02/02/Patching-Array-Java/" ><i class="fa fa-file-o"></i>Patching Array(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Verify Preorder Se...</a>
       </li>
     
   </ul>
