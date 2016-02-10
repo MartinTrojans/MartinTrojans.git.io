@@ -2,6 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/</loc>
+    <lastmod>2016-02-10T04:27:16.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/</loc>
+    <lastmod>2016-02-10T03:12:51.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/09/Leetcode-Ugly-Number-II-Java/</loc>
+    <lastmod>2016-02-10T01:31:31.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/</loc>
+    <lastmod>2016-02-09T20:24:45.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/</loc>
     <lastmod>2016-02-09T05:15:49.000Z</lastmod>
   </url>

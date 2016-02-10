@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-02-09T05:15:49.000Z</updated>
+  <updated>2016-02-10T04:27:16.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,415 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Next Permutation(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/"/>
+    <id>http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/</id>
+    <published>2016-02-10T03:38:47.000Z</published>
+    <updated>2016-02-10T04:27:16.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.</p>
+<p>If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).</p>
+<p>The replacement must be in-place, do not allocate extra memory.</p>
+<p>Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.</p>
+<pre><code>1,2,3 → 1,3,2
+3,2,1 → 1,2,3
+1,1,5 → 1,5,1
+</code></pre><p><strong>Thinking:</strong></p>
+<p>I didn’t get the meaning of this question firstly, then I searched on the Internet. The method can be described as below:</p>
+<p><img src="http://4.bp.blogspot.com/-4zN0u5JG0vs/UN0xPEkP5yI/AAAAAAAAG9Q/O48ZfwB1i_c/s640/Picture4.png" alt=""></p>
+<p><strong>Solution:</strong></p>
+<pre><code>public void nextPermutation(int[] nums) {
+    if (nums == null || nums.length == 0)
+        return;
+    int i = nums.length - 2;
+    while (i &gt;= 0 &amp;&amp; nums[i] &gt;= nums[i+1]){
+        i--;
+    }
+
+    if (i == -1){
+        reverse(nums, 0, nums.length-1);
+        return;
+    }
+
+    int j = i+1;
+    while (j &lt; nums.length &amp;&amp; nums[j] &gt; nums[i]){
+        j++;
+    }
+    j--;
+    swap(nums, i, j);
+    reverse(nums, i+1, nums.length-1);
+
+    return;
+}
+private void swap(int[] nums, int i, int j){
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+private void reverse(int[] nums, int i, int j){
+    while (i &lt; j){
+        swap(nums, i++, j--);
+    }
+}
+</code></pre><p>Reference:<a href="http://fisherlei.blogspot.com/2012/12/leetcode-next-permutation.html" target="_blank" rel="external">http://fisherlei.blogspot.com/2012/12/leetcode-next-permutation.html</a><br><a href="http://www.cnblogs.com/springfor/p/3896245.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3896245.html</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Implement next permutation, which rearranges numbers into the lexicographically next greater permutatio]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Minimum Size Subarray Sum(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/"/>
+    <id>http://yoursite.com/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/</id>
+    <published>2016-02-10T02:56:42.000Z</published>
+    <updated>2016-02-10T03:12:51.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn’t one, return 0 instead.</p>
+<p>For example, given the array [2,3,1,2,4,3] and s = 7,<br>the subarray [4,3] has the minimal length under the problem constraint.</p>
+<p>click to show more practice.</p>
+<p>More practice:<br>If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log n).</p>
+<p><strong>Thinking:</strong></p>
+<p>My method is to hold two pointers, one for current index and the other is for the start pointer. Once we find the sum is bigger than target, we increse the startIndex until its sum is smaller than target. Do it while find the minmun of the length.</p>
+<p>But there is still more effienct way to solve this problem. We don’t need to reset the startIndex and sum, we just keep it. And it will be the O(n) solution. (Which called a minmum window method I suppose.)</p>
+<p>What’s more, binary search is also valid for this problem. Since all elements are positive, the cumulative sum must be strictly increasing. Then, a subarray sum can expressed as the difference between two cumulative sum. Hence, given a start index for the cumulative sum array, the other end index can be searched using binary search.</p>
+<p><strong>Solution:</strong></p>
+<p>First version:</p>
+<pre><code>public int minSubArrayLen(int s, int[] nums) {
+    int min = Integer.MAX_VALUE;
+    boolean flag = false;
+    int temp = 0;
+    int startIndex = 0;
+
+    for ( int i = 0; i &lt; nums.length; i++ ){
+         temp += nums[i];
+         if (temp &gt;= s){
+             while (temp &gt;= s){
+                 flag = true;
+                 temp -= nums[startIndex++];
+             }
+             int len = i - startIndex + 2;
+             i = startIndex-1;
+             if (len &lt; min)
+                 min = len;
+             temp = 0;
+         }
+
+    }
+    if (flag)
+        return min;
+    else
+        return 0;
+}
+</code></pre><p>Revised version:</p>
+<pre><code>public int minSubArrayLen(int s, int[] nums) {
+    int min = Integer.MAX_VALUE;
+    boolean flag = false;
+    int temp = 0;
+    int startIndex = 0;
+
+    for ( int i = 0; i &lt; nums.length; i++ ){
+         temp += nums[i];
+         if (temp &gt;= s){
+             while (temp &gt;= s){
+                 flag = true;
+                 temp -= nums[startIndex++];
+             }
+             int len = i - startIndex + 2;
+             if (len &lt; min)
+                 min = len;
+         }
+
+    }
+    if (flag)
+        return min;
+    else
+        return 0;
+}
+</code></pre><p>Reference Code:(Including O(n) and O(nlgn))<br>Reference:<a href="https://leetcode.com/discuss/35378/solutions-java-with-time-complexity-nlogn-with-explanation" target="_blank" rel="external">https://leetcode.com/discuss/35378/solutions-java-with-time-complexity-nlogn-with-explanation</a></p>
+<pre><code>public int minSubArrayLen(int s, int[] nums) {
+    return solveNLogN(s, nums);
+}
+
+private int solveN(int s, int[] nums) {
+    int start = 0, end = 0, sum = 0, minLen = Integer.MAX_VALUE;
+    while (end &lt; nums.length) {
+        while (end &lt; nums.length &amp;&amp; sum &lt; s) sum += nums[end++];
+        if (sum &lt; s) break;
+        while (start &lt; end &amp;&amp; sum &gt;= s) sum -= nums[start++];
+        if (end - start + 1 &lt; minLen) minLen = end - start + 1;
+    }
+    return minLen == Integer.MAX_VALUE ? 0 : minLen;
+}
+
+private int solveNLogN(int s, int[] nums) {
+    int[] sums = new int[nums.length + 1];
+    for (int i = 1; i &lt; sums.length; i++) sums[i] = sums[i - 1] + nums[i - 1];
+    int minLen = Integer.MAX_VALUE;
+    for (int i = 0; i &lt; sums.length; i++) {
+        int end = binarySearch(i + 1, sums.length - 1, sums[i] + s, sums);
+        if (end == sums.length) break;
+        if (end - i &lt; minLen) minLen = end - i;
+    }
+    return minLen == Integer.MAX_VALUE ? 0 : minLen;
+}
+
+private int binarySearch(int lo, int hi, int key, int[] sums) {
+    while (lo &lt;= hi) {
+       int mid = (lo + hi) / 2;
+       if (sums[mid] &gt;= key){
+           hi = mid - 1;
+       } else {
+           lo = mid + 1;
+       }
+    }
+    return lo;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given an array of n positive integers and a positive integer s, find the minimal length of a subarray o]]>
+    </summary>
+    
+      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
+    
+      <category term="Binary Search" scheme="http://yoursite.com/tags/Binary-Search/"/>
+    
+      <category term="Two Pointers" scheme="http://yoursite.com/tags/Two-Pointers/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Ugly Number II(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/09/Leetcode-Ugly-Number-II-Java/"/>
+    <id>http://yoursite.com/2016/02/09/Leetcode-Ugly-Number-II-Java/</id>
+    <published>2016-02-10T01:26:40.000Z</published>
+    <updated>2016-02-10T01:31:31.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Write a program to find the n-th ugly number.</p>
+<p>Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 is the sequence of the first 10 ugly numbers.</p>
+<p>Note that 1 is typically treated as an ugly number.</p>
+<p>Hint:</p>
+<p>The naive approach is to call isUgly for every number until you reach the nth one. Most numbers are not ugly. Try to focus your effort on generating only the ugly ones.<br>An ugly number must be multiplied by either 2, 3, or 5 from a smaller ugly number.<br>The key is how to maintain the order of the ugly numbers. Try a similar approach of merging from three sorted lists: L1, L2, and L3.<br>Assume you have Uk, the kth ugly number. Then Uk+1 must be Min(L1 <em> 2, L2 </em> 3, L3 * 5).</p>
+<p><strong>Thinking:</strong></p>
+<p>The main idea of this question is to maintain a min heap and get the minimum from the heap once. Because we can see that, the ugly numbers are as below:</p>
+<pre><code>(1) 1×2, 2×2, 3×2, 4×2, 5×2, …
+(2) 1×3, 2×3, 3×3, 4×3, 5×3, …
+(3) 1×5, 2×5, 3×5, 4×5, 5×5, …
+</code></pre><p>Furthermore, we can record different factor’s index in the primes in order to make the algorithm more effienct.</p>
+<p><strong>Solution:</strong></p>
+<p>(LTE)</p>
+<pre><code>public int nthUglyNumber1(int n){
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;();
+    heap.add(1);
+    int[] primes = {2, 3, 5};
+    while (res.size() != n) {
+        int num = heap.poll();
+        if (res.size() == 0 || num != res.get(res.size()-1))
+            res.add(num);
+        for ( int j = 0; j &lt; 3; j++){
+            heap.add(num * primes[j]);
+        }
+    }
+
+    return res.get(n-1);
+}
+</code></pre><p>(AC)</p>
+<pre><code>public int nthUglyNumber2(int n) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+    res.add(1);
+    int[] index = new int[3];
+    int[] list = new int[3];
+    int[] primes = {2, 3, 5};
+    list[0] = 1;
+    list[1] = 1;
+    list[2] = 1;
+
+    for (int i = 1; i &lt; n; i++){
+        for (int j = 0; j &lt; 3; j++){
+            list[j] = res.get(index[j]) * primes[j];
+        }
+        res.add(Math.min(Math.min(list[0], list[1]), list[2]));
+        for (int j = 0; j &lt; 3; j++){
+            if (list[j] == res.get(res.size()-1))
+                index[j]++;
+        }
+    }
+
+    return res.get(n-1);
+}
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/52716/o-n-java-solution" target="_blank" rel="external">https://leetcode.com/discuss/52716/o-n-java-solution</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Write a program to find the n-th ugly number.</p>
+<p>Ugly numbers are positive numbers whose prime fact]]>
+    </summary>
+    
+      <category term="Dynamic Programming" scheme="http://yoursite.com/tags/Dynamic-Programming/"/>
+    
+      <category term="Heap" scheme="http://yoursite.com/tags/Heap/"/>
+    
+      <category term="Math" scheme="http://yoursite.com/tags/Math/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Serialize and Deserialize Binary Tree(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/"/>
+    <id>http://yoursite.com/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/</id>
+    <published>2016-02-09T19:47:14.000Z</published>
+    <updated>2016-02-09T20:24:45.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.</p>
+<p>Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.</p>
+<p>For example, you may serialize the following tree</p>
+<pre><code>  1
+ / \
+2   3
+   / \
+  4   5
+</code></pre><p>as “[1,2,3,null,null,4,5]”, just the same as how LeetCode OJ serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.<br>Note: Do not use class member/global/static variables to store states. Your serialize and deserialize algorithms should be stateless.</p>
+<p><strong>Thinking:</strong></p>
+<p>There are serveral thinkings emerged in my mind when I first saw this question. Firstly, I want to finishi the normal method which is the same as the Leetcode presenting. But it is LTE. Then I searched on the Internet and found my solution’s lack and then solved it.</p>
+<p><strong>Solution:</strong></p>
+<p>Previous Code:</p>
+<pre><code>//normal method
+// Encodes a tree to a single string.
+public String serialize(TreeNode root) {
+    String res = &quot;&quot;;
+    if (root == null)
+        return res;
+    Queue&lt;TreeNode&gt; q = new LinkedList&lt;TreeNode&gt;();
+    q.add(root);
+    res += root.val + &quot;,&quot;;
+    while (!q.isEmpty()){
+        int num = q.size();
+        String nullstr = &quot;&quot;;
+        while (num &gt; 0){
+            TreeNode n = q.poll();
+            if (n.left != null){
+                q.add(n.left);
+                res += nullstr + n.left.val + &quot;,&quot;;
+            }
+            else{
+                nullstr += &quot;null,&quot;;
+            }
+            if (n.right != null){
+                q.add(n.right);
+                res += nullstr + n.right.val + &quot;,&quot;;
+            }
+            else{
+                nullstr += &quot;null,&quot;;
+            }
+            num--;
+        }
+    }
+
+    return res;
+}
+
+// Decodes your encoded data to tree.
+public TreeNode deserialize(String data) {
+    TreeNode root;
+    if(data.length() == 0)
+        return null;
+    String[] strs = data.split(&quot;,&quot;);
+    root = new TreeNode(Integer.parseInt(strs[0]));
+    bfs(root, strs, 1, true);
+    bfs(root, strs, 2, false);
+
+    return root;
+}
+private void bfs(TreeNode node, String[] strs, int index, boolean left){
+    if (index &gt;= strs.length)
+        return;
+    if (strs[index].equals(&quot;null&quot;))
+        return;
+    TreeNode newNode = new TreeNode(Integer.parseInt(strs[index]));
+    if (left){
+        node.left = newNode;
+    }
+    else{
+        node.right = newNode;
+    }
+    bfs(newNode, strs, index*2+1, true);
+    bfs(newNode, strs, index*2+2, false);
+}
+</code></pre><p>Reference Code(<a href="http://blog.csdn.net/ljiabin/article/details/49474445" target="_blank" rel="external">http://blog.csdn.net/ljiabin/article/details/49474445</a>):</p>
+<pre><code>public String serialize(TreeNode root) {
+    StringBuilder sb = new StringBuilder();
+
+    Queue&lt;TreeNode&gt; queue = new LinkedList&lt;TreeNode&gt;();
+    queue.offer(root);
+
+    while (!queue.isEmpty()) {
+        TreeNode node = queue.poll();
+        if (node == null) {
+            sb.append(&quot;null,&quot;);
+        } else {
+            sb.append(String.valueOf(node.val) + &quot;,&quot;);
+            queue.offer(node.left);
+            queue.offer(node.right);
+        }
+    }
+
+    return sb.toString();
+}
+
+// Decodes your encoded data to tree.
+public TreeNode deserialize(String data) {
+    if (data.isEmpty()) return null;
+
+    String[] vals = data.split(&quot;,&quot;);
+    int[] nums = new int[vals.length];
+    TreeNode[] nodes = new TreeNode[vals.length];
+
+    for (int i = 0; i &lt; vals.length; i++) {
+        if (i &gt; 0) {
+            nums[i] = nums[i - 1];
+        }
+        if (vals[i].equals(&quot;null&quot;)) {
+            nodes[i] = null;
+            nums[i]++;
+        } else {
+            nodes[i] = new TreeNode(Integer.parseInt(vals[i]));
+        }
+    }
+
+    for (int i = 0; i &lt; vals.length; i++) {
+        if (nodes[i] == null) {
+            continue;
+        }
+        nodes[i].left = nodes[2 * (i - nums[i]) + 1];
+        nodes[i].right = nodes[2 * (i - nums[i]) + 2];
+    }
+
+    return nodes[0];
+}
+</code></pre><p>}</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Serialization is the process of converting a data structure or object into a sequence of bits so that i]]>
+    </summary>
+    
+      <category term="Design" scheme="http://yoursite.com/tags/Design/"/>
+    
+      <category term="Tree" scheme="http://yoursite.com/tags/Tree/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Remove Duplicates from Sorted List II(Java)]]></title>
@@ -1066,416 +1475,6 @@ private boolean palindrome(String s){
     </summary>
     
       <category term="Backtracing" scheme="http://yoursite.com/tags/Backtracing/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Binary Tree Zigzag Level Order Traversal(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/"/>
-    <id>http://yoursite.com/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/</id>
-    <published>2016-01-31T05:21:37.000Z</published>
-    <updated>2016-01-31T05:29:07.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given a binary tree, return the zigzag level order traversal of its nodes’ values. (ie, from left to right, then right to left for the next level and alternate between).</p>
-<p>For example:<br>Given binary tree {3,9,20,#,#,15,7},</p>
-<pre><code>  3
- / \
-9  20
-  /  \
- 15   7
-</code></pre><p>return its zigzag level order traversal as:</p>
-<pre><code>[
-  [3],
-  [20,9],
-  [15,7]
-]
-</code></pre><p><strong>Thinking:</strong></p>
-<p>It’s a BFS problem. It’s fine if we need use queue, but because we have to record as a zigzag order, it’s more efficient to use stack. What’s more, we should to notice the order of left and right child.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; zigzagLevelOrder(TreeNode root) {
-    int flag = 0;
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
-    Stack&lt;TreeNode&gt; tempstack = new Stack&lt;TreeNode&gt;();
-    if (root == null)
-        return res;
-    stack.add(root);
-    while (!stack.isEmpty() || !tempstack.isEmpty()){
-        tempstack = new Stack&lt;TreeNode&gt;();
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-        while (!stack.isEmpty()){
-            TreeNode node = stack.pop();
-            tempres.add(node.val);
-            if (flag == 0){
-                if (node.left != null){
-                    tempstack.add(node.left);
-                }
-                if (node.right != null){
-                    tempstack.add(node.right);
-                }
-            }
-            else{
-                if (node.right != null){
-                    tempstack.add(node.right);
-                }
-                if (node.left != null){
-                    tempstack.add(node.left);
-                }
-            }
-
-        }
-        res.add(tempres);
-        stack.addAll(tempstack);
-        flag ^= 1;
-    }
-
-    return res;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given a binary tree, return the zigzag level order traversal of its nodes’ values. (ie, from left to ri]]>
-    </summary>
-    
-      <category term="BFS" scheme="http://yoursite.com/tags/BFS/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-4Sum(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/30/Leetcode-4Sum-Java/"/>
-    <id>http://yoursite.com/2016/01/30/Leetcode-4Sum-Java/</id>
-    <published>2016-01-31T04:33:10.000Z</published>
-    <updated>2016-01-31T04:42:45.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, are there elements a, b, c, and d in S such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.</p>
-<p>Note:<br>Elements in a quadruplet (a,b,c,d) must be in non-descending order. (ie, a ≤ b ≤ c ≤ d)<br>The solution set must not contain duplicate quadruplets.<br>    For example, given array S = {1 0 -1 0 -2 2}, and target = 0.</p>
-<pre><code>A solution set is:
-(-1,  0, 0, 1)
-(-2, -1, 1, 2)
-(-2,  0, 0, 2)
-</code></pre><p><strong>Thinking</strong>:</p>
-<p>This questions is very similar with 2Sum and 3Sum. There are several way to solve it. </p>
-<p><strong>Solution1:</strong></p>
-<p>The most common method may use the method of 3Sum, and do that n times.</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum1(int[] nums, int target) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-    Arrays.sort(nums);
-    int len = nums.length;
-
-
-    for (int i = 0; i &lt; len-3; i++){
-        for (int j = i+1; j &lt; len-2; j++){
-            for (int k = j+1; k &lt; len-1; k++){
-                int l = len-1;
-                while (k &lt; l){
-                    int sum = nums[i] + nums[j] + nums[k] + nums[l];
-                    if (sum == target){
-                        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-                        tempres.add(nums[i]);
-                        tempres.add(nums[j]);
-                        tempres.add(nums[k]);
-                        tempres.add(nums[l]);
-                        tres.add(tempres);
-                        k++;
-                        l--;
-                    }
-                    else if (sum &gt; target){
-                        l--;
-                    }
-                    else{
-                        k++;
-                    }
-                    while (k &lt; l &amp;&amp; nums[k+1] == nums[k]){
-                        k++;
-                    }
-                    while (k &lt; l &amp;&amp; nums[l-1] == nums[l]){
-                        l--;
-                    }
-                }
-            }
-        }
-    }
-
-    res.addAll(tres);
-    return res;
-}
-</code></pre><p><strong>Solution2:</strong></p>
-<p>The second solution is to combine every two numbers as a pair, and make it as a 2sum problem. But for implementing this method, we have to define the data structure by ourself and implement the interface of Comparator to sort the sum of them.</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum2(int[] nums, int target){
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    int len = nums.length;
-    if (len &lt; 4)
-        return res;
-    Pair[] pairSum = new Pair[len*(len-1)/2];
-    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-
-    int count = 0;
-    for (int i = 0; i &lt; len-1; i++){
-        for (int j = i+1; j &lt; len; j++){
-            Pair ele = new Pair(nums[i], nums[j], i, j);
-            pairSum[count++] = ele;
-        }
-    }
-    Arrays.sort(pairSum, new SumComparator());
-
-    int left = 0;
-    int right = pairSum.length - 1;
-    while (left &lt; right){
-        int sum = pairSum[left].getSum() + pairSum[right].getSum();
-        if (sum == target){
-            int endl = left;
-            int endr = right;
-            while (pairSum[endl].getSum() == pairSum[endl+1].getSum() &amp;&amp; endl+1 &lt; endr){
-                endl++;
-            }
-            while (pairSum[endr].getSum() == pairSum[endr-1].getSum() &amp;&amp; endl &lt; endr-1){
-                endr--;
-            }
-            for (int i = left; i &lt;= endl; i++){
-                for (int j = right; j&gt;= endr; j--){
-                    int i1 = pairSum[i].geti();
-                    int i2 = pairSum[j].geti();
-                    int j1 = pairSum[i].getj();
-                    int j2 = pairSum[j].getj();
-                    if (i1 == i2 || i1 == j2 || j1 == i2 || j1 == j2){
-                        continue;
-                    }
-                    int[] temp = new int[4];
-                    temp[0] = pairSum[i].getN1();
-                    temp[1] = pairSum[i].getN2();
-                    temp[2] = pairSum[j].getN1();
-                    temp[3] = pairSum[j].getN2();
-                    Arrays.sort(temp);
-                    List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-                    tempres.add(temp[0]);
-                    tempres.add(temp[1]);
-                    tempres.add(temp[2]);
-                    tempres.add(temp[3]);
-                    tres.add(tempres);
-                }
-            }
-            left = endl+1;
-            right = endr-1;
-        }
-        else if (sum &gt; target){
-            right--;
-        }
-        else{
-            left++;
-        }
-    }
-
-    res.addAll(tres);
-    return res;
-}
-
-class SumComparator implements Comparator{
-
-    @Override
-    public final int compare(Object o1, Object o2) {
-        // TODO Auto-generated method stub
-        Pair l1 = (Pair)o1;
-        Pair l2 = (Pair)o2;
-        if (l1.getSum() &gt; l2.getSum())
-            return 1;
-        else if (l1.getSum() &lt; l2.getSum())
-            return -1;
-        else
-            return 0;
-    }
-}
-
-class Pair{
-    int i;
-    int j;
-    int n1;
-    int n2;
-    int sum;
-    Pair(int num1, int num2, int i, int j){
-        this.n1 = num1;
-        this.n2 = num2;
-        this.sum = num1 + num2;
-        this.i = i;
-        this.j = j;
-    }
-    public int getSum(){
-        return this.sum;
-    }
-    public int getN1(){
-        return this.n1;
-    }
-    public int getN2(){
-        return this.n2;
-    }
-    public int geti(){
-        return this.i;
-    }
-    public int getj(){
-        return this.j;
-    }
-}
-</code></pre><p>Reference: <a href="http://blog.csdn.net/linhuanmars/article/details/24826871" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24826871</a></p>
-<p><strong>Solution3:</strong></p>
-<p>The third method is the most efficient method. It has two loop of two points and use some method to break or return early. It really improve the performance of time running.</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum3(int[] nums, int target) {
-    List&lt;List&lt;Integer&gt;&gt; list = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Arrays.sort(nums);
-    int second = 0, third = 0, nexti = 0, nextj = 0;
-    for(int i=0, L=nums.length; i&lt;L-3; i++) {
-        if(nums[i]&lt;&lt;2 &gt; target) return list; // return immediately
-        for(int j=L-1; j&gt;i+2; j--) {
-            if(nums[j]&lt;&lt;2 &lt; target) break; // break immediately
-            int rem = target-nums[i]-nums[j];
-            int lo = i+1, hi=j-1;
-            while(lo&lt;hi) {
-                int sum = nums[lo] + nums[hi];
-                if(sum&gt;rem) --hi;
-                else if(sum&lt;rem) ++lo;
-                else {
-                    list.add(Arrays.asList(nums[i],nums[lo],nums[hi],nums[j]));
-                    while(++lo&lt;=hi &amp;&amp; nums[lo-1]==nums[lo]) continue; // avoid duplicate results
-                    while(--hi&gt;=lo &amp;&amp; nums[hi]==nums[hi+1]) continue; // avoid duplicate results
-                }
-            }
-            while(j&gt;=1 &amp;&amp; nums[j]==nums[j-1]) --j; // skip inner loop
-        }
-        while(i&lt;L-1 &amp;&amp; nums[i]==nums[i+1]) ++i; // skip outer loop
-    }
-    return list;
-}
-</code></pre><p>Reference: <a href="https://leetcode.com/discuss/78276/java-little-bit-faster-than-other-common-methods-9ms-beats-95%25" target="_blank" rel="external">https://leetcode.com/discuss/78276/java-little-bit-faster-than-other-common-methods-9ms-beats-95%25</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, are there elements a, b, c, and d in S such that a + b + c + d = target]]>
-    </summary>
-    
-      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
-    
-      <category term="Hash Table" scheme="http://yoursite.com/tags/Hash-Table/"/>
-    
-      <category term="Two Points" scheme="http://yoursite.com/tags/Two-Points/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-3Sum(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/28/Leetcode-3Sum-Java/"/>
-    <id>http://yoursite.com/2016/01/28/Leetcode-3Sum-Java/</id>
-    <published>2016-01-29T00:28:55.000Z</published>
-    <updated>2016-01-29T00:32:01.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.</p>
-<p>Note:<br>Elements in a triplet (a,b,c) must be in non-descending order. (ie, a ≤ b ≤ c)<br>The solution set must not contain duplicate triplets.<br>    For example, given array S = {-1 0 1 2 -1 -4},</p>
-<pre><code>A solution set is:
-(-1, 0, 1)
-(-1, -1, 2)
-</code></pre><p><strong>Thinking:</strong></p>
-<p>Sort the array first. Pick a number from the array, and use other two points to record the position of the array and determine which one should change by the sum of them. What’s more, the result set should has no duplicate, so we can use hashset here.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) {
-    int l = nums.length;
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-
-    if (l &lt; 3)
-        return res;
-
-    Arrays.sort(nums);
-
-    for (int i = 0; i &lt; l-2; i++){
-        int k = l-1;
-        for (int j = i+1; j &lt; l; j++){
-            while (j &lt; k){
-                int sum = nums[i] + nums[j] + nums[k];
-                if (sum == 0){
-                    List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-                    tempres.add(nums[i]);
-                    tempres.add(nums[j]);
-                    tempres.add(nums[k]);
-                    tres.add(tempres);
-                    while (j &lt; k &amp;&amp; nums[j] == tempres.get(1)){
-                        j++;
-                    }
-                    k--;
-                }
-                else if (sum &gt; 0){
-                    k--;
-                }
-                else{
-                    j++;
-                }
-
-            }
-        }
-    }
-    res.addAll(tres);
-
-    return res;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all uniqu]]>
-    </summary>
-    
-      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
-    
-      <category term="Two Points" scheme="http://yoursite.com/tags/Two-Points/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Two Sum(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/28/Leetcode-Two-Sum-Java/"/>
-    <id>http://yoursite.com/2016/01/28/Leetcode-Two-Sum-Java/</id>
-    <published>2016-01-28T22:55:39.000Z</published>
-    <updated>2016-01-28T22:58:03.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
-<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</p>
-<p>You may assume that each input would have exactly one solution.</p>
-<p>Input: numbers={2, 7, 11, 15}, target=9<br>Output: index1=1, index2=2</p>
-<p><strong>Thinking:</strong></p>
-<p>We can use hash map to store the rest of nums[i], and if we find which number is equal to the rest beofore, their sum will be target.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int[] twoSum(int[] nums, int target){
-    HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
-    int[] res = new int[2];
-
-    for (int i = 0; i &lt; nums.length; i++){
-        if (map.containsKey(nums[i])){
-            res[0] = map.get(nums[i]) + 1;
-            res[1] = i+1;
-            break;
-        }
-        else{
-            map.put(target-nums[i], i);
-        }
-    }
-
-    return res;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
-<p>]]>
-    </summary>
-    
-      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
-    
-      <category term="Hash Table" scheme="http://yoursite.com/tags/Hash-Table/"/>
     
       <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
     

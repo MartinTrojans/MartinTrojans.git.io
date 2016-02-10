@@ -1,0 +1,384 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Leetcode-Serialize and Deserialize Binary Tree(Java) | Martin&#39;s Blog</title>
+  <meta name="author" content="Martin">
+  
+  <meta name="description" content="A rookie write something just for fun.">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Leetcode-Serialize and Deserialize Binary Tree(Java)"/>
+  <meta property="og:site_name" content="Martin&#39;s Blog"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">Martin&#39;s Blog</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">		
+			<h1> Leetcode-Serialize and Deserialize Binary Tree(Java)</h1>
+		</div>		
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p><strong>Question:</strong></p>
+<p>Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.</p>
+<p>Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.</p>
+<p>For example, you may serialize the following tree</p>
+<pre><code>  1
+ / \
+2   3
+   / \
+  4   5
+</code></pre><p>as “[1,2,3,null,null,4,5]”, just the same as how LeetCode OJ serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.<br>Note: Do not use class member/global/static variables to store states. Your serialize and deserialize algorithms should be stateless.</p>
+<p><strong>Thinking:</strong></p>
+<p>There are serveral thinkings emerged in my mind when I first saw this question. Firstly, I want to finishi the normal method which is the same as the Leetcode presenting. But it is LTE. Then I searched on the Internet and found my solution’s lack and then solved it.</p>
+<p><strong>Solution:</strong></p>
+<p>Previous Code:</p>
+<pre><code>//normal method
+// Encodes a tree to a single string.
+public String serialize(TreeNode root) {
+    String res = &quot;&quot;;
+    if (root == null)
+        return res;
+    Queue&lt;TreeNode&gt; q = new LinkedList&lt;TreeNode&gt;();
+    q.add(root);
+    res += root.val + &quot;,&quot;;
+    while (!q.isEmpty()){
+        int num = q.size();
+        String nullstr = &quot;&quot;;
+        while (num &gt; 0){
+            TreeNode n = q.poll();
+            if (n.left != null){
+                q.add(n.left);
+                res += nullstr + n.left.val + &quot;,&quot;;
+            }
+            else{
+                nullstr += &quot;null,&quot;;
+            }
+            if (n.right != null){
+                q.add(n.right);
+                res += nullstr + n.right.val + &quot;,&quot;;
+            }
+            else{
+                nullstr += &quot;null,&quot;;
+            }
+            num--;
+        }
+    }
+
+    return res;
+}
+
+// Decodes your encoded data to tree.
+public TreeNode deserialize(String data) {
+    TreeNode root;
+    if(data.length() == 0)
+        return null;
+    String[] strs = data.split(&quot;,&quot;);
+    root = new TreeNode(Integer.parseInt(strs[0]));
+    bfs(root, strs, 1, true);
+    bfs(root, strs, 2, false);
+
+    return root;
+}
+private void bfs(TreeNode node, String[] strs, int index, boolean left){
+    if (index &gt;= strs.length)
+        return;
+    if (strs[index].equals(&quot;null&quot;))
+        return;
+    TreeNode newNode = new TreeNode(Integer.parseInt(strs[index]));
+    if (left){
+        node.left = newNode;
+    }
+    else{
+        node.right = newNode;
+    }
+    bfs(newNode, strs, index*2+1, true);
+    bfs(newNode, strs, index*2+2, false);
+}
+</code></pre><p>Reference Code(<a href="http://blog.csdn.net/ljiabin/article/details/49474445" target="_blank" rel="external">http://blog.csdn.net/ljiabin/article/details/49474445</a>):</p>
+<pre><code>public String serialize(TreeNode root) {
+    StringBuilder sb = new StringBuilder();
+
+    Queue&lt;TreeNode&gt; queue = new LinkedList&lt;TreeNode&gt;();
+    queue.offer(root);
+
+    while (!queue.isEmpty()) {
+        TreeNode node = queue.poll();
+        if (node == null) {
+            sb.append(&quot;null,&quot;);
+        } else {
+            sb.append(String.valueOf(node.val) + &quot;,&quot;);
+            queue.offer(node.left);
+            queue.offer(node.right);
+        }
+    }
+
+    return sb.toString();
+}
+
+// Decodes your encoded data to tree.
+public TreeNode deserialize(String data) {
+    if (data.isEmpty()) return null;
+
+    String[] vals = data.split(&quot;,&quot;);
+    int[] nums = new int[vals.length];
+    TreeNode[] nodes = new TreeNode[vals.length];
+
+    for (int i = 0; i &lt; vals.length; i++) {
+        if (i &gt; 0) {
+            nums[i] = nums[i - 1];
+        }
+        if (vals[i].equals(&quot;null&quot;)) {
+            nodes[i] = null;
+            nums[i]++;
+        } else {
+            nodes[i] = new TreeNode(Integer.parseInt(vals[i]));
+        }
+    }
+
+    for (int i = 0; i &lt; vals.length; i++) {
+        if (nodes[i] == null) {
+            continue;
+        }
+        nodes[i].left = nodes[2 * (i - nums[i]) + 1];
+        nodes[i].right = nodes[2 * (i - nums[i]) + 2];
+    }
+
+    return nodes[0];
+}
+</code></pre><p>}</p>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2016/02/09/Leetcode-Ugly-Number-II-Java/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一頁</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" class="alignright next">下一頁<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+
+  
+  	 <div id="disqus_thread">
+     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  	 </div>
+  
+</section>
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2016-02-09 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Leetcode/">Leetcode<span>36</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Design/">Design<span>1</span></a></li> <li><a href="/tags/Tree/">Tree<span>1</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+<script type="text/javascript">
+var disqus_shortname = 'communitydeveloper';
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2016 Martin
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
