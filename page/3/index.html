@@ -109,6 +109,74 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-02-02 </div>
+			<div class="article-title"><a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" >Leetcode-Restore IP Addresses(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given a string containing only digits, restore it by returning all possible valid IP address combinations.</p>
+<p>For example:<br>Given “25525511135”,</p>
+<p>return [“255.255.11.135”, “255.255.111.35”]. (Order does not matter)</p>
+<p><strong>Thinking:</strong></p>
+<p>Valid IP address is between 0 and 255, so we can once detect one to three digits of the string. What’s more, it’s not valid if there is number like “001”. Use bactracing select one to three digits once, and go farther until all the substrings are selected and there are four parts of the result. Then put the result in the list. We should also detect the length of the String because if the length is not between 4 and 12, it’s invalid.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;String&gt; restoreIpAddresses(String s) {
+    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+    if (s.length() &lt; 4)
+        return res;
+    if (s.length() &gt; 12)
+        return res;
+
+    backtracing(s, 0, new ArrayList&lt;String&gt;(), res);
+
+    return res;
+}
+
+public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt;String&gt; res){
+    if (start == s.length()){
+        if (tempres.size() == 4){
+            String tempstr = &quot;&quot;;
+            tempstr = tempres.get(0) + &quot;.&quot; + tempres.get(1) + &quot;.&quot; + tempres.get(2) + &quot;.&quot; + tempres.get(3);
+            res.add(tempstr);
+        }
+        else{
+            return;
+        }
+    }
+
+    for (int i = start+1; i &lt;= s.length(); i++){
+        if (s.charAt(start) == &apos;0&apos; &amp;&amp; i != start+1)
+            continue;
+        if (i - start &gt; 3)
+            break;
+        int num = Integer.parseInt(s.substring(start, i));
+        if (num &gt; 255)
+            break;
+        else{
+            tempres.add(s.substring(start, i));
+            backtracing(s, i, tempres, res);
+            tempres.remove(tempres.size() - 1);
+        }
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-02-02 </div>
 			<div class="article-title"><a href="/2016/02/02/Leetcode-Combination-Sum-II-Java/" >Leetcode-Combination Sum II(Java)</a></div>						
 		</h3>
 	
@@ -413,54 +481,6 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-02-01 </div>
-			<div class="article-title"><a href="/2016/02/01/AI-Note/" >AI Note</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Lecture 1:</strong></p>
-<p><strong>Lecture 2:</strong></p>
-<ol>
-<li>What’s Agent?</li>
-<li>PEAS</li>
-</ol>
-<p><strong>Lecture 3:</strong></p>
-<ol>
-<li>Difference between tree search and graph search:<br> Graph search will record the explored nodes, and won’t explore them again.</li>
-</ol>
-<p><strong>Lecture 4:</strong></p>
-<ol>
-<li>DFS, BFS, uniform-cost search, interative deepening search, evaluating search performance about completeness, optimality, time and space complexity</li>
-<li>BFS:<br> Completeness: Yes(When b is finite)<br> Optimality: Yes(If path is nondecreasing)<br> Time: O(b^d)<br> Space: O(b^d)</li>
-<li>DFS:<br> Completeness: Yes(If graph search version)<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b*m)</li>
-<li>Uniform-cost search:<br> Completeness: Yes<br> Optimality: Yes(If path is nondecreasing)<br> Uniform-cost search not optimal if it is terminated when some node in the queue has goal state.</li>
-<li>Iterative deepening search:<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^d)<br> Space: O(bd)</li>
-</ol>
-<p><strong>Lecture 5:</strong></p>
-<ol>
-<li>Uniformed search, bi-directional search, informed search, greedy best first search, A*, interative deepening A*, recursive best first search, simplified memory-bounded A*</li>
-<li>Bidirectional search:<br> Search forward from initial state, and backward from goal.<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^(d/2)<br> Space: O(b^(d/2)</li>
-<li>Greedy best first search:<br> Greedy BFS keeps all the nodes generated in the<br>Frontier, which is sorted based on h(n).<br> Completeness: No<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b^m)</li>
-<li>A* Search:<br> Use (approximate) total path cost to guide search<br> Admissible Heurisitic: A heuristic is admissible if it never overestimates the cost to reach the goal<br> e.g. hSLD(n) is admissible because it never overestimates the actual road distance<br> Admissible heuristics does not guarantee that the chosen path is optimal<br> A heuristic is consistent if for every node n and every successor n’ of n generated by any action a<br>h(n) ≤ c(n,a,n’) + h(n’)<br> That is, f(n) is nondecreasing along every path.<br> Completeness: Yes<br> Optimality: Yes(if admissible in tree search or consistent in graph search)</li>
-<li>Recursive Best-Frist Search:<br> Keep track of f value (f-limit) of best sibling of path currently exploring<br> Space: O(bd)</li>
-<li>Memory-Bounded A*:<br>  I.e., expand best leaves until available memory is full;When full, SMA* drops worst leaf node (highest f-value);Like RBFS, backup forgotten node value to its parent</li>
-</ol>
-
-	
-	</div>
-  <a type="button" href="/2016/02/01/AI-Note/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -511,7 +531,7 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>2</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>36</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>37</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -528,45 +548,45 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Binary-Search/">Binary Search<span>1</span></a></li>
-		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
-		
-			<li><a href="/tags/Two-Pointers/">Two Pointers<span>1</span></a></li>
-		
-			<li><a href="/tags/Union-Find/">Union Find<span>1</span></a></li>
-		
-			<li><a href="/tags/Dynamic-Programming/">Dynamic Programming<span>1</span></a></li>
-		
-			<li><a href="/tags/Math/">Math<span>1</span></a></li>
-		
-			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
-		
-			<li><a href="/tags/Tree/">Tree<span>1</span></a></li>
-		
 			<li><a href="/tags/Hash-Table/">Hash Table<span>3</span></a></li>
-		
-			<li><a href="/tags/Array/">Array<span>6</span></a></li>
-		
-			<li><a href="/tags/DFS/">DFS<span>1</span></a></li>
-		
-			<li><a href="/tags/Design/">Design<span>1</span></a></li>
 		
 			<li><a href="/tags/Linked-List/">Linked List<span>2</span></a></li>
 		
-			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+			<li><a href="/tags/Math/">Math<span>1</span></a></li>
+		
+			<li><a href="/tags/Two-Pointers/">Two Pointers<span>1</span></a></li>
 		
 			<li><a href="/tags/Heap/">Heap<span>2</span></a></li>
 		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/Graph/">Graph<span>2</span></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>3</span></a></li>
+		
+			<li><a href="/tags/Binary-Search/">Binary Search<span>1</span></a></li>
+		
+			<li><a href="/tags/Union-Find/">Union Find<span>1</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>6</span></a></li>
 		
 			<li><a href="/tags/Greedy/">Greedy<span>2</span></a></li>
 		
-			<li><a href="/tags/BFS/">BFS<span>2</span></a></li>
+			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
 		
-			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
+			<li><a href="/tags/Design/">Design<span>1</span></a></li>
+		
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+		
+			<li><a href="/tags/Dynamic-Programming/">Dynamic Programming<span>1</span></a></li>
+		
+			<li><a href="/tags/DFS/">DFS<span>1</span></a></li>
 		
 			<li><a href="/tags/String/">String<span>2</span></a></li>
+		
+			<li><a href="/tags/Tree/">Tree<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>21</span></a></li>
@@ -582,6 +602,10 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" ><i class="fa fa-file-o"></i>Leetcode-Minimum Height Tre...</a>
+      </li>
+    
+      <li>
         <a href="/2016/02/09/Leetcode-Next-Permutation-Java/" ><i class="fa fa-file-o"></i>Leetcode-Next Permutation(J...</a>
       </li>
     
@@ -595,10 +619,6 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
     
       <li>
         <a href="/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Serialize and Dese...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Remove Duplicates ...</a>
       </li>
     
   </ul>

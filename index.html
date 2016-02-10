@@ -109,6 +109,144 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-02-09 </div>
+			<div class="article-title"><a href="/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" >Leetcode-Minimum Height Trees(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>For a undirected graph with tree characteristics, we can choose any node as the root. The result graph is then a rooted tree. Among all possible rooted trees, those with minimum height are called minimum height trees (MHTs). Given such a graph, write a function to find all the MHTs and return a list of their root labels.</p>
+<p>Format<br>The graph contains n nodes which are labeled from 0 to n - 1. You will be given the number n and a list of undirected edges (each edge is a pair of labels).</p>
+<p>You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.</p>
+<p>Example 1:</p>
+<p>Given n = 4, edges = [[1, 0], [1, 2], [1, 3]]</p>
+<pre><code>  0
+  |
+  1
+ / \
+2   3
+</code></pre><p>return [1]</p>
+<p>Example 2:</p>
+<p>Given n = 6, edges = [[0, 3], [1, 3], [2, 3], [4, 3], [5, 4]]</p>
+<pre><code>0  1  2
+ \ | /
+   3
+   |
+   4
+   |
+   5
+</code></pre><p>return [3, 4]</p>
+<p>Hint:</p>
+<p>How many MHTs can a graph have at most?<br>Note:</p>
+<p>(1) According to the definition of tree on Wikipedia: “a tree is an undirected graph in which any two vertices are connected by exactly one path. In other words, any connected graph without simple cycles is a tree.”</p>
+<p>(2) The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.</p>
+<p><strong>Thinking:</strong></p>
+<p>We should track the path from every leaves until there are only one or two nodes left. In other words, in the middle of the graph will be the root of the minimum height tree.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
+    if (n == 1){
+        List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+        res.add(0);
+        return res;
+    }
+    List&lt;Integer&gt; leaves = new ArrayList&lt;Integer&gt;();
+    List&lt;Set&lt;Integer&gt;&gt; adj = new ArrayList&lt;Set&lt;Integer&gt;&gt;(n);
+    for (int i = 0; i &lt; n; i++)
+        adj.add(new HashSet&lt;Integer&gt;());
+    for (int[] edge: edges){
+        adj.get(edge[0]).add(edge[1]);
+        adj.get(edge[1]).add(edge[0]);
+    }
+    for (int i = 0; i &lt; n; i++){
+        if (adj.get(i).size() == 1)
+            leaves.add(i);
+    }
+
+    while (n &gt; 2){
+        n -= leaves.size();
+        List&lt;Integer&gt; newLeaves = new ArrayList&lt;Integer&gt;();
+        for (int i: leaves){
+            int j = adj.get(i).iterator().next();
+            adj.get(j).remove(i);
+            if (adj.get(j).size() == 1)
+                newLeaves.add(j);
+        }
+        leaves = newLeaves;
+    }
+
+    return leaves;
+}
+</code></pre><p>Reference:<a href="https://leetcode.com/discuss/71763/share-some-thoughts" target="_blank" rel="external">https://leetcode.com/discuss/71763/share-some-thoughts</a></p>
+<p>My previous code(LTE):</p>
+<pre><code>public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+    int min = Integer.MAX_VALUE;
+    int res1 = -1;
+    int res2 = -1;
+
+    for (int i = 0; i &lt; n; i++){
+        int temp = bfs(n, i, edges);
+        if (temp &lt; min){
+            min = temp;
+            res1 = i;
+        }
+        else if (temp == min){
+            res2 = i;
+        }
+    }
+
+    if (res1 != -1)
+        res.add(res1);
+    if (res2 != -1)
+        res.add(res2);
+
+    return res;
+}
+
+private int bfs(int n, int i, int[][] edges){
+    int height = 0;
+    boolean[] used = new boolean[edges.length];
+    Queue&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
+    q.add(i);
+
+    while (!q.isEmpty()){
+        int num = q.size();
+        while (num &gt; 0){
+            int temp = q.poll();
+            for (int j = 0; j &lt; edges.length; j++){
+                if (edges[j][0] == temp || edges[j][1] == temp){
+                    if (used[j] == false){
+                        if (edges[j][0] == temp)
+                            q.add(edges[j][1]);
+                        else
+                            q.add(edges[j][0]);
+                        used[j] = true;
+                    }
+                }
+            }
+            num--;
+        }
+        height++;
+    }
+
+    return height;
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/02/09/Leetcode-Minimum-Height-Trees-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-02-09 </div>
 			<div class="article-title"><a href="/2016/02/09/Leetcode-Next-Permutation-Java/" >Leetcode-Next Permutation(Java)</a></div>						
 		</h3>
 	
@@ -518,62 +656,6 @@ public TreeNode deserialize(String data) {
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-02-08 </div>
-			<div class="article-title"><a href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" >Leetcode-Remove Duplicates from Sorted List II(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.</p>
-<p>For example,<br>Given 1-&gt;2-&gt;3-&gt;3-&gt;4-&gt;4-&gt;5, return 1-&gt;2-&gt;5.<br>Given 1-&gt;1-&gt;1-&gt;2-&gt;3, return 2-&gt;3.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s similar with other linked list question. We should build a dummy node before the head. Hold three pointers to operate the next pointer of these nodes.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public ListNode deleteDuplicates(ListNode head) {
-    if (head == null)
-        return head;
-    ListNode dummy = new ListNode(head.val-1);
-    dummy.next = head;
-    ListNode pre = dummy;
-    ListNode p = head;
-    ListNode next = head.next;
-    while (next != null){
-        if (p.val == next.val){
-            while (next != null &amp;&amp; p.val == next.val){
-                next = next.next;
-            }
-            pre.next = next;
-            if (next == null){
-                break;
-            } else{
-                p = next;
-                next = next.next;
-            }
-        } else{
-            pre = p;
-            p = p.next;
-            next = next.next;
-        }
-    }
-
-    return dummy.next;
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -624,7 +706,7 @@ public TreeNode deserialize(String data) {
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>2</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>36</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>37</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -641,45 +723,45 @@ public TreeNode deserialize(String data) {
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
-		
-			<li><a href="/tags/BFS/">BFS<span>2</span></a></li>
-		
-			<li><a href="/tags/Heap/">Heap<span>2</span></a></li>
-		
-			<li><a href="/tags/Union-Find/">Union Find<span>1</span></a></li>
-		
-			<li><a href="/tags/Binary-Search/">Binary Search<span>1</span></a></li>
-		
-			<li><a href="/tags/Greedy/">Greedy<span>2</span></a></li>
-		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+			<li><a href="/tags/Design/">Design<span>1</span></a></li>
 		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
-			<li><a href="/tags/Array/">Array<span>6</span></a></li>
+			<li><a href="/tags/Greedy/">Greedy<span>2</span></a></li>
 		
-			<li><a href="/tags/Two-Pointers/">Two Pointers<span>1</span></a></li>
-		
-			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
-		
-			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
-		
-			<li><a href="/tags/DFS/">DFS<span>1</span></a></li>
-		
-			<li><a href="/tags/Tree/">Tree<span>1</span></a></li>
-		
-			<li><a href="/tags/String/">String<span>2</span></a></li>
-		
-			<li><a href="/tags/Design/">Design<span>1</span></a></li>
+			<li><a href="/tags/Binary-Search/">Binary Search<span>1</span></a></li>
 		
 			<li><a href="/tags/Math/">Math<span>1</span></a></li>
 		
+			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+		
+			<li><a href="/tags/Union-Find/">Union Find<span>1</span></a></li>
+		
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>6</span></a></li>
+		
 			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/Linked-List/">Linked List<span>2</span></a></li>
 		
 			<li><a href="/tags/Hash-Table/">Hash Table<span>3</span></a></li>
 		
-			<li><a href="/tags/Linked-List/">Linked List<span>2</span></a></li>
+			<li><a href="/tags/BFS/">BFS<span>3</span></a></li>
+		
+			<li><a href="/tags/Tree/">Tree<span>1</span></a></li>
+		
+			<li><a href="/tags/Two-Pointers/">Two Pointers<span>1</span></a></li>
+		
+			<li><a href="/tags/String/">String<span>2</span></a></li>
+		
+			<li><a href="/tags/Heap/">Heap<span>2</span></a></li>
+		
+			<li><a href="/tags/DFS/">DFS<span>1</span></a></li>
+		
+			<li><a href="/tags/Dynamic-Programming/">Dynamic Programming<span>1</span></a></li>
+		
+			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>21</span></a></li>
@@ -695,6 +777,10 @@ public TreeNode deserialize(String data) {
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" ><i class="fa fa-file-o"></i>Leetcode-Minimum Height Tre...</a>
+      </li>
+    
+      <li>
         <a href="/2016/02/09/Leetcode-Next-Permutation-Java/" ><i class="fa fa-file-o"></i>Leetcode-Next Permutation(J...</a>
       </li>
     
@@ -708,10 +794,6 @@ public TreeNode deserialize(String data) {
     
       <li>
         <a href="/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Serialize and Dese...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Remove Duplicates ...</a>
       </li>
     
   </ul>

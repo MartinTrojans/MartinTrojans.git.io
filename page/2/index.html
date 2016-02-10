@@ -109,6 +109,62 @@
 	<!-- display as entry -->	
 		<h3 class="title">
 			<div class="date"> 2016-02-08 </div>
+			<div class="article-title"><a href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" >Leetcode-Remove Duplicates from Sorted List II(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.</p>
+<p>For example,<br>Given 1-&gt;2-&gt;3-&gt;3-&gt;4-&gt;4-&gt;5, return 1-&gt;2-&gt;5.<br>Given 1-&gt;1-&gt;1-&gt;2-&gt;3, return 2-&gt;3.</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s similar with other linked list question. We should build a dummy node before the head. Hold three pointers to operate the next pointer of these nodes.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public ListNode deleteDuplicates(ListNode head) {
+    if (head == null)
+        return head;
+    ListNode dummy = new ListNode(head.val-1);
+    dummy.next = head;
+    ListNode pre = dummy;
+    ListNode p = head;
+    ListNode next = head.next;
+    while (next != null){
+        if (p.val == next.val){
+            while (next != null &amp;&amp; p.val == next.val){
+                next = next.next;
+            }
+            pre.next = next;
+            if (next == null){
+                break;
+            } else{
+                p = next;
+                next = next.next;
+            }
+        } else{
+            pre = p;
+            p = p.next;
+            next = next.next;
+        }
+    }
+
+    return dummy.next;
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-02-08 </div>
 			<div class="article-title"><a href="/2016/02/08/Leetcode-Group-Anagrams-Java/" >Leetcode-Group Anagrams(Java)</a></div>						
 		</h3>
 	
@@ -388,74 +444,6 @@ private void dfsCheck(int m, int n, char[][] grid, int[][] record, int[][] visit
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-02-02 </div>
-			<div class="article-title"><a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" >Leetcode-Restore IP Addresses(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given a string containing only digits, restore it by returning all possible valid IP address combinations.</p>
-<p>For example:<br>Given “25525511135”,</p>
-<p>return [“255.255.11.135”, “255.255.111.35”]. (Order does not matter)</p>
-<p><strong>Thinking:</strong></p>
-<p>Valid IP address is between 0 and 255, so we can once detect one to three digits of the string. What’s more, it’s not valid if there is number like “001”. Use bactracing select one to three digits once, and go farther until all the substrings are selected and there are four parts of the result. Then put the result in the list. We should also detect the length of the String because if the length is not between 4 and 12, it’s invalid.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;String&gt; restoreIpAddresses(String s) {
-    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
-
-    if (s.length() &lt; 4)
-        return res;
-    if (s.length() &gt; 12)
-        return res;
-
-    backtracing(s, 0, new ArrayList&lt;String&gt;(), res);
-
-    return res;
-}
-
-public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt;String&gt; res){
-    if (start == s.length()){
-        if (tempres.size() == 4){
-            String tempstr = &quot;&quot;;
-            tempstr = tempres.get(0) + &quot;.&quot; + tempres.get(1) + &quot;.&quot; + tempres.get(2) + &quot;.&quot; + tempres.get(3);
-            res.add(tempstr);
-        }
-        else{
-            return;
-        }
-    }
-
-    for (int i = start+1; i &lt;= s.length(); i++){
-        if (s.charAt(start) == &apos;0&apos; &amp;&amp; i != start+1)
-            continue;
-        if (i - start &gt; 3)
-            break;
-        int num = Integer.parseInt(s.substring(start, i));
-        if (num &gt; 255)
-            break;
-        else{
-            tempres.add(s.substring(start, i));
-            backtracing(s, i, tempres, res);
-            tempres.remove(tempres.size() - 1);
-        }
-    }
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -506,7 +494,7 @@ public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>2</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>36</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>37</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -523,45 +511,45 @@ public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
-		
-			<li><a href="/tags/Union-Find/">Union Find<span>1</span></a></li>
-		
-			<li><a href="/tags/String/">String<span>2</span></a></li>
-		
-			<li><a href="/tags/Heap/">Heap<span>2</span></a></li>
-		
-			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
-		
-			<li><a href="/tags/BFS/">BFS<span>2</span></a></li>
-		
-			<li><a href="/tags/Math/">Math<span>1</span></a></li>
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
 		
 			<li><a href="/tags/Design/">Design<span>1</span></a></li>
 		
+			<li><a href="/tags/Heap/">Heap<span>2</span></a></li>
+		
+			<li><a href="/tags/DFS/">DFS<span>1</span></a></li>
+		
+			<li><a href="/tags/Union-Find/">Union Find<span>1</span></a></li>
+		
 			<li><a href="/tags/Dynamic-Programming/">Dynamic Programming<span>1</span></a></li>
 		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
 		
-			<li><a href="/tags/Greedy/">Greedy<span>2</span></a></li>
-		
-			<li><a href="/tags/Tree/">Tree<span>1</span></a></li>
-		
-			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
-		
-			<li><a href="/tags/Binary-Search/">Binary Search<span>1</span></a></li>
-		
-			<li><a href="/tags/Two-Pointers/">Two Pointers<span>1</span></a></li>
-		
-			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
+			<li><a href="/tags/Math/">Math<span>1</span></a></li>
 		
 			<li><a href="/tags/Hash-Table/">Hash Table<span>3</span></a></li>
 		
-			<li><a href="/tags/Array/">Array<span>6</span></a></li>
+			<li><a href="/tags/Tree/">Tree<span>1</span></a></li>
+		
+			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>3</span></a></li>
+		
+			<li><a href="/tags/String/">String<span>2</span></a></li>
+		
+			<li><a href="/tags/Graph/">Graph<span>2</span></a></li>
 		
 			<li><a href="/tags/Linked-List/">Linked List<span>2</span></a></li>
 		
-			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+		
+			<li><a href="/tags/Greedy/">Greedy<span>2</span></a></li>
+		
+			<li><a href="/tags/Two-Pointers/">Two Pointers<span>1</span></a></li>
+		
+			<li><a href="/tags/Binary-Search/">Binary Search<span>1</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>6</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>21</span></a></li>
@@ -577,6 +565,10 @@ public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" ><i class="fa fa-file-o"></i>Leetcode-Minimum Height Tre...</a>
+      </li>
+    
+      <li>
         <a href="/2016/02/09/Leetcode-Next-Permutation-Java/" ><i class="fa fa-file-o"></i>Leetcode-Next Permutation(J...</a>
       </li>
     
@@ -590,10 +582,6 @@ public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt
     
       <li>
         <a href="/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Serialize and Dese...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Remove Duplicates ...</a>
       </li>
     
   </ul>

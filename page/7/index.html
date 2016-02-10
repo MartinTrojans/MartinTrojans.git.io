@@ -108,6 +108,110 @@
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2016-01-27 </div>
+			<div class="article-title"><a href="/2016/01/27/Leetcode-Triangle/" >Leetcode-Triangle(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.</p>
+<p>For example, given the following triangle:</p>
+<pre><code>[
+       [2],
+     [3,4],
+    [6,5,7],
+   [4,1,8,3]
+]
+</code></pre><p>The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).</p>
+<p>Note:<br>Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.</p>
+<p><strong>Thinking:</strong><br>It’s a simple dynamic programming question. The expression is dp[i][j] = min(d[i-1][j-1], d[i][j]) + triangle[i][j].</p>
+<p>But the first time, my code is time exceed:</p>
+<pre><code>public class Solution {
+    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
+        int lr = triangle.size();
+        if(lr == 0){
+            return 0;
+        }
+        int lc = triangle.get(lr-1).size();
+        int min = 100000;
+        for(int i = 0; i &lt; lc; i++){
+            int tmp = dp(triangle, lr-1, i);
+            if(tmp &lt; min)
+                min = tmp;
+        }
+        return min;
+    }
+
+    public int dp(List&lt;List&lt;Integer&gt;&gt; triangle, int row, int column){
+        if(row == 0){
+            return triangle.get(0).get(0);
+        }
+        int value = triangle.get(row).get(column);
+        int size = triangle.get(row-1).size();
+        if(column &gt;= size){
+            return dp(triangle, row-1, column-1) + value;
+        }
+        else if(column - 1 &lt; 0){
+            return dp(triangle, row-1, column) + value;
+        }
+        else{
+            int res1 = dp(triangle, row-1, column-1) + value;
+            int res2 = dp(triangle, row-1, column) + value;
+            if(res1 &lt; res2){
+                return res1;
+            }
+            else{
+                return res2;
+            }
+        }
+    }
+}
+</code></pre><p>Then I noticed the bonus, so I change my mind to use <em>iteration</em>:</p>
+<pre><code>public class Solution{
+    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle){
+        int lr = triangle.size();
+        int[] min = new int[lr];
+        int[] tempmin = new int[lr];
+        min[0] = triangle.get(0).get(0);
+        for(int i = 1; i &lt; lr; i++){
+            tempmin[0] = min[0] + triangle.get(i).get(0);
+            tempmin[i] = min[i-1] + triangle.get(i).get(i);
+            for(int j = 1; j &lt; i; j++){
+                int res1 = min[j-1] + triangle.get(i).get(j);
+                int res2 = min[j] + triangle.get(i).get(j);
+                if(res1 &lt; res2)
+                    tempmin[j] = res1;
+                else
+                    tempmin[j] = res2;
+            }
+            for(int k = 0; k &lt; i+1; k++){
+                min[k] = tempmin[k];
+            }
+        }
+        int m = 100000;
+        for(int i = 0; i &lt; lr; i++){
+            if(min[i] &lt; m)
+                m = min[i];
+        }
+        return m;
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/01/27/Leetcode-Triangle/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2016-01-26 </div>
 			<div class="article-title"><a href="/2016/01/26/HTTP-method-get-and-post/" >HTTP method: get and post</a></div>						
 		</h3>
@@ -420,64 +524,6 @@ private double dp(double x, int n){
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-01-26 </div>
-			<div class="article-title"><a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" >Leetcode-3Sum Closest(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
-<p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
-<p>The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</p>
-<p><strong>Thinking:</strong></p>
-<p>In order to improve the performance of algorithm, we should sort the array. Because of that, we can determine where to go using current result.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int threeSumClosest(int[] nums, int target) {
-    int l = nums.length;
-    if (l &lt; 3)
-        return 0;
-    int min = Integer.MAX_VALUE;
-    int res = 0;
-    Arrays.sort(nums);
-
-    for (int i = 0; i &lt; l; i++){
-        int j = i + 1;
-        int k = l - 1;
-
-        while (j &lt; k){
-            int sum = nums[i] + nums[j] + nums[k];
-            if (sum == target)
-                return sum;
-            int diff = Math.abs(sum - target);
-            if (diff &lt; min){
-                min = diff;
-                res = sum;
-            }
-            if (sum &gt; target)
-                k--;
-            else
-                j++;
-        }
-
-    }
-    return res;
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/01/26/Leetcode-3Sum-Closest-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -528,7 +574,7 @@ private double dp(double x, int n){
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>2</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>36</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>37</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -545,45 +591,45 @@ private double dp(double x, int n){
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Greedy/">Greedy<span>2</span></a></li>
-		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
-		
-			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
-		
 			<li><a href="/tags/Linked-List/">Linked List<span>2</span></a></li>
-		
-			<li><a href="/tags/BFS/">BFS<span>2</span></a></li>
-		
-			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
-		
-			<li><a href="/tags/Design/">Design<span>1</span></a></li>
-		
-			<li><a href="/tags/Dynamic-Programming/">Dynamic Programming<span>1</span></a></li>
-		
-			<li><a href="/tags/Heap/">Heap<span>2</span></a></li>
-		
-			<li><a href="/tags/Graph/">Graph<span>1</span></a></li>
-		
-			<li><a href="/tags/DFS/">DFS<span>1</span></a></li>
-		
-			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
-		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>3</span></a></li>
-		
-			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
 			<li><a href="/tags/String/">String<span>2</span></a></li>
 		
-			<li><a href="/tags/Union-Find/">Union Find<span>1</span></a></li>
+			<li><a href="/tags/Hash-Table/">Hash Table<span>3</span></a></li>
 		
-			<li><a href="/tags/Binary-Search/">Binary Search<span>1</span></a></li>
+			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
+		
+			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
+		
+			<li><a href="/tags/Design/">Design<span>1</span></a></li>
+		
+			<li><a href="/tags/Math/">Math<span>1</span></a></li>
+		
+			<li><a href="/tags/DFS/">DFS<span>1</span></a></li>
+		
+			<li><a href="/tags/Greedy/">Greedy<span>2</span></a></li>
 		
 			<li><a href="/tags/Array/">Array<span>6</span></a></li>
 		
+			<li><a href="/tags/Binary-Search/">Binary Search<span>1</span></a></li>
+		
+			<li><a href="/tags/Union-Find/">Union Find<span>1</span></a></li>
+		
 			<li><a href="/tags/Tree/">Tree<span>1</span></a></li>
 		
+			<li><a href="/tags/Heap/">Heap<span>2</span></a></li>
+		
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
+		
 			<li><a href="/tags/Two-Pointers/">Two Pointers<span>1</span></a></li>
+		
+			<li><a href="/tags/BFS/">BFS<span>3</span></a></li>
+		
+			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+		
+			<li><a href="/tags/Dynamic-Programming/">Dynamic Programming<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>21</span></a></li>
@@ -599,6 +645,10 @@ private double dp(double x, int n){
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" ><i class="fa fa-file-o"></i>Leetcode-Minimum Height Tre...</a>
+      </li>
+    
+      <li>
         <a href="/2016/02/09/Leetcode-Next-Permutation-Java/" ><i class="fa fa-file-o"></i>Leetcode-Next Permutation(J...</a>
       </li>
     
@@ -612,10 +662,6 @@ private double dp(double x, int n){
     
       <li>
         <a href="/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Serialize and Dese...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Remove Duplicates ...</a>
       </li>
     
   </ul>
