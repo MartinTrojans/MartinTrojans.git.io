@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-02-10T07:13:33.000Z</updated>
+  <updated>2016-02-11T02:46:22.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,352 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Majority Element II(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/"/>
+    <id>http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/</id>
+    <published>2016-02-11T02:32:38.000Z</published>
+    <updated>2016-02-11T02:46:22.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times. The algorithm should run in linear time and in O(1) space.</p>
+<p>Hint:</p>
+<p>How many majority elements could it possibly have?</p>
+<p><strong>Thinking:</strong></p>
+<p>This question is similar with Majority Element which can be solved by Boyer–Moore majority vote algorithm.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;Integer&gt; majorityElement(int[] nums) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+    int count1 = 0, count2 = 0, can1 = 0, can2 = 1;
+
+    for (int num: nums){
+        if (num == can1)
+            count1++;
+        else if (num == can2)
+            count2++;
+        else if (count1 == 0){
+            can1 = num;
+            count1 = 1;
+        }
+        else if (count2 == 0){
+            can2 = num;
+            count2 = 1;
+        }
+        else{
+            count1--;
+            count2--;
+        }
+    }
+    count1 = 0;
+    count2 = 0;
+    for (int num: nums){
+        if (num == can1)
+            count1++;
+        else if (num == can2)
+            count2++;
+    }
+
+    if (count1 &gt; nums.length / 3)
+        res.add(can1);
+    if (count2 &gt; nums.length / 3 &amp;&amp; can1 != can2)
+        res.add(can2);
+
+    return res;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times. The algorithm ]]>
+    </summary>
+    
+      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Implement Trie (Prefix Tree)(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/"/>
+    <id>http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/</id>
+    <published>2016-02-11T01:06:45.000Z</published>
+    <updated>2016-02-11T01:08:44.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Implement a trie with insert, search, and startsWith methods.</p>
+<p>Note:<br>You may assume that all inputs are consist of lowercase letters a-z.</p>
+<p><strong>Thinking:</strong></p>
+<p>I assume every node has no val, but edges do. So I keep a HashMap for everynode. What’s more, in order to determine whether this node is a leave, I add another boolean value.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>import java.util.HashMap;
+
+class TrieNode {
+    HashMap&lt;Character, TrieNode&gt; edges = new HashMap&lt;Character, TrieNode&gt;();
+    boolean leave = false;
+    // Initialize your data structure here.
+    public TrieNode() {
+    }
+}
+
+public class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        TrieNode cur = root;
+        for (char c: word.toCharArray()){
+            if (!cur.edges.containsKey(c)){
+                TrieNode newNode = new TrieNode();
+                cur.edges.put(c, newNode);
+                cur = newNode;
+
+            }
+            else {
+                cur = cur.edges.get(c);
+            }
+        }
+        cur.leave = true;
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        TrieNode cur = root;
+        for (char c: word.toCharArray()){
+            if (!cur.edges.containsKey(c)){
+                return false;
+            }
+            else{
+                cur = cur.edges.get(c);
+            }
+        }
+        return cur.leave;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        TrieNode cur = root;
+        for (char c: prefix.toCharArray()){
+            if (!cur.edges.containsKey(c)){
+                return false;
+            }
+            else{
+                cur = cur.edges.get(c);
+            }
+        }
+        return true;
+    }
+}
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie = new Trie();
+// trie.insert(&quot;somestring&quot;);
+// trie.search(&quot;key&quot;);
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Implement a trie with insert, search, and startsWith methods.</p>
+<p>Note:<br>You may assume that all i]]>
+    </summary>
+    
+      <category term="Design" scheme="http://yoursite.com/tags/Design/"/>
+    
+      <category term="Trie" scheme="http://yoursite.com/tags/Trie/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Sqrt(x)(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/"/>
+    <id>http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/</id>
+    <published>2016-02-11T00:33:22.000Z</published>
+    <updated>2016-02-11T00:34:52.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Implement int sqrt(int x).</p>
+<p>Compute and return the square root of x.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can get the answer using bianry search from the range of integer.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int mySqrt(int x) {
+    if ( x &lt;= 1 )
+        return x;
+    int low = 1;
+    int high = Integer.MAX_VALUE;
+    while (true){
+        int mid = low + (high - low) / 2; //in order to avoid overflow
+        if (mid &gt; x / mid){
+            high = mid - 1;
+        }else{
+            if ( (mid+1) &gt; x/(mid+1))
+                return mid;
+            low = mid + 1;
+        }
+    }
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Implement int sqrt(int x).</p>
+<p>Compute and return the square root of x.</p>
+<p><strong>Thinking:</st]]>
+    </summary>
+    
+      <category term="Binary Search" scheme="http://yoursite.com/tags/Binary-Search/"/>
+    
+      <category term="Math" scheme="http://yoursite.com/tags/Math/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Course Schedule(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/"/>
+    <id>http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/</id>
+    <published>2016-02-10T23:16:31.000Z</published>
+    <updated>2016-02-11T00:03:03.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>There are a total of n courses you have to take, labeled from 0 to n - 1.</p>
+<p>Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]</p>
+<p>Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?</p>
+<p>For example:</p>
+<p>2, [[1,0]]<br>There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.</p>
+<p>2, [[1,0],[0,1]]<br>There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.</p>
+<p>Note:<br>The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.</p>
+<p>click to show more hints.</p>
+<p>Hints:<br>This problem is equivalent to finding if a cycle exists in a directed graph. If a cycle exists, no topological ordering exists and therefore it will be impossible to take all courses.<br>Topological Sort via DFS - A great video tutorial (21 minutes) on Coursera explaining the basic concepts of Topological Sort.<br>Topological sort could also be done via BFS.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can search it from a arbitary node, can search by DFS. If there is a cycle, we will meet the visited nodes once DFS. So we need a array to hold the visited record. By the way, if we want a topological sort, we can hold a current value which is number of nodes initially and decrese one only when meet a sink node.</p>
+<p>For BFS, we can find the nodes whose indegree or outdegree is zero, and search from them. If there is a cycle, the number of nodes searched will less than the exact number because in a cycle no nodes’ indegree or outdegree is zero.</p>
+<p><strong>Solution:</strong></p>
+<p>DFS:</p>
+<pre><code>public boolean canFinish(int numCourses, int[][] prerequisites) {
+    if (numCourses &lt;= 1)
+        return true;
+    ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges = new ArrayList&lt;HashSet&lt;Integer&gt;&gt;(numCourses);
+    boolean[] visited = new boolean[numCourses];
+
+    for (int i = 0; i &lt; numCourses; i++)
+        edges.add(new HashSet&lt;Integer&gt;());
+
+    for (int[] pre: prerequisites){
+        edges.get(pre[0]).add(pre[1]);
+    }
+
+    for (int i = 0; i &lt; numCourses; i++){
+        if (edges.get(i).size() != 0)
+            if (!dfs(edges, i, visited))
+                return false;
+    }
+
+    return true;
+}
+
+private boolean dfs(ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges, int i, boolean[] visited){
+    if (visited[i] == true)
+        return false;
+    visited[i] = true;
+    while (edges.get(i).size() != 0){
+        int j = edges.get(i).iterator().next();
+
+        if (!dfs(edges, j, visited))
+            return false;
+
+        edges.get(i).remove(j);
+    }
+    visited[i] = false; //there is a cycle only when once DFS, so we change it back when onece DFS is finished
+    return true;
+}
+</code></pre><p>BFS:</p>
+<pre><code>    public boolean canFinishBFS(int numCourses, int[][] prerequisites) {
+    if (numCourses &lt;= 1)
+        return true;
+    ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges = new ArrayList&lt;HashSet&lt;Integer&gt;&gt;(numCourses);
+    int[] inDegree = new int[numCourses];
+    Queue&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
+    int count = 0;
+
+    for (int i = 0; i &lt; numCourses; i++)
+        edges.add(new HashSet&lt;Integer&gt;());
+
+    for (int[] pre: prerequisites){
+        if (!edges.get(pre[0]).contains(pre[1])){
+            edges.get(pre[0]).add(pre[1]);
+            inDegree[pre[1]]++;
+        }
+    }
+
+    for (int i = 0; i &lt; inDegree.length; i++)
+        if (inDegree[i] == 0)
+            q.add(i);
+
+    while (!q.isEmpty()){
+        int i = q.poll();
+        count++;
+        while (edges.get(i).size() != 0){
+            int j = edges.get(i).iterator().next();
+            if (--inDegree[j] == 0)
+                q.add(j);
+            edges.get(i).remove(j);
+        }
+    }
+
+    return count == numCourses;
+}
+</code></pre><p>Simpler and more concise BFS solution:</p>
+<p>Reference: <a href="https://leetcode.com/discuss/35578/easy-bfs-topological-sort-java" target="_blank" rel="external">https://leetcode.com/discuss/35578/easy-bfs-topological-sort-java</a></p>
+<pre><code>public boolean canFinish(int numCourses, int[][] prerequisites) {
+    int[][] matrix = new int[numCourses][numCourses]; // i -&gt; j
+    int[] indegree = new int[numCourses];
+
+    for (int i=0; i&lt;prerequisites.length; i++) {
+        int ready = prerequisites[i][0];
+        int pre = prerequisites[i][1];
+        if (matrix[pre][ready] == 0)
+            indegree[ready]++; //duplicate case
+        matrix[pre][ready] = 1;
+    }
+
+    int count = 0;
+    Queue&lt;Integer&gt; queue = new LinkedList();
+    for (int i=0; i&lt;indegree.length; i++) {
+        if (indegree[i] == 0) queue.offer(i);
+    }
+    while (!queue.isEmpty()) {
+        int course = queue.poll();
+        count++;
+        for (int i=0; i&lt;numCourses; i++) {
+            if (matrix[course][i] != 0) {
+                if (--indegree[i] == 0)
+                    queue.offer(i);
+            }
+        }
+    }
+    return count == numCourses;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>There are a total of n courses you have to take, labeled from 0 to n - 1.</p>
+<p>Some courses may have ]]>
+    </summary>
+    
+      <category term="BFS" scheme="http://yoursite.com/tags/BFS/"/>
+    
+      <category term="DFS" scheme="http://yoursite.com/tags/DFS/"/>
+    
+      <category term="Graph" scheme="http://yoursite.com/tags/Graph/"/>
+    
+      <category term="Topological Sort" scheme="http://yoursite.com/tags/Topological-Sort/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Minimum Height Trees(Java)]]></title>
@@ -156,7 +502,7 @@ private int bfs(int n, int i, int[][] edges){
     <link href="http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/"/>
     <id>http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/</id>
     <published>2016-02-10T03:38:47.000Z</published>
-    <updated>2016-02-10T04:27:16.000Z</updated>
+    <updated>2016-02-12T05:44:37.000Z</updated>
     <content type="html"><![CDATA[<p><strong>Question:</strong></p>
 <p>Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.</p>
 <p>If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).</p>
@@ -166,7 +512,7 @@ private int bfs(int n, int i, int[][] edges){
 3,2,1 → 1,2,3
 1,1,5 → 1,5,1
 </code></pre><p><strong>Thinking:</strong></p>
-<p>I didn’t get the meaning of this question firstly, then I searched on the Internet. The method can be described as below:</p>
+<p>The method can be described as below:</p>
 <p><img src="http://4.bp.blogspot.com/-4zN0u5JG0vs/UN0xPEkP5yI/AAAAAAAAG9Q/O48ZfwB1i_c/s640/Picture4.png" alt=""></p>
 <p><strong>Solution:</strong></p>
 <pre><code>public void nextPermutation(int[] nums) {
@@ -1300,257 +1646,6 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
 <li>PEAS</li>
 </ol>
 <p><strong>Lecture 3:<]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Kth Largest Element in an Array(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/"/>
-    <id>http://yoursite.com/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/</id>
-    <published>2016-02-01T05:21:22.000Z</published>
-    <updated>2016-02-01T06:15:05.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.</p>
-<p>For example,<br>Given [3,2,1,5,6,4] and k = 2, return 5.</p>
-<p>Note:<br>You may assume k is always valid, 1 ≤ k ≤ array’s length.</p>
-<p><strong>Thinking:</strong></p>
-<p>There are three ways to solve this problem:</p>
-<ol>
-<li>The first one is to build a max heap with size n, and get the top of the heap k times.</li>
-<li>The second one is to build a min heap with size k, and keep the biggest top k elements of this array. Finally, get the top of it.</li>
-<li>The third one is to use a method called quickselect which uses function partition. It first use a pivot to split the array into two parts, then accroding to this index, choose which part to select.</li>
-</ol>
-<p><strong>Solution:</strong></p>
-<p>Max heap:</p>
-<pre><code>public int findKthLargest1(int[] nums, int k) {
-    int len = nums.length;
-    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;(len, new HeapComparator());
-    for (int i = 0; i &lt; len; i++){
-        heap.add(nums[i]);
-    }
-    for (int i = 0; i &lt; k-1; i++){
-        heap.poll();
-    }
-    return heap.peek();
-}
-
-class HeapComparator implements Comparator {
-
-    @Override
-    public int compare(Object o1, Object o2) {
-        // TODO Auto-generated method stub
-        int i1 = (int)o1;
-        int i2 = (int)o2;
-        if (i1 &gt; i2)
-            return -1;
-        else if (i1 == i2)
-            return 0;
-        else
-            return 1;
-    }
-
-}
-</code></pre><p>Min heap:</p>
-<pre><code>public int findKthLargest2(int[] nums, int k) {
-    int len = nums.length;
-    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;(k);
-    for (int i = 0; i &lt; k; i++){
-        heap.add(nums[i]);
-    }
-    for (int i = k; i &lt; len; i++){
-        if (nums[i] &gt; heap.peek()){
-            heap.poll();
-            heap.add(nums[i]);
-        }
-    }
-    return heap.peek();
-}
-</code></pre><p>Quickselect:</p>
-<pre><code>public int findKthLargest3(int[] nums, int k) {
-    int len = nums.length;
-    return quickselect(nums, 0, len-1, k);
-}
-
-private int quickselect(int[] nums, int left, int right, int k){
-    int pivotIndex = partition(nums, left, right, left);
-    if (pivotIndex == k-1){
-        return nums[pivotIndex];
-    }
-    else if(pivotIndex &lt; k){
-        return quickselect(nums, pivotIndex+1, right, k);
-    }
-    else{
-        return quickselect(nums, left, pivotIndex-1, k);
-    }
-}
-
-private int partition(int[] nums, int left, int right, int index){
-    int pivotvalue = nums[index];
-    int storeindex = left;
-    nums[index] = nums[right];
-    for (int i = left; i &lt; right; i++){
-        if (nums[i] &gt; pivotvalue){
-            int temp = nums[i];
-            nums[i] = nums[storeindex];
-            nums[storeindex++] = temp;
-        }
-    }
-    nums[right] = nums[storeindex];
-    nums[storeindex] = pivotvalue;
-    return storeindex;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorte]]>
-    </summary>
-    
-      <category term="Divide and Conquer" scheme="http://yoursite.com/tags/Divide-and-Conquer/"/>
-    
-      <category term="Heap" scheme="http://yoursite.com/tags/Heap/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Permutations II(Java)]]></title>
-    <link href="http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/"/>
-    <id>http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/</id>
-    <published>2016-02-01T01:10:24.000Z</published>
-    <updated>2016-02-01T01:26:48.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given a collection of numbers that might contain duplicates, return all possible unique permutations.</p>
-<p>For example,<br>[1,1,2] have the following unique permutations:<br>[1,1,2], [1,2,1], and [2,1,1].</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s very similiar with the question permutation, we should use backtracing to go through all the possibilities. For example, we pick the first element of the array, and get the permutation of the rest of this array, and put the first element in every possible position. The only difference bewteen the permutation is that we don’t allow duplicate. We can use hashset to solve this problem.</p>
-<p>By the way, I made a mistake this time which I used to make. It’s that in the loop of this:</p>
-<pre><code>for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
-    for (int i = 0; i &lt;= list.size(); i++){
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
-        tempres.add(i, nums[index]);
-        tres.add(tempres);
-    }
-}
-</code></pre><p>I shouldn’t use the temporary variable list to operate, because<br>1) the size of it will change;<br>2) we should use it several times instead of once.<br>Then that means we should build another temporary variable. In this case, it’s tempres.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
-    return backtracing(nums, 0);
-}
-
-private List&lt;List&lt;Integer&gt;&gt; backtracing(int[] nums, int index) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    HashSet&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-    int len = nums.length;
-
-    if (index &gt;= len){
-        return res;
-    }
-
-    if (index == len - 1){
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-        tempres.add(nums[index]);
-        res.add(tempres);
-        return res;
-    }
-
-    for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
-        for (int i = 0; i &lt;= list.size(); i++){
-            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
-            tempres.add(i, nums[index]);
-            tres.add(tempres);
-        }
-    }
-
-    res.addAll(tres);
-    return res;
-}
-</code></pre><p>There is another solution is much faster than me. Because it use extra space to record which element is used and use sort to reduce the extra cost to make sure unique. What’s more, the process of adding first and removing after dfs is usually used by people. I suppose I should learn from it.</p>
-<p>Code:</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    if(nums==null || nums.length==0) return res;
-    boolean[] used = new boolean[nums.length];
-    List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
-    Arrays.sort(nums);
-    dfs(nums, used, list, res);
-    return res;
-}
-
-public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;List&lt;Integer&gt;&gt; res){
-    if(list.size()==nums.length){
-        res.add(new ArrayList&lt;Integer&gt;(list));
-        return;
-    }
-    for(int i=0;i&lt;nums.length;i++){
-        if(used[i]) continue;
-        if(i&gt;0 &amp;&amp;nums[i-1]==nums[i] &amp;&amp; !used[i-1]) continue;
-        used[i]=true;
-        list.add(nums[i]);
-        dfs(nums,used,list,res);
-        used[i]=false;
-        list.remove(list.size()-1);
-    }
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given a collection of numbers that might contain duplicates, return all possible unique permutations.</]]>
-    </summary>
-    
-      <category term="Backtracing" scheme="http://yoursite.com/tags/Backtracing/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Algorithm Note]]></title>
-    <link href="http://yoursite.com/2016/01/31/Algorithm-Note/"/>
-    <id>http://yoursite.com/2016/01/31/Algorithm-Note/</id>
-    <published>2016-02-01T00:21:38.000Z</published>
-    <updated>2016-02-01T07:10:43.000Z</updated>
-    <content type="html"><![CDATA[<ol>
-<li>Chapter 3 Exercises 6中有两个点， 一个是如果一个图的DFS树中没有出现的边，边的两个顶点一定是祖先与孩子的关系；一个是如果一个图的BFS树的BFS树中没有出现的边，边的两个顶点在BFS树中的层数差不会大于1.</li>
-<li>如果一个图的DFS树，或者BFS树和图相同，那么原图就没有环，否则就找他们最低的祖先，构成一个环。</li>
-</ol>
-]]></content>
-    <summary type="html">
-    <![CDATA[<ol>
-<li>Chapter 3 Exercises 6中有两个点， 一个是如果一个图的DFS树中没有出现的边，边的两个顶点一定是祖先与孩子的关系；一个是如果一个图的BFS树的BFS树中没有出现的边，边的两个顶点在BFS树中的层数差不会大于1.</li>
-<li>如果一个图的]]>
-    </summary>
-    
-      <category term="Algorithm" scheme="http://yoursite.com/categories/Algorithm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[VIM]]></title>
-    <link href="http://yoursite.com/2016/01/30/VIM/"/>
-    <id>http://yoursite.com/2016/01/30/VIM/</id>
-    <published>2016-01-31T06:54:24.000Z</published>
-    <updated>2016-01-31T07:05:27.000Z</updated>
-    <content type="html"><![CDATA[<p>一、打开文件、保存、关闭文件(vi命令模式下使用)<br>:w       //保存文件<br>:w vpser.net //保存至vpser.net文件<br>:q          //退出编辑器，如果文件已修改请使用下面的命令<br>:q!        //退出编辑器，且不保存<br>:wq         //退出编辑器，且保存文件</p>
-<p>二、插入文本或行(vi命令模式下使用，执行下面命令后将进入插入模式，按ESC键可退出插入模式)<br>一般使用i<br>a      //在当前光标位置的右边添加文本<br>i       //在当前光标位置的左边添加文本<br>A     //在当前行的末尾位置添加文本<br>I      //在当前行的开始处添加文本(非空字符的行首)<br>O     //在当前行的上面新建一行<br>o     //在当前行的下面新建一行<br>R    //替换(覆盖)当前光标位置及后面的若干文本<br>J    //合并光标所在行及下一行为一行(依然在命令模式)</p>
-<p>三、移动光标(vi命令模式下使用)<br>1、使用上下左右方向键</p>
-<p>2、命令模式下：h   向左、j   向下 、k   向上、l  向右。<br>空格键 向右、Backspace  向左、Enter  移动到下一行首、-  移动到上一行首。</p>
-<p>四、删除、恢复字符或行(vi命令模式下使用)<br>x         //删除当前字符<br>nx         //删除从光标开始的n个字符<br>dd      //删除当前行<br>ndd   //向下删除当前行在内的n行<br>u       //撤销上一步操作<br>U      //撤销对当前行的所有操作</p>
-<p>五、搜索(vi命令模式下使用)<br>/vpser     //向光标下搜索vpser字符串，vpser可以是正则表达式<br>?vpser     //向光标上搜索vpser字符串<br>n           //向下搜索前一个搜素动作<br>N         //向上搜索前一个搜索动作</p>
-<p>*(#)      //当光标停留在某个单词上时, 输入这条命令表示查找与该单词匹配的下(上)一个单词. 同样, 再输入 n 查找下一个匹配处, 输入 N 反方向查找.</p>
-<p>g*(g#)        //此命令与上条命令相似, 只不过它不完全匹配光标所在处的单词, 而是匹配包含该单词的所有字符串.</p>
-<p>六、跳至指定行(vi命令模式下使用)<br>n+        //向下跳n行<br>n-         //向上跳n行<br>nG        //跳到行号为n的行<br>G           //跳至文件的底部</p>
-<p>七、设置行号(vi命令模式下使用)<br>:set  nu     //显示行号<br>:set nonu    //取消显示行号</p>
-<p>八、复制、粘贴(vi命令模式下使用)<br>yy    //将当前行复制到缓存区，也可以用 “ayy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>nyy   //将当前行向下n行复制到缓冲区，也可以用 “anyy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>yw    //复制从光标开始到词尾的字符。<br>nyw   //复制从光标开始的n个单词。<br>y^      //复制从光标到行首的内容。  VPS侦探<br>y$      //复制从光标到行尾的内容。<br>p        //粘贴剪切板里的内容在光标后，如果使用了前面的自定义缓冲区，建议使用”ap 进行粘贴。<br>P        //粘贴剪切板里的内容在光标前，如果使用了前面的自定义缓冲区，建议使用”aP 进行粘贴。</p>
-<p>九、替换(vi命令模式下使用)<br>:s/old/new      //用new替换行中首次出现的old<br>:s/old/new/g         //用new替换行中所有的old<br>:n,m s/old/new/g     //用new替换从n到m行里所有的old<br>:%s/old/new/g      //用new替换当前文件里所有的old</p>
-<p>十、编辑其他文件<br>:e otherfilename    //编辑文件名为otherfilename的文件。</p>
-<p>十一、修改文件格式<br>:set fileformat=unix   //将文件修改为unix格式，如win下面的文本文件在linux下会出现^M。</p>
-<p>十二、查找帮助<br>当你不知道怎么处理时，直接输入help可以看到帮助文档的起点，ZZ是退出或者：q，不建议使用<br>查找关于某个字母的命令 ：help x   查找关于x的命令。</p>
-<p>参考：<a href="http://blog.csdn.net/chenxiaochen32/article/details/7378127" target="_blank" rel="external">http://blog.csdn.net/chenxiaochen32/article/details/7378127</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>一、打开文件、保存、关闭文件(vi命令模式下使用)<br>:w       //保存文件<br>:w vpser.net //保存至vpser.net文件<br>:q          //退出编辑器，如果文件已修改请使用下面的命令<br>:q!        //退出编辑]]>
     </summary>
     
   </entry>

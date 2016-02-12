@@ -4,6 +4,290 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode-Majority Element II(Java)]]></title>
+      <url>http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times. The algorithm should run in linear time and in O(1) space.</p>
+<p>Hint:</p>
+<p>How many majority elements could it possibly have?</p>
+<p><strong>Thinking:</strong></p>
+<p>This question is similar with Majority Element which can be solved by Boyer–Moore majority vote algorithm.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;Integer&gt; majorityElement(int[] nums) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+    int count1 = 0, count2 = 0, can1 = 0, can2 = 1;
+
+    for (int num: nums){
+        if (num == can1)
+            count1++;
+        else if (num == can2)
+            count2++;
+        else if (count1 == 0){
+            can1 = num;
+            count1 = 1;
+        }
+        else if (count2 == 0){
+            can2 = num;
+            count2 = 1;
+        }
+        else{
+            count1--;
+            count2--;
+        }
+    }
+    count1 = 0;
+    count2 = 0;
+    for (int num: nums){
+        if (num == can1)
+            count1++;
+        else if (num == can2)
+            count2++;
+    }
+
+    if (count1 &gt; nums.length / 3)
+        res.add(can1);
+    if (count2 &gt; nums.length / 3 &amp;&amp; can1 != can2)
+        res.add(can2);
+
+    return res;
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Implement Trie (Prefix Tree)(Java)]]></title>
+      <url>http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Implement a trie with insert, search, and startsWith methods.</p>
+<p>Note:<br>You may assume that all inputs are consist of lowercase letters a-z.</p>
+<p><strong>Thinking:</strong></p>
+<p>I assume every node has no val, but edges do. So I keep a HashMap for everynode. What’s more, in order to determine whether this node is a leave, I add another boolean value.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>import java.util.HashMap;
+
+class TrieNode {
+    HashMap&lt;Character, TrieNode&gt; edges = new HashMap&lt;Character, TrieNode&gt;();
+    boolean leave = false;
+    // Initialize your data structure here.
+    public TrieNode() {
+    }
+}
+
+public class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        TrieNode cur = root;
+        for (char c: word.toCharArray()){
+            if (!cur.edges.containsKey(c)){
+                TrieNode newNode = new TrieNode();
+                cur.edges.put(c, newNode);
+                cur = newNode;
+
+            }
+            else {
+                cur = cur.edges.get(c);
+            }
+        }
+        cur.leave = true;
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        TrieNode cur = root;
+        for (char c: word.toCharArray()){
+            if (!cur.edges.containsKey(c)){
+                return false;
+            }
+            else{
+                cur = cur.edges.get(c);
+            }
+        }
+        return cur.leave;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        TrieNode cur = root;
+        for (char c: prefix.toCharArray()){
+            if (!cur.edges.containsKey(c)){
+                return false;
+            }
+            else{
+                cur = cur.edges.get(c);
+            }
+        }
+        return true;
+    }
+}
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie = new Trie();
+// trie.insert(&quot;somestring&quot;);
+// trie.search(&quot;key&quot;);
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Sqrt(x)(Java)]]></title>
+      <url>http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Implement int sqrt(int x).</p>
+<p>Compute and return the square root of x.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can get the answer using bianry search from the range of integer.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int mySqrt(int x) {
+    if ( x &lt;= 1 )
+        return x;
+    int low = 1;
+    int high = Integer.MAX_VALUE;
+    while (true){
+        int mid = low + (high - low) / 2; //in order to avoid overflow
+        if (mid &gt; x / mid){
+            high = mid - 1;
+        }else{
+            if ( (mid+1) &gt; x/(mid+1))
+                return mid;
+            low = mid + 1;
+        }
+    }
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Course Schedule(Java)]]></title>
+      <url>http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>There are a total of n courses you have to take, labeled from 0 to n - 1.</p>
+<p>Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]</p>
+<p>Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?</p>
+<p>For example:</p>
+<p>2, [[1,0]]<br>There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.</p>
+<p>2, [[1,0],[0,1]]<br>There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.</p>
+<p>Note:<br>The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.</p>
+<p>click to show more hints.</p>
+<p>Hints:<br>This problem is equivalent to finding if a cycle exists in a directed graph. If a cycle exists, no topological ordering exists and therefore it will be impossible to take all courses.<br>Topological Sort via DFS - A great video tutorial (21 minutes) on Coursera explaining the basic concepts of Topological Sort.<br>Topological sort could also be done via BFS.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can search it from a arbitary node, can search by DFS. If there is a cycle, we will meet the visited nodes once DFS. So we need a array to hold the visited record. By the way, if we want a topological sort, we can hold a current value which is number of nodes initially and decrese one only when meet a sink node.</p>
+<p>For BFS, we can find the nodes whose indegree or outdegree is zero, and search from them. If there is a cycle, the number of nodes searched will less than the exact number because in a cycle no nodes’ indegree or outdegree is zero.</p>
+<p><strong>Solution:</strong></p>
+<p>DFS:</p>
+<pre><code>public boolean canFinish(int numCourses, int[][] prerequisites) {
+    if (numCourses &lt;= 1)
+        return true;
+    ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges = new ArrayList&lt;HashSet&lt;Integer&gt;&gt;(numCourses);
+    boolean[] visited = new boolean[numCourses];
+
+    for (int i = 0; i &lt; numCourses; i++)
+        edges.add(new HashSet&lt;Integer&gt;());
+
+    for (int[] pre: prerequisites){
+        edges.get(pre[0]).add(pre[1]);
+    }
+
+    for (int i = 0; i &lt; numCourses; i++){
+        if (edges.get(i).size() != 0)
+            if (!dfs(edges, i, visited))
+                return false;
+    }
+
+    return true;
+}
+
+private boolean dfs(ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges, int i, boolean[] visited){
+    if (visited[i] == true)
+        return false;
+    visited[i] = true;
+    while (edges.get(i).size() != 0){
+        int j = edges.get(i).iterator().next();
+
+        if (!dfs(edges, j, visited))
+            return false;
+
+        edges.get(i).remove(j);
+    }
+    visited[i] = false; //there is a cycle only when once DFS, so we change it back when onece DFS is finished
+    return true;
+}
+</code></pre><p>BFS:</p>
+<pre><code>    public boolean canFinishBFS(int numCourses, int[][] prerequisites) {
+    if (numCourses &lt;= 1)
+        return true;
+    ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges = new ArrayList&lt;HashSet&lt;Integer&gt;&gt;(numCourses);
+    int[] inDegree = new int[numCourses];
+    Queue&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
+    int count = 0;
+
+    for (int i = 0; i &lt; numCourses; i++)
+        edges.add(new HashSet&lt;Integer&gt;());
+
+    for (int[] pre: prerequisites){
+        if (!edges.get(pre[0]).contains(pre[1])){
+            edges.get(pre[0]).add(pre[1]);
+            inDegree[pre[1]]++;
+        }
+    }
+
+    for (int i = 0; i &lt; inDegree.length; i++)
+        if (inDegree[i] == 0)
+            q.add(i);
+
+    while (!q.isEmpty()){
+        int i = q.poll();
+        count++;
+        while (edges.get(i).size() != 0){
+            int j = edges.get(i).iterator().next();
+            if (--inDegree[j] == 0)
+                q.add(j);
+            edges.get(i).remove(j);
+        }
+    }
+
+    return count == numCourses;
+}
+</code></pre><p>Simpler and more concise BFS solution:</p>
+<p>Reference: <a href="https://leetcode.com/discuss/35578/easy-bfs-topological-sort-java" target="_blank" rel="external">https://leetcode.com/discuss/35578/easy-bfs-topological-sort-java</a></p>
+<pre><code>public boolean canFinish(int numCourses, int[][] prerequisites) {
+    int[][] matrix = new int[numCourses][numCourses]; // i -&gt; j
+    int[] indegree = new int[numCourses];
+
+    for (int i=0; i&lt;prerequisites.length; i++) {
+        int ready = prerequisites[i][0];
+        int pre = prerequisites[i][1];
+        if (matrix[pre][ready] == 0)
+            indegree[ready]++; //duplicate case
+        matrix[pre][ready] = 1;
+    }
+
+    int count = 0;
+    Queue&lt;Integer&gt; queue = new LinkedList();
+    for (int i=0; i&lt;indegree.length; i++) {
+        if (indegree[i] == 0) queue.offer(i);
+    }
+    while (!queue.isEmpty()) {
+        int course = queue.poll();
+        count++;
+        for (int i=0; i&lt;numCourses; i++) {
+            if (matrix[course][i] != 0) {
+                if (--indegree[i] == 0)
+                    queue.offer(i);
+            }
+        }
+    }
+    return count == numCourses;
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode-Minimum Height Trees(Java)]]></title>
       <url>http://yoursite.com/2016/02/09/Leetcode-Minimum-Height-Trees-Java/</url>
       <content type="html"><![CDATA[<p><strong>Question:</strong></p>
@@ -138,7 +422,7 @@ private int bfs(int n, int i, int[][] edges){
 3,2,1 → 1,2,3
 1,1,5 → 1,5,1
 </code></pre><p><strong>Thinking:</strong></p>
-<p>I didn’t get the meaning of this question firstly, then I searched on the Internet. The method can be described as below:</p>
+<p>The method can be described as below:</p>
 <p><img src="http://4.bp.blogspot.com/-4zN0u5JG0vs/UN0xPEkP5yI/AAAAAAAAG9Q/O48ZfwB1i_c/s640/Picture4.png" alt=""></p>
 <p><strong>Solution:</strong></p>
 <pre><code>public void nextPermutation(int[] nums) {
