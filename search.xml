@@ -4,6 +4,81 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode-Coin Change(Java)]]></title>
+      <url>http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.</p>
+<p>Example 1:<br>coins = [1, 2, 5], amount = 11<br>return 3 (11 = 5 + 5 + 1)</p>
+<p>Example 2:<br>coins = [2], amount = 3<br>return -1.</p>
+<p>Note:<br>You may assume that you have an infinite number of each kind of coin.</p>
+<p><strong>Thinking:</strong></p>
+<p>In order to solve this problem, we can use dp which check whether choose current coin to make sure it’s minimum. But using function recursively will waste a lot of time. So we need to use extra space avoiding waste time. Then, we should build up a dp array accroding to the amount of money. Then update the dp value of different amout from zero to the target amout. The DP expression is: dp[i + coins[j]] = Math.min(dp[i + coins[j]], dp[i] + 1)</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int coinChange(int[] coins, int amount) {
+    int dp[] = new int[amount + 1];
+    for (int i = 1; i &lt;= amount; i++) dp[i] = Integer.MAX_VALUE-1;
+    for (int i = 0; i &lt;= amount; i++) {
+        for (int j = 0; j &lt; coins.length; j++) {
+            if (i + coins[j] &lt;= amount)
+                dp[i + coins[j]] = Math.min(dp[i + coins[j]], dp[i] + 1);
+        }
+    }
+    return dp[amount] == Integer.MAX_VALUE-1 ? -1 : dp[amount];
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Some basic problems]]></title>
+      <url>http://yoursite.com/2016/02/13/Some-basic-problems/</url>
+      <content type="html"><![CDATA[<ol>
+<li>Hanoi:</li>
+</ol>
+<p><img src="http://my.csdn.net/uploads/201204/23/1335186818_5426.jpg" alt=""></p>
+<pre><code>public  void move(int n,char a,char b,char c){  
+
+    if(n==1){  
+        System.out.println(&quot;move from &quot;+a+&quot; to &quot;+c);  
+    }else{  
+        move(n-1, a,c,b);  
+        move(1, a, b, c);  
+        move(n-1, b, a, c);  
+    }  
+}  
+</code></pre><ol>
+<li>Queue:</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Some thoughts about interview]]></title>
+      <url>http://yoursite.com/2016/02/13/Some-thoughts-about-interview/</url>
+      <content type="html"><![CDATA[<p>These days, I have been asked by some questions in interviews. These are not quite difficult questions, but I suppose I didn’t behavior well. There are some reasons I think, and I have to improve it:</p>
+<ol>
+<li>I am not familiar with the simple and basic question so that I’m not very sure about the solution’s correctness and I have to review it again and again.</li>
+<li>My code is not so effienct and some of the interviewers had to remind me that. That’s really terrible but I think they are very nice to let me know that.</li>
+<li>My code is not so clean because I didn’t keep a clean mind that time. I suppose it’s kind of nervous that time though I didn’t realize that and I want to solve that problem too hurry. I need to relax my minds next time.</li>
+<li>What’s worse, I didn’t have nice communication with interviewers. Because of my bad English and bad preperation for interview. Sorry about that.</li>
+</ol>
+<p>And below are some questions I have to review:</p>
+<ol>
+<li>How to realize a queue or stack using array or linkedlist</li>
+<li>Binary search and whenever mentioning the sorted array, I think it should come into my mind immediately the binary search</li>
+<li>Graph theory about the DFS and BFS</li>
+<li>What’s difference between .equals and == in Java</li>
+<li>Heap and stack in java</li>
+<li>Some detials and desing thoughts of my projects</li>
+<li>ood  object oriented design principles (<a href="https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design" target="_blank" rel="external">https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design</a>)</li>
+<li>The comparasion between the methods of shortest path (<a href="http://developer.51cto.com/art/201105/262170.htm" target="_blank" rel="external">http://developer.51cto.com/art/201105/262170.htm</a>)</li>
+<li>Hanoi (<a href="http://blog.csdn.net/zhutulang/article/details/7491390" target="_blank" rel="external">http://blog.csdn.net/zhutulang/article/details/7491390</a>)</li>
+<li>Maze (<a href="http://baobaoyangzhou.blog.163.com/blog/static/11783125020104147195273/" target="_blank" rel="external">http://baobaoyangzhou.blog.163.com/blog/static/11783125020104147195273/</a>)</li>
+<li>The realization of DFS not using recursive (<a href="http://blog.csdn.net/lalor/article/details/6845788" target="_blank" rel="external">http://blog.csdn.net/lalor/article/details/6845788</a>) which use stack</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode-Majority Element II(Java)]]></title>
       <url>http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/</url>
       <content type="html"><![CDATA[<p><strong>Question:</strong></p>

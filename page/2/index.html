@@ -108,6 +108,327 @@
 	
 	<!-- display as entry -->	
 		<h3 class="title">
+			<div class="date"> 2016-02-10 </div>
+			<div class="article-title"><a href="/2016/02/10/Leetcode-Sqrt-x-Java/" >Leetcode-Sqrt(x)(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>Implement int sqrt(int x).</p>
+<p>Compute and return the square root of x.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can get the answer using bianry search from the range of integer.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int mySqrt(int x) {
+    if ( x &lt;= 1 )
+        return x;
+    int low = 1;
+    int high = Integer.MAX_VALUE;
+    while (true){
+        int mid = low + (high - low) / 2; //in order to avoid overflow
+        if (mid &gt; x / mid){
+            high = mid - 1;
+        }else{
+            if ( (mid+1) &gt; x/(mid+1))
+                return mid;
+            low = mid + 1;
+        }
+    }
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/02/10/Leetcode-Sqrt-x-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-02-10 </div>
+			<div class="article-title"><a href="/2016/02/10/Leetcode-Course-Schedule-Java/" >Leetcode-Course Schedule(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>There are a total of n courses you have to take, labeled from 0 to n - 1.</p>
+<p>Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]</p>
+<p>Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?</p>
+<p>For example:</p>
+<p>2, [[1,0]]<br>There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.</p>
+<p>2, [[1,0],[0,1]]<br>There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.</p>
+<p>Note:<br>The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.</p>
+<p>click to show more hints.</p>
+<p>Hints:<br>This problem is equivalent to finding if a cycle exists in a directed graph. If a cycle exists, no topological ordering exists and therefore it will be impossible to take all courses.<br>Topological Sort via DFS - A great video tutorial (21 minutes) on Coursera explaining the basic concepts of Topological Sort.<br>Topological sort could also be done via BFS.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can search it from a arbitary node, can search by DFS. If there is a cycle, we will meet the visited nodes once DFS. So we need a array to hold the visited record. By the way, if we want a topological sort, we can hold a current value which is number of nodes initially and decrese one only when meet a sink node.</p>
+<p>For BFS, we can find the nodes whose indegree or outdegree is zero, and search from them. If there is a cycle, the number of nodes searched will less than the exact number because in a cycle no nodes’ indegree or outdegree is zero.</p>
+<p><strong>Solution:</strong></p>
+<p>DFS:</p>
+<pre><code>public boolean canFinish(int numCourses, int[][] prerequisites) {
+    if (numCourses &lt;= 1)
+        return true;
+    ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges = new ArrayList&lt;HashSet&lt;Integer&gt;&gt;(numCourses);
+    boolean[] visited = new boolean[numCourses];
+
+    for (int i = 0; i &lt; numCourses; i++)
+        edges.add(new HashSet&lt;Integer&gt;());
+
+    for (int[] pre: prerequisites){
+        edges.get(pre[0]).add(pre[1]);
+    }
+
+    for (int i = 0; i &lt; numCourses; i++){
+        if (edges.get(i).size() != 0)
+            if (!dfs(edges, i, visited))
+                return false;
+    }
+
+    return true;
+}
+
+private boolean dfs(ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges, int i, boolean[] visited){
+    if (visited[i] == true)
+        return false;
+    visited[i] = true;
+    while (edges.get(i).size() != 0){
+        int j = edges.get(i).iterator().next();
+
+        if (!dfs(edges, j, visited))
+            return false;
+
+        edges.get(i).remove(j);
+    }
+    visited[i] = false; //there is a cycle only when once DFS, so we change it back when onece DFS is finished
+    return true;
+}
+</code></pre><p>BFS:</p>
+<pre><code>    public boolean canFinishBFS(int numCourses, int[][] prerequisites) {
+    if (numCourses &lt;= 1)
+        return true;
+    ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges = new ArrayList&lt;HashSet&lt;Integer&gt;&gt;(numCourses);
+    int[] inDegree = new int[numCourses];
+    Queue&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
+    int count = 0;
+
+    for (int i = 0; i &lt; numCourses; i++)
+        edges.add(new HashSet&lt;Integer&gt;());
+
+    for (int[] pre: prerequisites){
+        if (!edges.get(pre[0]).contains(pre[1])){
+            edges.get(pre[0]).add(pre[1]);
+            inDegree[pre[1]]++;
+        }
+    }
+
+    for (int i = 0; i &lt; inDegree.length; i++)
+        if (inDegree[i] == 0)
+            q.add(i);
+
+    while (!q.isEmpty()){
+        int i = q.poll();
+        count++;
+        while (edges.get(i).size() != 0){
+            int j = edges.get(i).iterator().next();
+            if (--inDegree[j] == 0)
+                q.add(j);
+            edges.get(i).remove(j);
+        }
+    }
+
+    return count == numCourses;
+}
+</code></pre><p>Simpler and more concise BFS solution:</p>
+<p>Reference: <a href="https://leetcode.com/discuss/35578/easy-bfs-topological-sort-java" target="_blank" rel="external">https://leetcode.com/discuss/35578/easy-bfs-topological-sort-java</a></p>
+<pre><code>public boolean canFinish(int numCourses, int[][] prerequisites) {
+    int[][] matrix = new int[numCourses][numCourses]; // i -&gt; j
+    int[] indegree = new int[numCourses];
+
+    for (int i=0; i&lt;prerequisites.length; i++) {
+        int ready = prerequisites[i][0];
+        int pre = prerequisites[i][1];
+        if (matrix[pre][ready] == 0)
+            indegree[ready]++; //duplicate case
+        matrix[pre][ready] = 1;
+    }
+
+    int count = 0;
+    Queue&lt;Integer&gt; queue = new LinkedList();
+    for (int i=0; i&lt;indegree.length; i++) {
+        if (indegree[i] == 0) queue.offer(i);
+    }
+    while (!queue.isEmpty()) {
+        int course = queue.poll();
+        count++;
+        for (int i=0; i&lt;numCourses; i++) {
+            if (matrix[course][i] != 0) {
+                if (--indegree[i] == 0)
+                    queue.offer(i);
+            }
+        }
+    }
+    return count == numCourses;
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/02/10/Leetcode-Course-Schedule-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
+			<div class="date"> 2016-02-09 </div>
+			<div class="article-title"><a href="/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" >Leetcode-Minimum Height Trees(Java)</a></div>						
+		</h3>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong>Question:</strong></p>
+<p>For a undirected graph with tree characteristics, we can choose any node as the root. The result graph is then a rooted tree. Among all possible rooted trees, those with minimum height are called minimum height trees (MHTs). Given such a graph, write a function to find all the MHTs and return a list of their root labels.</p>
+<p>Format<br>The graph contains n nodes which are labeled from 0 to n - 1. You will be given the number n and a list of undirected edges (each edge is a pair of labels).</p>
+<p>You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.</p>
+<p>Example 1:</p>
+<p>Given n = 4, edges = [[1, 0], [1, 2], [1, 3]]</p>
+<pre><code>  0
+  |
+  1
+ / \
+2   3
+</code></pre><p>return [1]</p>
+<p>Example 2:</p>
+<p>Given n = 6, edges = [[0, 3], [1, 3], [2, 3], [4, 3], [5, 4]]</p>
+<pre><code>0  1  2
+ \ | /
+   3
+   |
+   4
+   |
+   5
+</code></pre><p>return [3, 4]</p>
+<p>Hint:</p>
+<p>How many MHTs can a graph have at most?<br>Note:</p>
+<p>(1) According to the definition of tree on Wikipedia: “a tree is an undirected graph in which any two vertices are connected by exactly one path. In other words, any connected graph without simple cycles is a tree.”</p>
+<p>(2) The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.</p>
+<p><strong>Thinking:</strong></p>
+<p>We should track the path from every leaves until there are only one or two nodes left. In other words, in the middle of the graph will be the root of the minimum height tree.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
+    if (n == 1){
+        List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+        res.add(0);
+        return res;
+    }
+    List&lt;Integer&gt; leaves = new ArrayList&lt;Integer&gt;();
+    List&lt;Set&lt;Integer&gt;&gt; adj = new ArrayList&lt;Set&lt;Integer&gt;&gt;(n);
+    for (int i = 0; i &lt; n; i++)
+        adj.add(new HashSet&lt;Integer&gt;());
+    for (int[] edge: edges){
+        adj.get(edge[0]).add(edge[1]);
+        adj.get(edge[1]).add(edge[0]);
+    }
+    for (int i = 0; i &lt; n; i++){
+        if (adj.get(i).size() == 1)
+            leaves.add(i);
+    }
+
+    while (n &gt; 2){
+        n -= leaves.size();
+        List&lt;Integer&gt; newLeaves = new ArrayList&lt;Integer&gt;();
+        for (int i: leaves){
+            int j = adj.get(i).iterator().next();
+            adj.get(j).remove(i);
+            if (adj.get(j).size() == 1)
+                newLeaves.add(j);
+        }
+        leaves = newLeaves;
+    }
+
+    return leaves;
+}
+</code></pre><p>Reference:<a href="https://leetcode.com/discuss/71763/share-some-thoughts" target="_blank" rel="external">https://leetcode.com/discuss/71763/share-some-thoughts</a></p>
+<p>My previous code(LTE):</p>
+<pre><code>public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+    int min = Integer.MAX_VALUE;
+    int res1 = -1;
+    int res2 = -1;
+
+    for (int i = 0; i &lt; n; i++){
+        int temp = bfs(n, i, edges);
+        if (temp &lt; min){
+            min = temp;
+            res1 = i;
+        }
+        else if (temp == min){
+            res2 = i;
+        }
+    }
+
+    if (res1 != -1)
+        res.add(res1);
+    if (res2 != -1)
+        res.add(res2);
+
+    return res;
+}
+
+private int bfs(int n, int i, int[][] edges){
+    int height = 0;
+    boolean[] used = new boolean[edges.length];
+    Queue&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
+    q.add(i);
+
+    while (!q.isEmpty()){
+        int num = q.size();
+        while (num &gt; 0){
+            int temp = q.poll();
+            for (int j = 0; j &lt; edges.length; j++){
+                if (edges[j][0] == temp || edges[j][1] == temp){
+                    if (used[j] == false){
+                        if (edges[j][0] == temp)
+                            q.add(edges[j][1]);
+                        else
+                            q.add(edges[j][0]);
+                        used[j] = true;
+                    }
+                }
+            }
+            num--;
+        }
+        height++;
+    }
+
+    return height;
+}
+</code></pre>
+	
+	</div>
+  <a type="button" href="/2016/02/09/Leetcode-Minimum-Height-Trees-Java/#more" class="btn btn-default more">閱讀本文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->	
+		<h3 class="title">
 			<div class="date"> 2016-02-09 </div>
 			<div class="article-title"><a href="/2016/02/09/Leetcode-Next-Permutation-Java/" >Leetcode-Next Permutation(Java)</a></div>						
 		</h3>
@@ -293,287 +614,6 @@ private int binarySearch(int lo, int hi, int key, int[] sums) {
 </div>
 
 		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-02-09 </div>
-			<div class="article-title"><a href="/2016/02/09/Leetcode-Ugly-Number-II-Java/" >Leetcode-Ugly Number II(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Write a program to find the n-th ugly number.</p>
-<p>Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 is the sequence of the first 10 ugly numbers.</p>
-<p>Note that 1 is typically treated as an ugly number.</p>
-<p>Hint:</p>
-<p>The naive approach is to call isUgly for every number until you reach the nth one. Most numbers are not ugly. Try to focus your effort on generating only the ugly ones.<br>An ugly number must be multiplied by either 2, 3, or 5 from a smaller ugly number.<br>The key is how to maintain the order of the ugly numbers. Try a similar approach of merging from three sorted lists: L1, L2, and L3.<br>Assume you have Uk, the kth ugly number. Then Uk+1 must be Min(L1 <em> 2, L2 </em> 3, L3 * 5).</p>
-<p><strong>Thinking:</strong></p>
-<p>The main idea of this question is to maintain a min heap and get the minimum from the heap once. Because we can see that, the ugly numbers are as below:</p>
-<pre><code>(1) 1×2, 2×2, 3×2, 4×2, 5×2, …
-(2) 1×3, 2×3, 3×3, 4×3, 5×3, …
-(3) 1×5, 2×5, 3×5, 4×5, 5×5, …
-</code></pre><p>Furthermore, we can record different factor’s index in the primes in order to make the algorithm more effienct.</p>
-<p><strong>Solution:</strong></p>
-<p>(LTE)</p>
-<pre><code>public int nthUglyNumber1(int n){
-    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
-    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;();
-    heap.add(1);
-    int[] primes = {2, 3, 5};
-    while (res.size() != n) {
-        int num = heap.poll();
-        if (res.size() == 0 || num != res.get(res.size()-1))
-            res.add(num);
-        for ( int j = 0; j &lt; 3; j++){
-            heap.add(num * primes[j]);
-        }
-    }
-
-    return res.get(n-1);
-}
-</code></pre><p>(AC)</p>
-<pre><code>public int nthUglyNumber2(int n) {
-    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
-    res.add(1);
-    int[] index = new int[3];
-    int[] list = new int[3];
-    int[] primes = {2, 3, 5};
-    list[0] = 1;
-    list[1] = 1;
-    list[2] = 1;
-
-    for (int i = 1; i &lt; n; i++){
-        for (int j = 0; j &lt; 3; j++){
-            list[j] = res.get(index[j]) * primes[j];
-        }
-        res.add(Math.min(Math.min(list[0], list[1]), list[2]));
-        for (int j = 0; j &lt; 3; j++){
-            if (list[j] == res.get(res.size()-1))
-                index[j]++;
-        }
-    }
-
-    return res.get(n-1);
-}
-</code></pre><p>Reference: <a href="https://leetcode.com/discuss/52716/o-n-java-solution" target="_blank" rel="external">https://leetcode.com/discuss/52716/o-n-java-solution</a></p>
-
-	
-	</div>
-  <a type="button" href="/2016/02/09/Leetcode-Ugly-Number-II-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-02-09 </div>
-			<div class="article-title"><a href="/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/" >Leetcode-Serialize and Deserialize Binary Tree(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.</p>
-<p>Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.</p>
-<p>For example, you may serialize the following tree</p>
-<pre><code>  1
- / \
-2   3
-   / \
-  4   5
-</code></pre><p>as “[1,2,3,null,null,4,5]”, just the same as how LeetCode OJ serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.<br>Note: Do not use class member/global/static variables to store states. Your serialize and deserialize algorithms should be stateless.</p>
-<p><strong>Thinking:</strong></p>
-<p>There are serveral thinkings emerged in my mind when I first saw this question. Firstly, I want to finishi the normal method which is the same as the Leetcode presenting. But it is LTE. Then I searched on the Internet and found my solution’s lack and then solved it.</p>
-<p><strong>Solution:</strong></p>
-<p>Previous Code:</p>
-<pre><code>//normal method
-// Encodes a tree to a single string.
-public String serialize(TreeNode root) {
-    String res = &quot;&quot;;
-    if (root == null)
-        return res;
-    Queue&lt;TreeNode&gt; q = new LinkedList&lt;TreeNode&gt;();
-    q.add(root);
-    res += root.val + &quot;,&quot;;
-    while (!q.isEmpty()){
-        int num = q.size();
-        String nullstr = &quot;&quot;;
-        while (num &gt; 0){
-            TreeNode n = q.poll();
-            if (n.left != null){
-                q.add(n.left);
-                res += nullstr + n.left.val + &quot;,&quot;;
-            }
-            else{
-                nullstr += &quot;null,&quot;;
-            }
-            if (n.right != null){
-                q.add(n.right);
-                res += nullstr + n.right.val + &quot;,&quot;;
-            }
-            else{
-                nullstr += &quot;null,&quot;;
-            }
-            num--;
-        }
-    }
-
-    return res;
-}
-
-// Decodes your encoded data to tree.
-public TreeNode deserialize(String data) {
-    TreeNode root;
-    if(data.length() == 0)
-        return null;
-    String[] strs = data.split(&quot;,&quot;);
-    root = new TreeNode(Integer.parseInt(strs[0]));
-    bfs(root, strs, 1, true);
-    bfs(root, strs, 2, false);
-
-    return root;
-}
-private void bfs(TreeNode node, String[] strs, int index, boolean left){
-    if (index &gt;= strs.length)
-        return;
-    if (strs[index].equals(&quot;null&quot;))
-        return;
-    TreeNode newNode = new TreeNode(Integer.parseInt(strs[index]));
-    if (left){
-        node.left = newNode;
-    }
-    else{
-        node.right = newNode;
-    }
-    bfs(newNode, strs, index*2+1, true);
-    bfs(newNode, strs, index*2+2, false);
-}
-</code></pre><p>Reference Code(<a href="http://blog.csdn.net/ljiabin/article/details/49474445" target="_blank" rel="external">http://blog.csdn.net/ljiabin/article/details/49474445</a>):</p>
-<pre><code>public String serialize(TreeNode root) {
-    StringBuilder sb = new StringBuilder();
-
-    Queue&lt;TreeNode&gt; queue = new LinkedList&lt;TreeNode&gt;();
-    queue.offer(root);
-
-    while (!queue.isEmpty()) {
-        TreeNode node = queue.poll();
-        if (node == null) {
-            sb.append(&quot;null,&quot;);
-        } else {
-            sb.append(String.valueOf(node.val) + &quot;,&quot;);
-            queue.offer(node.left);
-            queue.offer(node.right);
-        }
-    }
-
-    return sb.toString();
-}
-
-// Decodes your encoded data to tree.
-public TreeNode deserialize(String data) {
-    if (data.isEmpty()) return null;
-
-    String[] vals = data.split(&quot;,&quot;);
-    int[] nums = new int[vals.length];
-    TreeNode[] nodes = new TreeNode[vals.length];
-
-    for (int i = 0; i &lt; vals.length; i++) {
-        if (i &gt; 0) {
-            nums[i] = nums[i - 1];
-        }
-        if (vals[i].equals(&quot;null&quot;)) {
-            nodes[i] = null;
-            nums[i]++;
-        } else {
-            nodes[i] = new TreeNode(Integer.parseInt(vals[i]));
-        }
-    }
-
-    for (int i = 0; i &lt; vals.length; i++) {
-        if (nodes[i] == null) {
-            continue;
-        }
-        nodes[i].left = nodes[2 * (i - nums[i]) + 1];
-        nodes[i].right = nodes[2 * (i - nums[i]) + 2];
-    }
-
-    return nodes[0];
-}
-</code></pre><p>}</p>
-
-	
-	</div>
-  <a type="button" href="/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->	
-		<h3 class="title">
-			<div class="date"> 2016-02-08 </div>
-			<div class="article-title"><a href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" >Leetcode-Remove Duplicates from Sorted List II(Java)</a></div>						
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><strong>Question:</strong></p>
-<p>Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.</p>
-<p>For example,<br>Given 1-&gt;2-&gt;3-&gt;3-&gt;4-&gt;4-&gt;5, return 1-&gt;2-&gt;5.<br>Given 1-&gt;1-&gt;1-&gt;2-&gt;3, return 2-&gt;3.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s similar with other linked list question. We should build a dummy node before the head. Hold three pointers to operate the next pointer of these nodes.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public ListNode deleteDuplicates(ListNode head) {
-    if (head == null)
-        return head;
-    ListNode dummy = new ListNode(head.val-1);
-    dummy.next = head;
-    ListNode pre = dummy;
-    ListNode p = head;
-    ListNode next = head.next;
-    while (next != null){
-        if (p.val == next.val){
-            while (next != null &amp;&amp; p.val == next.val){
-                next = next.next;
-            }
-            pre.next = next;
-            if (next == null){
-                break;
-            } else{
-                p = next;
-                next = next.next;
-            }
-        } else{
-            pre = p;
-            p = p.next;
-            next = next.next;
-        }
-    }
-
-    return dummy.next;
-}
-</code></pre>
-	
-	</div>
-  <a type="button" href="/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/#more" class="btn btn-default more">閱讀本文</a>
-</div>
-
-		
 
 		</div>
 
@@ -624,7 +664,7 @@ public TreeNode deserialize(String data) {
 		
 			<li><a href="/categories/Algorithm/">Algorithm<span>2</span></a></li>
 		
-			<li><a href="/categories/Leetcode/">Leetcode<span>41</span></a></li>
+			<li><a href="/categories/Leetcode/">Leetcode<span>42</span></a></li>
 		
 			<li><a href="/categories/Network/">Network<span>1</span></a></li>
 		
@@ -641,45 +681,45 @@ public TreeNode deserialize(String data) {
 		<h4>標籤雲</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Design/">Design<span>2</span></a></li>
-		
-			<li><a href="/tags/Graph/">Graph<span>3</span></a></li>
-		
-			<li><a href="/tags/Linked-List/">Linked List<span>2</span></a></li>
-		
-			<li><a href="/tags/Greedy/">Greedy<span>2</span></a></li>
-		
-			<li><a href="/tags/Union-Find/">Union Find<span>1</span></a></li>
-		
-			<li><a href="/tags/Trie/">Trie<span>1</span></a></li>
-		
-			<li><a href="/tags/Heap/">Heap<span>2</span></a></li>
-		
 			<li><a href="/tags/BFS/">BFS<span>4</span></a></li>
-		
-			<li><a href="/tags/String/">String<span>2</span></a></li>
-		
-			<li><a href="/tags/Array/">Array<span>7</span></a></li>
-		
-			<li><a href="/tags/Binary-Search/">Binary Search<span>2</span></a></li>
-		
-			<li><a href="/tags/Hash-Table/">Hash Table<span>3</span></a></li>
-		
-			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
 		
 			<li><a href="/tags/Bit-Manipulation/">Bit Manipulation<span>1</span></a></li>
 		
-			<li><a href="/tags/Stack/">Stack<span>1</span></a></li>
+			<li><a href="/tags/Hash-Table/">Hash Table<span>3</span></a></li>
+		
+			<li><a href="/tags/Binary-Search/">Binary Search<span>2</span></a></li>
+		
+			<li><a href="/tags/Greedy/">Greedy<span>2</span></a></li>
+		
+			<li><a href="/tags/Two-Points/">Two Points<span>2</span></a></li>
 		
 			<li><a href="/tags/Divide-and-Conquer/">Divide and Conquer<span>1</span></a></li>
 		
+			<li><a href="/tags/Two-Pointers/">Two Pointers<span>1</span></a></li>
+		
 			<li><a href="/tags/DFS/">DFS<span>2</span></a></li>
+		
+			<li><a href="/tags/Array/">Array<span>7</span></a></li>
+		
+			<li><a href="/tags/Trie/">Trie<span>1</span></a></li>
+		
+			<li><a href="/tags/Union-Find/">Union Find<span>1</span></a></li>
+		
+			<li><a href="/tags/Linked-List/">Linked List<span>2</span></a></li>
+		
+			<li><a href="/tags/Dynamic-Programming/">Dynamic Programming<span>2</span></a></li>
+		
+			<li><a href="/tags/Backtracing/">Backtracing<span>4</span></a></li>
+		
+			<li><a href="/tags/Math/">Math<span>2</span></a></li>
+		
+			<li><a href="/tags/Design/">Design<span>2</span></a></li>
 		
 			<li><a href="/tags/Topological-Sort/">Topological Sort<span>1</span></a></li>
 		
-			<li><a href="/tags/Tree/">Tree<span>1</span></a></li>
+			<li><a href="/tags/Graph/">Graph<span>3</span></a></li>
 		
-			<li><a href="/tags/Math/">Math<span>2</span></a></li>
+			<li><a href="/tags/String/">String<span>2</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>23</span></a></li>
@@ -695,23 +735,23 @@ public TreeNode deserialize(String data) {
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2016/02/14/Leetcode-Coin-Change-Java/" ><i class="fa fa-file-o"></i>Leetcode-Coin Change(Java)...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/02/13/Some-basic-problems/" ><i class="fa fa-file-o"></i>Some basic problems...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/02/13/Some-thoughts-about-interview/" ><i class="fa fa-file-o"></i>Some thoughts about intervi...</a>
+      </li>
+    
+      <li>
         <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/" ><i class="fa fa-file-o"></i>Leetcode-Majority Element I...</a>
       </li>
     
       <li>
         <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/" ><i class="fa fa-file-o"></i>Leetcode-Implement Trie (Pr...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/10/Leetcode-Sqrt-x-Java/" ><i class="fa fa-file-o"></i>Leetcode-Sqrt(x)(Java)...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/10/Leetcode-Course-Schedule-Java/" ><i class="fa fa-file-o"></i>Leetcode-Course Schedule(Ja...</a>
-      </li>
-    
-      <li>
-        <a href="/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" ><i class="fa fa-file-o"></i>Leetcode-Minimum Height Tre...</a>
       </li>
     
   </ul>

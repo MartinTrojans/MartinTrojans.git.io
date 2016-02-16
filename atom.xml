@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-02-11T02:46:22.000Z</updated>
+  <updated>2016-02-15T00:17:51.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,111 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Coin Change(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/"/>
+    <id>http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/</id>
+    <published>2016-02-15T00:11:50.000Z</published>
+    <updated>2016-02-15T00:17:51.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.</p>
+<p>Example 1:<br>coins = [1, 2, 5], amount = 11<br>return 3 (11 = 5 + 5 + 1)</p>
+<p>Example 2:<br>coins = [2], amount = 3<br>return -1.</p>
+<p>Note:<br>You may assume that you have an infinite number of each kind of coin.</p>
+<p><strong>Thinking:</strong></p>
+<p>In order to solve this problem, we can use dp which check whether choose current coin to make sure it’s minimum. But using function recursively will waste a lot of time. So we need to use extra space avoiding waste time. Then, we should build up a dp array accroding to the amount of money. Then update the dp value of different amout from zero to the target amout. The DP expression is: dp[i + coins[j]] = Math.min(dp[i + coins[j]], dp[i] + 1)</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int coinChange(int[] coins, int amount) {
+    int dp[] = new int[amount + 1];
+    for (int i = 1; i &lt;= amount; i++) dp[i] = Integer.MAX_VALUE-1;
+    for (int i = 0; i &lt;= amount; i++) {
+        for (int j = 0; j &lt; coins.length; j++) {
+            if (i + coins[j] &lt;= amount)
+                dp[i + coins[j]] = Math.min(dp[i + coins[j]], dp[i] + 1);
+        }
+    }
+    return dp[amount] == Integer.MAX_VALUE-1 ? -1 : dp[amount];
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>You are given coins of different denominations and a total amount of money amount. Write a function to ]]>
+    </summary>
+    
+      <category term="Dynamic Programming" scheme="http://yoursite.com/tags/Dynamic-Programming/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Some basic problems]]></title>
+    <link href="http://yoursite.com/2016/02/13/Some-basic-problems/"/>
+    <id>http://yoursite.com/2016/02/13/Some-basic-problems/</id>
+    <published>2016-02-13T23:55:10.000Z</published>
+    <updated>2016-02-13T23:56:22.000Z</updated>
+    <content type="html"><![CDATA[<ol>
+<li>Hanoi:</li>
+</ol>
+<p><img src="http://my.csdn.net/uploads/201204/23/1335186818_5426.jpg" alt=""></p>
+<pre><code>public  void move(int n,char a,char b,char c){  
+
+    if(n==1){  
+        System.out.println(&quot;move from &quot;+a+&quot; to &quot;+c);  
+    }else{  
+        move(n-1, a,c,b);  
+        move(1, a, b, c);  
+        move(n-1, b, a, c);  
+    }  
+}  
+</code></pre><ol>
+<li>Queue:</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<ol>
+<li>Hanoi:</li>
+</ol>
+<p><img src="http://my.csdn.net/uploads/201204/23/1335186818_5426.jpg" alt=""></p>
+<pre><code>public  void move(i]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Some thoughts about interview]]></title>
+    <link href="http://yoursite.com/2016/02/13/Some-thoughts-about-interview/"/>
+    <id>http://yoursite.com/2016/02/13/Some-thoughts-about-interview/</id>
+    <published>2016-02-13T22:52:22.000Z</published>
+    <updated>2016-02-14T00:01:24.000Z</updated>
+    <content type="html"><![CDATA[<p>These days, I have been asked by some questions in interviews. These are not quite difficult questions, but I suppose I didn’t behavior well. There are some reasons I think, and I have to improve it:</p>
+<ol>
+<li>I am not familiar with the simple and basic question so that I’m not very sure about the solution’s correctness and I have to review it again and again.</li>
+<li>My code is not so effienct and some of the interviewers had to remind me that. That’s really terrible but I think they are very nice to let me know that.</li>
+<li>My code is not so clean because I didn’t keep a clean mind that time. I suppose it’s kind of nervous that time though I didn’t realize that and I want to solve that problem too hurry. I need to relax my minds next time.</li>
+<li>What’s worse, I didn’t have nice communication with interviewers. Because of my bad English and bad preperation for interview. Sorry about that.</li>
+</ol>
+<p>And below are some questions I have to review:</p>
+<ol>
+<li>How to realize a queue or stack using array or linkedlist</li>
+<li>Binary search and whenever mentioning the sorted array, I think it should come into my mind immediately the binary search</li>
+<li>Graph theory about the DFS and BFS</li>
+<li>What’s difference between .equals and == in Java</li>
+<li>Heap and stack in java</li>
+<li>Some detials and desing thoughts of my projects</li>
+<li>ood  object oriented design principles (<a href="https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design" target="_blank" rel="external">https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design</a>)</li>
+<li>The comparasion between the methods of shortest path (<a href="http://developer.51cto.com/art/201105/262170.htm" target="_blank" rel="external">http://developer.51cto.com/art/201105/262170.htm</a>)</li>
+<li>Hanoi (<a href="http://blog.csdn.net/zhutulang/article/details/7491390" target="_blank" rel="external">http://blog.csdn.net/zhutulang/article/details/7491390</a>)</li>
+<li>Maze (<a href="http://baobaoyangzhou.blog.163.com/blog/static/11783125020104147195273/" target="_blank" rel="external">http://baobaoyangzhou.blog.163.com/blog/static/11783125020104147195273/</a>)</li>
+<li>The realization of DFS not using recursive (<a href="http://blog.csdn.net/lalor/article/details/6845788" target="_blank" rel="external">http://blog.csdn.net/lalor/article/details/6845788</a>) which use stack</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>These days, I have been asked by some questions in interviews. These are not quite difficult questions, but I suppose I didn’t behavior w]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Majority Element II(Java)]]></title>
@@ -1459,194 +1564,6 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
       <category term="Linked List" scheme="http://yoursite.com/tags/Linked-List/"/>
     
       <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Patching Array(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/02/Patching-Array-Java/"/>
-    <id>http://yoursite.com/2016/02/02/Patching-Array-Java/</id>
-    <published>2016-02-02T21:13:27.000Z</published>
-    <updated>2016-02-02T21:18:49.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given a sorted positive integer array nums and an integer n, add/patch elements to the array such that any number in range [1, n] inclusive can be formed by the sum of some elements in the array. Return the minimum number of patches required.</p>
-<p>Example 1:<br>nums = [1, 3], n = 6<br>Return 1.</p>
-<p>Combinations of nums are [1], [3], [1,3], which form possible sums of: 1, 3, 4.<br>Now if we add/patch 2 to nums, the combinations are: [1], [2], [3], [1,3], [2,3], [1,2,3].<br>Possible sums are 1, 2, 3, 4, 5, 6, which now covers the range [1, 6].<br>So we only need 1 patch.</p>
-<p>Example 2:<br>nums = [1, 5, 10], n = 20<br>Return 2.<br>The two patches can be [2, 4].</p>
-<p>Example 3:<br>nums = [1, 2, 2], n = 5<br>Return 0.</p>
-<p><strong>Thinking:</strong></p>
-<p>The first range we can cover of an array is total, then if we add a new element to this array and this element add &lt;= total, then the new range is [1, add+total). We should also care about the java maxint value, so if we use bit manipulation, it means it is bigger than maxint if total is smaller than zero.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int minPatches(int[] nums, int n) {
-    int total = 1; //total is the upper bound of the sum
-    int count = 0;
-    int index = 0;
-    int len = nums.length;
-
-    while (total &lt;= n) {
-        if (index &lt; len &amp;&amp; nums[index] &lt;= total){
-            total += nums[index++];
-        }
-        else{
-            total &lt;&lt;= 1;
-            count++;
-            if (total &lt; 0)
-                break;
-        }
-    }
-
-
-    return count;
-} 
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given a sorted positive integer array nums and an integer n, add/patch elements to the array such that ]]>
-    </summary>
-    
-      <category term="Greedy" scheme="http://yoursite.com/tags/Greedy/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Verify Preorder Serialization of a Binary Tree(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/"/>
-    <id>http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/</id>
-    <published>2016-02-02T06:40:06.000Z</published>
-    <updated>2016-02-02T07:18:34.000Z</updated>
-    <content type="html"><![CDATA[<p>One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node’s value. If it is a null node, we record using a sentinel value such as #.</p>
-<pre><code>     _9_
-    /   \
-   3     2
-  / \   / \
- 4   1  #  6
-/ \ / \   / \
-# # # #   # #
-</code></pre><p>For example, the above binary tree can be serialized to the string “9,3,4,#,#,1,#,#,2,#,6,#,#”, where # represents a null node.</p>
-<p>Given a string of comma separated values, verify whether it is a correct preorder traversal serialization of a binary tree. Find an algorithm without reconstructing the tree.</p>
-<p>Each comma separated value in the string must be either an integer or a character ‘#’ representing null pointer.</p>
-<p>You may assume that the input format is always valid, for example it could never contain two consecutive commas such as “1,,3”.</p>
-<p>Example 1:<br>“9,3,4,#,#,1,#,#,2,#,6,#,#”<br>Return true</p>
-<p>Example 2:<br>“1,#”<br>Return false</p>
-<p>Example 3:<br>“9,#,#,1”<br>Return false</p>
-<p><strong>Thinking:</strong></p>
-<p>Accroding to the correct answer given, we can find the pattern. We should start from # and use stack to store it. When get two #, we should get another element from the string. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public boolean isValidSerialization(String preorder) {
-    String[] strlist = preorder.split(&quot;,&quot;);
-    Stack&lt;String&gt; stack = new Stack&lt;String&gt;();
-    Stack&lt;String&gt; tempstack = new Stack&lt;String&gt;();
-
-    for (String s: strlist) {
-        stack.push(s);
-    }
-    while (!stack.isEmpty()) {
-        while (!stack.isEmpty() &amp;&amp; stack.peek().equals(&quot;#&quot;)){
-            tempstack.push(stack.pop());
-        }
-        if (tempstack.size() &lt; 2)
-            break;
-        while (tempstack.size() &gt;= 2 &amp;&amp; !stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
-            tempstack.pop();
-            tempstack.pop();
-            if (!stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
-                stack.pop();
-                tempstack.push(&quot;#&quot;);
-            }
-        }
-    }
-
-    if (tempstack.size() == 1 &amp;&amp; stack.isEmpty())
-        return true;
-    else
-        return false;
-}
-</code></pre><p>There is another simpler solution:</p>
-<pre><code>public boolean isValidSerialization(String preorder) {
-    String[] p = preorder.split(&quot;,&quot;);
-    int idx = 0; // stack
-    for (int i = 0; i &lt; p.length; i++) {
-    if (p[i].equals(&quot;#&quot;)) {
-        idx--;
-    } else {
-        if (idx &lt; 0) { // check
-          return false;
-        }
-        p[idx++] = p[i];
-      }
-    }
-    return idx == -1; // check
-  }
-</code></pre><p>Reference: <a href="https://leetcode.com/discuss/83903/share-my-java-solution" target="_blank" rel="external">https://leetcode.com/discuss/83903/share-my-java-solution</a></p>
-<p>And another much simplier solution which caculate the indegree and outdegree:</p>
-<pre><code>public boolean isValidSerialization2(String preorder) {
-    String[] nodes = preorder.split(&quot;,&quot;);
-    int diff = 1;
-    for (String node: nodes) {
-        if (--diff &lt; 0) return false;
-        if (!node.equals(&quot;#&quot;)) diff += 2;
-    }
-    return diff == 0;
-}
-</code></pre><p>Reference: <a href="https://www.hrwhisper.me/leetcode-algorithm-solution/" target="_blank" rel="external">https://www.hrwhisper.me/leetcode-algorithm-solution/</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node’s value. If it is]]>
-    </summary>
-    
-      <category term="Graph" scheme="http://yoursite.com/tags/Graph/"/>
-    
-      <category term="Stack" scheme="http://yoursite.com/tags/Stack/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[AI Note]]></title>
-    <link href="http://yoursite.com/2016/02/01/AI-Note/"/>
-    <id>http://yoursite.com/2016/02/01/AI-Note/</id>
-    <published>2016-02-01T23:25:11.000Z</published>
-    <updated>2016-02-02T00:56:02.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Lecture 1:</strong></p>
-<p><strong>Lecture 2:</strong></p>
-<ol>
-<li>What’s Agent?</li>
-<li>PEAS</li>
-</ol>
-<p><strong>Lecture 3:</strong></p>
-<ol>
-<li>Difference between tree search and graph search:<br> Graph search will record the explored nodes, and won’t explore them again.</li>
-</ol>
-<p><strong>Lecture 4:</strong></p>
-<ol>
-<li>DFS, BFS, uniform-cost search, interative deepening search, evaluating search performance about completeness, optimality, time and space complexity</li>
-<li>BFS:<br> Completeness: Yes(When b is finite)<br> Optimality: Yes(If path is nondecreasing)<br> Time: O(b^d)<br> Space: O(b^d)</li>
-<li>DFS:<br> Completeness: Yes(If graph search version)<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b*m)</li>
-<li>Uniform-cost search:<br> Completeness: Yes<br> Optimality: Yes(If path is nondecreasing)<br> Uniform-cost search not optimal if it is terminated when some node in the queue has goal state.</li>
-<li>Iterative deepening search:<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^d)<br> Space: O(bd)</li>
-</ol>
-<p><strong>Lecture 5:</strong></p>
-<ol>
-<li>Uniformed search, bi-directional search, informed search, greedy best first search, A*, interative deepening A*, recursive best first search, simplified memory-bounded A*</li>
-<li>Bidirectional search:<br> Search forward from initial state, and backward from goal.<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^(d/2)<br> Space: O(b^(d/2)</li>
-<li>Greedy best first search:<br> Greedy BFS keeps all the nodes generated in the<br>Frontier, which is sorted based on h(n).<br> Completeness: No<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b^m)</li>
-<li>A* Search:<br> Use (approximate) total path cost to guide search<br> Admissible Heurisitic: A heuristic is admissible if it never overestimates the cost to reach the goal<br> e.g. hSLD(n) is admissible because it never overestimates the actual road distance<br> Admissible heuristics does not guarantee that the chosen path is optimal<br> A heuristic is consistent if for every node n and every successor n’ of n generated by any action a<br>h(n) ≤ c(n,a,n’) + h(n’)<br> That is, f(n) is nondecreasing along every path.<br> Completeness: Yes<br> Optimality: Yes(if admissible in tree search or consistent in graph search)</li>
-<li>Recursive Best-Frist Search:<br> Keep track of f value (f-limit) of best sibling of path currently exploring<br> Space: O(bd)</li>
-<li>Memory-Bounded A*:<br>  I.e., expand best leaves until available memory is full;When full, SMA* drops worst leaf node (highest f-value);Like RBFS, backup forgotten node value to its parent</li>
-</ol>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Lecture 1:</strong></p>
-<p><strong>Lecture 2:</strong></p>
-<ol>
-<li>What’s Agent?</li>
-<li>PEAS</li>
-</ol>
-<p><strong>Lecture 3:<]]>
-    </summary>
     
   </entry>
   

@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/</loc>
+    <lastmod>2016-02-15T00:17:51.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/13/Some-thoughts-about-interview/</loc>
+    <lastmod>2016-02-14T00:01:24.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/13/Some-basic-problems/</loc>
+    <lastmod>2016-02-13T23:56:22.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/</loc>
     <lastmod>2016-02-12T05:44:37.000Z</lastmod>
   </url>
