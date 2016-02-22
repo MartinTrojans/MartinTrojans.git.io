@@ -68,6 +68,138 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Path-Sum-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/27/Leetcode-Path-Sum-II-Java/" class="article-date">
+  <time datetime="2016-01-27T22:11:58.000Z" itemprop="datePublished">2016-01-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/27/Leetcode-Path-Sum-II-Java/">Leetcode-Path Sum II(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a binary tree and a sum, find all root-to-leaf paths where each path’s sum equals the given sum.</p>
+<p>For example:<br>Given the below binary tree and sum = 22,</p>
+<pre><code>      5
+     / \
+    4   8
+   /   / \
+  11  13  4
+ /  \    / \
+7    2  5   1
+</code></pre><p>return</p>
+<pre><code>[
+      [5,4,11,2],
+       [5,8,4,5]
+]
+</code></pre><p><strong>Thinking:</strong></p>
+<p>We should use classic dfs method to solve this problem and record all the results.</p>
+<p><strong>Solution:</strong></p>
+<p>But my first version of solution is time limit exceeded:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int sum) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+
+    return dp(root, sum, res);
+}
+
+private List&lt;List&lt;Integer&gt;&gt; dp(TreeNode root, int sum, List&lt;Integer&gt; cur){
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    if (root == null)
+        return null;
+    if (root.left == null &amp;&amp; root.right == null){
+        if (root.val == sum){
+            cur.add(root.val);
+            res.add(cur);
+            return res;
+        }
+        else{
+            return res;
+        }
+    }
+    for (List&lt;Integer&gt; ele: dp(root.left, sum-root.val, cur)){
+        if (ele != null){
+            ele.add(0, root.val);
+            res.add(ele);
+        }
+    }
+    for (List&lt;Integer&gt; ele: dp(root.right, sum-root.val, cur)){
+        if (ele != null){
+            ele.add(0, root.val);
+            res.add(ele);
+        }
+    }
+
+    return res;
+}
+</code></pre><p>Then I have to improve the effiency of this algorithm, and the code is below:</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int sum) {
+    List&lt;Integer&gt; cur = new ArrayList&lt;Integer&gt;();
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+
+    dp(root, sum, cur, res);
+
+    return res;
+}
+
+private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt;Integer&gt;&gt; res){
+    if (root == null)
+        return;
+    //preorder dfs
+
+    sum -= root.val;
+    if (root.left == null &amp;&amp; root.right == null){
+        if (sum == 0){
+            cur.add(root.val);
+            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+            tempres.addAll(cur);
+            res.add(tempres);
+            cur.remove(cur.size() - 1);
+        }
+        return;
+    }
+    cur.add(root.val);
+    if (root.left != null){
+        dp(root.left, sum, cur, res);
+    }
+    if (root.right != null){
+        dp(root.right, sum, cur, res);
+    }
+    cur.remove(cur.size() - 1);
+}
+</code></pre><p>It’s very importatn to create a new List while put the current list data to final result, becuase if not we will only copy the address of this variable cur. Then it will be incorrect if we revise cur.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/" data-id="cikx8uogy0029m1owl3hk002r" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/27/hello-world/" class="article-date">
@@ -107,7 +239,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/hello-world/" data-id="cikx53mu90008hvowcrtu16k3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/27/hello-world/" data-id="cikx8uoff0008m1owgozu9qyt" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/27/hello-world/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -208,7 +340,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" data-id="cikx53mu20005hvow4to12npn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" data-id="cikx8uof80005m1ow9rjjivqg" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -333,7 +465,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Triangle/" data-id="cikx53mv4001chvowtw6k2nmy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Triangle/" data-id="cikx8uoga001cm1owah686xz1" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/27/Leetcode-Triangle/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -447,109 +579,9 @@ name1=value1&amp;name2=value2
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/" data-id="cikx53mx6004vhvowf9efcm8s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/" data-id="cikx8uoip004ym1owhclyrgct" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" class="article-date">
-  <time datetime="2016-01-27T06:28:05.000Z" itemprop="datePublished">2016-01-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/">Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
-<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
-<p><strong>Thinking:</strong></p>
-<p>This question is similar with Construct Binary Tree from Inorder and Postorder Traversal. We should understand the differences and the sequences of these three methods. And divide into three parts- root, left child and right child.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public TreeNode buildTree(int[] preorder, int[] inorder) {
-    int l = preorder.length;
-    if (l == 0)
-        return null;
-
-
-    return dp(preorder, inorder, 0, l-1, 0, l-1);
-    }
-
-    private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
-    if (preStart &gt; preEnd || preEnd &gt;= preorder.length || inEnd &gt;= preorder.length)
-        return null;
-    TreeNode root = new TreeNode(preorder[preStart]);
-    int index = inStart;
-    for (; index &lt; inEnd; index++){
-        if (inorder[index] == preorder[preStart])
-            break;
-    }
-
-    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
-    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
-    root.left = left;
-    root.right = right;
-
-    return root;
-}    
-</code></pre><p>This method can be improved by using HashMap to make it faster when fiding the index of root.<br>Reference:<a href="http://blog.csdn.net/linhuanmars/article/details/24389549" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24389549</a><br>Code:</p>
-<pre><code>static HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-    int l = preorder.length;
-    if (l == 0)
-        return null;
-    for (int i = 0; i &lt; l; i++)
-        map.put(inorder[i], i);
-
-    return dp(preorder, inorder, 0, l-1, 0, l-1);
-}
-
-private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
-    if (preStart &gt; preEnd || inStart &gt; inEnd)
-        return null;
-    TreeNode root = new TreeNode(preorder[preStart]);
-
-    int index = map.get(preorder[preStart]);
-
-    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
-    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
-    root.left = left;
-    root.right = right;
-
-    return root;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" data-id="cikx53mwr0043hvowpa3rkpdh" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -592,7 +624,7 @@ private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 12.5px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 15px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -614,6 +646,10 @@ private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int
       <ul>
         
           <li>
+            <a href="/2016/02/21/Leetcode-Additive-Number-Java/">Leetcode-Additive Number(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/14/Leetcode-Coin-Change-Java/">Leetcode-Coin Change(Java)</a>
           </li>
         
@@ -627,10 +663,6 @@ private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int
         
           <li>
             <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/">Leetcode-Implement Trie (Prefix Tree)(Java)</a>
           </li>
         
       </ul>

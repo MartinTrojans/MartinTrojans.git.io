@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-02-15T00:17:51.000Z</updated>
+  <updated>2016-02-22T00:27:17.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,69 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Additive Number(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/21/Leetcode-Additive-Number-Java/"/>
+    <id>http://yoursite.com/2016/02/21/Leetcode-Additive-Number-Java/</id>
+    <published>2016-02-22T00:23:12.000Z</published>
+    <updated>2016-02-22T00:27:17.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Additive number is a string whose digits can form additive sequence.</p>
+<p>A valid additive sequence should contain at least three numbers. Except for the first two numbers, each subsequent number in the sequence must be the sum of the preceding two.</p>
+<p>For example:<br>“112358” is an additive number because the digits can form an additive sequence: 1, 1, 2, 3, 5, 8.</p>
+<p>1 + 1 = 2, 1 + 2 = 3, 2 + 3 = 5, 3 + 5 = 8<br>“199100199” is also an additive number, the additive sequence is: 1, 99, 100, 199.<br>1 + 99 = 100, 99 + 100 = 199<br>Note: Numbers in the additive sequence cannot have leading zeros, so sequence 1, 2, 03 or 1, 02, 3 is invalid.</p>
+<p>Given a string containing only digits ‘0’-‘9’, write a function to determine if it’s an additive number.</p>
+<p>Follow up:<br>How would you handle overflow for very large input integers?</p>
+<p><strong>Thinking:</strong></p>
+<p>I noticed that it’s only different in the first time in the iteration becuase we know nothing about the first element. But when found it, we can use the previous two elements to check the next one. So in the first function, we enumerate the first two elements, and check the rest string if it’s valid recursively.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean isAdditiveNumber(String num) {
+
+    int len = num.length();
+
+    long num1 = 0;
+    long num2 = 0;
+    //find the first two elements first
+    for (int i = 1; 2*i+1 &lt;= len; i++){
+        for (int j = 1; Math.max(i, j) &lt;= len-i-j; j++){
+            if (num.charAt(0) == &apos;0&apos; &amp;&amp; i &gt; 1)    return false;//if first char is 0, then it only can be 0
+            num1 = Long.parseLong(num.substring(0, i));
+            if (num.charAt(i) == &apos;0&apos; &amp;&amp; j &gt; 1)    break;//if second element start with 0, then it only can be 0
+            num2 = Long.parseLong(num.substring(i, i+j));
+            if (isValid(num1, num2, i+j, num))//check the rest recursively
+                return true;
+        }
+    }
+
+    return false;
+}
+
+private boolean isValid(long i, long j, int start, String num){
+    if (start == num.length())    return true;//no rest chars left, success
+    if (num.charAt(start) == &apos;0&apos;)    return false;
+    long sum = 0;
+    for (int idx = start+1; idx &lt;= num.length(); idx++){
+        sum = Long.parseLong(num.substring(start, idx));
+        if (sum - i &gt; j)
+            return false;
+        if (sum - i == j)
+            return isValid(j, sum, idx, num);
+    }
+    return false;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Additive number is a string whose digits can form additive sequence.</p>
+<p>A valid additive sequence s]]>
+    </summary>
+    
+      <category term="String" scheme="http://yoursite.com/tags/String/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Coin Change(Java)]]></title>
@@ -1504,64 +1567,6 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
       <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
     
       <category term="Backtracing" scheme="http://yoursite.com/tags/Backtracing/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Reverse Linked List II(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/"/>
-    <id>http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/</id>
-    <published>2016-02-02T21:50:10.000Z</published>
-    <updated>2016-02-02T23:09:54.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Reverse a linked list from position m to n. Do it in-place and in one-pass.</p>
-<p>For example:<br>Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, m = 2 and n = 4,</p>
-<p>return 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;NULL.</p>
-<p>Note:<br>Given m, n satisfy the following condition:<br>1 ≤ m ≤ n ≤ length of list.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s similar with Reverse Linked List, only thing different is to limit the range. So we should to find the start of the reversed linked list and record its previous node. Also, we should add a dummy node for easily operator with the first node. Then use three points as usual pre, cur and next to operate and change the nodes’ next pointers.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public ListNode reverseBetween(ListNode head, int m, int n) {
-    if (m == n)
-        return head;
-    ListNode prehead = new ListNode(0);//dummy
-    prehead.next = head;
-    ListNode pre = prehead;
-    ListNode cur = head;
-    int idx = 1;
-
-    while (idx &lt; m) {
-        pre = cur;
-        cur = cur.next;
-        idx++;
-    }
-    ListNode prerever = pre;
-    ListNode next = null;
-    pre = cur;
-    cur = cur.next;
-    while (idx &lt; n) {
-        next = cur.next;
-        cur.next = pre;
-        pre = cur;
-        cur = next;
-        idx++;
-    }
-    prerever.next.next = cur;
-    prerever.next = pre;
-
-
-    return prehead.next;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Reverse a linked list from position m to n. Do it in-place and in one-pass.</p>
-<p>For example:<br>Give]]>
-    </summary>
-    
-      <category term="Linked List" scheme="http://yoursite.com/tags/Linked-List/"/>
     
       <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
     

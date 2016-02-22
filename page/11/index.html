@@ -68,6 +68,115 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Partition-List" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/24/Leetcode-Partition-List/" class="article-date">
+  <time datetime="2016-01-25T03:14:31.000Z" itemprop="datePublished">2016-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/24/Leetcode-Partition-List/">Leetcode-Partition List(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</p>
+<p>You should preserve the original relative order of the nodes in each of the two partitions.</p>
+<p>For example,<br>Given 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2 and x = 3,<br>return 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5.</p>
+<p><strong>Thinking:</strong></p>
+<p>We should preserve the original relative order of the nodes. So we need two points, one is for recording where to insert the less value node, and the other is for searching the less value node.</p>
+<p><strong>Solution1:</strong></p>
+<pre><code>public class Solution {
+    public ListNode partition(ListNode head, int x) {
+        if (head == null)
+            return null;
+        ListNode prehead = new ListNode(0);
+        prehead.next = head;
+        ListNode s = prehead;
+        ListNode l = prehead;
+        while(s != null &amp;&amp; l != null){
+            while(s.next != null){
+                if (s.next.val &gt;= x)
+                    break;
+                s = s.next;
+            }
+            l = s.next;
+            if (l == null)
+                break;
+            while(l.next != null){
+                if (l.next.val &lt; x)
+                    break;
+                l = l.next;
+            }
+            if (l.next == null)
+                break;
+            ListNode tmp = l.next;
+            l.next = l.next.next;
+            tmp.next = s.next;
+            s.next = tmp;
+        }
+
+        return prehead.next;
+    }
+
+}
+</code></pre><p>And there is another solution, which uses two lists. One is for recording less value node, and the other is for recording greater value node. And connect them:</p>
+<pre><code>public ListNode partition(ListNode head, int x) {
+        if(head==null||head.next==null)
+            return head;
+
+        ListNode small = new ListNode(-1);
+        ListNode newsmallhead = small;
+        ListNode big = new ListNode(-1);
+        ListNode newbighead = big;
+
+        while(head!=null){
+            if(head.val&lt;x){
+                small.next = head;
+                small = small.next;
+            }else{
+                big.next = head;
+                big = big.next;
+            }
+            head = head.next;
+        }
+        big.next = null;
+
+        small.next = newbighead.next;
+
+        return newsmallhead.next;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Partition-List/" data-id="cikx8uogz002bm1owaneix4p7" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/24/Leetcode-Partition-List/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Unique-Paths-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/24/Leetcode-Unique-Paths-II-Java/" class="article-date">
@@ -146,7 +255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/" data-id="cikx53muw000whvow4k8p1ikl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/" data-id="cikx8uog2000wm1owax4c4bm1" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -242,7 +351,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/" data-id="cikx53muf000chvow6dnt2yjl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/" data-id="cikx8uofk000cm1owo4th7cys" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -317,7 +426,7 @@ public int rangeBitwiseAnd(int m, int n) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" data-id="cikx53mwx004ehvowr91ofs4r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" data-id="cikx8uoi5004em1owgw4ti4eu" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -362,7 +471,7 @@ public int rangeBitwiseAnd(int m, int n) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 12.5px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 15px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -384,6 +493,10 @@ public int rangeBitwiseAnd(int m, int n) {
       <ul>
         
           <li>
+            <a href="/2016/02/21/Leetcode-Additive-Number-Java/">Leetcode-Additive Number(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/14/Leetcode-Coin-Change-Java/">Leetcode-Coin Change(Java)</a>
           </li>
         
@@ -397,10 +510,6 @@ public int rangeBitwiseAnd(int m, int n) {
         
           <li>
             <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/">Leetcode-Implement Trie (Prefix Tree)(Java)</a>
           </li>
         
       </ul>

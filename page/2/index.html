@@ -68,6 +68,124 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Implement-Trie-Prefix-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/" class="article-date">
+  <time datetime="2016-02-11T01:06:45.000Z" itemprop="datePublished">2016-02-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/">Leetcode-Implement Trie (Prefix Tree)(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Implement a trie with insert, search, and startsWith methods.</p>
+<p>Note:<br>You may assume that all inputs are consist of lowercase letters a-z.</p>
+<p><strong>Thinking:</strong></p>
+<p>I assume every node has no val, but edges do. So I keep a HashMap for everynode. What’s more, in order to determine whether this node is a leave, I add another boolean value.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>import java.util.HashMap;
+
+class TrieNode {
+    HashMap&lt;Character, TrieNode&gt; edges = new HashMap&lt;Character, TrieNode&gt;();
+    boolean leave = false;
+    // Initialize your data structure here.
+    public TrieNode() {
+    }
+}
+
+public class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        TrieNode cur = root;
+        for (char c: word.toCharArray()){
+            if (!cur.edges.containsKey(c)){
+                TrieNode newNode = new TrieNode();
+                cur.edges.put(c, newNode);
+                cur = newNode;
+
+            }
+            else {
+                cur = cur.edges.get(c);
+            }
+        }
+        cur.leave = true;
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        TrieNode cur = root;
+        for (char c: word.toCharArray()){
+            if (!cur.edges.containsKey(c)){
+                return false;
+            }
+            else{
+                cur = cur.edges.get(c);
+            }
+        }
+        return cur.leave;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        TrieNode cur = root;
+        for (char c: prefix.toCharArray()){
+            if (!cur.edges.containsKey(c)){
+                return false;
+            }
+            else{
+                cur = cur.edges.get(c);
+            }
+        }
+        return true;
+    }
+}
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie = new Trie();
+// trie.insert(&quot;somestring&quot;);
+// trie.search(&quot;key&quot;);
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/" data-id="cikx8uohp003fm1owz6z9e3nt" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Design/">Design</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Trie/">Trie</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Sqrt-x-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/10/Leetcode-Sqrt-x-Java/" class="article-date">
@@ -120,7 +238,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/" data-id="cikx53mv6001ehvowdwe4eval" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/" data-id="cikx8uogc001em1owrb5pr6v8" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -283,7 +401,7 @@ private boolean dfs(ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges, int i, boolea
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/" data-id="cikx53mwp003whvow67ayvax9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/" data-id="cikx8uohx003wm1ow7og0up2u" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -444,7 +562,7 @@ private int bfs(int n, int i, int[][] edges){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" data-id="cikx53mw5002vhvowxuwdejsr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" data-id="cikx8uohd002vm1owlei16a1u" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/09/Leetcode-Minimum-Height-Trees-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -530,156 +648,11 @@ private void reverse(int[] nums, int i, int j){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/" data-id="cikx53mw1002ohvow3vsao2os" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/" data-id="cikx8uoh7002om1owg6i8zvhs" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Minimum-Size-Subarray-Sum-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/" class="article-date">
-  <time datetime="2016-02-10T02:56:42.000Z" itemprop="datePublished">2016-02-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/">Leetcode-Minimum Size Subarray Sum(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn’t one, return 0 instead.</p>
-<p>For example, given the array [2,3,1,2,4,3] and s = 7,<br>the subarray [4,3] has the minimal length under the problem constraint.</p>
-<p>click to show more practice.</p>
-<p>More practice:<br>If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log n).</p>
-<p><strong>Thinking:</strong></p>
-<p>My method is to hold two pointers, one for current index and the other is for the start pointer. Once we find the sum is bigger than target, we increse the startIndex until its sum is smaller than target. Do it while find the minmun of the length.</p>
-<p>But there is still more effienct way to solve this problem. We don’t need to reset the startIndex and sum, we just keep it. And it will be the O(n) solution. (Which called a minmum window method I suppose.)</p>
-<p>What’s more, binary search is also valid for this problem. Since all elements are positive, the cumulative sum must be strictly increasing. Then, a subarray sum can expressed as the difference between two cumulative sum. Hence, given a start index for the cumulative sum array, the other end index can be searched using binary search.</p>
-<p><strong>Solution:</strong></p>
-<p>First version:</p>
-<pre><code>public int minSubArrayLen(int s, int[] nums) {
-    int min = Integer.MAX_VALUE;
-    boolean flag = false;
-    int temp = 0;
-    int startIndex = 0;
-
-    for ( int i = 0; i &lt; nums.length; i++ ){
-         temp += nums[i];
-         if (temp &gt;= s){
-             while (temp &gt;= s){
-                 flag = true;
-                 temp -= nums[startIndex++];
-             }
-             int len = i - startIndex + 2;
-             i = startIndex-1;
-             if (len &lt; min)
-                 min = len;
-             temp = 0;
-         }
-
-    }
-    if (flag)
-        return min;
-    else
-        return 0;
-}
-</code></pre><p>Revised version:</p>
-<pre><code>public int minSubArrayLen(int s, int[] nums) {
-    int min = Integer.MAX_VALUE;
-    boolean flag = false;
-    int temp = 0;
-    int startIndex = 0;
-
-    for ( int i = 0; i &lt; nums.length; i++ ){
-         temp += nums[i];
-         if (temp &gt;= s){
-             while (temp &gt;= s){
-                 flag = true;
-                 temp -= nums[startIndex++];
-             }
-             int len = i - startIndex + 2;
-             if (len &lt; min)
-                 min = len;
-         }
-
-    }
-    if (flag)
-        return min;
-    else
-        return 0;
-}
-</code></pre><p>Reference Code:(Including O(n) and O(nlgn))<br>Reference:<a href="https://leetcode.com/discuss/35378/solutions-java-with-time-complexity-nlogn-with-explanation" target="_blank" rel="external">https://leetcode.com/discuss/35378/solutions-java-with-time-complexity-nlogn-with-explanation</a></p>
-<pre><code>public int minSubArrayLen(int s, int[] nums) {
-    return solveNLogN(s, nums);
-}
-
-private int solveN(int s, int[] nums) {
-    int start = 0, end = 0, sum = 0, minLen = Integer.MAX_VALUE;
-    while (end &lt; nums.length) {
-        while (end &lt; nums.length &amp;&amp; sum &lt; s) sum += nums[end++];
-        if (sum &lt; s) break;
-        while (start &lt; end &amp;&amp; sum &gt;= s) sum -= nums[start++];
-        if (end - start + 1 &lt; minLen) minLen = end - start + 1;
-    }
-    return minLen == Integer.MAX_VALUE ? 0 : minLen;
-}
-
-private int solveNLogN(int s, int[] nums) {
-    int[] sums = new int[nums.length + 1];
-    for (int i = 1; i &lt; sums.length; i++) sums[i] = sums[i - 1] + nums[i - 1];
-    int minLen = Integer.MAX_VALUE;
-    for (int i = 0; i &lt; sums.length; i++) {
-        int end = binarySearch(i + 1, sums.length - 1, sums[i] + s, sums);
-        if (end == sums.length) break;
-        if (end - i &lt; minLen) minLen = end - i;
-    }
-    return minLen == Integer.MAX_VALUE ? 0 : minLen;
-}
-
-private int binarySearch(int lo, int hi, int key, int[] sums) {
-    while (lo &lt;= hi) {
-       int mid = (lo + hi) / 2;
-       if (sums[mid] &gt;= key){
-           hi = mid - 1;
-       } else {
-           lo = mid + 1;
-       }
-    }
-    return lo;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/" data-id="cikx53mw3002phvow9flgh42p" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li></ul>
-
     </footer>
   </div>
   
@@ -720,7 +693,7 @@ private int binarySearch(int lo, int hi, int key, int[] sums) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 12.5px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 15px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -742,6 +715,10 @@ private int binarySearch(int lo, int hi, int key, int[] sums) {
       <ul>
         
           <li>
+            <a href="/2016/02/21/Leetcode-Additive-Number-Java/">Leetcode-Additive Number(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/14/Leetcode-Coin-Change-Java/">Leetcode-Coin Change(Java)</a>
           </li>
         
@@ -755,10 +732,6 @@ private int binarySearch(int lo, int hi, int key, int[] sums) {
         
           <li>
             <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/">Leetcode-Implement Trie (Prefix Tree)(Java)</a>
           </li>
         
       </ul>

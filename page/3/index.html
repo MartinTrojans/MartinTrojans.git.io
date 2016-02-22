@@ -68,6 +68,151 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Minimum-Size-Subarray-Sum-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/" class="article-date">
+  <time datetime="2016-02-10T02:56:42.000Z" itemprop="datePublished">2016-02-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/">Leetcode-Minimum Size Subarray Sum(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn’t one, return 0 instead.</p>
+<p>For example, given the array [2,3,1,2,4,3] and s = 7,<br>the subarray [4,3] has the minimal length under the problem constraint.</p>
+<p>click to show more practice.</p>
+<p>More practice:<br>If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log n).</p>
+<p><strong>Thinking:</strong></p>
+<p>My method is to hold two pointers, one for current index and the other is for the start pointer. Once we find the sum is bigger than target, we increse the startIndex until its sum is smaller than target. Do it while find the minmun of the length.</p>
+<p>But there is still more effienct way to solve this problem. We don’t need to reset the startIndex and sum, we just keep it. And it will be the O(n) solution. (Which called a minmum window method I suppose.)</p>
+<p>What’s more, binary search is also valid for this problem. Since all elements are positive, the cumulative sum must be strictly increasing. Then, a subarray sum can expressed as the difference between two cumulative sum. Hence, given a start index for the cumulative sum array, the other end index can be searched using binary search.</p>
+<p><strong>Solution:</strong></p>
+<p>First version:</p>
+<pre><code>public int minSubArrayLen(int s, int[] nums) {
+    int min = Integer.MAX_VALUE;
+    boolean flag = false;
+    int temp = 0;
+    int startIndex = 0;
+
+    for ( int i = 0; i &lt; nums.length; i++ ){
+         temp += nums[i];
+         if (temp &gt;= s){
+             while (temp &gt;= s){
+                 flag = true;
+                 temp -= nums[startIndex++];
+             }
+             int len = i - startIndex + 2;
+             i = startIndex-1;
+             if (len &lt; min)
+                 min = len;
+             temp = 0;
+         }
+
+    }
+    if (flag)
+        return min;
+    else
+        return 0;
+}
+</code></pre><p>Revised version:</p>
+<pre><code>public int minSubArrayLen(int s, int[] nums) {
+    int min = Integer.MAX_VALUE;
+    boolean flag = false;
+    int temp = 0;
+    int startIndex = 0;
+
+    for ( int i = 0; i &lt; nums.length; i++ ){
+         temp += nums[i];
+         if (temp &gt;= s){
+             while (temp &gt;= s){
+                 flag = true;
+                 temp -= nums[startIndex++];
+             }
+             int len = i - startIndex + 2;
+             if (len &lt; min)
+                 min = len;
+         }
+
+    }
+    if (flag)
+        return min;
+    else
+        return 0;
+}
+</code></pre><p>Reference Code:(Including O(n) and O(nlgn))<br>Reference:<a href="https://leetcode.com/discuss/35378/solutions-java-with-time-complexity-nlogn-with-explanation" target="_blank" rel="external">https://leetcode.com/discuss/35378/solutions-java-with-time-complexity-nlogn-with-explanation</a></p>
+<pre><code>public int minSubArrayLen(int s, int[] nums) {
+    return solveNLogN(s, nums);
+}
+
+private int solveN(int s, int[] nums) {
+    int start = 0, end = 0, sum = 0, minLen = Integer.MAX_VALUE;
+    while (end &lt; nums.length) {
+        while (end &lt; nums.length &amp;&amp; sum &lt; s) sum += nums[end++];
+        if (sum &lt; s) break;
+        while (start &lt; end &amp;&amp; sum &gt;= s) sum -= nums[start++];
+        if (end - start + 1 &lt; minLen) minLen = end - start + 1;
+    }
+    return minLen == Integer.MAX_VALUE ? 0 : minLen;
+}
+
+private int solveNLogN(int s, int[] nums) {
+    int[] sums = new int[nums.length + 1];
+    for (int i = 1; i &lt; sums.length; i++) sums[i] = sums[i - 1] + nums[i - 1];
+    int minLen = Integer.MAX_VALUE;
+    for (int i = 0; i &lt; sums.length; i++) {
+        int end = binarySearch(i + 1, sums.length - 1, sums[i] + s, sums);
+        if (end == sums.length) break;
+        if (end - i &lt; minLen) minLen = end - i;
+    }
+    return minLen == Integer.MAX_VALUE ? 0 : minLen;
+}
+
+private int binarySearch(int lo, int hi, int key, int[] sums) {
+    while (lo &lt;= hi) {
+       int mid = (lo + hi) / 2;
+       if (sums[mid] &gt;= key){
+           hi = mid - 1;
+       } else {
+           lo = mid + 1;
+       }
+    }
+    return lo;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/" data-id="cikx8uoha002pm1oweas6tfzx" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Ugly-Number-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/09/Leetcode-Ugly-Number-II-Java/" class="article-date">
@@ -153,7 +298,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Ugly-Number-II-Java/" data-id="cikx53muy000yhvowzgyk3p4j" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Ugly-Number-II-Java/" data-id="cikx8uog3000ym1owfpdur9a6" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/09/Leetcode-Ugly-Number-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -325,7 +470,7 @@ public TreeNode deserialize(String data) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/" data-id="cikx53mva001jhvowuk2u9706" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/" data-id="cikx8uogg001jm1ow2dsymhmb" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -404,7 +549,7 @@ public TreeNode deserialize(String data) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" data-id="cikx53mvm0021hvowe2n7g99k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" data-id="cikx8uogq0021m1owhpn51oix" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -488,157 +633,12 @@ public TreeNode deserialize(String data) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/08/Leetcode-Group-Anagrams-Java/" data-id="cikx53mwj003khvowayjewtna" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/08/Leetcode-Group-Anagrams-Java/" data-id="cikx8uohr003km1owwm0uzjfn" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/08/Leetcode-Group-Anagrams-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Number-of-Islands-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/05/Leetcode-Number-of-Islands-Java/" class="article-date">
-  <time datetime="2016-02-06T07:08:03.000Z" itemprop="datePublished">2016-02-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/05/Leetcode-Number-of-Islands-Java/">Leetcode-Number of Islands(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a 2d grid map of ‘1’s (land) and ‘0’s (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.</p>
-<p>Example 1:</p>
-<pre><code>11110
-11010
-11000
-00000
-</code></pre><p>Answer: 1</p>
-<p>Example 2:</p>
-<pre><code>11000
-11000
-00100
-00011
-</code></pre><p>Answer: 3</p>
-<p><strong>Thinking:</strong></p>
-<p>If we find a island that we didn’t find before, we will use DFS or BFS find the whole land and change its value which will avoid find it again next time.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>private int m, n;
-
-public int numIslands(char[][] grid) {
-    m = grid.length;
-    if (m == 0) return 0;
-    n = grid[0].length;
-    if (n == 0) return 0;
-
-    int ans = 0;
-    for (int i = 0; i &lt; m; i++) {
-        for (int j = 0; j &lt; n; j++) {
-            if (grid[i][j] != &apos;1&apos;) continue;
-
-            ans++;
-            dfs(grid, i, j);
-        }
-    }
-    return ans;
-}
-
-
-public void dfs(char[][] grid, int i, int j) {
-    if (i &lt; 0 || i &gt;= m || j &lt; 0 || j &gt;= n) return;
-
-    if (grid[i][j] == &apos;1&apos;) {
-        grid[i][j] = &apos;2&apos;;
-        dfs(grid, i - 1, j);
-        dfs(grid, i + 1, j);
-        dfs(grid, i, j - 1);
-        dfs(grid, i, j + 1);
-    }
-}
-</code></pre><p>Reference: <a href="http://blog.csdn.net/ljiabin/article/details/44975717" target="_blank" rel="external">http://blog.csdn.net/ljiabin/article/details/44975717</a></p>
-<p><strong>My Stupid Solution::</strong></p>
-<pre><code>int res = 0;
-public int numIslands(char[][] grid) {
-    int rl = grid.length;
-    if (rl == 0)
-        return 0;
-    int cl = grid[0].length;
-    int[][] record = new int[rl][cl];
-    int[][] visited = new int[rl][cl];
-
-
-    for (int i = 0; i &lt; rl; i++) {
-        for (int j = 0; j &lt; cl; j++) {
-            dfsCheck(i, j, grid, record, visited);
-        }
-    }
-    return res;
-}
-
-private void dfsCheck(int m, int n, char[][] grid, int[][] record, int[][] visited){
-    if (visited[m][n] == 1)
-        return;
-    visited[m][n] = 1;
-    int flag = 0;
-    if (grid[m][n] == &apos;1&apos;){
-        if (record[m][n] == 0){
-            for (int i = -1; i &lt; 2; i++){
-                for (int j = -1; j &lt; 2; j++){
-                    if (m+i&gt;=0 &amp;&amp; m+i &lt;grid.length &amp;&amp; n+j&gt;=0 &amp;&amp; n+j&lt;grid[0].length &amp;&amp; (i+j == -1 || i+j == 1)){
-                        if (record[m+i][n+j] != 0){
-                            record[m][n] = record[m+i][n+j];
-                            flag = 1;
-                        }
-                    }
-                }
-            }
-            if (flag == 0)
-                record[m][n] = ++res;
-        }
-
-        //extension
-        for (int i = -1; i &lt; 2; i++){
-            for (int j = -1; j &lt; 2; j++){
-                if (m+i&gt;=0 &amp;&amp; m+i &lt;grid.length &amp;&amp; n+j&gt;=0 &amp;&amp; n+j&lt;grid[0].length &amp;&amp; (i+j == -1 || i+j == 1)){
-                    if (grid[m+i][n+j] == &apos;1&apos; &amp;&amp; visited[m+i][n+j] == 0)
-                        dfsCheck(m+i, n+j, grid, record, visited);
-                }
-            }
-        }
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/05/Leetcode-Number-of-Islands-Java/" data-id="cikx53mvx002ghvowv17qvng5" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/05/Leetcode-Number-of-Islands-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFS/">BFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DFS/">DFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
 
     </footer>
   </div>
@@ -680,7 +680,7 @@ private void dfsCheck(int m, int n, char[][] grid, int[][] record, int[][] visit
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 12.5px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 15px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -702,6 +702,10 @@ private void dfsCheck(int m, int n, char[][] grid, int[][] record, int[][] visit
       <ul>
         
           <li>
+            <a href="/2016/02/21/Leetcode-Additive-Number-Java/">Leetcode-Additive Number(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/14/Leetcode-Coin-Change-Java/">Leetcode-Coin Change(Java)</a>
           </li>
         
@@ -715,10 +719,6 @@ private void dfsCheck(int m, int n, char[][] grid, int[][] record, int[][] visit
         
           <li>
             <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/">Leetcode-Implement Trie (Prefix Tree)(Java)</a>
           </li>
         
       </ul>

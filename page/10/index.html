@@ -68,6 +68,77 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" class="article-date">
+  <time datetime="2016-01-26T23:18:55.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/">Leetcode-Lowest Common Ancestor of a Binary Tree(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</p>
+<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</p>
+<pre><code>           _______3______
+         /              \
+  ___5__           ___1___
+    /      \         /          \
+6        2       0         8
+         /  \
+        7    4
+</code></pre><p>For example, the lowest common ancestor (LCA) of nodes 5 and 1 is 3. Another example is LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.</p>
+<p><strong>Thinking:</strong></p>
+<p>The point to find the lowest common ancestor is to find a node whose left and right childs both have the node we want to find. Because if it’s not the lowest, the node will only belong to one of their child. If search in a pre-order from the root, if one node’s left child and right child both have the keynode or if the node itself is one of the keynode which means the other node will in lower level of this node, it’s the answer we want.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == null)
+        return root;
+
+    if (root.equals(q) || root.equals(p)){
+        return root;
+    }
+
+    TreeNode l = lowestCommonAncestor(root.left, p, q);
+    TreeNode r = lowestCommonAncestor(root.right, p, q);
+    if (l != null &amp;&amp; r != null)
+        return root;
+
+    return l == null? r: l;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" data-id="cikx8uohg0032m1owssl0y1ha" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Node-js-study-note" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/25/Node-js-study-note/" class="article-date">
@@ -385,7 +456,7 @@ fs.readFile(&quot;./lib/saying.md&quot;, &quot;UTF-8&quot;, function(err, conten
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/25/Node-js-study-note/" data-id="cikx53muq000nhvowhpknxsb7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/25/Node-js-study-note/" data-id="cikx8uofw000nm1owf9b00buw" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/25/Node-js-study-note/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -485,7 +556,7 @@ fs.readFile(&quot;./lib/saying.md&quot;, &quot;UTF-8&quot;, function(err, conten
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="cikx53mwf003dhvowrwba31ln" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="cikx8uoho003dm1owscyjjjwj" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -639,7 +710,7 @@ iRightChild(i) = 2*i + 2
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Sort-Algorithms/" data-id="cikx53mui000ehvowgfcnvyra" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Sort-Algorithms/" data-id="cikx8uofn000em1owjc3o80lb" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Sort-Algorithms/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -779,118 +850,9 @@ iRightChild(i) = 2*i + 2
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/" data-id="cikx53mvd001phvowe85vaoc5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/" data-id="cikx8uogj001pm1owhlydjz4o" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Partition-List" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Partition-List/" class="article-date">
-  <time datetime="2016-01-25T03:14:31.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Partition-List/">Leetcode-Partition List(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</p>
-<p>You should preserve the original relative order of the nodes in each of the two partitions.</p>
-<p>For example,<br>Given 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2 and x = 3,<br>return 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5.</p>
-<p><strong>Thinking:</strong></p>
-<p>We should preserve the original relative order of the nodes. So we need two points, one is for recording where to insert the less value node, and the other is for searching the less value node.</p>
-<p><strong>Solution1:</strong></p>
-<pre><code>public class Solution {
-    public ListNode partition(ListNode head, int x) {
-        if (head == null)
-            return null;
-        ListNode prehead = new ListNode(0);
-        prehead.next = head;
-        ListNode s = prehead;
-        ListNode l = prehead;
-        while(s != null &amp;&amp; l != null){
-            while(s.next != null){
-                if (s.next.val &gt;= x)
-                    break;
-                s = s.next;
-            }
-            l = s.next;
-            if (l == null)
-                break;
-            while(l.next != null){
-                if (l.next.val &lt; x)
-                    break;
-                l = l.next;
-            }
-            if (l.next == null)
-                break;
-            ListNode tmp = l.next;
-            l.next = l.next.next;
-            tmp.next = s.next;
-            s.next = tmp;
-        }
-
-        return prehead.next;
-    }
-
-}
-</code></pre><p>And there is another solution, which uses two lists. One is for recording less value node, and the other is for recording greater value node. And connect them:</p>
-<pre><code>public ListNode partition(ListNode head, int x) {
-        if(head==null||head.next==null)
-            return head;
-
-        ListNode small = new ListNode(-1);
-        ListNode newsmallhead = small;
-        ListNode big = new ListNode(-1);
-        ListNode newbighead = big;
-
-        while(head!=null){
-            if(head.val&lt;x){
-                small.next = head;
-                small = small.next;
-            }else{
-                big.next = head;
-                big = big.next;
-            }
-            head = head.next;
-        }
-        big.next = null;
-
-        small.next = newbighead.next;
-
-        return newsmallhead.next;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Partition-List/" data-id="cikx53mvt002bhvowl48ztph5" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Partition-List/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -933,7 +895,7 @@ iRightChild(i) = 2*i + 2
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 12.5px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 15px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -955,6 +917,10 @@ iRightChild(i) = 2*i + 2
       <ul>
         
           <li>
+            <a href="/2016/02/21/Leetcode-Additive-Number-Java/">Leetcode-Additive Number(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/14/Leetcode-Coin-Change-Java/">Leetcode-Coin Change(Java)</a>
           </li>
         
@@ -968,10 +934,6 @@ iRightChild(i) = 2*i + 2
         
           <li>
             <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/">Leetcode-Implement Trie (Prefix Tree)(Java)</a>
           </li>
         
       </ul>

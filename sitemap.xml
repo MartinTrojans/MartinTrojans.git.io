@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/02/21/Leetcode-Additive-Number-Java/</loc>
+    <lastmod>2016-02-22T00:27:17.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/</loc>
     <lastmod>2016-02-15T00:17:51.000Z</lastmod>
   </url>

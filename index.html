@@ -68,6 +68,94 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Additive-Number-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/21/Leetcode-Additive-Number-Java/" class="article-date">
+  <time datetime="2016-02-22T00:23:12.000Z" itemprop="datePublished">2016-02-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/21/Leetcode-Additive-Number-Java/">Leetcode-Additive Number(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Additive number is a string whose digits can form additive sequence.</p>
+<p>A valid additive sequence should contain at least three numbers. Except for the first two numbers, each subsequent number in the sequence must be the sum of the preceding two.</p>
+<p>For example:<br>“112358” is an additive number because the digits can form an additive sequence: 1, 1, 2, 3, 5, 8.</p>
+<p>1 + 1 = 2, 1 + 2 = 3, 2 + 3 = 5, 3 + 5 = 8<br>“199100199” is also an additive number, the additive sequence is: 1, 99, 100, 199.<br>1 + 99 = 100, 99 + 100 = 199<br>Note: Numbers in the additive sequence cannot have leading zeros, so sequence 1, 2, 03 or 1, 02, 3 is invalid.</p>
+<p>Given a string containing only digits ‘0’-‘9’, write a function to determine if it’s an additive number.</p>
+<p>Follow up:<br>How would you handle overflow for very large input integers?</p>
+<p><strong>Thinking:</strong></p>
+<p>I noticed that it’s only different in the first time in the iteration becuase we know nothing about the first element. But when found it, we can use the previous two elements to check the next one. So in the first function, we enumerate the first two elements, and check the rest string if it’s valid recursively.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean isAdditiveNumber(String num) {
+
+    int len = num.length();
+
+    long num1 = 0;
+    long num2 = 0;
+    //find the first two elements first
+    for (int i = 1; 2*i+1 &lt;= len; i++){
+        for (int j = 1; Math.max(i, j) &lt;= len-i-j; j++){
+            if (num.charAt(0) == &apos;0&apos; &amp;&amp; i &gt; 1)    return false;//if first char is 0, then it only can be 0
+            num1 = Long.parseLong(num.substring(0, i));
+            if (num.charAt(i) == &apos;0&apos; &amp;&amp; j &gt; 1)    break;//if second element start with 0, then it only can be 0
+            num2 = Long.parseLong(num.substring(i, i+j));
+            if (isValid(num1, num2, i+j, num))//check the rest recursively
+                return true;
+        }
+    }
+
+    return false;
+}
+
+private boolean isValid(long i, long j, int start, String num){
+    if (start == num.length())    return true;//no rest chars left, success
+    if (num.charAt(start) == &apos;0&apos;)    return false;
+    long sum = 0;
+    for (int idx = start+1; idx &lt;= num.length(); idx++){
+        sum = Long.parseLong(num.substring(start, idx));
+        if (sum - i &gt; j)
+            return false;
+        if (sum - i == j)
+            return isValid(j, sum, idx, num);
+    }
+    return false;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Additive-Number-Java/" data-id="cikx8uoia004jm1owp9edmviu" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/21/Leetcode-Additive-Number-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Coin-Change-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/14/Leetcode-Coin-Change-Java/" class="article-date">
@@ -117,7 +205,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/" data-id="cikx53mwv004bhvowfsqsfw1l" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/" data-id="cikx8uoi3004bm1owsbr2st74" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -174,7 +262,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/13/Some-basic-problems/" data-id="cikx53mul000ihvow6znxe1s5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/13/Some-basic-problems/" data-id="cikx8uofq000im1owcqmbd443" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/13/Some-basic-problems/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -233,7 +321,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/13/Some-thoughts-about-interview/" data-id="cikx53muk000hhvowldreyluc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/13/Some-thoughts-about-interview/" data-id="cikx8uofp000hm1ow89jtjm42" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/13/Some-thoughts-about-interview/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -320,130 +408,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/" data-id="cikx53mw7002zhvowz2lf6cbg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/" data-id="cikx8uohf002zm1owlpkbcg78" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Implement-Trie-Prefix-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/" class="article-date">
-  <time datetime="2016-02-11T01:06:45.000Z" itemprop="datePublished">2016-02-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/">Leetcode-Implement Trie (Prefix Tree)(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Implement a trie with insert, search, and startsWith methods.</p>
-<p>Note:<br>You may assume that all inputs are consist of lowercase letters a-z.</p>
-<p><strong>Thinking:</strong></p>
-<p>I assume every node has no val, but edges do. So I keep a HashMap for everynode. What’s more, in order to determine whether this node is a leave, I add another boolean value.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>import java.util.HashMap;
-
-class TrieNode {
-    HashMap&lt;Character, TrieNode&gt; edges = new HashMap&lt;Character, TrieNode&gt;();
-    boolean leave = false;
-    // Initialize your data structure here.
-    public TrieNode() {
-    }
-}
-
-public class Trie {
-    private TrieNode root;
-
-    public Trie() {
-        root = new TrieNode();
-    }
-
-    // Inserts a word into the trie.
-    public void insert(String word) {
-        TrieNode cur = root;
-        for (char c: word.toCharArray()){
-            if (!cur.edges.containsKey(c)){
-                TrieNode newNode = new TrieNode();
-                cur.edges.put(c, newNode);
-                cur = newNode;
-
-            }
-            else {
-                cur = cur.edges.get(c);
-            }
-        }
-        cur.leave = true;
-    }
-
-    // Returns if the word is in the trie.
-    public boolean search(String word) {
-        TrieNode cur = root;
-        for (char c: word.toCharArray()){
-            if (!cur.edges.containsKey(c)){
-                return false;
-            }
-            else{
-                cur = cur.edges.get(c);
-            }
-        }
-        return cur.leave;
-    }
-
-    // Returns if there is any word in the trie
-    // that starts with the given prefix.
-    public boolean startsWith(String prefix) {
-        TrieNode cur = root;
-        for (char c: prefix.toCharArray()){
-            if (!cur.edges.containsKey(c)){
-                return false;
-            }
-            else{
-                cur = cur.edges.get(c);
-            }
-        }
-        return true;
-    }
-}
-
-// Your Trie object will be instantiated and called as such:
-// Trie trie = new Trie();
-// trie.insert(&quot;somestring&quot;);
-// trie.search(&quot;key&quot;);
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/" data-id="cikx53mwh003fhvowywv4kpgr" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Design/">Design</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Trie/">Trie</a></li></ul>
 
     </footer>
   </div>
@@ -485,7 +455,7 @@ public class Trie {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 12.5px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 15px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -507,6 +477,10 @@ public class Trie {
       <ul>
         
           <li>
+            <a href="/2016/02/21/Leetcode-Additive-Number-Java/">Leetcode-Additive Number(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/14/Leetcode-Coin-Change-Java/">Leetcode-Coin Change(Java)</a>
           </li>
         
@@ -520,10 +494,6 @@ public class Trie {
         
           <li>
             <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/">Leetcode-Implement Trie (Prefix Tree)(Java)</a>
           </li>
         
       </ul>

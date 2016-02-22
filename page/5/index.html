@@ -68,6 +68,89 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Reverse-Linked-List-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/" class="article-date">
+  <time datetime="2016-02-02T21:50:10.000Z" itemprop="datePublished">2016-02-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/">Reverse Linked List II(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Reverse a linked list from position m to n. Do it in-place and in one-pass.</p>
+<p>For example:<br>Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, m = 2 and n = 4,</p>
+<p>return 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;NULL.</p>
+<p>Note:<br>Given m, n satisfy the following condition:<br>1 ≤ m ≤ n ≤ length of list.</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s similar with Reverse Linked List, only thing different is to limit the range. So we should to find the start of the reversed linked list and record its previous node. Also, we should add a dummy node for easily operator with the first node. Then use three points as usual pre, cur and next to operate and change the nodes’ next pointers.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public ListNode reverseBetween(ListNode head, int m, int n) {
+    if (m == n)
+        return head;
+    ListNode prehead = new ListNode(0);//dummy
+    prehead.next = head;
+    ListNode pre = prehead;
+    ListNode cur = head;
+    int idx = 1;
+
+    while (idx &lt; m) {
+        pre = cur;
+        cur = cur.next;
+        idx++;
+    }
+    ListNode prerever = pre;
+    ListNode next = null;
+    pre = cur;
+    cur = cur.next;
+    while (idx &lt; n) {
+        next = cur.next;
+        cur.next = pre;
+        pre = cur;
+        cur = next;
+        idx++;
+    }
+    prerever.next.next = cur;
+    prerever.next = pre;
+
+
+    return prehead.next;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/" data-id="cikx8uogl001rm1owrn5cfylg" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linked-List/">Linked List</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Patching-Array-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/02/Patching-Array-Java/" class="article-date">
@@ -128,7 +211,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/02/Patching-Array-Java/" data-id="cikx53mun000jhvowf3jlo3y6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/02/Patching-Array-Java/" data-id="cikx8uoft000jm1owxvbq77ty" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/02/Patching-Array-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -247,7 +330,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" data-id="cikx53mus000qhvowqi9gzi9a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" data-id="cikx8uofz000qm1owkh7dx78d" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -314,7 +397,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/01/AI-Note/" data-id="cikx53mxk0051hvowlvya4j43" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/01/AI-Note/" data-id="cikx8uoit0054m1ow9eh9y2om" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/01/AI-Note/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -446,129 +529,12 @@ private int partition(int[] nums, int left, int right, int index){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/" data-id="cikx53mwd0036hvowd2sfgt1k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/" data-id="cikx8uohl0036m1owooowlrxw" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Heap/">Heap</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Permutations-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/31/Leetcode-Permutations-II-Java/" class="article-date">
-  <time datetime="2016-02-01T01:10:24.000Z" itemprop="datePublished">2016-01-31</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/31/Leetcode-Permutations-II-Java/">Leetcode-Permutations II(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a collection of numbers that might contain duplicates, return all possible unique permutations.</p>
-<p>For example,<br>[1,1,2] have the following unique permutations:<br>[1,1,2], [1,2,1], and [2,1,1].</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s very similiar with the question permutation, we should use backtracing to go through all the possibilities. For example, we pick the first element of the array, and get the permutation of the rest of this array, and put the first element in every possible position. The only difference bewteen the permutation is that we don’t allow duplicate. We can use hashset to solve this problem.</p>
-<p>By the way, I made a mistake this time which I used to make. It’s that in the loop of this:</p>
-<pre><code>for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
-    for (int i = 0; i &lt;= list.size(); i++){
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
-        tempres.add(i, nums[index]);
-        tres.add(tempres);
-    }
-}
-</code></pre><p>I shouldn’t use the temporary variable list to operate, because<br>1) the size of it will change;<br>2) we should use it several times instead of once.<br>Then that means we should build another temporary variable. In this case, it’s tempres.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
-    return backtracing(nums, 0);
-}
-
-private List&lt;List&lt;Integer&gt;&gt; backtracing(int[] nums, int index) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    HashSet&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-    int len = nums.length;
-
-    if (index &gt;= len){
-        return res;
-    }
-
-    if (index == len - 1){
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-        tempres.add(nums[index]);
-        res.add(tempres);
-        return res;
-    }
-
-    for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
-        for (int i = 0; i &lt;= list.size(); i++){
-            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
-            tempres.add(i, nums[index]);
-            tres.add(tempres);
-        }
-    }
-
-    res.addAll(tres);
-    return res;
-}
-</code></pre><p>There is another solution is much faster than me. Because it use extra space to record which element is used and use sort to reduce the extra cost to make sure unique. What’s more, the process of adding first and removing after dfs is usually used by people. I suppose I should learn from it.</p>
-<p>Code:</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    if(nums==null || nums.length==0) return res;
-    boolean[] used = new boolean[nums.length];
-    List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
-    Arrays.sort(nums);
-    dfs(nums, used, list, res);
-    return res;
-}
-
-public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;List&lt;Integer&gt;&gt; res){
-    if(list.size()==nums.length){
-        res.add(new ArrayList&lt;Integer&gt;(list));
-        return;
-    }
-    for(int i=0;i&lt;nums.length;i++){
-        if(used[i]) continue;
-        if(i&gt;0 &amp;&amp;nums[i-1]==nums[i] &amp;&amp; !used[i-1]) continue;
-        used[i]=true;
-        list.add(nums[i]);
-        dfs(nums,used,list,res);
-        used[i]=false;
-        list.remove(list.size()-1);
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/" data-id="cikx53mvq0026hvowvxim23iq" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracing/">Backtracing</a></li></ul>
 
     </footer>
   </div>
@@ -610,7 +576,7 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 12.5px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 15px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -632,6 +598,10 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
       <ul>
         
           <li>
+            <a href="/2016/02/21/Leetcode-Additive-Number-Java/">Leetcode-Additive Number(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/14/Leetcode-Coin-Change-Java/">Leetcode-Coin Change(Java)</a>
           </li>
         
@@ -645,10 +615,6 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
         
           <li>
             <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/">Leetcode-Implement Trie (Prefix Tree)(Java)</a>
           </li>
         
       </ul>
