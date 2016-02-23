@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Leetcode-Partition-List" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Partition-List/" class="article-date">
-  <time datetime="2016-01-25T03:14:31.000Z" itemprop="datePublished">2016-01-24</time>
+    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" class="article-date">
+  <time datetime="2016-01-27T06:28:05.000Z" itemprop="datePublished">2016-01-26</time>
 </a>
     
   <div class="article-category">
@@ -86,7 +86,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Partition-List/">Leetcode-Partition List(Java)</a>
+      <a class="article-title" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/">Leetcode-Construct Binary Tree from Preorder and Inorder Traversal(Java)</a>
     </h1>
   
 
@@ -95,169 +95,70 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</p>
-<p>You should preserve the original relative order of the nodes in each of the two partitions.</p>
-<p>For example,<br>Given 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2 and x = 3,<br>return 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5.</p>
+<p>Given preorder and inorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
 <p><strong>Thinking:</strong></p>
-<p>We should preserve the original relative order of the nodes. So we need two points, one is for recording where to insert the less value node, and the other is for searching the less value node.</p>
-<p><strong>Solution1:</strong></p>
-<pre><code>public class Solution {
-    public ListNode partition(ListNode head, int x) {
-        if (head == null)
-            return null;
-        ListNode prehead = new ListNode(0);
-        prehead.next = head;
-        ListNode s = prehead;
-        ListNode l = prehead;
-        while(s != null &amp;&amp; l != null){
-            while(s.next != null){
-                if (s.next.val &gt;= x)
-                    break;
-                s = s.next;
-            }
-            l = s.next;
-            if (l == null)
-                break;
-            while(l.next != null){
-                if (l.next.val &lt; x)
-                    break;
-                l = l.next;
-            }
-            if (l.next == null)
-                break;
-            ListNode tmp = l.next;
-            l.next = l.next.next;
-            tmp.next = s.next;
-            s.next = tmp;
-        }
-
-        return prehead.next;
-    }
-
-}
-</code></pre><p>And there is another solution, which uses two lists. One is for recording less value node, and the other is for recording greater value node. And connect them:</p>
-<pre><code>public ListNode partition(ListNode head, int x) {
-        if(head==null||head.next==null)
-            return head;
-
-        ListNode small = new ListNode(-1);
-        ListNode newsmallhead = small;
-        ListNode big = new ListNode(-1);
-        ListNode newbighead = big;
-
-        while(head!=null){
-            if(head.val&lt;x){
-                small.next = head;
-                small = small.next;
-            }else{
-                big.next = head;
-                big = big.next;
-            }
-            head = head.next;
-        }
-        big.next = null;
-
-        small.next = newbighead.next;
-
-        return newsmallhead.next;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Partition-List/" data-id="cikx8uogz002bm1owaneix4p7" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Partition-List/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Unique-Paths-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Unique-Paths-II-Java/" class="article-date">
-  <time datetime="2016-01-25T00:49:04.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Unique-Paths-II-Java/">Leetcode-Unique Paths II(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Follow up for “Unique Paths”:</p>
-<p>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
-<p>An obstacle and empty space is marked as 1 and 0 respectively in the grid.</p>
-<p>For example,<br>There is one obstacle in the middle of a 3x3 grid as illustrated below.</p>
-<pre><code>[
-  [0,0,0],
-  [0,1,0],
-  [0,0,0]
-]
-</code></pre><p>The total number of unique paths is 2.</p>
-<p>Note: m and n will be at most 100.</p>
-<p><strong>Thinking:</strong></p>
-<p>This question is similar with Unique Paths, and it’s the same methed to use dynamic programming. Only one difference is that we should check if it’s a obstacle. And if it’s a obstacle, its value of dp should be 0.</p>
+<p>This question is similar with Construct Binary Tree from Inorder and Postorder Traversal. We should understand the differences and the sequences of these three methods. And divide into three parts- root, left child and right child.</p>
 <p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        int lr = obstacleGrid.length;
-        if (lr == 0)
-            return 0;
-        int lc = obstacleGrid[0].length;
-        int[][] dp = new int[lr][lc];
-        if (obstacleGrid[0][0] == 1){
-            return 0;
-        }
-        dp[0][0] = 1;
+<pre><code>public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int l = preorder.length;
+    if (l == 0)
+        return null;
 
-        for (int i = 1; i &lt; lr; i++){
-            if (obstacleGrid[i][0] == 1)
-                break;
-            dp[i][0] = 1;
-        }
-        for (int i = 1; i &lt; lc; i++){
-            if (obstacleGrid[0][i] == 1)
-                break;
-            dp[0][i] = 1;
-        }
 
-        for (int i = 1; i &lt; lr; i++)
-            for (int j = 1; j &lt; lc; j++){
-                if(obstacleGrid[i][j] == 1)
-                    continue;
-                dp[i][j] = dp[i-1][j] + dp[i][j-1];
-            }
-
-        return dp[lr-1][lc-1];
+    return dp(preorder, inorder, 0, l-1, 0, l-1);
     }
+
+    private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if (preStart &gt; preEnd || preEnd &gt;= preorder.length || inEnd &gt;= preorder.length)
+        return null;
+    TreeNode root = new TreeNode(preorder[preStart]);
+    int index = inStart;
+    for (; index &lt; inEnd; index++){
+        if (inorder[index] == preorder[preStart])
+            break;
+    }
+
+    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
+    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
+    root.left = left;
+    root.right = right;
+
+    return root;
+}    
+</code></pre><p>This method can be improved by using HashMap to make it faster when fiding the index of root.<br>Reference:<a href="http://blog.csdn.net/linhuanmars/article/details/24389549" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24389549</a><br>Code:</p>
+<pre><code>static HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    int l = preorder.length;
+    if (l == 0)
+        return null;
+    for (int i = 0; i &lt; l; i++)
+        map.put(inorder[i], i);
+
+    return dp(preorder, inorder, 0, l-1, 0, l-1);
+}
+
+private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if (preStart &gt; preEnd || inStart &gt; inEnd)
+        return null;
+    TreeNode root = new TreeNode(preorder[preStart]);
+
+    int index = map.get(preorder[preStart]);
+
+    TreeNode left = dp(preorder, inorder, preStart+1, preStart+index-inStart, inStart, index-1);
+    TreeNode right = dp(preorder, inorder,preStart+index-inStart+1, preEnd, index+1, inEnd);
+    root.left = left;
+    root.right = right;
+
+    return root;
 }
 </code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/" data-id="cikx8uog2000wm1owax4c4bm1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" data-id="cikz1p2xq004xyxowyon35jvr" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -267,10 +168,10 @@
 
 
   
-    <article id="post-Unique-Binary-Search-Trees-II" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-Pow-x-n-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/24/Unique-Binary-Search-Trees-II/" class="article-date">
-  <time datetime="2016-01-25T00:07:06.000Z" itemprop="datePublished">2016-01-24</time>
+    <a href="/2016/01/26/Leetcode-Pow-x-n-Java/" class="article-date">
+  <time datetime="2016-01-27T05:24:27.000Z" itemprop="datePublished">2016-01-26</time>
 </a>
     
   <div class="article-category">
@@ -285,7 +186,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Unique-Binary-Search-Trees-II/">Leetcode-Unique Binary Search Trees II(Java)</a>
+      <a class="article-title" href="/2016/01/26/Leetcode-Pow-x-n-Java/">Leetcode-Pow(x, n)(Java)</a>
     </h1>
   
 
@@ -294,141 +195,318 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.</p>
-<p>For example,<br>Given n = 3, your program should return all 5 unique BST’s shown below.</p>
-<pre><code>1         3     3      2      1
- \       /     /      / \      \
-  3     2     1      1   3      2
- /     /       \                 \
-2     1         2                 3
-</code></pre><p><strong>Thinking:</strong> </p>
-<p>It’s a simple dynamic programming question. For n numbers, we should consider the situation that every one become the root, and delete it from the sets and do the same thing for their children.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public List&lt;TreeNode&gt; generateTrees(int n) {
-        return dp(1, n);
-    }
-
-    public List&lt;TreeNode&gt; dp(int low, int high){
-        List&lt;TreeNode&gt; res = new ArrayList&lt;TreeNode&gt;();
-        if (low == high){
-            TreeNode n = new TreeNode(low);
-            res.add(n);
-            return res;
-        }
-        for (int i = low; i &lt;= high; i++){
-            TreeNode n = new TreeNode(i);
-            if (i == low){
-                for (TreeNode p: dp(low+1, high)){
-                    n.right = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else if (i == high){
-                for (TreeNode p: dp(low, high-1)){
-                    n.left = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else{
-                for (TreeNode p: dp(low, i-1)){
-                    for (TreeNode q: dp(i+1, high)){
-                        n.left = p;
-                        n.right = q;
-                        res.add(n);
-                        n = new TreeNode(i);
-                    }
-                }
-            }
-        }
-
-        return res;
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/" data-id="cikx8uofk000cm1owo4th7cys" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Bitwise-AND-of-Numbers-Range" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" class="article-date">
-  <time datetime="2016-01-24T23:09:04.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/">Leetcode-Bitwise AND of Numbers Range(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.</p>
-<p>For example, given the range [5, 7], you should return 4.</p>
+<p>Implement pow(x, n).</p>
 <p><strong>Thinking:</strong></p>
-<p>It’s bitwise operation question. Some other questions like are Single Number, Single Number II, Reverse Bits, Repeated DNA Sequences, Grey Code and so on and so forth. This question’s point is to find all the numbers between the range and use the bitwise AND on them. </p>
-<p>For example, in the range of [5, 7], there are three numbers:<br>101        110        111<br>Result of thier bitwise is 100. </p>
-<p>What’s more, in the example of [26, 30]:<br>11010        11011        11100        11101        11110<br>The result is 11000.</p>
-<p><em>Because bits are incresing from the right</em> (low digits), the left of all the numbers are not going to change in the process. The thing we need to do is finding the common part of the left. There are two solutions:</p>
-<p><strong>Solution1:</strong></p>
-<p>Idea: State a variable and make it all 1 in all digits. Make the variable left shift every time to check if it’s equal between m and n of their bitwise AND. Finally, the result of m bitwise AND with the variable is the answer.<br>Code:</p>
-<pre><code>class Solution {
-public int rangeBitwiseAnd(int m, int n) {
-        int d = Integer.MAX_VALUE;
-        while ((m &amp; d) != (n &amp; d)) {
-            d &lt;&lt;= 1;
-        }
-        return m &amp; d;
+<p>It’s a simple but not simple question. There are many solutions for this problem. But how can we find the most effienct one. We can use recursion to reduce the times of multipling and check the bound of data to reduce the times of recursions. Finally, the code is below:</p>
+<pre><code>static boolean negflag = false;
+public double myPow(double x, int n) {
+    if (n &lt; 0){
+        negflag = true;
+        return 1 / dp(x, -n);
     }
-};
-</code></pre><p><strong>Solution2:</strong></p>
-<p>Idea:Let m and n make left shift each time if they are different and record the times i they shift. When they are equal, the result of m left shift i is the answer.<br>Code:</p>
-<pre><code>class Solution {
-public int rangeBitwiseAnd(int m, int n) {
-        int i = 0;
-        while (m != n) {
-            m &gt;&gt;= 1;
-            n &gt;&gt;= 1;
-            ++i;
+    else
+        return dp(x, n);
+
+}
+private double dp(double x, int n){
+    if (n == 0)
+        return 1;
+    if (n == 1)
+        return x;
+    if (n == 2)
+        return x * x;
+
+    int m = n / 2;
+    int k = n % 2;
+    double v = dp(x, m);
+    if (negflag == true &amp;&amp; v &gt; 100000)
+        return 100000;
+    if (negflag == false &amp;&amp; v &lt; 0.00001)
+        return 0;
+
+    if (k == 0)
+        return v * v;
+    else
+        return v * v * x;
+}
+</code></pre><p>By the way, I have to metion that my python solution is like, lol:</p>
+<pre><code>def myPow(self, x, n):
+    return x**n
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/" data-id="cikz1p2w9002hyxow474e7al3" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Jump-Game-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Jump-Game-Java/" class="article-date">
+  <time datetime="2016-01-27T04:20:54.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Jump-Game-Java/">Leetcode-Jump Game(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
+<p>Each element in the array represents your maximum jump length at that position.</p>
+<p>Determine if you are able to reach the last index.</p>
+<p>For example:<br>A = [2,3,1,1,4], return true.</p>
+<p>A = [3,2,1,0,4], return false.</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s a problem can be solved in greedy algorithm. Because we should go as far as possible in current position until we can’t go father. And we should gurantee the value of current position + i (steps can be reached from current postion) + nums[cur + i] be as big as possible.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean canJump(int[] nums) {
+    int l = nums.length;
+    if (nums[0] == 0 &amp;&amp; l &gt; 1)
+        return false;
+    int cur = 0;
+    int temp = nums[0];
+    int step = nums[0];
+    int max = nums[0];
+    int tempcur = 0;
+
+    while (cur + step &lt; l-1){
+        for (int i = 1; i &lt;= step; i++){
+            temp = cur + i + nums[cur + i];
+            if (temp &gt;= max){//current max greedy value
+                max = temp;
+                if (max &gt;= l)
+                    return true;
+                tempcur = cur + i;
+            }
         }
-        return (m &lt;&lt; i);
+        if (cur == tempcur)
+            return false;
+        cur = tempcur;
+        step = nums[cur];
     }
-};
-</code></pre><p>Reference: <a href="http://www.cnblogs.com/grandyang/p/4431646.html" target="_blank" rel="external">http://www.cnblogs.com/grandyang/p/4431646.html</a></p>
+
+    if (max &gt;= l-1)
+        return true;
+    else
+        return false;
+}
+</code></pre><p>What’s more, we can make it easier by max the value of index. </p>
+<pre><code>public boolean canJump(int[] nums) {
+    if(nums.length &lt;= 1)
+        return true;
+
+    int max = nums[0]; //max stands for the largest index that can be reached.
+
+    for(int i=0; i&lt;nums.length; i++){
+        //if not enough to go to next
+        if(max &lt;= i &amp;&amp; nums[i] == 0) 
+            return false;
+
+        //update max    
+        if(i + nums[i] &gt; max){
+            max = i + nums[i];
+        }
+
+        //max is enough to reach the end
+        if(max &gt;= nums.length-1) 
+            return true;
+    }
+
+    return false;    
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/" data-id="cikz1p2x40042yxowcyzpt5u6" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-3Sum-Closest-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" class="article-date">
+  <time datetime="2016-01-27T00:38:28.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-3Sum-Closest-Java/">Leetcode-3Sum Closest(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
+<p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
+<p>The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</p>
+<p><strong>Thinking:</strong></p>
+<p>In order to improve the performance of algorithm, we should sort the array. Because of that, we can determine where to go using current result.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int threeSumClosest(int[] nums, int target) {
+    int l = nums.length;
+    if (l &lt; 3)
+        return 0;
+    int min = Integer.MAX_VALUE;
+    int res = 0;
+    Arrays.sort(nums);
+
+    for (int i = 0; i &lt; l; i++){
+        int j = i + 1;
+        int k = l - 1;
+
+        while (j &lt; k){
+            int sum = nums[i] + nums[j] + nums[k];
+            if (sum == target)
+                return sum;
+            int diff = Math.abs(sum - target);
+            if (diff &lt; min){
+                min = diff;
+                res = sum;
+            }
+            if (sum &gt; target)
+                k--;
+            else
+                j++;
+        }
+
+    }
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/" data-id="cikz1p2ya0060yxowqltmavqv" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" class="article-date">
+  <time datetime="2016-01-27T00:00:18.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/">Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
+<p><strong>Thinking:</strong></p>
+<p>Inorder traversal will search in order: left, root, right;</p>
+<p>Postorder travelsal will search in order: left, right, root.</p>
+<p>So we can find the root in postorder and search it in inorder by the value. And find root’s left child and right child node by recursion.</p>
+<pre><code>public TreeNode buildTree(int[] inorder, int[] postorder) {
+    int l = inorder.length;
+    if (l == 0)
+        return null;
+    TreeNode root = new TreeNode(postorder[l-1]);
+    TreeNode left = null;
+    TreeNode right = null;
+    int index = 0;
+    for (; index &lt; l; index++){
+        if (inorder[index] == postorder[l-1])
+            break;
+    }
+
+
+    if (index &gt; 0){
+        int[] leftinorder = new int[index];
+        int[] leftpostorder = new int[index];
+        System.arraycopy(inorder, 0, leftinorder, 0, index);
+        System.arraycopy(postorder, 0, leftpostorder, 0, index);
+        left = buildTree(leftinorder, leftpostorder);
+    }
+    if (index &lt; l-1){
+        int[] rightinorder = new int[l-index-1];
+        int[] rightpostorder = new int[l-index-1];
+        System.arraycopy(inorder, index+1, rightinorder, 0, l-index-1);
+        System.arraycopy(postorder, index, rightpostorder, 0, l-index-1);
+        right = buildTree(rightinorder, rightpostorder);
+    }
+    root.left = left;
+    root.right = right;
+
+    return root;
+}
+</code></pre><p>By the way, this code can be improved because in Java we can not easily get the subarray and I use the System.arraycopy. It can be replaced by recording the postion of array.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" data-id="cikx8uoi5004em1owgw4ti4eu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" data-id="cikz1p2xs004zyxow72sjp1s7" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -441,7 +519,7 @@ public int rangeBitwiseAnd(int m, int n) {
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/10/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span>
+    <a class="extend prev" rel="prev" href="/page/10/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/12/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -461,7 +539,7 @@ public int rangeBitwiseAnd(int m, int n) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracing/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
     </div>
   </div>
 
@@ -471,7 +549,7 @@ public int rangeBitwiseAnd(int m, int n) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 15px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 11.67px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 13.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 11.67px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 15px;">Linked List</a> <a href="/tags/Math/" style="font-size: 15px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 18.33px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 11.67px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -493,23 +571,23 @@ public int rangeBitwiseAnd(int m, int n) {
       <ul>
         
           <li>
-            <a href="/2016/02/21/Leetcode-Additive-Number-Java/">Leetcode-Additive Number(Java)</a>
+            <a href="/2016/02/22/Leetcode-Basic-Calculator-II-Java/">Leetcode-Basic Calculator II(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/14/Leetcode-Coin-Change-Java/">Leetcode-Coin Change(Java)</a>
+            <a href="/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/">Leetcode-Repeated DNA Sequences(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/13/Some-basic-problems/">Some basic problems</a>
+            <a href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/">Leetcode-Count Complete Tree Nodes(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/13/Some-thoughts-about-interview/">Some thoughts about interview</a>
+            <a href="/2016/02/22/Leetcode-Sort-List-Java/">Leetcode-Sort List(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
+            <a href="/2016/02/22/Leetcode-Permutation-Sequence-Java/">Leetcode-Permutation Sequence(Java)</a>
           </li>
         
       </ul>

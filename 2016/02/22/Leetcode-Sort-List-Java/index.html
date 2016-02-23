@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Leetcode-Sort List(Java) | Martin&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Question:
+Sort a linked list in O(n log n) time using constant space complexity.
+Thinking:
+There are three basic algorithm to sort in n*logn time. They are merge sort, heap sort and quick sort. And I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode-Sort List(Java)">
+<meta property="og:url" content="http://yoursite.com/2016/02/22/Leetcode-Sort-List-Java/index.html">
+<meta property="og:site_name" content="Martin's Blog">
+<meta property="og:description" content="Question:
+Sort a linked list in O(n log n) time using constant space complexity.
+Thinking:
+There are three basic algorithm to sort in n*logn time. They are merge sort, heap sort and quick sort. And I">
+<meta property="og:updated_time" content="2016-02-23T02:06:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leetcode-Sort List(Java)">
+<meta name="twitter:description" content="Question:
+Sort a linked list in O(n log n) time using constant space complexity.
+Thinking:
+There are three basic algorithm to sort in n*logn time. They are merge sort, heap sort and quick sort. And I">
+  
+    <link rel="alternate" href="/atom.xml" title="Martin&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Martin&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archive">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+          <a class="main-nav-link" href="/tags">tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Leetcode-Sort-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/22/Leetcode-Sort-List-Java/" class="article-date">
+  <time datetime="2016-02-23T01:27:44.000Z" itemprop="datePublished">2016-02-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Leetcode-Sort List(Java)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Sort a linked list in O(n log n) time using constant space complexity.</p>
+<p><strong>Thinking:</strong></p>
+<p>There are three basic algorithm to sort in n*logn time. They are merge sort, heap sort and quick sort. And I implement the sort method in merge sort. In order to do this, I have to implement the function such as getLength, get the mid node, merge and so on.</p>
+<p>Basic idea of merge sort is to divide a list into two lists, and make them sorted then merge them together.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>//merge
+public ListNode sortList(ListNode head) {
+    int len = getLength(head);
+    if (len == 0)    return null;
+    ListNode nhead = mergeSort(head, len);
+    addTail(nhead, len);
+    return nhead;
+}
+
+private ListNode mergeSort(ListNode head, int n) {
+    if (n &lt;= 1)
+        return head;
+    ListNode mid = getNode(head, n/2);
+    ListNode nhead = mergeSort(head, n/2);
+    ListNode nmid = mergeSort(mid, n - n/2);
+    return merge(nhead, nmid, n);
+}
+
+private int getLength(ListNode head) {
+    int l = 0;
+
+    while (head != null) {
+        head = head.next;
+        l++;
+    }
+
+    return l;
+}
+
+private ListNode getNode(ListNode head, int index) {
+    while (index &gt; 0) {
+        head = head.next;
+        index--;
+    }
+
+    return head;
+}
+
+private ListNode merge(ListNode p1, ListNode p2, int len) {
+    ListNode dummy = new ListNode(0);
+    ListNode p = dummy;
+    int l1 = 0;
+    int l2 = 0;
+    while (l1 &lt; len/2 &amp;&amp; l2 &lt; len - len/2) {
+        if (p1.val &lt; p2.val) {
+            p.next = p1;
+            p1 = p1.next;
+            p = p.next;
+            l1++;
+        } else {
+            p.next = p2;
+            p2 = p2.next;
+            p = p.next;
+            l2++;
+        }
+    }
+    if (l1 == len/2) {
+        p.next = p2;
+    } else {
+        p.next = p1;
+    }
+    return dummy.next;
+}
+
+private void addTail(ListNode head, int n) {
+    while (n &gt; 1) {
+        head = head.next;
+        n--;
+    }
+    head.next = null;
+}
+</code></pre><p>More efficient method:<br>Reference:<a href="https://leetcode.com/discuss/1709/have-pretty-mergesort-method-anyone-speed-reduce-memory-usage" target="_blank" rel="external">https://leetcode.com/discuss/1709/have-pretty-mergesort-method-anyone-speed-reduce-memory-usage</a></p>
+<p>It use the fast pointer and slow pointer to find the middle index of the linked list. Add a null to the first half to implement the merge operation.</p>
+<pre><code>public ListNode sortList(ListNode head) {
+    if (head == null || head.next == null)
+        return head;
+    ListNode f = head.next.next;
+    ListNode p = head;
+    while (f != null &amp;&amp; f.next != null) {
+        p = p.next;
+        f =  f.next.next;
+    }
+    ListNode h2 = sortList(p.next);
+    p.next = null;
+    return merge(sortList(head), h2);
+}
+public ListNode merge(ListNode h1, ListNode h2) {
+    ListNode hn = new ListNode(Integer.MIN_VALUE);
+    ListNode c = hn;
+    while (h1 != null &amp;&amp; h2 != null) {
+        if (h1.val &lt; h2.val) {
+            c.next = h1;
+            h1 = h1.next;
+        }
+        else {
+            c.next = h2;
+            h2 = h2.next;
+        }
+        c = c.next;
+    }
+    if (h1 != null)
+        c.next = h1;
+    if (h2 != null)
+        c.next = h2;
+    return hn.next;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Sort-List-Java/" data-id="cikz1p2vr001myxow55x5l3om" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/22/Leetcode-Sort-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sort/">Sort</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode-Count Complete Tree Nodes(Java)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/02/22/Leetcode-Permutation-Sequence-Java/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Leetcode-Permutation Sequence(Java)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Leetcode/">Leetcode</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/uncategoried/">uncategoried</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 11.67px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 13.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 11.67px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 15px;">Linked List</a> <a href="/tags/Math/" style="font-size: 15px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 18.33px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 11.67px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/02/22/Leetcode-Basic-Calculator-II-Java/">Leetcode-Basic Calculator II(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/">Leetcode-Repeated DNA Sequences(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/">Leetcode-Count Complete Tree Nodes(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/22/Leetcode-Sort-List-Java/">Leetcode-Sort List(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/22/Leetcode-Permutation-Sequence-Java/">Leetcode-Permutation Sequence(Java)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Martin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archive" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/tags" class="mobile-nav-link">tags</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'communitydeveloper';
+  
+  var disqus_url = 'http://yoursite.com/2016/02/22/Leetcode-Sort-List-Java/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

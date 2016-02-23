@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Leetcode-Permutations-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-Number-of-Islands-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/31/Leetcode-Permutations-II-Java/" class="article-date">
-  <time datetime="2016-02-01T01:10:24.000Z" itemprop="datePublished">2016-01-31</time>
+    <a href="/2016/02/05/Leetcode-Number-of-Islands-Java/" class="article-date">
+  <time datetime="2016-02-06T07:08:03.000Z" itemprop="datePublished">2016-02-05</time>
 </a>
     
   <div class="article-category">
@@ -86,7 +86,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/31/Leetcode-Permutations-II-Java/">Leetcode-Permutations II(Java)</a>
+      <a class="article-title" href="/2016/02/05/Leetcode-Number-of-Islands-Java/">Leetcode-Number of Islands(Java)</a>
     </h1>
   
 
@@ -95,88 +95,116 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given a collection of numbers that might contain duplicates, return all possible unique permutations.</p>
-<p>For example,<br>[1,1,2] have the following unique permutations:<br>[1,1,2], [1,2,1], and [2,1,1].</p>
+<p>Given a 2d grid map of ‘1’s (land) and ‘0’s (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.</p>
+<p>Example 1:</p>
+<pre><code>11110
+11010
+11000
+00000
+</code></pre><p>Answer: 1</p>
+<p>Example 2:</p>
+<pre><code>11000
+11000
+00100
+00011
+</code></pre><p>Answer: 3</p>
 <p><strong>Thinking:</strong></p>
-<p>It’s very similiar with the question permutation, we should use backtracing to go through all the possibilities. For example, we pick the first element of the array, and get the permutation of the rest of this array, and put the first element in every possible position. The only difference bewteen the permutation is that we don’t allow duplicate. We can use hashset to solve this problem.</p>
-<p>By the way, I made a mistake this time which I used to make. It’s that in the loop of this:</p>
-<pre><code>for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
-    for (int i = 0; i &lt;= list.size(); i++){
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
-        tempres.add(i, nums[index]);
-        tres.add(tempres);
-    }
-}
-</code></pre><p>I shouldn’t use the temporary variable list to operate, because<br>1) the size of it will change;<br>2) we should use it several times instead of once.<br>Then that means we should build another temporary variable. In this case, it’s tempres.</p>
+<p>If we find a island that we didn’t find before, we will use DFS or BFS find the whole land and change its value which will avoid find it again next time.</p>
 <p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
-    return backtracing(nums, 0);
-}
+<pre><code>private int m, n;
 
-private List&lt;List&lt;Integer&gt;&gt; backtracing(int[] nums, int index) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    HashSet&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-    int len = nums.length;
+public int numIslands(char[][] grid) {
+    m = grid.length;
+    if (m == 0) return 0;
+    n = grid[0].length;
+    if (n == 0) return 0;
 
-    if (index &gt;= len){
-        return res;
-    }
+    int ans = 0;
+    for (int i = 0; i &lt; m; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            if (grid[i][j] != &apos;1&apos;) continue;
 
-    if (index == len - 1){
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-        tempres.add(nums[index]);
-        res.add(tempres);
-        return res;
-    }
-
-    for (List&lt;Integer&gt; list: backtracing(nums, index+1)){
-        for (int i = 0; i &lt;= list.size(); i++){
-            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;(list);
-            tempres.add(i, nums[index]);
-            tres.add(tempres);
+            ans++;
+            dfs(grid, i, j);
         }
     }
-
-    res.addAll(tres);
-    return res;
-}
-</code></pre><p>There is another solution is much faster than me. Because it use extra space to record which element is used and use sort to reduce the extra cost to make sure unique. What’s more, the process of adding first and removing after dfs is usually used by people. I suppose I should learn from it.</p>
-<p>Code:</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] nums) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    if(nums==null || nums.length==0) return res;
-    boolean[] used = new boolean[nums.length];
-    List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
-    Arrays.sort(nums);
-    dfs(nums, used, list, res);
-    return res;
+    return ans;
 }
 
-public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;List&lt;Integer&gt;&gt; res){
-    if(list.size()==nums.length){
-        res.add(new ArrayList&lt;Integer&gt;(list));
-        return;
+
+public void dfs(char[][] grid, int i, int j) {
+    if (i &lt; 0 || i &gt;= m || j &lt; 0 || j &gt;= n) return;
+
+    if (grid[i][j] == &apos;1&apos;) {
+        grid[i][j] = &apos;2&apos;;
+        dfs(grid, i - 1, j);
+        dfs(grid, i + 1, j);
+        dfs(grid, i, j - 1);
+        dfs(grid, i, j + 1);
     }
-    for(int i=0;i&lt;nums.length;i++){
-        if(used[i]) continue;
-        if(i&gt;0 &amp;&amp;nums[i-1]==nums[i] &amp;&amp; !used[i-1]) continue;
-        used[i]=true;
-        list.add(nums[i]);
-        dfs(nums,used,list,res);
-        used[i]=false;
-        list.remove(list.size()-1);
+}
+</code></pre><p>Reference: <a href="http://blog.csdn.net/ljiabin/article/details/44975717" target="_blank" rel="external">http://blog.csdn.net/ljiabin/article/details/44975717</a></p>
+<p><strong>My Stupid Solution::</strong></p>
+<pre><code>int res = 0;
+public int numIslands(char[][] grid) {
+    int rl = grid.length;
+    if (rl == 0)
+        return 0;
+    int cl = grid[0].length;
+    int[][] record = new int[rl][cl];
+    int[][] visited = new int[rl][cl];
+
+
+    for (int i = 0; i &lt; rl; i++) {
+        for (int j = 0; j &lt; cl; j++) {
+            dfsCheck(i, j, grid, record, visited);
+        }
+    }
+    return res;
+}
+
+private void dfsCheck(int m, int n, char[][] grid, int[][] record, int[][] visited){
+    if (visited[m][n] == 1)
+        return;
+    visited[m][n] = 1;
+    int flag = 0;
+    if (grid[m][n] == &apos;1&apos;){
+        if (record[m][n] == 0){
+            for (int i = -1; i &lt; 2; i++){
+                for (int j = -1; j &lt; 2; j++){
+                    if (m+i&gt;=0 &amp;&amp; m+i &lt;grid.length &amp;&amp; n+j&gt;=0 &amp;&amp; n+j&lt;grid[0].length &amp;&amp; (i+j == -1 || i+j == 1)){
+                        if (record[m+i][n+j] != 0){
+                            record[m][n] = record[m+i][n+j];
+                            flag = 1;
+                        }
+                    }
+                }
+            }
+            if (flag == 0)
+                record[m][n] = ++res;
+        }
+
+        //extension
+        for (int i = -1; i &lt; 2; i++){
+            for (int j = -1; j &lt; 2; j++){
+                if (m+i&gt;=0 &amp;&amp; m+i &lt;grid.length &amp;&amp; n+j&gt;=0 &amp;&amp; n+j&lt;grid[0].length &amp;&amp; (i+j == -1 || i+j == 1)){
+                    if (grid[m+i][n+j] == &apos;1&apos; &amp;&amp; visited[m+i][n+j] == 0)
+                        dfsCheck(m+i, n+j, grid, record, visited);
+                }
+            }
+        }
     }
 }
 </code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/" data-id="cikx8uogv0026m1owq4jakyff" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/05/Leetcode-Number-of-Islands-Java/" data-id="cikz1p2wm002yyxowy4e4j9w5" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/02/05/Leetcode-Number-of-Islands-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracing/">Backtracing</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFS/">BFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DFS/">DFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
 
     </footer>
   </div>
@@ -185,14 +213,14 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
 
 
   
-    <article id="post-Algorithm-Note" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-Gas-Station-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/31/Algorithm-Note/" class="article-date">
-  <time datetime="2016-02-01T00:21:38.000Z" itemprop="datePublished">2016-01-31</time>
+    <a href="/2016/02/05/Leetcode-Gas-Station-Java/" class="article-date">
+  <time datetime="2016-02-06T05:53:09.000Z" itemprop="datePublished">2016-02-05</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
   </div>
 
   </div>
@@ -203,7 +231,94 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/31/Algorithm-Note/">Algorithm Note</a>
+      <a class="article-title" href="/2016/02/05/Leetcode-Gas-Station-Java/">Leetcode-Gas Station(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>There are N gas stations along a circular route, where the amount of gas at station i is gas[i].</p>
+<p>You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from station i to its next station (i+1). You begin the journey with an empty tank at one of the gas stations.</p>
+<p>Return the starting gas station’s index if you can travel around the circuit once, otherwise return -1.</p>
+<p>Note:<br>The solution is guaranteed to be unique.</p>
+<p><strong>Thinking:</strong></p>
+<p>Nomally, it can be sovled in n^2 time complexity, check every station whether it is possible. But it will be LTE, so we need a greedy method to sovle this problem. In fact, if previous result of total gas is larger than 0, and current gas station don’t meet the needs, it means all of the previous gas station is not valid. What’s more, it assumes there is only one solution, so what we need to do is to record the fisrt valid station index. In order to check whether it is valid, we also need another variable total to determine whether the set is valid.</p>
+<p><strong>Solution1:</strong>(LTM)</p>
+<pre><code>public int canCompleteCircuit1(int[] gas, int[] cost) {
+    int len = gas.length;
+
+    for (int i = 0; i &lt; len; i++){
+        int curGas = 0;
+        for (int j = i; ; j++){
+            curGas += gas[j%len];
+            curGas -= cost[j%len];
+            if (curGas &lt; 0)
+                break;
+            if (j - len == i - 1){
+                return i;
+            }
+        }
+    }
+
+    return -1;
+}
+</code></pre><p><strong>Solution2:</strong>(Greedy)</p>
+<pre><code>public int canCompleteCircuit(int[] gas, int[] cost) {
+    int len = gas.length;
+    int curSum = 0;
+    int total = 0;
+    int index = 0;
+
+    for (int i = 0; i &lt; len; i++){
+        curSum += gas[i] - cost[i];
+        total += gas[i] - cost[i];
+        if (curSum &lt; 0){
+            curSum = 0;
+            index = i + 1;
+        }
+    }
+    if (total &lt; 0)
+        return -1;
+    else
+        return index;
+
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/05/Leetcode-Gas-Station-Java/" data-id="cikz1p2x9004fyxowin304nua" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/05/Leetcode-Gas-Station-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Greedy/">Greedy</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Git-Note" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/02/Git-Note/" class="article-date">
+  <time datetime="2016-02-03T03:13:02.000Z" itemprop="datePublished">2016-02-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/02/Git-Note/">Git Note</a>
     </h1>
   
 
@@ -212,70 +327,24 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
     <div class="article-entry" itemprop="articleBody">
       
         <ol>
-<li>Chapter 3 Exercises 6中有两个点， 一个是如果一个图的DFS树中没有出现的边，边的两个顶点一定是祖先与孩子的关系；一个是如果一个图的BFS树的BFS树中没有出现的边，边的两个顶点在BFS树中的层数差不会大于1.</li>
-<li>如果一个图的DFS树，或者BFS树和图相同，那么原图就没有环，否则就找他们最低的祖先，构成一个环。</li>
+<li>git branch [-a] look at the branches you’ve visited</li>
+<li>git branch <branch_name> create a new branch from the current commit version</branch_name></li>
+<li>git checkout -b <branch_name></branch_name></li>
+<li>git -d branch_name</li>
+<li>git merge</li>
+<li>git stash</li>
+<li>git push -f</li>
+<li>git checkout <commit_id></commit_id></li>
+<li>git checkout -b new_master</li>
+<li>git branch -d master</li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/31/Algorithm-Note/" data-id="cikx8uoir0052m1ow9ri31n4i" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/02/Git-Note/" data-id="cikz1p2yd0065yxow0h2khldl" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/31/Algorithm-Note/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-VIM" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/30/VIM/" class="article-date">
-  <time datetime="2016-01-31T06:54:24.000Z" itemprop="datePublished">2016-01-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/30/VIM/">VIM</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一、打开文件、保存、关闭文件(vi命令模式下使用)<br>:w       //保存文件<br>:w vpser.net //保存至vpser.net文件<br>:q          //退出编辑器，如果文件已修改请使用下面的命令<br>:q!        //退出编辑器，且不保存<br>:wq         //退出编辑器，且保存文件</p>
-<p>二、插入文本或行(vi命令模式下使用，执行下面命令后将进入插入模式，按ESC键可退出插入模式)<br>一般使用i<br>a      //在当前光标位置的右边添加文本<br>i       //在当前光标位置的左边添加文本<br>A     //在当前行的末尾位置添加文本<br>I      //在当前行的开始处添加文本(非空字符的行首)<br>O     //在当前行的上面新建一行<br>o     //在当前行的下面新建一行<br>R    //替换(覆盖)当前光标位置及后面的若干文本<br>J    //合并光标所在行及下一行为一行(依然在命令模式)</p>
-<p>三、移动光标(vi命令模式下使用)<br>1、使用上下左右方向键</p>
-<p>2、命令模式下：h   向左、j   向下 、k   向上、l  向右。<br>空格键 向右、Backspace  向左、Enter  移动到下一行首、-  移动到上一行首。</p>
-<p>四、删除、恢复字符或行(vi命令模式下使用)<br>x         //删除当前字符<br>nx         //删除从光标开始的n个字符<br>dd      //删除当前行<br>ndd   //向下删除当前行在内的n行<br>u       //撤销上一步操作<br>U      //撤销对当前行的所有操作</p>
-<p>五、搜索(vi命令模式下使用)<br>/vpser     //向光标下搜索vpser字符串，vpser可以是正则表达式<br>?vpser     //向光标上搜索vpser字符串<br>n           //向下搜索前一个搜素动作<br>N         //向上搜索前一个搜索动作</p>
-<p>*(#)      //当光标停留在某个单词上时, 输入这条命令表示查找与该单词匹配的下(上)一个单词. 同样, 再输入 n 查找下一个匹配处, 输入 N 反方向查找.</p>
-<p>g*(g#)        //此命令与上条命令相似, 只不过它不完全匹配光标所在处的单词, 而是匹配包含该单词的所有字符串.</p>
-<p>六、跳至指定行(vi命令模式下使用)<br>n+        //向下跳n行<br>n-         //向上跳n行<br>nG        //跳到行号为n的行<br>G           //跳至文件的底部</p>
-<p>七、设置行号(vi命令模式下使用)<br>:set  nu     //显示行号<br>:set nonu    //取消显示行号</p>
-<p>八、复制、粘贴(vi命令模式下使用)<br>yy    //将当前行复制到缓存区，也可以用 “ayy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>nyy   //将当前行向下n行复制到缓冲区，也可以用 “anyy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>yw    //复制从光标开始到词尾的字符。<br>nyw   //复制从光标开始的n个单词。<br>y^      //复制从光标到行首的内容。  VPS侦探<br>y$      //复制从光标到行尾的内容。<br>p        //粘贴剪切板里的内容在光标后，如果使用了前面的自定义缓冲区，建议使用”ap 进行粘贴。<br>P        //粘贴剪切板里的内容在光标前，如果使用了前面的自定义缓冲区，建议使用”aP 进行粘贴。</p>
-<p>九、替换(vi命令模式下使用)<br>:s/old/new      //用new替换行中首次出现的old<br>:s/old/new/g         //用new替换行中所有的old<br>:n,m s/old/new/g     //用new替换从n到m行里所有的old<br>:%s/old/new/g      //用new替换当前文件里所有的old</p>
-<p>十、编辑其他文件<br>:e otherfilename    //编辑文件名为otherfilename的文件。</p>
-<p>十一、修改文件格式<br>:set fileformat=unix   //将文件修改为unix格式，如win下面的文本文件在linux下会出现^M。</p>
-<p>十二、查找帮助<br>当你不知道怎么处理时，直接输入help可以看到帮助文档的起点，ZZ是退出或者：q，不建议使用<br>查找关于某个字母的命令 ：help x   查找关于x的命令。</p>
-<p>参考：<a href="http://blog.csdn.net/chenxiaochen32/article/details/7378127" target="_blank" rel="external">http://blog.csdn.net/chenxiaochen32/article/details/7378127</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/30/VIM/" data-id="cikx8uofi000bm1owwqgtxyq5" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/30/VIM/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/02/02/Git-Note/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -285,10 +354,10 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
 
 
   
-    <article id="post-Leetcode-Palindrome-Partitioning-Java" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-Restore-IP-Addresses-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" class="article-date">
-  <time datetime="2016-01-31T06:25:26.000Z" itemprop="datePublished">2016-01-30</time>
+    <a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" class="article-date">
+  <time datetime="2016-02-02T23:49:57.000Z" itemprop="datePublished">2016-02-02</time>
 </a>
     
   <div class="article-category">
@@ -303,7 +372,7 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/">Leetcode-Palindrome Partitioning(Java)</a>
+      <a class="article-title" href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/">Leetcode-Restore IP Addresses(Java)</a>
     </h1>
   
 
@@ -312,158 +381,187 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given a string s, partition s such that every substring of the partition is a palindrome.</p>
-<p>Return all possible palindrome partitioning of s.</p>
-<p>For example, given s = “aab”,<br>Return</p>
-<pre><code>[
-  [&quot;aa&quot;,&quot;b&quot;],
-  [&quot;a&quot;,&quot;a&quot;,&quot;b&quot;]
-]
-</code></pre><p><strong>Thinking:</strong></p>
-<p>We should get all the possible partition, it’s obvious we should use backtracing. We partition the string from beginning, and check if it’s palindrome, then check the rest of the substring. If all the substrings are palindrome, we put them in the result. We have to notice the API of Java substring(beginIndex, endIndex) that beginIndex is inclusive but endIndex is exclusive.</p>
+<p>Given a string containing only digits, restore it by returning all possible valid IP address combinations.</p>
+<p>For example:<br>Given “25525511135”,</p>
+<p>return [“255.255.11.135”, “255.255.111.35”]. (Order does not matter)</p>
+<p><strong>Thinking:</strong></p>
+<p>Valid IP address is between 0 and 255, so we can once detect one to three digits of the string. What’s more, it’s not valid if there is number like “001”. Use bactracing select one to three digits once, and go farther until all the substrings are selected and there are four parts of the result. Then put the result in the list. We should also detect the length of the String because if the length is not between 4 and 12, it’s invalid.</p>
 <p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;String&gt;&gt; partition(String s) {
-    List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;List&lt;String&gt;&gt;();
-    int len = s.length();
-    if (palindrome(s)){
-        List&lt;String&gt; tempres = new ArrayList&lt;String&gt;();
-        tempres.add(s);
-        res.add(tempres);
-    }
-    for (int i = 1; i &lt; len; i++){
-        if (palindrome(s.substring(0, i))){
-            for (List&lt;String&gt; list: partition(s.substring(i))){
-                list.add(0, s.substring(0, i));
-                res.add(list);
-            }
-        }
-    }
-    return res;
-}
+<pre><code>public List&lt;String&gt; restoreIpAddresses(String s) {
+    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
 
-private boolean palindrome(String s){
-    int len = s.length();
-    int left = 0;
-    int right = len - 1;
-    while (left &lt; right){
-        if (s.charAt(left) != s.charAt(right)){
-            return false;
-        }
-        left++;
-        right--;
-    }
-    return true;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" data-id="cikx8uoh1002dm1ow2skwfe4y" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/30/Leetcode-Palindrome-Partitioning-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracing/">Backtracing</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" class="article-date">
-  <time datetime="2016-01-31T05:21:37.000Z" itemprop="datePublished">2016-01-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/">Leetcode-Binary Tree Zigzag Level Order Traversal(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a binary tree, return the zigzag level order traversal of its nodes’ values. (ie, from left to right, then right to left for the next level and alternate between).</p>
-<p>For example:<br>Given binary tree {3,9,20,#,#,15,7},</p>
-<pre><code>  3
- / \
-9  20
-  /  \
- 15   7
-</code></pre><p>return its zigzag level order traversal as:</p>
-<pre><code>[
-  [3],
-  [20,9],
-  [15,7]
-]
-</code></pre><p><strong>Thinking:</strong></p>
-<p>It’s a BFS problem. It’s fine if we need use queue, but because we have to record as a zigzag order, it’s more efficient to use stack. What’s more, we should to notice the order of left and right child.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; zigzagLevelOrder(TreeNode root) {
-    int flag = 0;
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
-    Stack&lt;TreeNode&gt; tempstack = new Stack&lt;TreeNode&gt;();
-    if (root == null)
+    if (s.length() &lt; 4)
         return res;
-    stack.add(root);
-    while (!stack.isEmpty() || !tempstack.isEmpty()){
-        tempstack = new Stack&lt;TreeNode&gt;();
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-        while (!stack.isEmpty()){
-            TreeNode node = stack.pop();
-            tempres.add(node.val);
-            if (flag == 0){
-                if (node.left != null){
-                    tempstack.add(node.left);
-                }
-                if (node.right != null){
-                    tempstack.add(node.right);
-                }
-            }
-            else{
-                if (node.right != null){
-                    tempstack.add(node.right);
-                }
-                if (node.left != null){
-                    tempstack.add(node.left);
-                }
-            }
+    if (s.length() &gt; 12)
+        return res;
 
-        }
-        res.add(tempres);
-        stack.addAll(tempstack);
-        flag ^= 1;
-    }
+    backtracing(s, 0, new ArrayList&lt;String&gt;(), res);
 
     return res;
+}
+
+public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt;String&gt; res){
+    if (start == s.length()){
+        if (tempres.size() == 4){
+            String tempstr = &quot;&quot;;
+            tempstr = tempres.get(0) + &quot;.&quot; + tempres.get(1) + &quot;.&quot; + tempres.get(2) + &quot;.&quot; + tempres.get(3);
+            res.add(tempstr);
+        }
+        else{
+            return;
+        }
+    }
+
+    for (int i = start+1; i &lt;= s.length(); i++){
+        if (s.charAt(start) == &apos;0&apos; &amp;&amp; i != start+1)
+            continue;
+        if (i - start &gt; 3)
+            break;
+        int num = Integer.parseInt(s.substring(start, i));
+        if (num &gt; 255)
+            break;
+        else{
+            tempres.add(s.substring(start, i));
+            backtracing(s, i, tempres, res);
+            tempres.remove(tempres.size() - 1);
+        }
+    }
 }
 </code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" data-id="cikx8uoi6004gm1ow5zqcexyr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" data-id="cikz1p2w40023yxowgsnbumho" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/02/02/Leetcode-Restore-IP-Addresses-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFS/">BFS</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Combination-Sum-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/02/Leetcode-Combination-Sum-II-Java/" class="article-date">
+  <time datetime="2016-02-02T23:09:18.000Z" itemprop="datePublished">2016-02-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/02/Leetcode-Combination-Sum-II-Java/">Leetcode-Combination Sum II(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.</p>
+<p>Each number in C may only be used once in the combination.</p>
+<p>Note:<br>All numbers (including target) will be positive integers.<br>Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).<br>The solution set must not contain duplicate combinations.<br>For example, given candidate set 10,1,2,7,6,1,5 and target 8,<br>A solution set is:<br>[1, 7]<br>[1, 2, 5]<br>[2, 6]<br>[1, 1, 6] </p>
+<p><strong>Thinking:</strong></p>
+<p>We should use backtracing to trace all the possible answers. In order to remove duplicate, there are two methods. One is to use hashset, the other is to build a visited array, if the same value is not visited, then don’t visit the value. And there two ways to backtracing, one is to use the return value, and the other is to pass the fucntion value.</p>
+<p><strong>Solution1:</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) {
+    Arrays.sort(candidates);
+    return backtracing(candidates, target, 0);
+}
+
+public List&lt;List&lt;Integer&gt;&gt; backtracing(int [] candidates, int target, int left){
+    HashSet&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    int right = candidates.length-1;
+
+    if (left &gt; right){
+        return res;
+    }
+    if (target &lt; candidates[left]){
+        return res;
+    }
+    if (target == candidates[left]){
+        List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+        list.add(candidates[left]);
+        res.add(list);
+        return res;
+    }
+    if (left == right){
+        return res;
+    }
+
+    for (int i = left; i &lt;= right; i++){
+        for (List&lt;Integer&gt; list: backtracing(candidates, target-candidates[i], i+1)){
+            list.add(0, candidates[i]);
+            tres.add(list);
+        }
+        for (List&lt;Integer&gt; list: backtracing(candidates, target, i+1)){
+            tres.add(list);
+        }
+    }
+
+    res.addAll(tres);
+    return res;
+}
+</code></pre><p><strong>Solution2:</strong></p>
+<pre><code>public static ArrayList&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) {  
+    ArrayList&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();  
+    ArrayList&lt;Integer&gt; item = new ArrayList&lt;Integer&gt;();
+    if(candidates == null || candidates.length==0)  
+        return res; 
+
+    Arrays.sort(candidates);  
+    boolean [] visited = new boolean[candidates.length];
+    helper(candidates,target, 0, item ,res, visited);  
+    return res;  
+}  
+
+private static void helper(int[] candidates, int target, int start, List&lt;Integer&gt; item,   
+ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){  
+    if(target&lt;0)  
+        return;  
+    if(target==0){  
+        res.add(new ArrayList&lt;Integer&gt;(item));  
+        return;
+    }
+
+    for(int i=start;i&lt;candidates.length;i++){
+        if(!visited[i]){
+            if(i&gt;0 &amp;&amp; candidates[i] == candidates[i-1] &amp;&amp; visited[i-1]==false)//deal with dupicate
+                continue;  
+            item.add(candidates[i]);
+            visited[i]=true;
+            int newtarget = target - candidates[i];
+            helper(candidates,newtarget,i+1,item,res,visited);  
+            visited[i]=false;
+            item.remove(item.size()-1);  
+        }
+    }  
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/" data-id="cikz1p2xu0051yxowihpjfhrs" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracking/">Backtracing</a></li></ul>
 
     </footer>
   </div>
@@ -475,7 +573,7 @@ private boolean palindrome(String s){
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -495,7 +593,7 @@ private boolean palindrome(String s){
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracing/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
     </div>
   </div>
 
@@ -505,7 +603,7 @@ private boolean palindrome(String s){
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 17.5px;">BFS</a> <a href="/tags/Backtracing/" style="font-size: 17.5px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 12.5px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 10px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.5px;">DFS</a> <a href="/tags/Design/" style="font-size: 12.5px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.5px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Greedy/" style="font-size: 12.5px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 12.5px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 12.5px;">Linked List</a> <a href="/tags/Math/" style="font-size: 12.5px;">Math</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 15px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 10px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.5px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 11.67px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 13.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 11.67px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 15px;">Linked List</a> <a href="/tags/Math/" style="font-size: 15px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 18.33px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 11.67px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -527,23 +625,23 @@ private boolean palindrome(String s){
       <ul>
         
           <li>
-            <a href="/2016/02/21/Leetcode-Additive-Number-Java/">Leetcode-Additive Number(Java)</a>
+            <a href="/2016/02/22/Leetcode-Basic-Calculator-II-Java/">Leetcode-Basic Calculator II(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/14/Leetcode-Coin-Change-Java/">Leetcode-Coin Change(Java)</a>
+            <a href="/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/">Leetcode-Repeated DNA Sequences(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/13/Some-basic-problems/">Some basic problems</a>
+            <a href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/">Leetcode-Count Complete Tree Nodes(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/13/Some-thoughts-about-interview/">Some thoughts about interview</a>
+            <a href="/2016/02/22/Leetcode-Sort-List-Java/">Leetcode-Sort List(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
+            <a href="/2016/02/22/Leetcode-Permutation-Sequence-Java/">Leetcode-Permutation Sequence(Java)</a>
           </li>
         
       </ul>

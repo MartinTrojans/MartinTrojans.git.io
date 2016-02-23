@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Martin&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="A rookie write something just for fun.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Martin's Blog">
+<meta property="og:url" content="http://yoursite.com/page/12/index.html">
+<meta property="og:site_name" content="Martin's Blog">
+<meta property="og:description" content="A rookie write something just for fun.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Martin's Blog">
+<meta name="twitter:description" content="A rookie write something just for fun.">
+  
+    <link rel="alternate" href="/atom.xml" title="Martin&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Martin&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archive">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+          <a class="main-nav-link" href="/tags">tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" class="article-date">
+  <time datetime="2016-01-26T23:18:55.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/">Leetcode-Lowest Common Ancestor of a Binary Tree(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</p>
+<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</p>
+<pre><code>           _______3______
+         /              \
+  ___5__           ___1___
+    /      \         /          \
+6        2       0         8
+         /  \
+        7    4
+</code></pre><p>For example, the lowest common ancestor (LCA) of nodes 5 and 1 is 3. Another example is LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.</p>
+<p><strong>Thinking:</strong></p>
+<p>The point to find the lowest common ancestor is to find a node whose left and right childs both have the node we want to find. Because if it’s not the lowest, the node will only belong to one of their child. If search in a pre-order from the root, if one node’s left child and right child both have the keynode or if the node itself is one of the keynode which means the other node will in lower level of this node, it’s the answer we want.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == null)
+        return root;
+
+    if (root.equals(q) || root.equals(p)){
+        return root;
+    }
+
+    TreeNode l = lowestCommonAncestor(root.left, p, q);
+    TreeNode r = lowestCommonAncestor(root.right, p, q);
+    if (l != null &amp;&amp; r != null)
+        return root;
+
+    return l == null? r: l;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" data-id="cikz1p2ww003kyxowmkbh0a09" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Node-js-study-note" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/25/Node-js-study-note/" class="article-date">
+  <time datetime="2016-01-26T05:11:55.000Z" itemprop="datePublished">2016-01-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/25/Node-js-study-note/">Node.js study note</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Survey:</strong></p>
+<p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
+<p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
+<hr>
+<p><strong>Content:</strong></p>
+<p>–1– Argument variables with process.argv</p>
+<pre><code>app.js
+
+function grab(flag){
+    var index = process.argv.indexOf(flag);
+    return (index === -1) ? null : process.argv[index+1];
+}
+
+var greeting = grab(&apos;--greeting&apos;);
+var user = grab(&apos;--user&apos;);
+
+if (!user || !greeting) {
+    console.log(&quot;You blew it!&quot;);
+} else {
+    console.log(`Welcome, ${user}, ${greeting}`);
+}
+</code></pre><p>In this code, we grab the arguments from shell and print it out on the console.</p>
+<p>For example, if in the shell:</p>
+<pre><code>$node app --user Martin --greeting &quot;hello hello&quot;
+</code></pre><p>Then in the console:</p>
+<pre><code>Welcome, Martin, hello hello
+</code></pre><p>And in this code, I also learned string temple which uses backticks<code>.</code>Welcome, ${user}, ${greeting}` will contain variable user and greeting.</p>
+<hr>
+<p>–2– Standard input and standard output</p>
+<pre><code> var questions = [
+&quot;What is your name?&quot;,
+&quot;What is your favorite hobby?&quot;,
+&quot;What is your preferred programming language?&quot;
+];
+
+var answers = [];
+
+function ask(i) {
+    process.stdout.write(`\n\n\n\n ${questions[i]}`);
+    process.stdout.write(&quot;  &gt;  &quot;);
+}
+
+process.stdin.on(&apos;data&apos;, function(data){
+
+    answers.push(data.toString().trim());
+
+    if (answers.length &lt; questions.length) {
+        ask(answers.length);
+    } else {
+        process.exit();
+    }
+});
+
+process.on(&apos;exit&apos;, function(){
+
+    process.stdout.write(&quot;\n\n\n\n&quot;);
+
+    process.stdout.write(`Go ${answers[1]} ${answers[0]} you can finish writing ${answers[2]} later`);
+
+    process.stdout.write(&quot;\n\n\n\n&quot;);
+
+});
+
+ask(0);
+</code></pre><p>In the shell:</p>
+<pre><code>What is your name?  &gt;  Martin
+
+
+
+
+ What is your favorite hobby?  &gt;  play games
+
+
+
+
+ What is your preferred programming language?  &gt;  python
+
+
+
+
+Go play games Martin you can finish writing python later
+</code></pre><p>Is that funny:)?</p>
+<hr>
+<p>–3– Global timing functions</p>
+<p>There are several functions about the timing such as setInterval, setTimeout and clearInterval. It’s useful while developing web interactive program. </p>
+<p>Code:</p>
+<pre><code>var waitTime = 3000;
+var currentTime = 0;
+var waitInterval = 10;
+var percentWaited = 0;
+
+function writeWaitingPercent(p){
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+    process.stdout.write(`waiting ... ${p}%`);
+
+}
+
+
+var interval = setInterval(function(){
+    currentTime += waitInterval;
+    percentWaited = Math.floor((currentTime/    waitTime)*100);
+    //console.log(`waiting ${currentTime/1000} seconds`);
+    writeWaitingPercent(percentWaited);
+}, waitInterval);
+
+setTimeout(function(){
+
+    clearInterval(interval);
+    console.log(&quot;\ndone&quot;);
+}, waitTime);
+
+process.stdout.write(&quot;\n\n&quot;);
+writeWaitingPercent(percentWaited);
+</code></pre><p>In the shell:</p>
+<pre><code>waiting ... 81%
+done
+</code></pre><p>–4– Core modules:</p>
+<p>Node.js use require function to get modules. This section is going to show some modules of Node.js.</p>
+<p>Code:</p>
+<pre><code>var path = require(&apos;path&apos;);
+var util = require(&apos;util&apos;);
+var v8 = require(&apos;v8&apos;)
+
+
+util.log( path.basename(__filename) );
+
+var dirUploads = path.join(__dirname, &apos;www&apos;, &apos;fileds&apos;, &apos;uploads&apos;);
+
+util.log(dirUploads);
+
+util.log(v8.getHeapStatistics());
+</code></pre><p>In the shell:</p>
+<pre><code>node core
+28 Jan 23:34:37 - core.js
+28 Jan 23:34:37 - /Users/Martin/Documents/martin/    Study/Node/www/fileds/uploads
+28 Jan 23:34:37 - { total_heap_size: 7523616,
+  total_heap_size_executable: 5242880,
+  total_physical_size: 7523616,
+  total_available_size: 1491271696,
+  used_heap_size: 4094992,
+  heap_size_limit: 1535115264 }
+</code></pre><p>–5– Collecting information with Readline</p>
+<p>Realine is a module of Node.js, it should get the input stream and output stream. Then you can use the API to operate the input and output such as setPrompt, prompt, on and etc. A string in the string can be replaced as s% like in the C, and the JSON string will be replaced as j%.</p>
+<p>Code:</p>
+<pre><code>var readline = require(&apos;readline&apos;);
+
+var rl = readline.createInterface(process.stdin, process.stdout);
+
+var realPerson = {
+    name: &apos;&apos;,
+    sayings: []
+};
+
+rl.question(&quot;What is the name of a real person?&quot;, function(answer){
+
+    realPerson.name = answer;
+
+    rl.setPrompt(`What would ${realPerson.name} say? `);
+
+    rl.prompt();
+
+    rl.on(&apos;line&apos;, function(sayings){
+
+        realPerson.sayings.push(sayings.trim());
+
+        if (sayings.toLowerCase().trim() == &apos;exit&apos;){
+            rl.close();
+        }
+        else{
+        rl.setPrompt(`What else would ${realPerson.name} say? (&apos;exit&apos; to leave)`);
+        rl.prompt();
+        }
+    });
+
+});
+
+rl.on(&apos;close&apos;, function(){
+     console.log(&quot;%s is a real person that says j%&quot;,     realPerson.name, realPerson.sayings);
+})
+</code></pre><p>In the shell:</p>
+<pre><code>What is the name of a real person?Martin
+What would Martin say? haha
+What else would Martin say? (&apos;exit&apos; to leave)heihei
+What else would Martin say? (&apos;exit&apos; to leave)exit
+Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &apos;exit&apos; ]
+</code></pre><p>–6– Handling events with EventEmitter</p>
+<p>There are two modules I have learned from this class. One is event and the other is util. Event has two functions which called on and emit. The fucntion on is for naming the event, and the function emit is for triggling the event. The module util is for inheriting from other class.</p>
+<p>Code:</p>
+<pre><code>var events = require(&apos;events&apos;);
+
+var emitter = new events.EventEmitter();
+
+emitter.on(&apos;customEvent&apos;, function(message, status){
+
+    console.log(`${status}: ${message}`);
+
+});
+
+emitter.emit(&apos;customEvent&apos;, &quot;Hellow World&quot;, 200);
+</code></pre><p>And</p>
+<pre><code>node BenFranklin.js 
+Ben Franklin: You may delay, but time will not.
+</code></pre><p>–7–Exporting custom modules</p>
+<p>In this class, I learned that in one js file, we can conclude a export sentence to export a file to become a module. For example, “module.exports = Person;”</p>
+<p>Code:</p>
+<pre><code>var EventEmitter = require(&apos;events&apos;).EventEmitter;
+var util = require(&apos;util&apos;);
+
+var Person = function(name) {
+    this.name = name;
+};
+
+util.inherits(Person, EventEmitter);
+
+module.exports = Person;
+</code></pre><p>–8–Creating child process with exec</p>
+<p>In this class, I learned the module called child_process. And it has a function called exec which is aiming at execute the command in the command line.</p>
+<p>Code:</p>
+<pre><code>var exec = require(&quot;child_process&quot;).exec;
+
+exec(&quot;ls&quot;, function(err, stdout){
+
+    if (err){
+        throw err;
+    }
+
+    console.log(&quot;Listing Finished&quot;);
+
+    console.log(stdout);
+
+});
+</code></pre><p>–9–Creating child process with spawn</p>
+<p>Spawn can deal with the situation that you want run serval commands or deal with the stdout and stdin.</p>
+<p>Code:</p>
+<pre><code>var spawn = require(&quot;child_process&quot;).spawn;
+
+var cp = spawn(&quot;node&quot;, [&quot;alwaysTalking&quot;]);
+
+cp.stdout.on(&quot;data&quot;, function(data){
+    console.log(`STDOUT: ${data.toString()}`);
+});
+
+cp.on(&quot;close&quot;, function() {
+
+    console.log(&quot;Child Process has ended&quot;);
+
+    process.exit();
+
+});
+
+setTimeout(function () {
+
+    cp.stdin.write(&quot;stop&quot;);
+
+}, 4000);
+</code></pre><p>–10–Listing directory files</p>
+<p>What’s the differences between synchronously and asynchronously:</p>
+<p>When you execute something synchronously, you wait for it to finish before moving on to another task. When you execute something asynchronously, you can move on to another task before it finishes.</p>
+<p>That being, said, in the context of computers this translates into executing a process or task on another “thread.” A thread is a series of commands–a block of code–that exists as a unit of work. The operating system can manage multiple threads and assign a thread a piece (“slice”) of processor time before switching to another thread to give it a turn to do some work. At its core (pardon the pun), a processor can simply execute a command–it has no concept of doing two things at one time. The operating system simulates this by allocating slices of time to different threads.</p>
+<p>Now, if you introduce multiple cores/processors into the mix, then things CAN actually happen at the same time. The operating system can allocate time to one thread on the first processor, then allocate the same block of time to another thread on a different processor.</p>
+<p>All of this is about allowing the operating system to manage the completion of your task while you can go on in your code and do other things.</p>
+<p>Reference: <a href="http://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean" target="_blank" rel="external">http://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean</a></p>
+<p>In this section, I learned read files synchronously or asynchronously.</p>
+<p>Code: </p>
+<pre><code>var fs = require(&quot;fs&quot;);
+
+fs.readdir(&apos;./lib&apos;, function(err, files){
+    if(err){
+        throw err;
+    }
+    console.log(files);
+});
+
+console.log(&quot;Reading Files...&quot;);
+</code></pre><p>–11–Reading files</p>
+<p>Code:</p>
+<pre><code>var fs = require(&quot;fs&quot;);
+
+fs.readFile(&quot;./lib/saying.md&quot;, &quot;UTF-8&quot;, function(err, contents){
+
+    if (err) {
+        throw err;
+    }
+
+    console.log(contents);
+});
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/25/Node-js-study-note/" data-id="cikz1p2v5000nyxowunguqavu" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/25/Node-js-study-note/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Insertion-Sort-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" class="article-date">
+  <time datetime="2016-01-25T05:07:32.000Z" itemprop="datePublished">2016-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/">Leetcode-Insertion Sort List(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Sort a linked list using insertion sort.</p>
+<p><strong>Thinking:</strong></p>
+<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        ListNode res = new ListNode(-1);
+        res.next = head;
+        ListNode p = res;
+        ListNode next = head.next;
+        head.next = null;
+        head = next;
+        while (head != null){
+            while (p.next != null){
+                //if the value is smaller than one of the sorted list, insert behind it
+                if (head.val &lt; p.next.val){
+                    next = head.next;
+                    head.next = p.next;
+                    p.next = head;
+                    head = next;
+                    p = res;
+                    break;
+                }
+                p = p.next;
+            }
+            //if the value is bigger than anyone of the sorted list, insert after the whole list
+            if (p.next == null){
+                next = head.next;
+                p.next = head;
+                head.next = null;
+                head = next;
+                p = res;
+            }
+        }
+
+        return res.next;
+    }
+}
+</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
+<pre><code>public ListNode insertionSortList(ListNode head) {  
+    if(head == null||head.next == null)  
+        return head;  
+    ListNode sortedlisthead = new ListNode(0);  
+    ListNode cur = head;
+    while(cur!=null){  
+        ListNode next = cur.next;  
+        ListNode pre = sortedlisthead;  
+        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
+            pre = pre.next;  
+        cur.next = pre.next;  
+        pre.next = cur;  
+        cur = next;  
+    }  
+    return sortedlisthead.next;  
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="cikz1p2x50044yxowjpmpa92u" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Sort-Algorithms" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/24/Sort-Algorithms/" class="article-date">
+  <time datetime="2016-01-25T04:07:31.000Z" itemprop="datePublished">2016-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/24/Sort-Algorithms/">Sort Algorithms</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
+<h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
+<p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
+<p><strong>Process:</strong> (From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
+<p><strong>Pseudocode:</strong></p>
+<pre><code>for i ← 1 to length(A) - 1
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+    end while
+end for
+</code></pre><p><strong>Implemention in Java:</strong></p>
+<pre><code>public static void InsertionSort(int[] num)
+{
+     int j;
+     int key;
+     int i;  
+
+     for (j = 1; j &lt; num.length; j++){
+        key = num[j];
+        for(i = j - 1; (i &gt;= 0) &amp;&amp; (num[i] &lt; key); i--){
+            num[i+1] = num[i];
+        }
+        num[i+1] = key;
+    }
+}
+</code></pre><p><strong>Complexity:</strong></p>
+<p><em>Runtime</em>: O(n^2)</p>
+<p><em>Memery</em>: O(1)</p>
+<hr>
+<h2 id="ShellSort_3A"><a href="#ShellSort_3A" class="headerlink" title="ShellSort:"></a>ShellSort:</h2><p><strong>Main Idea:</strong></p>
+<p>The method starts by sorting pairs of elements far apart from each other, then progressively reducing the gap between elements to be compared. Starting with far apart elements can move some out-of-place elements into position faster than a simple nearest neighbor exchange.</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif" alt=""></p>
+<p><strong>Pesedocode:</strong></p>
+<pre><code>gaps = [701, 301, 132, 57, 23, 10, 4, 1]
+
+foreach (gap in gaps)
+{
+    # Do a gapped insertion sort for this gap size.
+    # The first gap elements a[0..gap-1] are already in gapped order
+    # keep adding one more element until the entire array is gap sorted
+    for (i = gap; i &lt; n; i += 1)
+    {
+        # add a[i] to the elements that have been gap sorted
+        # save a[i] in temp and make a hole at position i
+        temp = a[i]
+        # shift earlier gap-sorted elements up until the correct location for a[i] is found
+        for (j = i; j &gt;= gap and a[j - gap] &gt; temp; j -= gap)
+        {
+            a[j] = a[j - gap]
+        }
+        # put temp (the original a[i]) in its correct location
+        a[j] = temp
+        }
+    }
+</code></pre><p> <strong>Implemention in Java:</strong></p>
+<pre><code>public void shellSort() {
+    int inner, outer;
+    long temp;
+    //find initial value of h
+    int h = 1;
+    while (h &lt;= len / 3)
+      h = h * 3 + 1; // (1, 4, 13, 40, 121, ...)
+
+    while (h &gt; 0) // decreasing h, until h=1
+    {
+      // h-sort the file
+      for (outer = h; outer &lt; len; outer++) {
+        temp = data[outer];
+        inner = outer;
+        // one subpass (eg 0, 4, 8)
+        while (inner &gt; h - 1 &amp;&amp; data[inner - h] &gt;= temp) {
+          data[inner] = data[inner - h];
+          inner -= h;
+        }
+        data[inner] = temp;
+      }
+      h = (h - 1) / 3; // decrease h
+    }
+}
+</code></pre><hr>
+<h2 id="Simple_Selection_Sort"><a href="#Simple_Selection_Sort" class="headerlink" title="Simple Selection Sort"></a>Simple Selection Sort</h2><p><strong>Main Idea:</strong></p>
+<p>Find the smallest(biggest) element in array, put it in the first place. Then find the second smallest… Do these until all the element are sorted.(I suppose it’s a little similar with bubble sort)</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
+<p><strong>Pesedocode:</strong></p>
+<pre><code>for i ← 1 to length(A) - 1
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+    end while
+end for
+</code></pre><p><strong>Complexity:</strong></p>
+<p><em>Runtime:</em> O(n^2)<br><em>Memery:</em> O(1)</p>
+<h2 id="Heapsort"><a href="#Heapsort" class="headerlink" title="Heapsort"></a>Heapsort</h2><p><strong>Main Idea:</strong></p>
+<p>Use data structure heap which will store the smallest or biggest value of the array. Then pick up the root of heap   once a time to sort. </p>
+<p>Heapsort is a comparison-based sorting algorithm. Heapsort can be thought of as an improved selection sort: like that algorithm, it divides its input into a sorted and an unsorted region, and it iteratively shrinks the unsorted region by extracting the largest element and moving that to the sorted region. The improvement consists of the use of a heap data structure rather than a linear-time search to find the maximum.</p>
+<p>This sort is the most important part in this article. I’ll talk about the relative operation and its performance and all the code.</p>
+<p><strong>Process:</strong>(From Wikimedia)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif" alt=""></p>
+<p>In the heap view(an example offered):</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Heapsort-example.gif" alt=""></p>
+<p><strong>Data Structure:</strong></p>
+<p>Heap:</p>
+<p>A heap is built out of the data. The heap is often placed in an array with the layout of a complete binary tree. The complete binary tree maps the binary tree structure into the array indices; each array index represents a node; the index of the node’s parent, left child branch, or right child branch are simple expressions. For a zero-based array, the root node is stored at index 0; if i is the index of the current node, then</p>
+<pre><code>iParent(i)     = floor((i-1) / 2)
+iLeftChild(i)  = 2*i + 1
+iRightChild(i) = 2*i + 2
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/24/Sort-Algorithms/" data-id="cikz1p2ux000eyxowfcc00ozr" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/24/Sort-Algorithms/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Search-for-a-Range-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/24/Leetcode-Search-for-a-Range-Java/" class="article-date">
+  <time datetime="2016-01-25T03:50:20.000Z" itemprop="datePublished">2016-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/24/Leetcode-Search-for-a-Range-Java/">Leetcode-Search for a Range(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a sorted array of integers, find the starting and ending position of a given target value.</p>
+<p>Your algorithm’s runtime complexity must be in the order of O(log n).</p>
+<p>If the target is not found in the array, return [-1, -1].</p>
+<p>For example,<br>Given [5, 7, 7, 8, 8, 10] and target value 8,<br>return [3, 4].</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s question which should use binary search because it give us a sorted array and it requires O(log n) runtime complexity. Only thing difference between this algorithm and classical binary search is that we should make the range smaller while finding the target instead of returning the index.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int low = 0;
+        int high = nums.length - 1;
+        int mid;
+        int resl = -1;
+        int resr = -1;
+        while (low &lt;= high){
+            mid = (low + high) / 2;
+            if (nums[mid] == target){
+                if (nums[low] == target){
+                    resl = low;
+                    if (resr != -1)
+                        break;
+                }    
+                else
+                    low++;
+
+                if (nums[high] == target){
+                    resr = high;
+                    if (resl != -1)
+                        break;
+                }
+                else
+                    high--;
+            }
+            else if(nums[mid] &gt; target)
+                high = mid - 1;
+            else
+                low = mid + 1;
+        }
+        int[] res = {resl, resr};
+        return res;
+    }
+
+}
+</code></pre><p>But the algorithm is not so effienct when finding the target so early. In order to make sure the runtime complexity is O(log n), we should also use binary search to find the lower bound and upper bound when finding the target in the array.<br>Reference: <a href="http://www.cnblogs.com/springfor/p/3857704.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3857704.html</a></p>
+<p>Code:</p>
+<pre><code>public int[] searchRange(int[] A, int target) {
+    int [] res = {-1,-1};
+    if(A == null || A.length == 0)
+        return res;
+
+    //first iteration, find target wherever it is
+    int low = 0;
+    int high = A.length-1;
+    int pos = 0;
+    while(low &lt;= high){
+        int mid = (low + high)/2;
+        pos = mid;
+        if(A[mid] &gt; target)
+            high = mid - 1;
+        else if(A[mid] &lt; target)
+            low = mid + 1;
+        else{
+            res[0] = pos;
+            res[1] = pos;
+            break;
+        }
+    }
+
+    if(A[pos] != target)
+        return res;
+
+    //second iteration, find the right boundary of this target
+    int newlow = pos;
+    int newhigh = A.length-1;
+    while(newlow &lt;= newhigh){
+        int newmid = (newlow+newhigh)/2;
+        if(A[newmid] == target)
+            newlow = newmid + 1;
+        else
+            newhigh = newmid - 1;
+    }
+    res[1] = newhigh;
+
+    //third iteration, find the left boundary of this target
+    newlow = 0;
+    newhigh = pos;
+    while(newlow &lt;= newhigh){
+        int newmid = (newlow+newhigh)/2;
+        if(A[newmid] == target)
+            newhigh = newmid - 1;
+        else
+            newlow = newmid + 1;
+    }
+    res[0] = newlow;
+
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/" data-id="cikz1p2vy001yyxowgb0rky5z" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    <a class="extend prev" rel="prev" href="/page/11/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/13/">Next &raquo;</a>
+  </nav>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Leetcode/">Leetcode</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/uncategoried/">uncategoried</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 11.67px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 13.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 11.67px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 15px;">Linked List</a> <a href="/tags/Math/" style="font-size: 15px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 18.33px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 11.67px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/02/22/Leetcode-Basic-Calculator-II-Java/">Leetcode-Basic Calculator II(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/">Leetcode-Repeated DNA Sequences(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/">Leetcode-Count Complete Tree Nodes(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/22/Leetcode-Sort-List-Java/">Leetcode-Sort List(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/22/Leetcode-Permutation-Sequence-Java/">Leetcode-Permutation Sequence(Java)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Martin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archive" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/tags" class="mobile-nav-link">tags</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'communitydeveloper';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
