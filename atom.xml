@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-02-23T06:40:55.000Z</updated>
+  <updated>2016-02-25T22:56:13.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,426 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Simplify Path(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/25/Leetcode-Simplify-Path-Java/"/>
+    <id>http://yoursite.com/2016/02/25/Leetcode-Simplify-Path-Java/</id>
+    <published>2016-02-25T22:47:27.000Z</published>
+    <updated>2016-02-25T22:56:13.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an absolute path for a file (Unix-style), simplify it.</p>
+<p>For example,<br>path = “/home/“, =&gt; “/home”<br>path = “/a/./b/../../c/“, =&gt; “/c”<br>click to show corner cases.</p>
+<p>Corner Cases:<br>Did you consider the case where path = “/../“?<br>In this case, you should return “/“.<br>Another corner case is the path might contain multiple slashes ‘/‘ together, such as “/home//foo/“.<br>In this case, you should ignore redundant slashes and return “/home/foo”.</p>
+<p><strong>Thinking:</strong></p>
+<p>The file system is like a tree, and finding path of this tree is like a dfs process. So we can use stack to track the node of dfs. If the string is “..”, we go back, otherwise go to the given dirctory.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public String simplifyPath(String path) {
+    Stack&lt;String&gt; stack = new Stack&lt;String&gt;();
+    String[] paths = path.split(&quot;/&quot;);
+
+    for (String p: paths) {
+        p = p.trim();
+        if (p.equals(&quot;&quot;) || p.equals(&quot;.&quot;))    continue;
+        if (p.equals(&quot;..&quot;))    {
+            if (!stack.isEmpty()) {
+                stack.pop();
+            }
+            continue;
+        }
+        stack.push(p);
+    }
+
+    StringBuilder res = new StringBuilder();
+    while (!stack.isEmpty()) 
+        res.insert(0, &quot;/&quot;.concat(stack.pop()));
+
+
+    return res.length() == 0? &quot;/&quot;:res.toString();
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given an absolute path for a file (Unix-style), simplify it.</p>
+<p>For example,<br>path = “/home/“, =&]]>
+    </summary>
+    
+      <category term="Stack" scheme="http://yoursite.com/tags/Stack/"/>
+    
+      <category term="String" scheme="http://yoursite.com/tags/String/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Word Search(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/25/Leetcode-Word-Search-Java/"/>
+    <id>http://yoursite.com/2016/02/25/Leetcode-Word-Search-Java/</id>
+    <published>2016-02-25T21:44:36.000Z</published>
+    <updated>2016-02-25T21:49:05.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a 2D board and a word, find if the word exists in the grid.</p>
+<p>The word can be constructed from letters of sequentially adjacent cell, where “adjacent” cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.</p>
+<p>For example,<br>Given board =</p>
+<p>[<br>  [‘A’,’B’,’C’,’E’],<br>  [‘S’,’F’,’C’,’S’],<br>  [‘A’,’D’,’E’,’E’]<br>]<br>word = “ABCCED”, -&gt; returns true,<br>word = “SEE”, -&gt; returns true,<br>word = “ABCB”, -&gt; returns false.</p>
+<p><strong>Thinking:</strong></p>
+<p>I assume it’s graph and do dfs in this 2d array. Start from every point and search the result until find the solution or failure. In this process, we need to record the visitied set. In my solution, I used the hashset. But in more efficient way, we can use bit manipulate to mask the visited element.</p>
+<p><strong>Solution:</strong></p>
+<p>My solution(use HashSet):</p>
+<pre><code>public boolean exist(char[][] board, String word) {
+    int m = board.length;
+    if (m == 0)    return false;
+    int n = board[0].length;
+    Set&lt;Integer&gt; record = new HashSet&lt;Integer&gt;();
+    for (int i = 0; i &lt; m; i++)
+        for (int j = 0; j &lt; n; j++)
+            if (backtracking(board, word, 0, i, j, record))    return true;
+    return false;
+}
+
+private boolean backtracking(char[][] board, String word, int index, int i, int j, Set&lt;Integer&gt; record) {
+    if (board[i][j] == word.charAt(index) &amp;&amp; !record.contains(i*board[0].length+j)){
+        if (index == word.length()-1)    return true;
+        boolean res = false;
+        record.add(i*board[0].length+j);
+        if (i-1&gt;=0)    res |= backtracking(board, word, index+1, i-1, j, record);
+        if (!res &amp;&amp; i+1&lt;board.length) res |= backtracking(board, word, index+1, i+1, j, record);
+        if (!res &amp;&amp; j-1&gt;=0)    res |= backtracking(board, word, index+1, i, j-1, record);
+        if (!res &amp;&amp; j+1&lt;board[0].length) res |= backtracking(board, word, index+1, i, j+1, record);
+        record.remove(i*board[0].length+j);
+        return res;
+    }
+    return false;
+}
+</code></pre><p>use the mask:</p>
+<pre><code>public boolean exist(char[][] board, String word) {
+    char[] w = word.toCharArray();
+    for (int y=0; y&lt;board.length; y++) {
+        for (int x=0; x&lt;board[y].length; x++) {
+            if (exist(board, y, x, w, 0)) return true;
+        }
+    }
+    return false;
+}
+
+private boolean exist(char[][] board, int y, int x, char[] word, int i) {
+    if (i == word.length) return true;
+    if (y&lt;0 || x&lt;0 || y == board.length || x == board[y].length) return false;
+    if (board[y][x] != word[i]) return false;
+        board[y][x] ^= 256;
+    boolean exist = exist(board, y, x+1, word, i+1)
+    || exist(board, y, x-1, word, i+1)
+    || exist(board, y+1, x, word, i+1)
+    || exist(board, y-1, x, word, i+1);
+    board[y][x] ^= 256;
+    return exist;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a 2D board and a word, find if the word exists in the grid.</p>
+<p>The word can be constructed fr]]>
+    </summary>
+    
+      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
+    
+      <category term="Backtracking" scheme="http://yoursite.com/tags/Backtracking/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Spiral Matrix(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/23/Leetcode-Spiral-Matrix-Java/"/>
+    <id>http://yoursite.com/2016/02/23/Leetcode-Spiral-Matrix-Java/</id>
+    <published>2016-02-24T04:12:38.000Z</published>
+    <updated>2016-02-24T04:14:10.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.</p>
+<p>For example,<br>Given the following matrix:</p>
+<pre><code>[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+</code></pre><p>You should return [1,2,3,6,9,8,7,4,5].</p>
+<p><strong>Thinking:</strong></p>
+<p>There are four directions can go, move according to the order of right, down, left, up and check the bound of moving.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;Integer&gt; spiralOrder(int[][] matrix) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+    int m = matrix.length;
+    if (m == 0)    return res;
+    int n = matrix[0].length;
+    int direction = 0;//0right, 1down, 2left, 3up
+    int i = 0, j = 0;//position
+    int c0 = 1, c1 = 1, c2 = 0, c3 = 1;//row and column limit
+
+    while (c0 + c2 - 1 &lt;= n &amp;&amp; c1 + c3 - 1 &lt;= m) {
+        res.add(matrix[i][j]);
+        switch (direction) {
+        case 0:
+            if (j == n-c0){
+                direction = (direction+1) % 4;
+                c0++;
+                res.remove(res.size()-1);
+            }
+            else
+                j++;
+            break;
+        case 1:
+            if (i == m-c1){
+                direction = (direction+1) % 4;
+                c1++;
+                res.remove(res.size()-1);
+            }
+            else
+                i++;
+            break;
+        case 2:
+            if (j == c2){
+                direction = (direction+1) % 4;
+                c2++;
+                res.remove(res.size()-1);
+            }
+            else
+                j--;
+            break;
+        case 3:
+            if (i == c3){
+                direction = (direction+1) % 4;
+                c3++;
+                res.remove(res.size()-1);
+            }
+            else
+                i--;
+            break;
+        }
+    }
+    res.add(matrix[i][j]);
+
+    return res;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order]]>
+    </summary>
+    
+      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Multiply Strings(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/23/Leetcode-Multiply-Strings-Java/"/>
+    <id>http://yoursite.com/2016/02/23/Leetcode-Multiply-Strings-Java/</id>
+    <published>2016-02-24T03:09:09.000Z</published>
+    <updated>2016-02-24T03:20:12.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given two numbers represented as strings, return multiplication of the numbers as a string.</p>
+<p>Note: The numbers can be arbitrarily large and are non-negative.</p>
+<p><strong>Thinking:</strong></p>
+<p>Simulate the process of multiplying.</p>
+<p><img src="https://drscdn.500px.org/photo/130178585/m%3D2048/300d71f784f679d5e70fadda8ad7d68f" alt=""></p>
+<p><strong>Solution:</strong> (Record the result from low digits to high digits in array)</p>
+<pre><code>public String multiply(String num1, String num2) {
+    int l1 = num1.length(), l2 = num2.length();
+    int[] res = new int[l1+l2];
+
+    for (int i = l1-1; i &gt;= 0; i--) {
+        for (int j = l2-1; j &gt;= 0; j--){
+            int index = l1+l2-i-j-2;
+            res[index] += (num1.charAt(i) - &apos;0&apos;) * (num2.charAt(j) - &apos;0&apos;);
+            res[index+1] += res[index] / 10;
+            res[index] = res[index] % 10;
+        }
+    }
+
+    StringBuilder fres = new StringBuilder();
+    for (int i = res.length-1; i &gt;= 0; i--)
+        if (!(fres.length() == 0 &amp;&amp; res[i] == 0))   fres.append(res[i]);
+
+    return fres.length() == 0? &quot;0&quot;:fres.toString();
+}
+</code></pre><p>A little improvement which record the result from high to low digits in array:</p>
+<p>public String multiply(String num1, String num2) {<br>    int m = num1.length(), n = num2.length();<br>    int[] pos = new int[m + n];</p>
+<pre><code>for(int i = m - 1; i &gt;= 0; i--) {
+    for(int j = n - 1; j &gt;= 0; j--) {
+        int mul = (num1.charAt(i) - &apos;0&apos;) * (num2.charAt(j) - &apos;0&apos;); 
+        int p1 = i + j, p2 = i + j + 1;
+        int sum = mul + pos[p2];
+
+        pos[p1] += sum / 10;
+        pos[p2] = (sum) % 10;
+    }
+}  
+
+StringBuilder sb = new StringBuilder();
+for(int p : pos) if(!(sb.length() == 0 &amp;&amp; p == 0)) sb.append(p);
+return sb.length() == 0 ? &quot;0&quot; : sb.toString();
+</code></pre><p>}</p>
+<p>Reference: <a href="https://leetcode.com/discuss/71593/easiest-java-solution-with-graph-explanation" target="_blank" rel="external">https://leetcode.com/discuss/71593/easiest-java-solution-with-graph-explanation</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given two numbers represented as strings, return multiplication of the numbers as a string.</p>
+<p>Note]]>
+    </summary>
+    
+      <category term="Math" scheme="http://yoursite.com/tags/Math/"/>
+    
+      <category term="String" scheme="http://yoursite.com/tags/String/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Rotate List(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/23/Leetcode-Rotate-List-Java/"/>
+    <id>http://yoursite.com/2016/02/23/Leetcode-Rotate-List-Java/</id>
+    <published>2016-02-24T00:27:32.000Z</published>
+    <updated>2016-02-24T00:29:56.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a list, rotate the list to the right by k places, where k is non-negative.</p>
+<p>For example:<br>Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL and k = 2,<br>return 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL.</p>
+<p><strong>Thinking:</strong></p>
+<p>Firstly, count the length of the linked list. Then get the n-k th node. Finnaly, change the pointer of it and the tail.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public ListNode rotateRight(ListNode head, int k) {
+    if (head == null || head.next == null)    return head;
+    ListNode p = head;
+    int count = 1;
+    while (p.next != null) {
+        p = p.next;
+        count++;
+    }
+    if (k == count)    return head;
+    p.next = head;
+    p = head;
+    for (int i = 1; i &lt; count - k%count; i++) {
+        p = p.next;
+    }
+    ListNode nhead = p.next;
+    p.next = null;
+
+    return nhead;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a list, rotate the list to the right by k places, where k is non-negative.</p>
+<p>For example:<br]]>
+    </summary>
+    
+      <category term="Linked List" scheme="http://yoursite.com/tags/Linked-List/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Remove Duplicate Letters(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/23/Leetcode-Remove-Duplicate-Letters-Java/"/>
+    <id>http://yoursite.com/2016/02/23/Leetcode-Remove-Duplicate-Letters-Java/</id>
+    <published>2016-02-23T21:56:43.000Z</published>
+    <updated>2016-02-23T22:59:13.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a string which contains only lowercase letters, remove duplicate letters so that every letter appear once and only once. You must make sure your result is the smallest in lexicographical order among all possible results.</p>
+<p>Example:<br>Given “bcabc”<br>Return “abc”</p>
+<p>Given “cbacdcbc”<br>Return “acdb”</p>
+<p><strong>Thinking:</strong></p>
+<p>Record the times characters emerges in the list and check from left to right.Record the smallest character postion of the list until find the unique character, then delete the bigger characters before smallest one and delete smallest from the rest of list.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public String removeDuplicateLetters(String s) {
+    int[] count = new int[26];
+    int smallest = 0;
+    if (s.length() == 0)    return &quot;&quot;;
+    for (char c: s.toCharArray())    count[c-&apos;a&apos;]++;
+    for (int i = 0; i &lt; s.length(); i++){
+        if (s.charAt(i) &lt; s.charAt(smallest))    smallest = i;
+        if (--count[s.charAt(i) - &apos;a&apos;] == 0)    break;
+    }
+    return s.charAt(smallest) + removeDuplicateLetters(s.substring(smallest+1).replaceAll(s.charAt(smallest)+&quot;&quot;, &quot;&quot;));
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a string which contains only lowercase letters, remove duplicate letters so that every letter app]]>
+    </summary>
+    
+      <category term="Greedy" scheme="http://yoursite.com/tags/Greedy/"/>
+    
+      <category term="Stack" scheme="http://yoursite.com/tags/Stack/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode-Number of Digit One(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/23/Leetcode-Number-of-Digit-One-Java/"/>
+    <id>http://yoursite.com/2016/02/23/Leetcode-Number-of-Digit-One-Java/</id>
+    <published>2016-02-23T21:51:33.000Z</published>
+    <updated>2016-02-23T21:56:23.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an integer n, count the total number of digit 1 appearing in all non-negative integers less than or equal to n.</p>
+<p>For example:<br>Given n = 13,<br>Return 6, because digit 1 occurred in the following numbers: 1, 10, 11, 12, 13.</p>
+<p>Hint:</p>
+<p>Beware of overflow.</p>
+<p><strong>Thinking:</strong></p>
+<p>This is question to find formula. We should notice that: </p>
+<pre><code>1                   1                                                                                     [1, 9]
+
+11                 10  11  12  13  14  15  16  17  18  19                              [10, 19]
+
+1                   21                                                                                   [20, 29]
+
+1                   31                                                                                   [30, 39]
+
+1                   41                                                                                   [40, 49]
+
+1                   51                                                                                   [50, 59]
+
+1                   61                                                                                   [60, 69]
+
+1                   71                                                                                   [70, 79]
+
+1                   81                                                                                   [80, 89]
+
+1                   91                                                                                   [90, 99]
+
+11                 100  101  102  103  104  105  106  107  108  109          [100, 109]
+
+21                 110  111  112  113  114  115  116  117  118  119             [110, 119]
+
+11                 120  121  122  123  124  125  126  127  128  129          [120, 129]
+</code></pre><p>We should divide it into three situations in every digit division: one is bigger than 2, another is equal to 1 and the rest is less than 0. </p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int countDigitOne(int n) {
+    int res = 0;
+    for (long m = 1; m &lt;= n; m*=10) {
+        res += (n/m + 8) / 10 * m + (n/m % 10 == 1? n%m+1:0);
+    }
+    return res;
+}
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/44281/4-lines-o-log-n-c-java-python" target="_blank" rel="external">https://leetcode.com/discuss/44281/4-lines-o-log-n-c-java-python</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given an integer n, count the total number of digit 1 appearing in all non-negative integers less than ]]>
+    </summary>
+    
+      <category term="Math" scheme="http://yoursite.com/tags/Math/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Leetcode-Basic Calculator II(Java)]]></title>
@@ -788,583 +1208,6 @@ private boolean isValid(long i, long j, int start, String num){
 </ol>
 <p><img src="http://my.csdn.net/uploads/201204/23/1335186818_5426.jpg" alt=""></p>
 <pre><code>public  void move(i]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Some thoughts about interview]]></title>
-    <link href="http://yoursite.com/2016/02/13/Some-thoughts-about-interview/"/>
-    <id>http://yoursite.com/2016/02/13/Some-thoughts-about-interview/</id>
-    <published>2016-02-13T22:52:22.000Z</published>
-    <updated>2016-02-14T00:01:24.000Z</updated>
-    <content type="html"><![CDATA[<p>These days, I have been asked by some questions in interviews. These are not quite difficult questions, but I suppose I didn’t behavior well. There are some reasons I think, and I have to improve it:</p>
-<ol>
-<li>I am not familiar with the simple and basic question so that I’m not very sure about the solution’s correctness and I have to review it again and again.</li>
-<li>My code is not so effienct and some of the interviewers had to remind me that. That’s really terrible but I think they are very nice to let me know that.</li>
-<li>My code is not so clean because I didn’t keep a clean mind that time. I suppose it’s kind of nervous that time though I didn’t realize that and I want to solve that problem too hurry. I need to relax my minds next time.</li>
-<li>What’s worse, I didn’t have nice communication with interviewers. Because of my bad English and bad preperation for interview. Sorry about that.</li>
-</ol>
-<p>And below are some questions I have to review:</p>
-<ol>
-<li>How to realize a queue or stack using array or linkedlist</li>
-<li>Binary search and whenever mentioning the sorted array, I think it should come into my mind immediately the binary search</li>
-<li>Graph theory about the DFS and BFS</li>
-<li>What’s difference between .equals and == in Java</li>
-<li>Heap and stack in java</li>
-<li>Some detials and desing thoughts of my projects</li>
-<li>ood  object oriented design principles (<a href="https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design" target="_blank" rel="external">https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design</a>)</li>
-<li>The comparasion between the methods of shortest path (<a href="http://developer.51cto.com/art/201105/262170.htm" target="_blank" rel="external">http://developer.51cto.com/art/201105/262170.htm</a>)</li>
-<li>Hanoi (<a href="http://blog.csdn.net/zhutulang/article/details/7491390" target="_blank" rel="external">http://blog.csdn.net/zhutulang/article/details/7491390</a>)</li>
-<li>Maze (<a href="http://baobaoyangzhou.blog.163.com/blog/static/11783125020104147195273/" target="_blank" rel="external">http://baobaoyangzhou.blog.163.com/blog/static/11783125020104147195273/</a>)</li>
-<li>The realization of DFS not using recursive (<a href="http://blog.csdn.net/lalor/article/details/6845788" target="_blank" rel="external">http://blog.csdn.net/lalor/article/details/6845788</a>) which use stack</li>
-</ol>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>These days, I have been asked by some questions in interviews. These are not quite difficult questions, but I suppose I didn’t behavior w]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Majority Element II(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/"/>
-    <id>http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/</id>
-    <published>2016-02-11T02:32:38.000Z</published>
-    <updated>2016-02-11T02:46:22.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times. The algorithm should run in linear time and in O(1) space.</p>
-<p>Hint:</p>
-<p>How many majority elements could it possibly have?</p>
-<p><strong>Thinking:</strong></p>
-<p>This question is similar with Majority Element which can be solved by Boyer–Moore majority vote algorithm.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;Integer&gt; majorityElement(int[] nums) {
-    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
-    int count1 = 0, count2 = 0, can1 = 0, can2 = 1;
-
-    for (int num: nums){
-        if (num == can1)
-            count1++;
-        else if (num == can2)
-            count2++;
-        else if (count1 == 0){
-            can1 = num;
-            count1 = 1;
-        }
-        else if (count2 == 0){
-            can2 = num;
-            count2 = 1;
-        }
-        else{
-            count1--;
-            count2--;
-        }
-    }
-    count1 = 0;
-    count2 = 0;
-    for (int num: nums){
-        if (num == can1)
-            count1++;
-        else if (num == can2)
-            count2++;
-    }
-
-    if (count1 &gt; nums.length / 3)
-        res.add(can1);
-    if (count2 &gt; nums.length / 3 &amp;&amp; can1 != can2)
-        res.add(can2);
-
-    return res;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times. The algorithm ]]>
-    </summary>
-    
-      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Implement Trie (Prefix Tree)(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/"/>
-    <id>http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/</id>
-    <published>2016-02-11T01:06:45.000Z</published>
-    <updated>2016-02-11T01:08:44.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Implement a trie with insert, search, and startsWith methods.</p>
-<p>Note:<br>You may assume that all inputs are consist of lowercase letters a-z.</p>
-<p><strong>Thinking:</strong></p>
-<p>I assume every node has no val, but edges do. So I keep a HashMap for everynode. What’s more, in order to determine whether this node is a leave, I add another boolean value.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>import java.util.HashMap;
-
-class TrieNode {
-    HashMap&lt;Character, TrieNode&gt; edges = new HashMap&lt;Character, TrieNode&gt;();
-    boolean leave = false;
-    // Initialize your data structure here.
-    public TrieNode() {
-    }
-}
-
-public class Trie {
-    private TrieNode root;
-
-    public Trie() {
-        root = new TrieNode();
-    }
-
-    // Inserts a word into the trie.
-    public void insert(String word) {
-        TrieNode cur = root;
-        for (char c: word.toCharArray()){
-            if (!cur.edges.containsKey(c)){
-                TrieNode newNode = new TrieNode();
-                cur.edges.put(c, newNode);
-                cur = newNode;
-
-            }
-            else {
-                cur = cur.edges.get(c);
-            }
-        }
-        cur.leave = true;
-    }
-
-    // Returns if the word is in the trie.
-    public boolean search(String word) {
-        TrieNode cur = root;
-        for (char c: word.toCharArray()){
-            if (!cur.edges.containsKey(c)){
-                return false;
-            }
-            else{
-                cur = cur.edges.get(c);
-            }
-        }
-        return cur.leave;
-    }
-
-    // Returns if there is any word in the trie
-    // that starts with the given prefix.
-    public boolean startsWith(String prefix) {
-        TrieNode cur = root;
-        for (char c: prefix.toCharArray()){
-            if (!cur.edges.containsKey(c)){
-                return false;
-            }
-            else{
-                cur = cur.edges.get(c);
-            }
-        }
-        return true;
-    }
-}
-
-// Your Trie object will be instantiated and called as such:
-// Trie trie = new Trie();
-// trie.insert(&quot;somestring&quot;);
-// trie.search(&quot;key&quot;);
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Implement a trie with insert, search, and startsWith methods.</p>
-<p>Note:<br>You may assume that all i]]>
-    </summary>
-    
-      <category term="Design" scheme="http://yoursite.com/tags/Design/"/>
-    
-      <category term="Trie" scheme="http://yoursite.com/tags/Trie/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Sqrt(x)(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/"/>
-    <id>http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/</id>
-    <published>2016-02-11T00:33:22.000Z</published>
-    <updated>2016-02-11T00:34:52.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Implement int sqrt(int x).</p>
-<p>Compute and return the square root of x.</p>
-<p><strong>Thinking:</strong></p>
-<p>We can get the answer using bianry search from the range of integer.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int mySqrt(int x) {
-    if ( x &lt;= 1 )
-        return x;
-    int low = 1;
-    int high = Integer.MAX_VALUE;
-    while (true){
-        int mid = low + (high - low) / 2; //in order to avoid overflow
-        if (mid &gt; x / mid){
-            high = mid - 1;
-        }else{
-            if ( (mid+1) &gt; x/(mid+1))
-                return mid;
-            low = mid + 1;
-        }
-    }
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Implement int sqrt(int x).</p>
-<p>Compute and return the square root of x.</p>
-<p><strong>Thinking:</st]]>
-    </summary>
-    
-      <category term="Binary Search" scheme="http://yoursite.com/tags/Binary-Search/"/>
-    
-      <category term="Math" scheme="http://yoursite.com/tags/Math/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Course Schedule(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/"/>
-    <id>http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/</id>
-    <published>2016-02-10T23:16:31.000Z</published>
-    <updated>2016-02-11T00:03:03.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>There are a total of n courses you have to take, labeled from 0 to n - 1.</p>
-<p>Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]</p>
-<p>Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?</p>
-<p>For example:</p>
-<p>2, [[1,0]]<br>There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.</p>
-<p>2, [[1,0],[0,1]]<br>There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.</p>
-<p>Note:<br>The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.</p>
-<p>click to show more hints.</p>
-<p>Hints:<br>This problem is equivalent to finding if a cycle exists in a directed graph. If a cycle exists, no topological ordering exists and therefore it will be impossible to take all courses.<br>Topological Sort via DFS - A great video tutorial (21 minutes) on Coursera explaining the basic concepts of Topological Sort.<br>Topological sort could also be done via BFS.</p>
-<p><strong>Thinking:</strong></p>
-<p>We can search it from a arbitary node, can search by DFS. If there is a cycle, we will meet the visited nodes once DFS. So we need a array to hold the visited record. By the way, if we want a topological sort, we can hold a current value which is number of nodes initially and decrese one only when meet a sink node.</p>
-<p>For BFS, we can find the nodes whose indegree or outdegree is zero, and search from them. If there is a cycle, the number of nodes searched will less than the exact number because in a cycle no nodes’ indegree or outdegree is zero.</p>
-<p><strong>Solution:</strong></p>
-<p>DFS:</p>
-<pre><code>public boolean canFinish(int numCourses, int[][] prerequisites) {
-    if (numCourses &lt;= 1)
-        return true;
-    ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges = new ArrayList&lt;HashSet&lt;Integer&gt;&gt;(numCourses);
-    boolean[] visited = new boolean[numCourses];
-
-    for (int i = 0; i &lt; numCourses; i++)
-        edges.add(new HashSet&lt;Integer&gt;());
-
-    for (int[] pre: prerequisites){
-        edges.get(pre[0]).add(pre[1]);
-    }
-
-    for (int i = 0; i &lt; numCourses; i++){
-        if (edges.get(i).size() != 0)
-            if (!dfs(edges, i, visited))
-                return false;
-    }
-
-    return true;
-}
-
-private boolean dfs(ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges, int i, boolean[] visited){
-    if (visited[i] == true)
-        return false;
-    visited[i] = true;
-    while (edges.get(i).size() != 0){
-        int j = edges.get(i).iterator().next();
-
-        if (!dfs(edges, j, visited))
-            return false;
-
-        edges.get(i).remove(j);
-    }
-    visited[i] = false; //there is a cycle only when once DFS, so we change it back when onece DFS is finished
-    return true;
-}
-</code></pre><p>BFS:</p>
-<pre><code>    public boolean canFinishBFS(int numCourses, int[][] prerequisites) {
-    if (numCourses &lt;= 1)
-        return true;
-    ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges = new ArrayList&lt;HashSet&lt;Integer&gt;&gt;(numCourses);
-    int[] inDegree = new int[numCourses];
-    Queue&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
-    int count = 0;
-
-    for (int i = 0; i &lt; numCourses; i++)
-        edges.add(new HashSet&lt;Integer&gt;());
-
-    for (int[] pre: prerequisites){
-        if (!edges.get(pre[0]).contains(pre[1])){
-            edges.get(pre[0]).add(pre[1]);
-            inDegree[pre[1]]++;
-        }
-    }
-
-    for (int i = 0; i &lt; inDegree.length; i++)
-        if (inDegree[i] == 0)
-            q.add(i);
-
-    while (!q.isEmpty()){
-        int i = q.poll();
-        count++;
-        while (edges.get(i).size() != 0){
-            int j = edges.get(i).iterator().next();
-            if (--inDegree[j] == 0)
-                q.add(j);
-            edges.get(i).remove(j);
-        }
-    }
-
-    return count == numCourses;
-}
-</code></pre><p>Simpler and more concise BFS solution:</p>
-<p>Reference: <a href="https://leetcode.com/discuss/35578/easy-bfs-topological-sort-java" target="_blank" rel="external">https://leetcode.com/discuss/35578/easy-bfs-topological-sort-java</a></p>
-<pre><code>public boolean canFinish(int numCourses, int[][] prerequisites) {
-    int[][] matrix = new int[numCourses][numCourses]; // i -&gt; j
-    int[] indegree = new int[numCourses];
-
-    for (int i=0; i&lt;prerequisites.length; i++) {
-        int ready = prerequisites[i][0];
-        int pre = prerequisites[i][1];
-        if (matrix[pre][ready] == 0)
-            indegree[ready]++; //duplicate case
-        matrix[pre][ready] = 1;
-    }
-
-    int count = 0;
-    Queue&lt;Integer&gt; queue = new LinkedList();
-    for (int i=0; i&lt;indegree.length; i++) {
-        if (indegree[i] == 0) queue.offer(i);
-    }
-    while (!queue.isEmpty()) {
-        int course = queue.poll();
-        count++;
-        for (int i=0; i&lt;numCourses; i++) {
-            if (matrix[course][i] != 0) {
-                if (--indegree[i] == 0)
-                    queue.offer(i);
-            }
-        }
-    }
-    return count == numCourses;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>There are a total of n courses you have to take, labeled from 0 to n - 1.</p>
-<p>Some courses may have ]]>
-    </summary>
-    
-      <category term="BFS" scheme="http://yoursite.com/tags/BFS/"/>
-    
-      <category term="DFS" scheme="http://yoursite.com/tags/DFS/"/>
-    
-      <category term="Graph" scheme="http://yoursite.com/tags/Graph/"/>
-    
-      <category term="Topological Sort" scheme="http://yoursite.com/tags/Topological-Sort/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Minimum Height Trees(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/09/Leetcode-Minimum-Height-Trees-Java/"/>
-    <id>http://yoursite.com/2016/02/09/Leetcode-Minimum-Height-Trees-Java/</id>
-    <published>2016-02-10T07:10:01.000Z</published>
-    <updated>2016-02-10T07:13:33.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>For a undirected graph with tree characteristics, we can choose any node as the root. The result graph is then a rooted tree. Among all possible rooted trees, those with minimum height are called minimum height trees (MHTs). Given such a graph, write a function to find all the MHTs and return a list of their root labels.</p>
-<p>Format<br>The graph contains n nodes which are labeled from 0 to n - 1. You will be given the number n and a list of undirected edges (each edge is a pair of labels).</p>
-<p>You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.</p>
-<p>Example 1:</p>
-<p>Given n = 4, edges = [[1, 0], [1, 2], [1, 3]]</p>
-<pre><code>  0
-  |
-  1
- / \
-2   3
-</code></pre><p>return [1]</p>
-<p>Example 2:</p>
-<p>Given n = 6, edges = [[0, 3], [1, 3], [2, 3], [4, 3], [5, 4]]</p>
-<pre><code>0  1  2
- \ | /
-   3
-   |
-   4
-   |
-   5
-</code></pre><p>return [3, 4]</p>
-<p>Hint:</p>
-<p>How many MHTs can a graph have at most?<br>Note:</p>
-<p>(1) According to the definition of tree on Wikipedia: “a tree is an undirected graph in which any two vertices are connected by exactly one path. In other words, any connected graph without simple cycles is a tree.”</p>
-<p>(2) The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.</p>
-<p><strong>Thinking:</strong></p>
-<p>We should track the path from every leaves until there are only one or two nodes left. In other words, in the middle of the graph will be the root of the minimum height tree.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
-    if (n == 1){
-        List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
-        res.add(0);
-        return res;
-    }
-    List&lt;Integer&gt; leaves = new ArrayList&lt;Integer&gt;();
-    List&lt;Set&lt;Integer&gt;&gt; adj = new ArrayList&lt;Set&lt;Integer&gt;&gt;(n);
-    for (int i = 0; i &lt; n; i++)
-        adj.add(new HashSet&lt;Integer&gt;());
-    for (int[] edge: edges){
-        adj.get(edge[0]).add(edge[1]);
-        adj.get(edge[1]).add(edge[0]);
-    }
-    for (int i = 0; i &lt; n; i++){
-        if (adj.get(i).size() == 1)
-            leaves.add(i);
-    }
-
-    while (n &gt; 2){
-        n -= leaves.size();
-        List&lt;Integer&gt; newLeaves = new ArrayList&lt;Integer&gt;();
-        for (int i: leaves){
-            int j = adj.get(i).iterator().next();
-            adj.get(j).remove(i);
-            if (adj.get(j).size() == 1)
-                newLeaves.add(j);
-        }
-        leaves = newLeaves;
-    }
-
-    return leaves;
-}
-</code></pre><p>Reference:<a href="https://leetcode.com/discuss/71763/share-some-thoughts" target="_blank" rel="external">https://leetcode.com/discuss/71763/share-some-thoughts</a></p>
-<p>My previous code(LTE):</p>
-<pre><code>public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
-    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
-    int min = Integer.MAX_VALUE;
-    int res1 = -1;
-    int res2 = -1;
-
-    for (int i = 0; i &lt; n; i++){
-        int temp = bfs(n, i, edges);
-        if (temp &lt; min){
-            min = temp;
-            res1 = i;
-        }
-        else if (temp == min){
-            res2 = i;
-        }
-    }
-
-    if (res1 != -1)
-        res.add(res1);
-    if (res2 != -1)
-        res.add(res2);
-
-    return res;
-}
-
-private int bfs(int n, int i, int[][] edges){
-    int height = 0;
-    boolean[] used = new boolean[edges.length];
-    Queue&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
-    q.add(i);
-
-    while (!q.isEmpty()){
-        int num = q.size();
-        while (num &gt; 0){
-            int temp = q.poll();
-            for (int j = 0; j &lt; edges.length; j++){
-                if (edges[j][0] == temp || edges[j][1] == temp){
-                    if (used[j] == false){
-                        if (edges[j][0] == temp)
-                            q.add(edges[j][1]);
-                        else
-                            q.add(edges[j][0]);
-                        used[j] = true;
-                    }
-                }
-            }
-            num--;
-        }
-        height++;
-    }
-
-    return height;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>For a undirected graph with tree characteristics, we can choose any node as the root. The result graph ]]>
-    </summary>
-    
-      <category term="BFS" scheme="http://yoursite.com/tags/BFS/"/>
-    
-      <category term="Graph" scheme="http://yoursite.com/tags/Graph/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Next Permutation(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/"/>
-    <id>http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/</id>
-    <published>2016-02-10T03:38:47.000Z</published>
-    <updated>2016-02-12T05:44:37.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.</p>
-<p>If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).</p>
-<p>The replacement must be in-place, do not allocate extra memory.</p>
-<p>Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.</p>
-<pre><code>1,2,3 → 1,3,2
-3,2,1 → 1,2,3
-1,1,5 → 1,5,1
-</code></pre><p><strong>Thinking:</strong></p>
-<p>The method can be described as below:</p>
-<p><img src="http://4.bp.blogspot.com/-4zN0u5JG0vs/UN0xPEkP5yI/AAAAAAAAG9Q/O48ZfwB1i_c/s640/Picture4.png" alt=""></p>
-<p><strong>Solution:</strong></p>
-<pre><code>public void nextPermutation(int[] nums) {
-    if (nums == null || nums.length == 0)
-        return;
-    int i = nums.length - 2;
-    while (i &gt;= 0 &amp;&amp; nums[i] &gt;= nums[i+1]){
-        i--;
-    }
-
-    if (i == -1){
-        reverse(nums, 0, nums.length-1);
-        return;
-    }
-
-    int j = i+1;
-    while (j &lt; nums.length &amp;&amp; nums[j] &gt; nums[i]){
-        j++;
-    }
-    j--;
-    swap(nums, i, j);
-    reverse(nums, i+1, nums.length-1);
-
-    return;
-}
-private void swap(int[] nums, int i, int j){
-    int temp = nums[i];
-    nums[i] = nums[j];
-    nums[j] = temp;
-}
-private void reverse(int[] nums, int i, int j){
-    while (i &lt; j){
-        swap(nums, i++, j--);
-    }
-}
-</code></pre><p>Reference:<a href="http://fisherlei.blogspot.com/2012/12/leetcode-next-permutation.html" target="_blank" rel="external">http://fisherlei.blogspot.com/2012/12/leetcode-next-permutation.html</a><br><a href="http://www.cnblogs.com/springfor/p/3896245.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3896245.html</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Implement next permutation, which rearranges numbers into the lexicographically next greater permutatio]]>
     </summary>
     
   </entry>

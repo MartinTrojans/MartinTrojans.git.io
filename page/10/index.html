@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Leetcode-Path-Sum-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-Palindrome-Partitioning-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/27/Leetcode-Path-Sum-II-Java/" class="article-date">
-  <time datetime="2016-01-27T22:11:58.000Z" itemprop="datePublished">2016-01-27</time>
+    <a href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" class="article-date">
+  <time datetime="2016-01-31T06:25:26.000Z" itemprop="datePublished">2016-01-30</time>
 </a>
     
   <div class="article-category">
@@ -86,7 +86,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/27/Leetcode-Path-Sum-II-Java/">Leetcode-Path Sum II(Java)</a>
+      <a class="article-title" href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/">Leetcode-Palindrome Partitioning(Java)</a>
     </h1>
   
 
@@ -95,256 +95,59 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given a binary tree and a sum, find all root-to-leaf paths where each path’s sum equals the given sum.</p>
-<p>For example:<br>Given the below binary tree and sum = 22,</p>
-<pre><code>      5
-     / \
-    4   8
-   /   / \
-  11  13  4
- /  \    / \
-7    2  5   1
-</code></pre><p>return</p>
+<p>Given a string s, partition s such that every substring of the partition is a palindrome.</p>
+<p>Return all possible palindrome partitioning of s.</p>
+<p>For example, given s = “aab”,<br>Return</p>
 <pre><code>[
-      [5,4,11,2],
-       [5,8,4,5]
+  [&quot;aa&quot;,&quot;b&quot;],
+  [&quot;a&quot;,&quot;a&quot;,&quot;b&quot;]
 ]
 </code></pre><p><strong>Thinking:</strong></p>
-<p>We should use classic dfs method to solve this problem and record all the results.</p>
+<p>We should get all the possible partition, it’s obvious we should use backtracing. We partition the string from beginning, and check if it’s palindrome, then check the rest of the substring. If all the substrings are palindrome, we put them in the result. We have to notice the API of Java substring(beginIndex, endIndex) that beginIndex is inclusive but endIndex is exclusive.</p>
 <p><strong>Solution:</strong></p>
-<p>But my first version of solution is time limit exceeded:</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int sum) {
-    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
-
-    return dp(root, sum, res);
-}
-
-private List&lt;List&lt;Integer&gt;&gt; dp(TreeNode root, int sum, List&lt;Integer&gt; cur){
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    if (root == null)
-        return null;
-    if (root.left == null &amp;&amp; root.right == null){
-        if (root.val == sum){
-            cur.add(root.val);
-            res.add(cur);
-            return res;
-        }
-        else{
-            return res;
+<pre><code>public List&lt;List&lt;String&gt;&gt; partition(String s) {
+    List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;List&lt;String&gt;&gt;();
+    int len = s.length();
+    if (palindrome(s)){
+        List&lt;String&gt; tempres = new ArrayList&lt;String&gt;();
+        tempres.add(s);
+        res.add(tempres);
+    }
+    for (int i = 1; i &lt; len; i++){
+        if (palindrome(s.substring(0, i))){
+            for (List&lt;String&gt; list: partition(s.substring(i))){
+                list.add(0, s.substring(0, i));
+                res.add(list);
+            }
         }
     }
-    for (List&lt;Integer&gt; ele: dp(root.left, sum-root.val, cur)){
-        if (ele != null){
-            ele.add(0, root.val);
-            res.add(ele);
-        }
-    }
-    for (List&lt;Integer&gt; ele: dp(root.right, sum-root.val, cur)){
-        if (ele != null){
-            ele.add(0, root.val);
-            res.add(ele);
-        }
-    }
-
-    return res;
-}
-</code></pre><p>Then I have to improve the effiency of this algorithm, and the code is below:</p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int sum) {
-    List&lt;Integer&gt; cur = new ArrayList&lt;Integer&gt;();
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-
-    dp(root, sum, cur, res);
-
     return res;
 }
 
-private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt;Integer&gt;&gt; res){
-    if (root == null)
-        return;
-    //preorder dfs
-
-    sum -= root.val;
-    if (root.left == null &amp;&amp; root.right == null){
-        if (sum == 0){
-            cur.add(root.val);
-            List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-            tempres.addAll(cur);
-            res.add(tempres);
-            cur.remove(cur.size() - 1);
+private boolean palindrome(String s){
+    int len = s.length();
+    int left = 0;
+    int right = len - 1;
+    while (left &lt; right){
+        if (s.charAt(left) != s.charAt(right)){
+            return false;
         }
-        return;
+        left++;
+        right--;
     }
-    cur.add(root.val);
-    if (root.left != null){
-        dp(root.left, sum, cur, res);
-    }
-    if (root.right != null){
-        dp(root.right, sum, cur, res);
-    }
-    cur.remove(cur.size() - 1);
-}
-</code></pre><p>It’s very importatn to create a new List while put the current list data to final result, becuase if not we will only copy the address of this variable cur. Then it will be incorrect if we revise cur.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/" data-id="cikz1p2wg002ryxow16s55avk" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/27/hello-world/" class="article-date">
-  <time datetime="2016-01-27T22:00:19.000Z" itemprop="datePublished">2016-01-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/uncategoried/">uncategoried</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/27/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files"><a href="#Generate_static_files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites"><a href="#Deploy_to_remote_sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/hello-world/" data-id="cikz1p2uo0008yxown4hddk0c" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/27/hello-world/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-leetcode-flatten-binary-tree-to-linked-list" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" class="article-date">
-  <time datetime="2016-01-27T22:00:06.000Z" itemprop="datePublished">2016-01-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/">Leetcode-Flatten Binary Tree to Linked List(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>    1
-   / \
-  2   5
- / \   \
-3   4   6
-</code></pre><p>The flattened tree should look like:</p>
-<pre><code>1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-         \
-          6
-</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
-<p><strong>Thinking:</strong> </p>
-<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public void flatten(TreeNode root) {
-        if (root == null)
-            return;
-        dfs(root);
-    }
-
-    public TreeNode dfs(TreeNode root){
-
-        if (root.left == null &amp;&amp; root.right == null){
-            return root;
-        }
-
-        TreeNode left = null;
-        TreeNode right = null;
-        TreeNode preleft = root.left;
-        TreeNode preright = root.right;
-        if (preleft == null){
-            return dfs(preright);
-        }
-        else if(preright == null){
-            root.left = null;
-            root.right = preleft;
-            return dfs(preleft);
-        }
-        else{
-            left = dfs(preleft);
-            right = dfs(preright);
-            root.left = null;
-            root.right = preleft;
-            left.right = preright;
-            return right;
-        }
-    }
+    return true;
 }
 </code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" data-id="cikz1p2ui0005yxowoq83v2w0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" data-id="cil381g0w003e3aowq0cqn6sv" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/30/Leetcode-Palindrome-Partitioning-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracking/">Backtracing</a></li></ul>
+
     </footer>
   </div>
   
@@ -352,10 +155,10 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
 
 
   
-    <article id="post-Leetcode-Triangle" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/27/Leetcode-Triangle/" class="article-date">
-  <time datetime="2016-01-27T21:58:25.000Z" itemprop="datePublished">2016-01-27</time>
+    <a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" class="article-date">
+  <time datetime="2016-01-31T05:21:37.000Z" itemprop="datePublished">2016-01-30</time>
 </a>
     
   <div class="article-category">
@@ -370,7 +173,7 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/27/Leetcode-Triangle/">Leetcode-Triangle(Java)</a>
+      <a class="article-title" href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/">Leetcode-Binary Tree Zigzag Level Order Traversal(Java)</a>
     </h1>
   
 
@@ -379,97 +182,72 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.</p>
-<p>For example, given the following triangle:</p>
+<p>Given a binary tree, return the zigzag level order traversal of its nodes’ values. (ie, from left to right, then right to left for the next level and alternate between).</p>
+<p>For example:<br>Given binary tree {3,9,20,#,#,15,7},</p>
+<pre><code>  3
+ / \
+9  20
+  /  \
+ 15   7
+</code></pre><p>return its zigzag level order traversal as:</p>
 <pre><code>[
-       [2],
-     [3,4],
-    [6,5,7],
-   [4,1,8,3]
+  [3],
+  [20,9],
+  [15,7]
 ]
-</code></pre><p>The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).</p>
-<p>Note:<br>Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.</p>
-<p><strong>Thinking:</strong><br>It’s a simple dynamic programming question. The expression is dp[i][j] = min(d[i-1][j-1], d[i][j]) + triangle[i][j].</p>
-<p>But the first time, my code is time exceed:</p>
-<pre><code>public class Solution {
-    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
-        int lr = triangle.size();
-        if(lr == 0){
-            return 0;
-        }
-        int lc = triangle.get(lr-1).size();
-        int min = 100000;
-        for(int i = 0; i &lt; lc; i++){
-            int tmp = dp(triangle, lr-1, i);
-            if(tmp &lt; min)
-                min = tmp;
-        }
-        return min;
-    }
-
-    public int dp(List&lt;List&lt;Integer&gt;&gt; triangle, int row, int column){
-        if(row == 0){
-            return triangle.get(0).get(0);
-        }
-        int value = triangle.get(row).get(column);
-        int size = triangle.get(row-1).size();
-        if(column &gt;= size){
-            return dp(triangle, row-1, column-1) + value;
-        }
-        else if(column - 1 &lt; 0){
-            return dp(triangle, row-1, column) + value;
-        }
-        else{
-            int res1 = dp(triangle, row-1, column-1) + value;
-            int res2 = dp(triangle, row-1, column) + value;
-            if(res1 &lt; res2){
-                return res1;
+</code></pre><p><strong>Thinking:</strong></p>
+<p>It’s a BFS problem. It’s fine if we need use queue, but because we have to record as a zigzag order, it’s more efficient to use stack. What’s more, we should to notice the order of left and right child.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; zigzagLevelOrder(TreeNode root) {
+    int flag = 0;
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+    Stack&lt;TreeNode&gt; tempstack = new Stack&lt;TreeNode&gt;();
+    if (root == null)
+        return res;
+    stack.add(root);
+    while (!stack.isEmpty() || !tempstack.isEmpty()){
+        tempstack = new Stack&lt;TreeNode&gt;();
+        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+        while (!stack.isEmpty()){
+            TreeNode node = stack.pop();
+            tempres.add(node.val);
+            if (flag == 0){
+                if (node.left != null){
+                    tempstack.add(node.left);
+                }
+                if (node.right != null){
+                    tempstack.add(node.right);
+                }
             }
             else{
-                return res2;
+                if (node.right != null){
+                    tempstack.add(node.right);
+                }
+                if (node.left != null){
+                    tempstack.add(node.left);
+                }
             }
+
         }
+        res.add(tempres);
+        stack.addAll(tempstack);
+        flag ^= 1;
     }
-}
-</code></pre><p>Then I noticed the bonus, so I change my mind to use <em>iteration</em>:</p>
-<pre><code>public class Solution{
-    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle){
-        int lr = triangle.size();
-        int[] min = new int[lr];
-        int[] tempmin = new int[lr];
-        min[0] = triangle.get(0).get(0);
-        for(int i = 1; i &lt; lr; i++){
-            tempmin[0] = min[0] + triangle.get(i).get(0);
-            tempmin[i] = min[i-1] + triangle.get(i).get(i);
-            for(int j = 1; j &lt; i; j++){
-                int res1 = min[j-1] + triangle.get(i).get(j);
-                int res2 = min[j] + triangle.get(i).get(j);
-                if(res1 &lt; res2)
-                    tempmin[j] = res1;
-                else
-                    tempmin[j] = res2;
-            }
-            for(int k = 0; k &lt; i+1; k++){
-                min[k] = tempmin[k];
-            }
-        }
-        int m = 100000;
-        for(int i = 0; i &lt; lr; i++){
-            if(min[i] &lt; m)
-                m = min[i];
-        }
-        return m;
-    }
+
+    return res;
 }
 </code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Triangle/" data-id="cikz1p2vm001fyxowptlil5zv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" data-id="cil381g2f00643aowylo8yk82" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/27/Leetcode-Triangle/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFS/">BFS</a></li></ul>
+
     </footer>
   </div>
   
@@ -477,14 +255,14 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
 
 
   
-    <article id="post-HTTP-method-get-and-post" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-4Sum-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/26/HTTP-method-get-and-post/" class="article-date">
-  <time datetime="2016-01-27T07:08:43.000Z" itemprop="datePublished">2016-01-26</time>
+    <a href="/2016/01/30/Leetcode-4Sum-Java/" class="article-date">
+  <time datetime="2016-01-31T04:33:10.000Z" itemprop="datePublished">2016-01-30</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Network/">Network</a>
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
   </div>
 
   </div>
@@ -495,7 +273,7 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/26/HTTP-method-get-and-post/">HTTP method: get and post</a>
+      <a class="article-title" href="/2016/01/30/Leetcode-4Sum-Java/">Leetcode-4Sum(Java)</a>
     </h1>
   
 
@@ -503,87 +281,378 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>HTTP:</strong></p>
-<p>HTTP is the foundation of data commnication of the World Wide Web. The basic work method of http is request and response.</p>
-<p>There are two methods of HTTP request: Get and Post.</p>
-<p>Get - get request data from specific source.<br>Post - Push data which will be dealed to specific source.</p>
-<p><strong>GET:</strong></p>
-<p>Note that the query string (name/value pairs) is sent in the URL of a GET request:</p>
-<pre><code>http://www.w3schools.com/tags/ref_httpmethods.asp
-</code></pre><p>Some other notes on GET requests:</p>
-<p>GET requests can be cached</p>
-<p>GET requests remain in the browser history</p>
-<p>GET requests can be bookmarked</p>
-<p>GET requests should never be used when dealing with sensitive data</p>
-<p>GET requests have length restrictions</p>
-<p>GET requests should be used only to retrieve data</p>
-<p><strong>POST:</strong></p>
-<p>Note that the query string (name/value pairs) is sent in the HTTP message body of a POST request:</p>
-<pre><code>POST /test/demo_form.asp HTTP/1.1
-Host: w3schools.com
-name1=value1&amp;name2=value2
-</code></pre><p>Some other notes on POST requests:</p>
-<p>POST requests are never cached</p>
-<p>POST requests do not remain in the browser history</p>
-<p>POST requests cannot be bookmarked</p>
-<p>POST requests have no restrictions on data length</p>
-<p><strong>Compare GET vs. POST:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">GET</th>
-<th style="text-align:right">POST</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>BACK button/Reload</td>
-<td style="text-align:center">Harmless</td>
-<td style="text-align:right">Data will be re-submitted</td>
-</tr>
-<tr>
-<td>Bookmarked</td>
-<td style="text-align:center">can be bookmarked</td>
-<td style="text-align:right">Can not be bookmarked</td>
-</tr>
-<tr>
-<td>Cached</td>
-<td style="text-align:center">Can be cached</td>
-<td style="text-align:right">Can not be cached</td>
-</tr>
-<tr>
-<td>History</td>
-<td style="text-align:center">Parameters remain in browser history</td>
-<td style="text-align:right">Parameters are not saved in browser history</td>
-</tr>
-<tr>
-<td>Restrictions on data length</td>
-<td style="text-align:center">Yes</td>
-<td style="text-align:right">No</td>
-</tr>
-<tr>
-<td>Security</td>
-<td style="text-align:center">Less secure</td>
-<td style="text-align:right">Safer</td>
-</tr>
-<tr>
-<td>Visibility</td>
-<td style="text-align:center">Visible</td>
-<td style="text-align:right">Not visible in URL</td>
-</tr>
-</tbody>
-</table>
-<p>Reference: <a href="http://www.w3schools.com/tags/ref_httpmethods.asp" target="_blank" rel="external">http://www.w3schools.com/tags/ref_httpmethods.asp</a></p>
+        <p><strong>Question:</strong></p>
+<p>Given an array S of n integers, are there elements a, b, c, and d in S such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.</p>
+<p>Note:<br>Elements in a quadruplet (a,b,c,d) must be in non-descending order. (ie, a ≤ b ≤ c ≤ d)<br>The solution set must not contain duplicate quadruplets.<br>    For example, given array S = {1 0 -1 0 -2 2}, and target = 0.</p>
+<pre><code>A solution set is:
+(-1,  0, 0, 1)
+(-2, -1, 1, 2)
+(-2,  0, 0, 2)
+</code></pre><p><strong>Thinking</strong>:</p>
+<p>This questions is very similar with 2Sum and 3Sum. There are several way to solve it. </p>
+<p><strong>Solution1:</strong></p>
+<p>The most common method may use the method of 3Sum, and do that n times.</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum1(int[] nums, int target) {
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
+    Arrays.sort(nums);
+    int len = nums.length;
+
+
+    for (int i = 0; i &lt; len-3; i++){
+        for (int j = i+1; j &lt; len-2; j++){
+            for (int k = j+1; k &lt; len-1; k++){
+                int l = len-1;
+                while (k &lt; l){
+                    int sum = nums[i] + nums[j] + nums[k] + nums[l];
+                    if (sum == target){
+                        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+                        tempres.add(nums[i]);
+                        tempres.add(nums[j]);
+                        tempres.add(nums[k]);
+                        tempres.add(nums[l]);
+                        tres.add(tempres);
+                        k++;
+                        l--;
+                    }
+                    else if (sum &gt; target){
+                        l--;
+                    }
+                    else{
+                        k++;
+                    }
+                    while (k &lt; l &amp;&amp; nums[k+1] == nums[k]){
+                        k++;
+                    }
+                    while (k &lt; l &amp;&amp; nums[l-1] == nums[l]){
+                        l--;
+                    }
+                }
+            }
+        }
+    }
+
+    res.addAll(tres);
+    return res;
+}
+</code></pre><p><strong>Solution2:</strong></p>
+<p>The second solution is to combine every two numbers as a pair, and make it as a 2sum problem. But for implementing this method, we have to define the data structure by ourself and implement the interface of Comparator to sort the sum of them.</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum2(int[] nums, int target){
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    int len = nums.length;
+    if (len &lt; 4)
+        return res;
+    Pair[] pairSum = new Pair[len*(len-1)/2];
+    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
+
+    int count = 0;
+    for (int i = 0; i &lt; len-1; i++){
+        for (int j = i+1; j &lt; len; j++){
+            Pair ele = new Pair(nums[i], nums[j], i, j);
+            pairSum[count++] = ele;
+        }
+    }
+    Arrays.sort(pairSum, new SumComparator());
+
+    int left = 0;
+    int right = pairSum.length - 1;
+    while (left &lt; right){
+        int sum = pairSum[left].getSum() + pairSum[right].getSum();
+        if (sum == target){
+            int endl = left;
+            int endr = right;
+            while (pairSum[endl].getSum() == pairSum[endl+1].getSum() &amp;&amp; endl+1 &lt; endr){
+                endl++;
+            }
+            while (pairSum[endr].getSum() == pairSum[endr-1].getSum() &amp;&amp; endl &lt; endr-1){
+                endr--;
+            }
+            for (int i = left; i &lt;= endl; i++){
+                for (int j = right; j&gt;= endr; j--){
+                    int i1 = pairSum[i].geti();
+                    int i2 = pairSum[j].geti();
+                    int j1 = pairSum[i].getj();
+                    int j2 = pairSum[j].getj();
+                    if (i1 == i2 || i1 == j2 || j1 == i2 || j1 == j2){
+                        continue;
+                    }
+                    int[] temp = new int[4];
+                    temp[0] = pairSum[i].getN1();
+                    temp[1] = pairSum[i].getN2();
+                    temp[2] = pairSum[j].getN1();
+                    temp[3] = pairSum[j].getN2();
+                    Arrays.sort(temp);
+                    List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+                    tempres.add(temp[0]);
+                    tempres.add(temp[1]);
+                    tempres.add(temp[2]);
+                    tempres.add(temp[3]);
+                    tres.add(tempres);
+                }
+            }
+            left = endl+1;
+            right = endr-1;
+        }
+        else if (sum &gt; target){
+            right--;
+        }
+        else{
+            left++;
+        }
+    }
+
+    res.addAll(tres);
+    return res;
+}
+
+class SumComparator implements Comparator{
+
+    @Override
+    public final int compare(Object o1, Object o2) {
+        // TODO Auto-generated method stub
+        Pair l1 = (Pair)o1;
+        Pair l2 = (Pair)o2;
+        if (l1.getSum() &gt; l2.getSum())
+            return 1;
+        else if (l1.getSum() &lt; l2.getSum())
+            return -1;
+        else
+            return 0;
+    }
+}
+
+class Pair{
+    int i;
+    int j;
+    int n1;
+    int n2;
+    int sum;
+    Pair(int num1, int num2, int i, int j){
+        this.n1 = num1;
+        this.n2 = num2;
+        this.sum = num1 + num2;
+        this.i = i;
+        this.j = j;
+    }
+    public int getSum(){
+        return this.sum;
+    }
+    public int getN1(){
+        return this.n1;
+    }
+    public int getN2(){
+        return this.n2;
+    }
+    public int geti(){
+        return this.i;
+    }
+    public int getj(){
+        return this.j;
+    }
+}
+</code></pre><p>Reference: <a href="http://blog.csdn.net/linhuanmars/article/details/24826871" target="_blank" rel="external">http://blog.csdn.net/linhuanmars/article/details/24826871</a></p>
+<p><strong>Solution3:</strong></p>
+<p>The third method is the most efficient method. It has two loop of two points and use some method to break or return early. It really improve the performance of time running.</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; fourSum3(int[] nums, int target) {
+    List&lt;List&lt;Integer&gt;&gt; list = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    Arrays.sort(nums);
+    int second = 0, third = 0, nexti = 0, nextj = 0;
+    for(int i=0, L=nums.length; i&lt;L-3; i++) {
+        if(nums[i]&lt;&lt;2 &gt; target) return list; // return immediately
+        for(int j=L-1; j&gt;i+2; j--) {
+            if(nums[j]&lt;&lt;2 &lt; target) break; // break immediately
+            int rem = target-nums[i]-nums[j];
+            int lo = i+1, hi=j-1;
+            while(lo&lt;hi) {
+                int sum = nums[lo] + nums[hi];
+                if(sum&gt;rem) --hi;
+                else if(sum&lt;rem) ++lo;
+                else {
+                    list.add(Arrays.asList(nums[i],nums[lo],nums[hi],nums[j]));
+                    while(++lo&lt;=hi &amp;&amp; nums[lo-1]==nums[lo]) continue; // avoid duplicate results
+                    while(--hi&gt;=lo &amp;&amp; nums[hi]==nums[hi+1]) continue; // avoid duplicate results
+                }
+            }
+            while(j&gt;=1 &amp;&amp; nums[j]==nums[j-1]) --j; // skip inner loop
+        }
+        while(i&lt;L-1 &amp;&amp; nums[i]==nums[i+1]) ++i; // skip outer loop
+    }
+    return list;
+}
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/78276/java-little-bit-faster-than-other-common-methods-9ms-beats-95%25" target="_blank" rel="external">https://leetcode.com/discuss/78276/java-little-bit-faster-than-other-common-methods-9ms-beats-95%25</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/" data-id="cikz1p2yc0062yxow9dwgrwg0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/30/Leetcode-4Sum-Java/" data-id="cil381g2n006h3aowf7afvvng" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/30/Leetcode-4Sum-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Two-Points/">Two Points</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-3Sum-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/28/Leetcode-3Sum-Java/" class="article-date">
+  <time datetime="2016-01-29T00:28:55.000Z" itemprop="datePublished">2016-01-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/28/Leetcode-3Sum-Java/">Leetcode-3Sum(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.</p>
+<p>Note:<br>Elements in a triplet (a,b,c) must be in non-descending order. (ie, a ≤ b ≤ c)<br>The solution set must not contain duplicate triplets.<br>    For example, given array S = {-1 0 1 2 -1 -4},</p>
+<pre><code>A solution set is:
+(-1, 0, 1)
+(-1, -1, 2)
+</code></pre><p><strong>Thinking:</strong></p>
+<p>Sort the array first. Pick a number from the array, and use other two points to record the position of the array and determine which one should change by the sum of them. What’s more, the result set should has no duplicate, so we can use hashset here.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) {
+    int l = nums.length;
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    Set&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
+
+    if (l &lt; 3)
+        return res;
+
+    Arrays.sort(nums);
+
+    for (int i = 0; i &lt; l-2; i++){
+        int k = l-1;
+        for (int j = i+1; j &lt; l; j++){
+            while (j &lt; k){
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum == 0){
+                    List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
+                    tempres.add(nums[i]);
+                    tempres.add(nums[j]);
+                    tempres.add(nums[k]);
+                    tres.add(tempres);
+                    while (j &lt; k &amp;&amp; nums[j] == tempres.get(1)){
+                        j++;
+                    }
+                    k--;
+                }
+                else if (sum &gt; 0){
+                    k--;
+                }
+                else{
+                    j++;
+                }
+
+            }
+        }
+    }
+    res.addAll(tres);
+
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/28/Leetcode-3Sum-Java/" data-id="cil381g2o006m3aowlsn41a14" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/28/Leetcode-3Sum-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Two-Points/">Two Points</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Two-Sum-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/28/Leetcode-Two-Sum-Java/" class="article-date">
+  <time datetime="2016-01-28T22:55:39.000Z" itemprop="datePublished">2016-01-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/28/Leetcode-Two-Sum-Java/">Leetcode-Two Sum(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
+<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</p>
+<p>You may assume that each input would have exactly one solution.</p>
+<p>Input: numbers={2, 7, 11, 15}, target=9<br>Output: index1=1, index2=2</p>
+<p><strong>Thinking:</strong></p>
+<p>We can use hash map to store the rest of nums[i], and if we find which number is equal to the rest beofore, their sum will be target.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int[] twoSum(int[] nums, int target){
+    HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+    int[] res = new int[2];
+
+    for (int i = 0; i &lt; nums.length; i++){
+        if (map.containsKey(nums[i])){
+            res[0] = map.get(nums[i]) + 1;
+            res[1] = i+1;
+            break;
+        }
+        else{
+            map.put(target-nums[i], i);
+        }
+    }
+
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/28/Leetcode-Two-Sum-Java/" data-id="cil381fzo001f3aow4dxm97on" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/28/Leetcode-Two-Sum-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li></ul>
+
     </footer>
   </div>
   
@@ -594,7 +663,7 @@ name1=value1&amp;name2=value2
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/9/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/11/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/9/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/11/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -614,7 +683,7 @@ name1=value1&amp;name2=value2
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
     </div>
   </div>
 
@@ -624,7 +693,7 @@ name1=value1&amp;name2=value2
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 11.67px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 13.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 11.67px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 15px;">Linked List</a> <a href="/tags/Math/" style="font-size: 15px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 18.33px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 11.67px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 14.29px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 11.43px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.86px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 15.71px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 18.57px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 11.43px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -646,23 +715,23 @@ name1=value1&amp;name2=value2
       <ul>
         
           <li>
-            <a href="/2016/02/22/Leetcode-Basic-Calculator-II-Java/">Leetcode-Basic Calculator II(Java)</a>
+            <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/">Leetcode-Repeated DNA Sequences(Java)</a>
+            <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/">Leetcode-Count Complete Tree Nodes(Java)</a>
+            <a href="/2016/02/23/Leetcode-Spiral-Matrix-Java/">Leetcode-Spiral Matrix(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/22/Leetcode-Sort-List-Java/">Leetcode-Sort List(Java)</a>
+            <a href="/2016/02/23/Leetcode-Multiply-Strings-Java/">Leetcode-Multiply Strings(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/22/Leetcode-Permutation-Sequence-Java/">Leetcode-Permutation Sequence(Java)</a>
+            <a href="/2016/02/23/Leetcode-Rotate-List-Java/">Leetcode-Rotate List(Java)</a>
           </li>
         
       </ul>

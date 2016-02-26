@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Leetcode-Partition-List" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-3Sum-Closest-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Partition-List/" class="article-date">
-  <time datetime="2016-01-25T03:14:31.000Z" itemprop="datePublished">2016-01-24</time>
+    <a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" class="article-date">
+  <time datetime="2016-01-27T00:38:28.000Z" itemprop="datePublished">2016-01-26</time>
 </a>
     
   <div class="article-category">
@@ -86,7 +86,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Partition-List/">Leetcode-Partition List(Java)</a>
+      <a class="article-title" href="/2016/01/26/Leetcode-3Sum-Closest-Java/">Leetcode-3Sum Closest(Java)</a>
     </h1>
   
 
@@ -95,340 +95,632 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.</p>
-<p>You should preserve the original relative order of the nodes in each of the two partitions.</p>
-<p>For example,<br>Given 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2 and x = 3,<br>return 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5.</p>
+<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
+<p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
+<p>The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</p>
 <p><strong>Thinking:</strong></p>
-<p>We should preserve the original relative order of the nodes. So we need two points, one is for recording where to insert the less value node, and the other is for searching the less value node.</p>
-<p><strong>Solution1:</strong></p>
-<pre><code>public class Solution {
-    public ListNode partition(ListNode head, int x) {
-        if (head == null)
-            return null;
-        ListNode prehead = new ListNode(0);
-        prehead.next = head;
-        ListNode s = prehead;
-        ListNode l = prehead;
-        while(s != null &amp;&amp; l != null){
-            while(s.next != null){
-                if (s.next.val &gt;= x)
-                    break;
-                s = s.next;
+<p>In order to improve the performance of algorithm, we should sort the array. Because of that, we can determine where to go using current result.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int threeSumClosest(int[] nums, int target) {
+    int l = nums.length;
+    if (l &lt; 3)
+        return 0;
+    int min = Integer.MAX_VALUE;
+    int res = 0;
+    Arrays.sort(nums);
+
+    for (int i = 0; i &lt; l; i++){
+        int j = i + 1;
+        int k = l - 1;
+
+        while (j &lt; k){
+            int sum = nums[i] + nums[j] + nums[k];
+            if (sum == target)
+                return sum;
+            int diff = Math.abs(sum - target);
+            if (diff &lt; min){
+                min = diff;
+                res = sum;
             }
-            l = s.next;
-            if (l == null)
-                break;
-            while(l.next != null){
-                if (l.next.val &lt; x)
-                    break;
-                l = l.next;
-            }
-            if (l.next == null)
-                break;
-            ListNode tmp = l.next;
-            l.next = l.next.next;
-            tmp.next = s.next;
-            s.next = tmp;
+            if (sum &gt; target)
+                k--;
+            else
+                j++;
         }
 
-        return prehead.next;
+    }
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/" data-id="cil381g2q006q3aowv8fmajoy" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" class="article-date">
+  <time datetime="2016-01-27T00:00:18.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/">Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
+<p><strong>Thinking:</strong></p>
+<p>Inorder traversal will search in order: left, root, right;</p>
+<p>Postorder travelsal will search in order: left, right, root.</p>
+<p>So we can find the root in postorder and search it in inorder by the value. And find root’s left child and right child node by recursion.</p>
+<pre><code>public TreeNode buildTree(int[] inorder, int[] postorder) {
+    int l = inorder.length;
+    if (l == 0)
+        return null;
+    TreeNode root = new TreeNode(postorder[l-1]);
+    TreeNode left = null;
+    TreeNode right = null;
+    int index = 0;
+    for (; index &lt; l; index++){
+        if (inorder[index] == postorder[l-1])
+            break;
     }
 
+
+    if (index &gt; 0){
+        int[] leftinorder = new int[index];
+        int[] leftpostorder = new int[index];
+        System.arraycopy(inorder, 0, leftinorder, 0, index);
+        System.arraycopy(postorder, 0, leftpostorder, 0, index);
+        left = buildTree(leftinorder, leftpostorder);
+    }
+    if (index &lt; l-1){
+        int[] rightinorder = new int[l-index-1];
+        int[] rightpostorder = new int[l-index-1];
+        System.arraycopy(inorder, index+1, rightinorder, 0, l-index-1);
+        System.arraycopy(postorder, index, rightpostorder, 0, l-index-1);
+        right = buildTree(rightinorder, rightpostorder);
+    }
+    root.left = left;
+    root.right = right;
+
+    return root;
 }
-</code></pre><p>And there is another solution, which uses two lists. One is for recording less value node, and the other is for recording greater value node. And connect them:</p>
-<pre><code>public ListNode partition(ListNode head, int x) {
-        if(head==null||head.next==null)
+</code></pre><p>By the way, this code can be improved because in Java we can not easily get the subarray and I use the System.arraycopy. It can be replaced by recording the postion of array.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" data-id="cil381g27005p3aow5csi9guq" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" class="article-date">
+  <time datetime="2016-01-26T23:18:55.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/">Leetcode-Lowest Common Ancestor of a Binary Tree(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.</p>
+<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</p>
+<pre><code>           _______3______
+         /              \
+  ___5__           ___1___
+    /      \         /          \
+6        2       0         8
+         /  \
+        7    4
+</code></pre><p>For example, the lowest common ancestor (LCA) of nodes 5 and 1 is 3. Another example is LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.</p>
+<p><strong>Thinking:</strong></p>
+<p>The point to find the lowest common ancestor is to find a node whose left and right childs both have the node we want to find. Because if it’s not the lowest, the node will only belong to one of their child. If search in a pre-order from the root, if one node’s left child and right child both have the keynode or if the node itself is one of the keynode which means the other node will in lower level of this node, it’s the answer we want.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == null)
+        return root;
+
+    if (root.equals(q) || root.equals(p)){
+        return root;
+    }
+
+    TreeNode l = lowestCommonAncestor(root.left, p, q);
+    TreeNode r = lowestCommonAncestor(root.right, p, q);
+    if (l != null &amp;&amp; r != null)
+        return root;
+
+    return l == null? r: l;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" data-id="cil381g1g004a3aowmikmq6j7" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Node-js-study-note" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/25/Node-js-study-note/" class="article-date">
+  <time datetime="2016-01-26T05:11:55.000Z" itemprop="datePublished">2016-01-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/25/Node-js-study-note/">Node.js study note</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Survey:</strong></p>
+<p>Node.js is an open-source, cross-platform runtime environment for developing server-side Web applications. Node.js is not a JavaScript framework,[3] but its applications are written in JavaScript and can be run within the Node.js runtime on a wide variety of platforms.</p>
+<p>This is my first time to learn Node.js, and I’ll write casully about the process and experience of learning.</p>
+<hr>
+<p><strong>Content:</strong></p>
+<p>–1– Argument variables with process.argv</p>
+<pre><code>app.js
+
+function grab(flag){
+    var index = process.argv.indexOf(flag);
+    return (index === -1) ? null : process.argv[index+1];
+}
+
+var greeting = grab(&apos;--greeting&apos;);
+var user = grab(&apos;--user&apos;);
+
+if (!user || !greeting) {
+    console.log(&quot;You blew it!&quot;);
+} else {
+    console.log(`Welcome, ${user}, ${greeting}`);
+}
+</code></pre><p>In this code, we grab the arguments from shell and print it out on the console.</p>
+<p>For example, if in the shell:</p>
+<pre><code>$node app --user Martin --greeting &quot;hello hello&quot;
+</code></pre><p>Then in the console:</p>
+<pre><code>Welcome, Martin, hello hello
+</code></pre><p>And in this code, I also learned string temple which uses backticks<code>.</code>Welcome, ${user}, ${greeting}` will contain variable user and greeting.</p>
+<hr>
+<p>–2– Standard input and standard output</p>
+<pre><code> var questions = [
+&quot;What is your name?&quot;,
+&quot;What is your favorite hobby?&quot;,
+&quot;What is your preferred programming language?&quot;
+];
+
+var answers = [];
+
+function ask(i) {
+    process.stdout.write(`\n\n\n\n ${questions[i]}`);
+    process.stdout.write(&quot;  &gt;  &quot;);
+}
+
+process.stdin.on(&apos;data&apos;, function(data){
+
+    answers.push(data.toString().trim());
+
+    if (answers.length &lt; questions.length) {
+        ask(answers.length);
+    } else {
+        process.exit();
+    }
+});
+
+process.on(&apos;exit&apos;, function(){
+
+    process.stdout.write(&quot;\n\n\n\n&quot;);
+
+    process.stdout.write(`Go ${answers[1]} ${answers[0]} you can finish writing ${answers[2]} later`);
+
+    process.stdout.write(&quot;\n\n\n\n&quot;);
+
+});
+
+ask(0);
+</code></pre><p>In the shell:</p>
+<pre><code>What is your name?  &gt;  Martin
+
+
+
+
+ What is your favorite hobby?  &gt;  play games
+
+
+
+
+ What is your preferred programming language?  &gt;  python
+
+
+
+
+Go play games Martin you can finish writing python later
+</code></pre><p>Is that funny:)?</p>
+<hr>
+<p>–3– Global timing functions</p>
+<p>There are several functions about the timing such as setInterval, setTimeout and clearInterval. It’s useful while developing web interactive program. </p>
+<p>Code:</p>
+<pre><code>var waitTime = 3000;
+var currentTime = 0;
+var waitInterval = 10;
+var percentWaited = 0;
+
+function writeWaitingPercent(p){
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+    process.stdout.write(`waiting ... ${p}%`);
+
+}
+
+
+var interval = setInterval(function(){
+    currentTime += waitInterval;
+    percentWaited = Math.floor((currentTime/    waitTime)*100);
+    //console.log(`waiting ${currentTime/1000} seconds`);
+    writeWaitingPercent(percentWaited);
+}, waitInterval);
+
+setTimeout(function(){
+
+    clearInterval(interval);
+    console.log(&quot;\ndone&quot;);
+}, waitTime);
+
+process.stdout.write(&quot;\n\n&quot;);
+writeWaitingPercent(percentWaited);
+</code></pre><p>In the shell:</p>
+<pre><code>waiting ... 81%
+done
+</code></pre><p>–4– Core modules:</p>
+<p>Node.js use require function to get modules. This section is going to show some modules of Node.js.</p>
+<p>Code:</p>
+<pre><code>var path = require(&apos;path&apos;);
+var util = require(&apos;util&apos;);
+var v8 = require(&apos;v8&apos;)
+
+
+util.log( path.basename(__filename) );
+
+var dirUploads = path.join(__dirname, &apos;www&apos;, &apos;fileds&apos;, &apos;uploads&apos;);
+
+util.log(dirUploads);
+
+util.log(v8.getHeapStatistics());
+</code></pre><p>In the shell:</p>
+<pre><code>node core
+28 Jan 23:34:37 - core.js
+28 Jan 23:34:37 - /Users/Martin/Documents/martin/    Study/Node/www/fileds/uploads
+28 Jan 23:34:37 - { total_heap_size: 7523616,
+  total_heap_size_executable: 5242880,
+  total_physical_size: 7523616,
+  total_available_size: 1491271696,
+  used_heap_size: 4094992,
+  heap_size_limit: 1535115264 }
+</code></pre><p>–5– Collecting information with Readline</p>
+<p>Realine is a module of Node.js, it should get the input stream and output stream. Then you can use the API to operate the input and output such as setPrompt, prompt, on and etc. A string in the string can be replaced as s% like in the C, and the JSON string will be replaced as j%.</p>
+<p>Code:</p>
+<pre><code>var readline = require(&apos;readline&apos;);
+
+var rl = readline.createInterface(process.stdin, process.stdout);
+
+var realPerson = {
+    name: &apos;&apos;,
+    sayings: []
+};
+
+rl.question(&quot;What is the name of a real person?&quot;, function(answer){
+
+    realPerson.name = answer;
+
+    rl.setPrompt(`What would ${realPerson.name} say? `);
+
+    rl.prompt();
+
+    rl.on(&apos;line&apos;, function(sayings){
+
+        realPerson.sayings.push(sayings.trim());
+
+        if (sayings.toLowerCase().trim() == &apos;exit&apos;){
+            rl.close();
+        }
+        else{
+        rl.setPrompt(`What else would ${realPerson.name} say? (&apos;exit&apos; to leave)`);
+        rl.prompt();
+        }
+    });
+
+});
+
+rl.on(&apos;close&apos;, function(){
+     console.log(&quot;%s is a real person that says j%&quot;,     realPerson.name, realPerson.sayings);
+})
+</code></pre><p>In the shell:</p>
+<pre><code>What is the name of a real person?Martin
+What would Martin say? haha
+What else would Martin say? (&apos;exit&apos; to leave)heihei
+What else would Martin say? (&apos;exit&apos; to leave)exit
+Martin is a real person that says j% [ &apos;haha&apos;, &apos;heihei&apos;, &apos;exit&apos; ]
+</code></pre><p>–6– Handling events with EventEmitter</p>
+<p>There are two modules I have learned from this class. One is event and the other is util. Event has two functions which called on and emit. The fucntion on is for naming the event, and the function emit is for triggling the event. The module util is for inheriting from other class.</p>
+<p>Code:</p>
+<pre><code>var events = require(&apos;events&apos;);
+
+var emitter = new events.EventEmitter();
+
+emitter.on(&apos;customEvent&apos;, function(message, status){
+
+    console.log(`${status}: ${message}`);
+
+});
+
+emitter.emit(&apos;customEvent&apos;, &quot;Hellow World&quot;, 200);
+</code></pre><p>And</p>
+<pre><code>node BenFranklin.js 
+Ben Franklin: You may delay, but time will not.
+</code></pre><p>–7–Exporting custom modules</p>
+<p>In this class, I learned that in one js file, we can conclude a export sentence to export a file to become a module. For example, “module.exports = Person;”</p>
+<p>Code:</p>
+<pre><code>var EventEmitter = require(&apos;events&apos;).EventEmitter;
+var util = require(&apos;util&apos;);
+
+var Person = function(name) {
+    this.name = name;
+};
+
+util.inherits(Person, EventEmitter);
+
+module.exports = Person;
+</code></pre><p>–8–Creating child process with exec</p>
+<p>In this class, I learned the module called child_process. And it has a function called exec which is aiming at execute the command in the command line.</p>
+<p>Code:</p>
+<pre><code>var exec = require(&quot;child_process&quot;).exec;
+
+exec(&quot;ls&quot;, function(err, stdout){
+
+    if (err){
+        throw err;
+    }
+
+    console.log(&quot;Listing Finished&quot;);
+
+    console.log(stdout);
+
+});
+</code></pre><p>–9–Creating child process with spawn</p>
+<p>Spawn can deal with the situation that you want run serval commands or deal with the stdout and stdin.</p>
+<p>Code:</p>
+<pre><code>var spawn = require(&quot;child_process&quot;).spawn;
+
+var cp = spawn(&quot;node&quot;, [&quot;alwaysTalking&quot;]);
+
+cp.stdout.on(&quot;data&quot;, function(data){
+    console.log(`STDOUT: ${data.toString()}`);
+});
+
+cp.on(&quot;close&quot;, function() {
+
+    console.log(&quot;Child Process has ended&quot;);
+
+    process.exit();
+
+});
+
+setTimeout(function () {
+
+    cp.stdin.write(&quot;stop&quot;);
+
+}, 4000);
+</code></pre><p>–10–Listing directory files</p>
+<p>What’s the differences between synchronously and asynchronously:</p>
+<p>When you execute something synchronously, you wait for it to finish before moving on to another task. When you execute something asynchronously, you can move on to another task before it finishes.</p>
+<p>That being, said, in the context of computers this translates into executing a process or task on another “thread.” A thread is a series of commands–a block of code–that exists as a unit of work. The operating system can manage multiple threads and assign a thread a piece (“slice”) of processor time before switching to another thread to give it a turn to do some work. At its core (pardon the pun), a processor can simply execute a command–it has no concept of doing two things at one time. The operating system simulates this by allocating slices of time to different threads.</p>
+<p>Now, if you introduce multiple cores/processors into the mix, then things CAN actually happen at the same time. The operating system can allocate time to one thread on the first processor, then allocate the same block of time to another thread on a different processor.</p>
+<p>All of this is about allowing the operating system to manage the completion of your task while you can go on in your code and do other things.</p>
+<p>Reference: <a href="http://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean" target="_blank" rel="external">http://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean</a></p>
+<p>In this section, I learned read files synchronously or asynchronously.</p>
+<p>Code: </p>
+<pre><code>var fs = require(&quot;fs&quot;);
+
+fs.readdir(&apos;./lib&apos;, function(err, files){
+    if(err){
+        throw err;
+    }
+    console.log(files);
+});
+
+console.log(&quot;Reading Files...&quot;);
+</code></pre><p>–11–Reading files</p>
+<p>Code:</p>
+<pre><code>var fs = require(&quot;fs&quot;);
+
+fs.readFile(&quot;./lib/saying.md&quot;, &quot;UTF-8&quot;, function(err, contents){
+
+    if (err) {
+        throw err;
+    }
+
+    console.log(contents);
+});
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/25/Node-js-study-note/" data-id="cil381fz5000n3aow3tahvv77" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/25/Node-js-study-note/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Insertion-Sort-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" class="article-date">
+  <time datetime="2016-01-25T05:07:32.000Z" itemprop="datePublished">2016-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/">Leetcode-Insertion Sort List(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Sort a linked list using insertion sort.</p>
+<p><strong>Thinking:</strong></p>
+<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null)
             return head;
-
-        ListNode small = new ListNode(-1);
-        ListNode newsmallhead = small;
-        ListNode big = new ListNode(-1);
-        ListNode newbighead = big;
-
-        while(head!=null){
-            if(head.val&lt;x){
-                small.next = head;
-                small = small.next;
-            }else{
-                big.next = head;
-                big = big.next;
+        ListNode res = new ListNode(-1);
+        res.next = head;
+        ListNode p = res;
+        ListNode next = head.next;
+        head.next = null;
+        head = next;
+        while (head != null){
+            while (p.next != null){
+                //if the value is smaller than one of the sorted list, insert behind it
+                if (head.val &lt; p.next.val){
+                    next = head.next;
+                    head.next = p.next;
+                    p.next = head;
+                    head = next;
+                    p = res;
+                    break;
+                }
+                p = p.next;
             }
-            head = head.next;
+            //if the value is bigger than anyone of the sorted list, insert after the whole list
+            if (p.next == null){
+                next = head.next;
+                p.next = head;
+                head.next = null;
+                head = next;
+                p = res;
+            }
         }
-        big.next = null;
 
-        small.next = newbighead.next;
-
-        return newsmallhead.next;
+        return res.next;
+    }
+}
+</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
+<pre><code>public ListNode insertionSortList(ListNode head) {  
+    if(head == null||head.next == null)  
+        return head;  
+    ListNode sortedlisthead = new ListNode(0);  
+    ListNode cur = head;
+    while(cur!=null){  
+        ListNode next = cur.next;  
+        ListNode pre = sortedlisthead;  
+        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
+            pre = pre.next;  
+        cur.next = pre.next;  
+        pre.next = cur;  
+        cur = next;  
+    }  
+    return sortedlisthead.next;  
 }
 </code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Partition-List/" data-id="cikz1p2wj002tyxowslrrd7vi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="cil381g1t004u3aowl4jktegx" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Partition-List/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Unique-Paths-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Unique-Paths-II-Java/" class="article-date">
-  <time datetime="2016-01-25T00:49:04.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Unique-Paths-II-Java/">Leetcode-Unique Paths II(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Follow up for “Unique Paths”:</p>
-<p>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
-<p>An obstacle and empty space is marked as 1 and 0 respectively in the grid.</p>
-<p>For example,<br>There is one obstacle in the middle of a 3x3 grid as illustrated below.</p>
-<pre><code>[
-  [0,0,0],
-  [0,1,0],
-  [0,0,0]
-]
-</code></pre><p>The total number of unique paths is 2.</p>
-<p>Note: m and n will be at most 100.</p>
-<p><strong>Thinking:</strong></p>
-<p>This question is similar with Unique Paths, and it’s the same methed to use dynamic programming. Only one difference is that we should check if it’s a obstacle. And if it’s a obstacle, its value of dp should be 0.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        int lr = obstacleGrid.length;
-        if (lr == 0)
-            return 0;
-        int lc = obstacleGrid[0].length;
-        int[][] dp = new int[lr][lc];
-        if (obstacleGrid[0][0] == 1){
-            return 0;
-        }
-        dp[0][0] = 1;
-
-        for (int i = 1; i &lt; lr; i++){
-            if (obstacleGrid[i][0] == 1)
-                break;
-            dp[i][0] = 1;
-        }
-        for (int i = 1; i &lt; lc; i++){
-            if (obstacleGrid[0][i] == 1)
-                break;
-            dp[0][i] = 1;
-        }
-
-        for (int i = 1; i &lt; lr; i++)
-            for (int j = 1; j &lt; lc; j++){
-                if(obstacleGrid[i][j] == 1)
-                    continue;
-                dp[i][j] = dp[i-1][j] + dp[i][j-1];
-            }
-
-        return dp[lr-1][lc-1];
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/" data-id="cikz1p2vd0010yxow9v7puf55" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Unique-Paths-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Unique-Binary-Search-Trees-II" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Unique-Binary-Search-Trees-II/" class="article-date">
-  <time datetime="2016-01-25T00:07:06.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Unique-Binary-Search-Trees-II/">Leetcode-Unique Binary Search Trees II(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.</p>
-<p>For example,<br>Given n = 3, your program should return all 5 unique BST’s shown below.</p>
-<pre><code>1         3     3      2      1
- \       /     /      / \      \
-  3     2     1      1   3      2
- /     /       \                 \
-2     1         2                 3
-</code></pre><p><strong>Thinking:</strong> </p>
-<p>It’s a simple dynamic programming question. For n numbers, we should consider the situation that every one become the root, and delete it from the sets and do the same thing for their children.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public List&lt;TreeNode&gt; generateTrees(int n) {
-        return dp(1, n);
-    }
-
-    public List&lt;TreeNode&gt; dp(int low, int high){
-        List&lt;TreeNode&gt; res = new ArrayList&lt;TreeNode&gt;();
-        if (low == high){
-            TreeNode n = new TreeNode(low);
-            res.add(n);
-            return res;
-        }
-        for (int i = low; i &lt;= high; i++){
-            TreeNode n = new TreeNode(i);
-            if (i == low){
-                for (TreeNode p: dp(low+1, high)){
-                    n.right = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else if (i == high){
-                for (TreeNode p: dp(low, high-1)){
-                    n.left = p;
-                    res.add(n);
-                    n = new TreeNode(i);
-                }
-            }
-            else{
-                for (TreeNode p: dp(low, i-1)){
-                    for (TreeNode q: dp(i+1, high)){
-                        n.left = p;
-                        n.right = q;
-                        res.add(n);
-                        n = new TreeNode(i);
-                    }
-                }
-            }
-        }
-
-        return res;
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/" data-id="cikz1p2uu000cyxowcmdk75r5" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Unique-Binary-Search-Trees-II/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Bitwise-AND-of-Numbers-Range" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" class="article-date">
-  <time datetime="2016-01-24T23:09:04.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/">Leetcode-Bitwise AND of Numbers Range(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.</p>
-<p>For example, given the range [5, 7], you should return 4.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s bitwise operation question. Some other questions like are Single Number, Single Number II, Reverse Bits, Repeated DNA Sequences, Grey Code and so on and so forth. This question’s point is to find all the numbers between the range and use the bitwise AND on them. </p>
-<p>For example, in the range of [5, 7], there are three numbers:<br>101        110        111<br>Result of thier bitwise is 100. </p>
-<p>What’s more, in the example of [26, 30]:<br>11010        11011        11100        11101        11110<br>The result is 11000.</p>
-<p><em>Because bits are incresing from the right</em> (low digits), the left of all the numbers are not going to change in the process. The thing we need to do is finding the common part of the left. There are two solutions:</p>
-<p><strong>Solution1:</strong></p>
-<p>Idea: State a variable and make it all 1 in all digits. Make the variable left shift every time to check if it’s equal between m and n of their bitwise AND. Finally, the result of m bitwise AND with the variable is the answer.<br>Code:</p>
-<pre><code>class Solution {
-public int rangeBitwiseAnd(int m, int n) {
-        int d = Integer.MAX_VALUE;
-        while ((m &amp; d) != (n &amp; d)) {
-            d &lt;&lt;= 1;
-        }
-        return m &amp; d;
-    }
-};
-</code></pre><p><strong>Solution2:</strong></p>
-<p>Idea:Let m and n make left shift each time if they are different and record the times i they shift. When they are equal, the result of m left shift i is the answer.<br>Code:</p>
-<pre><code>class Solution {
-public int rangeBitwiseAnd(int m, int n) {
-        int i = 0;
-        while (m != n) {
-            m &gt;&gt;= 1;
-            n &gt;&gt;= 1;
-            ++i;
-        }
-        return (m &lt;&lt; i);
-    }
-};
-</code></pre><p>Reference: <a href="http://www.cnblogs.com/grandyang/p/4431646.html" target="_blank" rel="external">http://www.cnblogs.com/grandyang/p/4431646.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/" data-id="cikz1p2y0005cyxowabefx6a7" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Bitwise-AND-of-Numbers-Range/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -441,7 +733,7 @@ public int rangeBitwiseAnd(int m, int n) {
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span>
+    <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/14/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -461,7 +753,7 @@ public int rangeBitwiseAnd(int m, int n) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
     </div>
   </div>
 
@@ -471,7 +763,7 @@ public int rangeBitwiseAnd(int m, int n) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 11.67px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 13.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 11.67px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 15px;">Linked List</a> <a href="/tags/Math/" style="font-size: 15px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 10px;">Stack</a> <a href="/tags/String/" style="font-size: 18.33px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 11.67px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 14.29px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 11.43px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.86px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 15.71px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 18.57px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 11.43px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -493,23 +785,23 @@ public int rangeBitwiseAnd(int m, int n) {
       <ul>
         
           <li>
-            <a href="/2016/02/22/Leetcode-Basic-Calculator-II-Java/">Leetcode-Basic Calculator II(Java)</a>
+            <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/">Leetcode-Repeated DNA Sequences(Java)</a>
+            <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/">Leetcode-Count Complete Tree Nodes(Java)</a>
+            <a href="/2016/02/23/Leetcode-Spiral-Matrix-Java/">Leetcode-Spiral Matrix(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/22/Leetcode-Sort-List-Java/">Leetcode-Sort List(Java)</a>
+            <a href="/2016/02/23/Leetcode-Multiply-Strings-Java/">Leetcode-Multiply Strings(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/02/22/Leetcode-Permutation-Sequence-Java/">Leetcode-Permutation Sequence(Java)</a>
+            <a href="/2016/02/23/Leetcode-Rotate-List-Java/">Leetcode-Rotate List(Java)</a>
           </li>
         
       </ul>
