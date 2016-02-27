@@ -4,6 +4,64 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode-Word Ladder(Java)]]></title>
+      <url>http://yoursite.com/2016/02/26/Leetcode-Word-Ladder-Java/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Validate Binary Search Tree(Java)]]></title>
+      <url>http://yoursite.com/2016/02/26/Leetcode-Validate-Binary-Search-Tree-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a binary tree, determine if it is a valid binary search tree (BST).</p>
+<p>Assume a BST is defined as follows:</p>
+<p>The left subtree of a node contains only nodes with keys less than the node’s key.<br>The right subtree of a node contains only nodes with keys greater than the node’s key.<br>Both the left and right subtrees must also be binary search trees.</p>
+<p><strong>Thinking:</strong></p>
+<p>We should use dfs check the root of the range and both its left child and right child.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean isValidBST(TreeNode root) {
+    return helper(root, Long.MIN_VALUE, Long.MAX_VALUE);
+}
+
+private boolean helper(TreeNode root, long a, long b) {
+    if (root == null)    return true;
+    if (root.val &lt;= a || root.val &gt;= b)    return false;        
+    return helper(root.left, a, root.val&lt;b? root.val:b) &amp;&amp; helper(root.right, root.val&gt;a? root.val:a, b);
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Decode Ways(Java)]]></title>
+      <url>http://yoursite.com/2016/02/26/Leetcode-Decode-Ways-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>A message containing letters from A-Z is being encoded to numbers using the following mapping:</p>
+<p>‘A’ -&gt; 1<br>‘B’ -&gt; 2<br>…<br>‘Z’ -&gt; 26<br>Given an encoded message containing digits, determine the total number of ways to decode it.</p>
+<p>For example,<br>Given encoded message “12”, it could be decoded as “AB” (1 2) or “L” (12).</p>
+<p>The number of ways decoding “12” is 2.</p>
+<p><strong>Thinking:</strong></p>
+<p>If we use the recursive way, we should see that the search tree will go down like check [0],[0,1], then [1],[1,2] and [2],[2,3] then [2], [2,3] and [3],[3,4] and [3],[3,4] and [4],[4,5] … There are some nodes are repeated. So we can use interation from bottom to root to store the number of paths in every index of string.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int numDecodings(String s) {
+    int l = s.length();
+    if (l == 0)    return 0;
+    int[] counts = new int[l+1];
+
+    counts[l] = 1;
+    if (s.charAt(l-1) != &apos;0&apos;)    counts[l-1] = 1;
+
+    for (int i = l-2; i &gt;=0; i--) {
+        if (s.charAt(i) == &apos;0&apos;)    continue;
+        counts[i] = Integer.parseInt(s.substring(i, i+2)) &lt;=26? counts[i+1]+counts[i+2] : counts[i+1];
+    }
+
+    return counts[0];
+}
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/8527/dp-solution-java-for-reference" target="_blank" rel="external">https://leetcode.com/discuss/8527/dp-solution-java-for-reference</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode-Simplify Path(Java)]]></title>
       <url>http://yoursite.com/2016/02/25/Leetcode-Simplify-Path-Java/</url>
       <content type="html"><![CDATA[<p><strong>Question:</strong></p>

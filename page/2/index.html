@@ -68,6 +68,273 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Spiral-Matrix-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/23/Leetcode-Spiral-Matrix-Java/" class="article-date">
+  <time datetime="2016-02-24T04:12:38.000Z" itemprop="datePublished">2016-02-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/23/Leetcode-Spiral-Matrix-Java/">Leetcode-Spiral Matrix(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.</p>
+<p>For example,<br>Given the following matrix:</p>
+<pre><code>[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+</code></pre><p>You should return [1,2,3,6,9,8,7,4,5].</p>
+<p><strong>Thinking:</strong></p>
+<p>There are four directions can go, move according to the order of right, down, left, up and check the bound of moving.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;Integer&gt; spiralOrder(int[][] matrix) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+    int m = matrix.length;
+    if (m == 0)    return res;
+    int n = matrix[0].length;
+    int direction = 0;//0right, 1down, 2left, 3up
+    int i = 0, j = 0;//position
+    int c0 = 1, c1 = 1, c2 = 0, c3 = 1;//row and column limit
+
+    while (c0 + c2 - 1 &lt;= n &amp;&amp; c1 + c3 - 1 &lt;= m) {
+        res.add(matrix[i][j]);
+        switch (direction) {
+        case 0:
+            if (j == n-c0){
+                direction = (direction+1) % 4;
+                c0++;
+                res.remove(res.size()-1);
+            }
+            else
+                j++;
+            break;
+        case 1:
+            if (i == m-c1){
+                direction = (direction+1) % 4;
+                c1++;
+                res.remove(res.size()-1);
+            }
+            else
+                i++;
+            break;
+        case 2:
+            if (j == c2){
+                direction = (direction+1) % 4;
+                c2++;
+                res.remove(res.size()-1);
+            }
+            else
+                j--;
+            break;
+        case 3:
+            if (i == c3){
+                direction = (direction+1) % 4;
+                c3++;
+                res.remove(res.size()-1);
+            }
+            else
+                i--;
+            break;
+        }
+    }
+    res.add(matrix[i][j]);
+
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/23/Leetcode-Spiral-Matrix-Java/" data-id="cil4k63r6001yerow61l76bmw" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/23/Leetcode-Spiral-Matrix-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Multiply-Strings-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/23/Leetcode-Multiply-Strings-Java/" class="article-date">
+  <time datetime="2016-02-24T03:09:09.000Z" itemprop="datePublished">2016-02-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/23/Leetcode-Multiply-Strings-Java/">Leetcode-Multiply Strings(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given two numbers represented as strings, return multiplication of the numbers as a string.</p>
+<p>Note: The numbers can be arbitrarily large and are non-negative.</p>
+<p><strong>Thinking:</strong></p>
+<p>Simulate the process of multiplying.</p>
+<p><img src="https://drscdn.500px.org/photo/130178585/m%3D2048/300d71f784f679d5e70fadda8ad7d68f" alt=""></p>
+<p><strong>Solution:</strong> (Record the result from low digits to high digits in array)</p>
+<pre><code>public String multiply(String num1, String num2) {
+    int l1 = num1.length(), l2 = num2.length();
+    int[] res = new int[l1+l2];
+
+    for (int i = l1-1; i &gt;= 0; i--) {
+        for (int j = l2-1; j &gt;= 0; j--){
+            int index = l1+l2-i-j-2;
+            res[index] += (num1.charAt(i) - &apos;0&apos;) * (num2.charAt(j) - &apos;0&apos;);
+            res[index+1] += res[index] / 10;
+            res[index] = res[index] % 10;
+        }
+    }
+
+    StringBuilder fres = new StringBuilder();
+    for (int i = res.length-1; i &gt;= 0; i--)
+        if (!(fres.length() == 0 &amp;&amp; res[i] == 0))   fres.append(res[i]);
+
+    return fres.length() == 0? &quot;0&quot;:fres.toString();
+}
+</code></pre><p>A little improvement which record the result from high to low digits in array:</p>
+<p>public String multiply(String num1, String num2) {<br>    int m = num1.length(), n = num2.length();<br>    int[] pos = new int[m + n];</p>
+<pre><code>for(int i = m - 1; i &gt;= 0; i--) {
+    for(int j = n - 1; j &gt;= 0; j--) {
+        int mul = (num1.charAt(i) - &apos;0&apos;) * (num2.charAt(j) - &apos;0&apos;); 
+        int p1 = i + j, p2 = i + j + 1;
+        int sum = mul + pos[p2];
+
+        pos[p1] += sum / 10;
+        pos[p2] = (sum) % 10;
+    }
+}  
+
+StringBuilder sb = new StringBuilder();
+for(int p : pos) if(!(sb.length() == 0 &amp;&amp; p == 0)) sb.append(p);
+return sb.length() == 0 ? &quot;0&quot; : sb.toString();
+</code></pre><p>}</p>
+<p>Reference: <a href="https://leetcode.com/discuss/71593/easiest-java-solution-with-graph-explanation" target="_blank" rel="external">https://leetcode.com/discuss/71593/easiest-java-solution-with-graph-explanation</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/23/Leetcode-Multiply-Strings-Java/" data-id="cil4k63sk003yerowf9stvpvy" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/23/Leetcode-Multiply-Strings-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Math/">Math</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Rotate-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/23/Leetcode-Rotate-List-Java/" class="article-date">
+  <time datetime="2016-02-24T00:27:32.000Z" itemprop="datePublished">2016-02-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/23/Leetcode-Rotate-List-Java/">Leetcode-Rotate List(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a list, rotate the list to the right by k places, where k is non-negative.</p>
+<p>For example:<br>Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL and k = 2,<br>return 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL.</p>
+<p><strong>Thinking:</strong></p>
+<p>Firstly, count the length of the linked list. Then get the n-k th node. Finnaly, change the pointer of it and the tail.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public ListNode rotateRight(ListNode head, int k) {
+    if (head == null || head.next == null)    return head;
+    ListNode p = head;
+    int count = 1;
+    while (p.next != null) {
+        p = p.next;
+        count++;
+    }
+    if (k == count)    return head;
+    p.next = head;
+    p = head;
+    for (int i = 1; i &lt; count - k%count; i++) {
+        p = p.next;
+    }
+    ListNode nhead = p.next;
+    p.next = null;
+
+    return nhead;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/23/Leetcode-Rotate-List-Java/" data-id="cil4k63rf002jerowqdh7akwr" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/23/Leetcode-Rotate-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linked-List/">Linked List</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Remove-Duplicate-Letters-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/23/Leetcode-Remove-Duplicate-Letters-Java/" class="article-date">
@@ -116,7 +383,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/23/Leetcode-Remove-Duplicate-Letters-Java/" data-id="cil381g0l002w3aowc59k7tqy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/23/Leetcode-Remove-Duplicate-Letters-Java/" data-id="cil4k63s40032erowjfp3ci4s" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/23/Leetcode-Remove-Duplicate-Letters-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -202,275 +469,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/23/Leetcode-Number-of-Digit-One-Java/" data-id="cil381g10003p3aowc9chz88i" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/23/Leetcode-Number-of-Digit-One-Java/" data-id="cil4k63si003uerowe0xcp2wt" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/23/Leetcode-Number-of-Digit-One-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Math/">Math</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Basic-Calculator-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/22/Leetcode-Basic-Calculator-II-Java/" class="article-date">
-  <time datetime="2016-02-23T06:37:46.000Z" itemprop="datePublished">2016-02-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/22/Leetcode-Basic-Calculator-II-Java/">Leetcode-Basic Calculator II(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Implement a basic calculator to evaluate a simple expression string.</p>
-<p>The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . The integer division should truncate toward zero.</p>
-<p>You may assume that the given expression is always valid.</p>
-<p>Some examples:</p>
-<pre><code>&quot;3+2*2&quot; = 7
-&quot; 3/2 &quot; = 1
-&quot; 3+5 / 2 &quot; = 5
-</code></pre><p>Note: Do not use the eval built-in library function.</p>
-<p><strong>Thinking:</strong></p>
-<p>An efficient way to solve this problem is to use stack get last num for an operation. And in order to delay the operation after get the two numbers, we need a op variable to record the last op until find the second number. What’s more, accroding to their op, numbers push into the stack in different ways. Finnaly, we just need to get the element from stack and add them all.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int calculate(String s) {
-    Stack&lt;Long&gt; stack = new Stack&lt;Long&gt;();
-
-    int i = 0;
-    char op = &apos;+&apos;;
-    long num = 0;
-
-    while (i &lt; s.length()) {
-        if (Character.isDigit(s.charAt(i))) {
-            while (i &lt; s.length() &amp;&amp; Character.isDigit(s.charAt(i)))
-                num = num * 10 + s.charAt(i++) - &apos;0&apos;;
-        }
-        else if (s.charAt(i) == &apos; &apos;)
-            i++;
-        else {
-            if (op == &apos;+&apos;)
-                stack.push(num);
-            else if (op == &apos;-&apos;)
-                stack.push(-num);
-            else if (op == &apos;*&apos;)
-                stack.push(stack.pop() * num);
-            else if (op == &apos;/&apos;)
-                stack.push(stack.pop() / num);
-            num = 0;
-            op = s.charAt(i++);
-        }
-    }
-
-    if (op == &apos;+&apos;)
-        stack.push(num);
-    else if (op == &apos;-&apos;)
-        stack.push(-num);
-    else if (op == &apos;*&apos;)
-        stack.push(stack.pop() * num);
-    else if (op == &apos;/&apos;)
-        stack.push(stack.pop() / num);
-
-    int res = 0;
-    for (Long n: stack)
-        res += n;
-
-    return res;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Basic-Calculator-II-Java/" data-id="cil381g2h00673aowpdmwk703" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/22/Leetcode-Basic-Calculator-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Repeated-DNA-Sequences-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/" class="article-date">
-  <time datetime="2016-02-23T04:11:24.000Z" itemprop="datePublished">2016-02-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/">Leetcode-Repeated DNA Sequences(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: “ACGAATTCCG”. When studying DNA, it is sometimes useful to identify repeated sequences within the DNA.</p>
-<p>Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.</p>
-<p>For example,</p>
-<pre><code>Given s = &quot;AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT&quot;,
-
-Return:
-[&quot;AAAAACCCCC&quot;, &quot;CCCCCAAAAA&quot;].
-</code></pre><p><strong>Thinking:</strong></p>
-<p>Because it limits the length of repeated substrings, so we can travse the list one time from the left to right. Pick substring from the list to check whether this substring emerge beofe.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;String&gt; findRepeatedDnaSequences(String s) {
-    HashSet&lt;String&gt; set = new HashSet&lt;String&gt;();
-    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
-
-    for (int i = 0; i+10 &lt;= s.length(); i ++) {
-        String temp = s.substring(i, i+10);
-        if (!set.contains(temp)) {
-            set.add(temp);
-        }
-        else {
-            if (!res.contains(temp))
-                res.add(temp);
-        }
-    }
-
-    return res;
-}
-</code></pre><p>More efficient way:(which use the bits to represent map fucntion, reference: <a href="https://leetcode.com/discuss/25399/clean-java-solution-hashmap-bits-manipulation" target="_blank" rel="external">https://leetcode.com/discuss/25399/clean-java-solution-hashmap-bits-manipulation</a>)</p>
-<pre><code>public List&lt;String&gt; findRepeatedDnaSequences(String s) {
-    HashMap&lt;Character, Integer&gt; map = new HashMap&lt;Character, Integer&gt;();
-    HashSet&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();
-    HashSet&lt;Integer&gt; second = new HashSet&lt;Integer&gt;();
-    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
-
-    if (s.length() &lt; 10)    return res;
-
-    map.put(&apos;A&apos;, 0);
-    map.put(&apos;C&apos;, 1);
-    map.put(&apos;G&apos;, 2);
-    map.put(&apos;T&apos;, 3);
-
-    int v = 0;
-
-    for (int i = 0; i &lt; s.length(); i++) {
-        v &lt;&lt;= 2;
-        v |= map.get(s.charAt(i));
-        v &amp;= 0xfffff;
-        if (i &lt; 9)    continue;
-        if (!set.add(v) &amp;&amp; second.add(v)) {
-            res.add(s.substring(i-9, i+1));
-        }
-    }
-
-    return res;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/" data-id="cil381g0h002o3aowcb7yydzw" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Count-Complete-Tree-Nodes-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/" class="article-date">
-  <time datetime="2016-02-23T03:49:47.000Z" itemprop="datePublished">2016-02-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/">Leetcode-Count Complete Tree Nodes(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a complete binary tree, count the number of nodes.</p>
-<p>Definition of a complete binary tree from Wikipedia:<br>In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.</p>
-<p><strong>Thinking:</strong></p>
-<p>Firstly, I want to traverse the tree, but we can do better. Because we know its structure is special. For example, if this root’s height is this root’s right child’s height minus 1, its left subtree must be a full tree. So we need to caclulate the rest nodes which remain in its right subtree. Otherwise, we need to go to left.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int countNodes(TreeNode root) {
-    int h = height(root);
-    if (h == 0)
-        return 0;
-    if (h == height(root.right)+1){
-        return (1 &lt;&lt; (h-1)) + countNodes(root.right);
-    } else {
-        return (1 &lt;&lt; (h-2)) + countNodes(root.left);
-    }
-}
-
-private int height(TreeNode root) {
-    return root == null? 0 : 1 + height(root.left);
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/" data-id="cil381g24005j3aow0933f2y4" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tree/">Tree</a></li></ul>
 
     </footer>
   </div>
@@ -512,7 +516,7 @@ private int height(TreeNode root) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 14.29px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 11.43px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.86px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 15.71px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 18.57px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 11.43px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 13.33px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 16.67px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 13.33px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -534,23 +538,23 @@ private int height(TreeNode root) {
       <ul>
         
           <li>
+            <a href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/26/Leetcode-Validate-Binary-Search-Tree-Java/">Leetcode-Validate Binary Search Tree(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/26/Leetcode-Decode-Ways-Java/">Leetcode-Decode Ways(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
           </li>
         
           <li>
             <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/23/Leetcode-Spiral-Matrix-Java/">Leetcode-Spiral Matrix(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/23/Leetcode-Multiply-Strings-Java/">Leetcode-Multiply Strings(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/23/Leetcode-Rotate-List-Java/">Leetcode-Rotate List(Java)</a>
           </li>
         
       </ul>

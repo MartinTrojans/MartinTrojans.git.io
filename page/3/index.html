@@ -68,6 +68,269 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Basic-Calculator-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/22/Leetcode-Basic-Calculator-II-Java/" class="article-date">
+  <time datetime="2016-02-23T06:37:46.000Z" itemprop="datePublished">2016-02-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/22/Leetcode-Basic-Calculator-II-Java/">Leetcode-Basic Calculator II(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Implement a basic calculator to evaluate a simple expression string.</p>
+<p>The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . The integer division should truncate toward zero.</p>
+<p>You may assume that the given expression is always valid.</p>
+<p>Some examples:</p>
+<pre><code>&quot;3+2*2&quot; = 7
+&quot; 3/2 &quot; = 1
+&quot; 3+5 / 2 &quot; = 5
+</code></pre><p>Note: Do not use the eval built-in library function.</p>
+<p><strong>Thinking:</strong></p>
+<p>An efficient way to solve this problem is to use stack get last num for an operation. And in order to delay the operation after get the two numbers, we need a op variable to record the last op until find the second number. What’s more, accroding to their op, numbers push into the stack in different ways. Finnaly, we just need to get the element from stack and add them all.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int calculate(String s) {
+    Stack&lt;Long&gt; stack = new Stack&lt;Long&gt;();
+
+    int i = 0;
+    char op = &apos;+&apos;;
+    long num = 0;
+
+    while (i &lt; s.length()) {
+        if (Character.isDigit(s.charAt(i))) {
+            while (i &lt; s.length() &amp;&amp; Character.isDigit(s.charAt(i)))
+                num = num * 10 + s.charAt(i++) - &apos;0&apos;;
+        }
+        else if (s.charAt(i) == &apos; &apos;)
+            i++;
+        else {
+            if (op == &apos;+&apos;)
+                stack.push(num);
+            else if (op == &apos;-&apos;)
+                stack.push(-num);
+            else if (op == &apos;*&apos;)
+                stack.push(stack.pop() * num);
+            else if (op == &apos;/&apos;)
+                stack.push(stack.pop() / num);
+            num = 0;
+            op = s.charAt(i++);
+        }
+    }
+
+    if (op == &apos;+&apos;)
+        stack.push(num);
+    else if (op == &apos;-&apos;)
+        stack.push(-num);
+    else if (op == &apos;*&apos;)
+        stack.push(stack.pop() * num);
+    else if (op == &apos;/&apos;)
+        stack.push(stack.pop() / num);
+
+    int res = 0;
+    for (Long n: stack)
+        res += n;
+
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Basic-Calculator-II-Java/" data-id="cil4k63tk006gerow4l1xdbtl" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/22/Leetcode-Basic-Calculator-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Repeated-DNA-Sequences-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/" class="article-date">
+  <time datetime="2016-02-23T04:11:24.000Z" itemprop="datePublished">2016-02-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/">Leetcode-Repeated DNA Sequences(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: “ACGAATTCCG”. When studying DNA, it is sometimes useful to identify repeated sequences within the DNA.</p>
+<p>Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.</p>
+<p>For example,</p>
+<pre><code>Given s = &quot;AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT&quot;,
+
+Return:
+[&quot;AAAAACCCCC&quot;, &quot;CCCCCAAAAA&quot;].
+</code></pre><p><strong>Thinking:</strong></p>
+<p>Because it limits the length of repeated substrings, so we can travse the list one time from the left to right. Pick substring from the list to check whether this substring emerge beofe.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;String&gt; findRepeatedDnaSequences(String s) {
+    HashSet&lt;String&gt; set = new HashSet&lt;String&gt;();
+    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+    for (int i = 0; i+10 &lt;= s.length(); i ++) {
+        String temp = s.substring(i, i+10);
+        if (!set.contains(temp)) {
+            set.add(temp);
+        }
+        else {
+            if (!res.contains(temp))
+                res.add(temp);
+        }
+    }
+
+    return res;
+}
+</code></pre><p>More efficient way:(which use the bits to represent map fucntion, reference: <a href="https://leetcode.com/discuss/25399/clean-java-solution-hashmap-bits-manipulation" target="_blank" rel="external">https://leetcode.com/discuss/25399/clean-java-solution-hashmap-bits-manipulation</a>)</p>
+<pre><code>public List&lt;String&gt; findRepeatedDnaSequences(String s) {
+    HashMap&lt;Character, Integer&gt; map = new HashMap&lt;Character, Integer&gt;();
+    HashSet&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();
+    HashSet&lt;Integer&gt; second = new HashSet&lt;Integer&gt;();
+    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+    if (s.length() &lt; 10)    return res;
+
+    map.put(&apos;A&apos;, 0);
+    map.put(&apos;C&apos;, 1);
+    map.put(&apos;G&apos;, 2);
+    map.put(&apos;T&apos;, 3);
+
+    int v = 0;
+
+    for (int i = 0; i &lt; s.length(); i++) {
+        v &lt;&lt;= 2;
+        v |= map.get(s.charAt(i));
+        v &amp;= 0xfffff;
+        if (i &lt; 9)    continue;
+        if (!set.add(v) &amp;&amp; second.add(v)) {
+            res.add(s.substring(i-9, i+1));
+        }
+    }
+
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/" data-id="cil4k63rx002uerowl1pyjwo7" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Count-Complete-Tree-Nodes-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/" class="article-date">
+  <time datetime="2016-02-23T03:49:47.000Z" itemprop="datePublished">2016-02-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/">Leetcode-Count Complete Tree Nodes(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a complete binary tree, count the number of nodes.</p>
+<p>Definition of a complete binary tree from Wikipedia:<br>In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.</p>
+<p><strong>Thinking:</strong></p>
+<p>Firstly, I want to traverse the tree, but we can do better. Because we know its structure is special. For example, if this root’s height is this root’s right child’s height minus 1, its left subtree must be a full tree. So we need to caclulate the rest nodes which remain in its right subtree. Otherwise, we need to go to left.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int countNodes(TreeNode root) {
+    int h = height(root);
+    if (h == 0)
+        return 0;
+    if (h == height(root.right)+1){
+        return (1 &lt;&lt; (h-1)) + countNodes(root.right);
+    } else {
+        return (1 &lt;&lt; (h-2)) + countNodes(root.left);
+    }
+}
+
+private int height(TreeNode root) {
+    return root == null? 0 : 1 + height(root.left);
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/" data-id="cil4k63ta005serow86szbind" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/22/Leetcode-Count-Complete-Tree-Nodes-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tree/">Tree</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Sort-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/22/Leetcode-Sort-List-Java/" class="article-date">
@@ -210,7 +473,7 @@ public ListNode merge(ListNode h1, ListNode h2) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Sort-List-Java/" data-id="cil381fzz001u3aowntuggm6a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Sort-List-Java/" data-id="cil4k63r70021erowpbqvcnno" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/22/Leetcode-Sort-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -284,257 +547,12 @@ public ListNode merge(ListNode h1, ListNode h2) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Permutation-Sequence-Java/" data-id="cil381g0q00353aowg2thhep6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Permutation-Sequence-Java/" data-id="cil4k63s9003berowpjretzlf" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/22/Leetcode-Permutation-Sequence-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Math/">Math</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Longest-Substring-Without-Repeating-Characters-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/21/Leetcode-Longest-Substring-Without-Repeating-Characters-Java/" class="article-date">
-  <time datetime="2016-02-22T03:48:17.000Z" itemprop="datePublished">2016-02-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/21/Leetcode-Longest-Substring-Without-Repeating-Characters-Java/">Leetcode-Longest Substring Without Repeating Characters(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a string, find the length of the longest substring without repeating characters. For example, the longest substring without repeating letters for “abcabcbb” is “abc”, which the length is 3. For “bbbbb” the longest substring is “b”, with the length of 1.</p>
-<p><strong>Thinking:</strong></p>
-<p>The basic idea is to maintain a hashmap to keep the exsiting characters. If there is a character appered in the hashmap, then move the index to the last position it emerged. Hold two pointers: one is to record the substring’s start position and the other is to record the substring’s end position. And the pointers can only move forward.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int lengthOfLongestSubstring(String s) {
-    HashMap&lt;Character, Integer&gt; alphabeta = new HashMap&lt;Character, Integer&gt;();
-    int max = 0;
-    int count = 0;
-    int idx = 0;
-
-    while (idx+count &lt; s.length()) {
-
-        if (!alphabeta.containsKey(s.charAt(idx + count))) {
-            alphabeta.put(s.charAt(idx + count), idx+count);
-            count++;
-        }
-        else {
-            idx = alphabeta.get(s.charAt(idx + count)) + 1;
-            alphabeta = new HashMap&lt;Character, Integer&gt;();
-            count = 0;
-        }
-        max = Math.max(max, count);
-    }
-
-    return max;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Longest-Substring-Without-Repeating-Characters-Java/" data-id="cil381g1h004c3aowzxes02o6" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/21/Leetcode-Longest-Substring-Without-Repeating-Characters-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Two-Points/">Two Points</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Longest-Palindromic-Substring-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/21/Leetcode-Longest-Palindromic-Substring-Java/" class="article-date">
-  <time datetime="2016-02-22T03:45:14.000Z" itemprop="datePublished">2016-02-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/21/Leetcode-Longest-Palindromic-Substring-Java/">Leetcode-Longest Palindromic Substring(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring.</p>
-<p><strong>Thinking:</strong></p>
-<p>Run from left to right and check each element in different index. The check method is select a index, and expand its range to two sides of it. Record the max value and max substring.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>int max = 1;
-String res = &quot;&quot;;
-public String longestPalindrome(String s) {
-    if (s.length() &lt; 2)
-        return s;
-    for (int i = 0; i &lt; s.length() - max/2; i++){
-
-        if (i+1&lt;s.length() &amp;&amp; s.charAt(i) == s.charAt(i+1)){
-            check(s, i-1, i+2, 2);
-        }
-
-        check(s, i-1, i+1, 1);
-    }
-
-    return res;
-}
-
-private void check(String s, int i, int j, int len){
-    int count = len;
-    while (i &gt;= 0 &amp;&amp; j &lt; s.length()){
-        if (s.charAt(i) == s.charAt(j))
-            count += 2;
-        else
-            break;
-        i--;
-        j++;
-    }
-    if (count &gt; max){
-        res = s.substring(i+1, j);
-        max = count;
-    }
-
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Longest-Palindromic-Substring-Java/" data-id="cil381g1j004i3aowp0yd1fyr" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/21/Leetcode-Longest-Palindromic-Substring-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Add-Two-Numbers-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/21/Leetcode-Add-Two-Numbers-Java/" class="article-date">
-  <time datetime="2016-02-22T02:07:11.000Z" itemprop="datePublished">2016-02-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/21/Leetcode-Add-Two-Numbers-Java/">Leetcode-Add Two Numbers(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
-<p>Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br>Output: 7 -&gt; 0 -&gt; 8</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s like a problem adding two numbers from the low digits to high digits. We need two variable to record the sum of current digit and whether it will incresce the next digit. Then what we should care about is to traverse the linked list and check whether it’s null pointer.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-    int num1 = 0;
-    int num2 = 0;
-    int sum = 0;
-    int flag = 0;
-
-    if (l1 != null){
-        num1 = l1.val;
-        l1 = l1.next;
-    }
-    if (l2 != null){
-        num2 = l2.val;
-        l2 = l2.next;
-    }
-    sum = (num1 + num2) % 10;
-    flag = (num1 + num2) / 10;
-    ListNode head = new ListNode(sum);
-    ListNode p = head;
-
-    while (l1 != null || l2 != null){
-        num1 = 0;
-        num2 = 0;
-        if (l1 != null) {
-            num1 = l1.val;
-            l1 = l1.next;
-        }
-        if (l2 != null) {
-            num2 = l2.val;
-            l2 = l2.next;
-        }
-
-        sum = (num1 + num2 + flag) % 10;
-        flag = (num1 + num2 + flag) / 10;
-        p.next = new ListNode(sum);
-        p = p.next;
-    }
-
-    if (flag == 1)
-        p.next = new ListNode(1);
-
-    return head;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Add-Two-Numbers-Java/" data-id="cil381g2k006d3aowmwpohmmd" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/21/Leetcode-Add-Two-Numbers-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Math/">Math</a></li></ul>
 
     </footer>
   </div>
@@ -576,7 +594,7 @@ private void check(String s, int i, int j, int len){
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 14.29px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 11.43px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 12.86px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 15.71px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 18.57px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 11.43px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 13.33px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 16.67px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 13.33px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -598,23 +616,23 @@ private void check(String s, int i, int j, int len){
       <ul>
         
           <li>
+            <a href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/26/Leetcode-Validate-Binary-Search-Tree-Java/">Leetcode-Validate Binary Search Tree(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/26/Leetcode-Decode-Ways-Java/">Leetcode-Decode Ways(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
           </li>
         
           <li>
             <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/23/Leetcode-Spiral-Matrix-Java/">Leetcode-Spiral Matrix(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/23/Leetcode-Multiply-Strings-Java/">Leetcode-Multiply Strings(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/23/Leetcode-Rotate-List-Java/">Leetcode-Rotate List(Java)</a>
           </li>
         
       </ul>
