@@ -68,6 +68,90 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Group-Anagrams-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/08/Leetcode-Group-Anagrams-Java/" class="article-date">
+  <time datetime="2016-02-09T05:02:42.000Z" itemprop="datePublished">2016-02-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/08/Leetcode-Group-Anagrams-Java/">Leetcode-Group Anagrams(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an array of strings, group anagrams together.</p>
+<p>For example, given: [“eat”, “tea”, “tan”, “ate”, “nat”, “bat”],<br>Return:</p>
+<pre><code>[
+  [&quot;ate&quot;, &quot;eat&quot;,&quot;tea&quot;],
+  [&quot;nat&quot;,&quot;tan&quot;],
+  [&quot;bat&quot;]
+]
+</code></pre><p>Note:<br>For the return value, each inner list’s elements must follow the lexicographic order.<br>All inputs will be in lower-case.</p>
+<p><strong>Thinking:</strong></p>
+<p>This question took me a lot of time. First, I want to get a String from the list, and check its anagrams with the rest of the list. And write the algorithm about the anagrams check. But time exceed. Then I try to change my thinking mode of this problem. We should consider the whole String as a element, and if two strings are anagrams, their new string with sorting are the same. So if we use a hashmap to store its previous string and sorted string, the problem will be easy to solve. So we build a hashmap, its key is the string element from the list, and its value is a new list which contains its key’s anagrams. Finally, we get the results from the hashmap and sort them by Collections.sort method.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;List&lt;String&gt;&gt; groupAnagrams(String[] strs) {
+    int count = strs.length;
+    List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;List&lt;String&gt;&gt;();
+    if (count == 0)
+        return res;
+    HashMap&lt;String, List&lt;String&gt;&gt; hash = new HashMap&lt;String, List&lt;String&gt;&gt;();
+
+    for (String str: strs){
+        char[] ca = str.toCharArray();
+        Arrays.sort(ca);
+        String temp = new String(ca);
+        if (hash.containsKey(temp)){
+            hash.get(temp).add(str);
+        }else{
+            List&lt;String&gt; tempres = new ArrayList&lt;String&gt;();
+            tempres.add(str);
+            hash.put(temp, tempres);
+        }
+    }
+
+    for (List&lt;String&gt; l: hash.values()){
+        Collections.sort(l);
+        res.add(l);
+    }
+
+    return res;
+}
+</code></pre><p>Reference:<a href="https://en.wikipedia.org/wiki/Anagram" target="_blank" rel="external">https://en.wikipedia.org/wiki/Anagram</a><br><a href="http://javaconceptoftheday.com/anagram-program-in-java/" target="_blank" rel="external">http://javaconceptoftheday.com/anagram-program-in-java/</a><br><a href="http://www.cnblogs.com/springfor/p/3874667.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3874667.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/08/Leetcode-Group-Anagrams-Java/" data-id="cil5utp2b005di3ownzfs4o6o" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/08/Leetcode-Group-Anagrams-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Number-of-Islands-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/05/Leetcode-Number-of-Islands-Java/" class="article-date">
@@ -199,7 +283,7 @@ private void dfsCheck(int m, int n, char[][] grid, int[][] record, int[][] visit
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/05/Leetcode-Number-of-Islands-Java/" data-id="cil4k63se003nerow0c1db7fv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/05/Leetcode-Number-of-Islands-Java/" data-id="cil5utp1m003wi3ownjm3a6kj" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/05/Leetcode-Number-of-Islands-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -290,7 +374,7 @@ private void dfsCheck(int m, int n, char[][] grid, int[][] record, int[][] visit
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/05/Leetcode-Gas-Station-Java/" data-id="cil4k63t4005aerowmw2ytsn7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/05/Leetcode-Gas-Station-Java/" data-id="cil5utp2c005hi3owaw59q73b" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/05/Leetcode-Gas-Station-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -342,7 +426,7 @@ private void dfsCheck(int m, int n, char[][] grid, int[][] record, int[][] visit
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/02/Git-Note/" data-id="cil4k63tv0074erow0k6wy5na" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/02/Git-Note/" data-id="cil5utp33007bi3owxrlunevo" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/02/Git-Note/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -431,137 +515,12 @@ public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" data-id="cil4k63rl002perow4qbchmo7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" data-id="cil5utp10002ti3ow85x5tpkz" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/02/Leetcode-Restore-IP-Addresses-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Combination-Sum-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/02/Leetcode-Combination-Sum-II-Java/" class="article-date">
-  <time datetime="2016-02-02T23:09:18.000Z" itemprop="datePublished">2016-02-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/02/Leetcode-Combination-Sum-II-Java/">Leetcode-Combination Sum II(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.</p>
-<p>Each number in C may only be used once in the combination.</p>
-<p>Note:<br>All numbers (including target) will be positive integers.<br>Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).<br>The solution set must not contain duplicate combinations.<br>For example, given candidate set 10,1,2,7,6,1,5 and target 8,<br>A solution set is:<br>[1, 7]<br>[1, 2, 5]<br>[2, 6]<br>[1, 1, 6] </p>
-<p><strong>Thinking:</strong></p>
-<p>We should use backtracing to trace all the possible answers. In order to remove duplicate, there are two methods. One is to use hashset, the other is to build a visited array, if the same value is not visited, then don’t visit the value. And there two ways to backtracing, one is to use the return value, and the other is to pass the fucntion value.</p>
-<p><strong>Solution1:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) {
-    Arrays.sort(candidates);
-    return backtracing(candidates, target, 0);
-}
-
-public List&lt;List&lt;Integer&gt;&gt; backtracing(int [] candidates, int target, int left){
-    HashSet&lt;List&lt;Integer&gt;&gt; tres = new HashSet&lt;List&lt;Integer&gt;&gt;();
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    int right = candidates.length-1;
-
-    if (left &gt; right){
-        return res;
-    }
-    if (target &lt; candidates[left]){
-        return res;
-    }
-    if (target == candidates[left]){
-        List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
-        list.add(candidates[left]);
-        res.add(list);
-        return res;
-    }
-    if (left == right){
-        return res;
-    }
-
-    for (int i = left; i &lt;= right; i++){
-        for (List&lt;Integer&gt; list: backtracing(candidates, target-candidates[i], i+1)){
-            list.add(0, candidates[i]);
-            tres.add(list);
-        }
-        for (List&lt;Integer&gt; list: backtracing(candidates, target, i+1)){
-            tres.add(list);
-        }
-    }
-
-    res.addAll(tres);
-    return res;
-}
-</code></pre><p><strong>Solution2:</strong></p>
-<pre><code>public static ArrayList&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) {  
-    ArrayList&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();  
-    ArrayList&lt;Integer&gt; item = new ArrayList&lt;Integer&gt;();
-    if(candidates == null || candidates.length==0)  
-        return res; 
-
-    Arrays.sort(candidates);  
-    boolean [] visited = new boolean[candidates.length];
-    helper(candidates,target, 0, item ,res, visited);  
-    return res;  
-}  
-
-private static void helper(int[] candidates, int target, int start, List&lt;Integer&gt; item,   
-ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){  
-    if(target&lt;0)  
-        return;  
-    if(target==0){  
-        res.add(new ArrayList&lt;Integer&gt;(item));  
-        return;
-    }
-
-    for(int i=start;i&lt;candidates.length;i++){
-        if(!visited[i]){
-            if(i&gt;0 &amp;&amp; candidates[i] == candidates[i-1] &amp;&amp; visited[i-1]==false)//deal with dupicate
-                continue;  
-            item.add(candidates[i]);
-            visited[i]=true;
-            int newtarget = target - candidates[i];
-            helper(candidates,newtarget,i+1,item,res,visited);  
-            visited[i]=false;
-            item.remove(item.size()-1);  
-        }
-    }  
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/" data-id="cil4k63te0060erow24cm6ebx" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracking/">Backtracing</a></li></ul>
 
     </footer>
   </div>
@@ -603,7 +562,7 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 13.33px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 16.67px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 13.33px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14.29px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -625,6 +584,10 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
       <ul>
         
           <li>
+            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
           </li>
         
@@ -638,10 +601,6 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
         
           <li>
             <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
           </li>
         
       </ul>

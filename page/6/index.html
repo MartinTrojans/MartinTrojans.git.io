@@ -68,6 +68,95 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Majority-Element-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/" class="article-date">
+  <time datetime="2016-02-11T02:32:38.000Z" itemprop="datePublished">2016-02-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times. The algorithm should run in linear time and in O(1) space.</p>
+<p>Hint:</p>
+<p>How many majority elements could it possibly have?</p>
+<p><strong>Thinking:</strong></p>
+<p>This question is similar with Majority Element which can be solved by Boyer–Moore majority vote algorithm.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;Integer&gt; majorityElement(int[] nums) {
+    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
+    int count1 = 0, count2 = 0, can1 = 0, can2 = 1;
+
+    for (int num: nums){
+        if (num == can1)
+            count1++;
+        else if (num == can2)
+            count2++;
+        else if (count1 == 0){
+            can1 = num;
+            count1 = 1;
+        }
+        else if (count2 == 0){
+            can2 = num;
+            count2 = 1;
+        }
+        else{
+            count1--;
+            count2--;
+        }
+    }
+    count1 = 0;
+    count2 = 0;
+    for (int num: nums){
+        if (num == can1)
+            count1++;
+        else if (num == can2)
+            count2++;
+    }
+
+    if (count1 &gt; nums.length / 3)
+        res.add(can1);
+    if (count2 &gt; nums.length / 3 &amp;&amp; can1 != can2)
+        res.add(can2);
+
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/" data-id="cil5utp1v004ji3owd8kt0zw8" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Implement-Trie-Prefix-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/" class="article-date">
@@ -172,7 +261,7 @@ public class Trie {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/" data-id="cil4k63t10051erowkby40aff" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/" data-id="cil5utp290058i3owvwegrp1s" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/10/Leetcode-Implement-Trie-Prefix-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -238,7 +327,7 @@ public class Trie {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/" data-id="cil4k63r3001terowg9ot85rf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/" data-id="cil5utp0a001yi3owvqfjkf2c" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/10/Leetcode-Sqrt-x-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -401,7 +490,7 @@ private boolean dfs(ArrayList&lt;HashSet&lt;Integer&gt;&gt; edges, int i, boolea
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/" data-id="cil4k63t8005lerowbs8e0lml" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/" data-id="cil5utp2g005si3owzl3yyh5k" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/10/Leetcode-Course-Schedule-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -562,97 +651,13 @@ private int bfs(int n, int i, int[][] edges){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" data-id="cil4k63sn0048erowzcbkj0hv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Minimum-Height-Trees-Java/" data-id="cil5utp1t004fi3ow47ujg29m" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/09/Leetcode-Minimum-Height-Trees-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFS/">BFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Graph/">Graph</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Next-Permutation-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/09/Leetcode-Next-Permutation-Java/" class="article-date">
-  <time datetime="2016-02-10T03:38:47.000Z" itemprop="datePublished">2016-02-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/09/Leetcode-Next-Permutation-Java/">Leetcode-Next Permutation(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.</p>
-<p>If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).</p>
-<p>The replacement must be in-place, do not allocate extra memory.</p>
-<p>Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.</p>
-<pre><code>1,2,3 → 1,3,2
-3,2,1 → 1,2,3
-1,1,5 → 1,5,1
-</code></pre><p><strong>Thinking:</strong></p>
-<p>The method can be described as below:</p>
-<p><img src="http://4.bp.blogspot.com/-4zN0u5JG0vs/UN0xPEkP5yI/AAAAAAAAG9Q/O48ZfwB1i_c/s640/Picture4.png" alt=""></p>
-<p><strong>Solution:</strong></p>
-<pre><code>public void nextPermutation(int[] nums) {
-    if (nums == null || nums.length == 0)
-        return;
-    int i = nums.length - 2;
-    while (i &gt;= 0 &amp;&amp; nums[i] &gt;= nums[i+1]){
-        i--;
-    }
-
-    if (i == -1){
-        reverse(nums, 0, nums.length-1);
-        return;
-    }
-
-    int j = i+1;
-    while (j &lt; nums.length &amp;&amp; nums[j] &gt; nums[i]){
-        j++;
-    }
-    j--;
-    swap(nums, i, j);
-    reverse(nums, i+1, nums.length-1);
-
-    return;
-}
-private void swap(int[] nums, int i, int j){
-    int temp = nums[i];
-    nums[i] = nums[j];
-    nums[j] = temp;
-}
-private void reverse(int[] nums, int i, int j){
-    while (i &lt; j){
-        swap(nums, i++, j--);
-    }
-}
-</code></pre><p>Reference:<a href="http://fisherlei.blogspot.com/2012/12/leetcode-next-permutation.html" target="_blank" rel="external">http://fisherlei.blogspot.com/2012/12/leetcode-next-permutation.html</a><br><a href="http://www.cnblogs.com/springfor/p/3896245.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3896245.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/" data-id="cil4k63sj003xerowpf7sdzwv" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
     </footer>
   </div>
   
@@ -693,7 +698,7 @@ private void reverse(int[] nums, int i, int j){
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 13.33px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 16.67px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 13.33px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14.29px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -715,6 +720,10 @@ private void reverse(int[] nums, int i, int j){
       <ul>
         
           <li>
+            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
           </li>
         
@@ -728,10 +737,6 @@ private void reverse(int[] nums, int i, int j){
         
           <li>
             <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
           </li>
         
       </ul>

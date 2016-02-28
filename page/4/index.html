@@ -68,6 +68,80 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Permutation-Sequence-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/22/Leetcode-Permutation-Sequence-Java/" class="article-date">
+  <time datetime="2016-02-22T23:33:08.000Z" itemprop="datePublished">2016-02-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/22/Leetcode-Permutation-Sequence-Java/">Leetcode-Permutation Sequence(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>The set [1,2,3,…,n] contains a total of n! unique permutations.</p>
+<p>By listing and labeling all of the permutations in order,<br>We get the following sequence (ie, for n = 3):</p>
+<p>“123”<br>“132”<br>“213”<br>“231”<br>“312”<br>“321”<br>Given n and k, return the kth permutation sequence.</p>
+<p>Note: Given n will be between 1 and 9 inclusive.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can conclude the position of the element in the searching tree according to the k. For example, there are n subtrees in the first level, so the k/(n-1) means picking the k/(n-1) th element in the array. And delete the element from the element, pick the next one. Do this recursively.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public String getPermutation(int n, int k) {
+    ArrayList&lt;Integer&gt; nums = new ArrayList&lt;Integer&gt;();
+    int fac = 1;
+    int[] pos = new int[n+1];
+    for (int i = 1; i &lt;= n; i++){
+        nums.add(i);
+        fac *= i;
+    }
+    fac /= n;
+    k -= 1;
+    for (int i = 1; i &lt; n; i++){
+        pos[i] = k / fac;
+        k %= fac;
+        fac /= (n-i);
+    }
+    StringBuilder res = new StringBuilder();
+    for (int i = 1; i &lt;= n; i++){
+        res.append(nums.remove(pos[i]));
+    }
+
+    return res.toString();
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/22/Leetcode-Permutation-Sequence-Java/" data-id="cil5utp1g003ki3ow7pvqvbl8" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/22/Leetcode-Permutation-Sequence-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Math/">Math</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Longest-Substring-Without-Repeating-Characters-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/21/Leetcode-Longest-Substring-Without-Repeating-Characters-Java/" class="article-date">
@@ -125,7 +199,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Longest-Substring-Without-Repeating-Characters-Java/" data-id="cil4k63su004herowynb4ioic" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Longest-Substring-Without-Repeating-Characters-Java/" data-id="cil5utp20004oi3owveamkeiw" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/21/Leetcode-Longest-Substring-Without-Repeating-Characters-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -207,7 +281,7 @@ private void check(String s, int i, int j, int len){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Longest-Palindromic-Substring-Java/" data-id="cil4k63sv004nerow639xl9hc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Longest-Palindromic-Substring-Java/" data-id="cil5utp22004ui3owdfn79yw7" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/21/Leetcode-Longest-Palindromic-Substring-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -299,7 +373,7 @@ private void check(String s, int i, int j, int len){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Add-Two-Numbers-Java/" data-id="cil4k63to006merow4c0nlipp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Add-Two-Numbers-Java/" data-id="cil5utp2w006ti3owu5nqsrjz" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/21/Leetcode-Add-Two-Numbers-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -366,92 +440,12 @@ private void check(String s, int i, int j, int len){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Word-Break-Java/" data-id="cil4k63qo000xerowx3boqgrl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Word-Break-Java/" data-id="cil5utozw0012i3owt7yevj6l" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/21/Leetcode-Word-Break-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Clone-Graph-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/21/Leetcode-Clone-Graph-Java/" class="article-date">
-  <time datetime="2016-02-22T00:46:04.000Z" itemprop="datePublished">2016-02-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/21/Leetcode-Clone-Graph-Java/">Leetcode-Clone Graph(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.</p>
-<p>OJ’s undirected graph serialization:<br>Nodes are labeled uniquely.</p>
-<p>We use # as a separator for each node, and , as a separator for node label and each neighbor of the node.<br>As an example, consider the serialized graph {0,1,2#1,2#2,2}.</p>
-<p>The graph has a total of three nodes, and therefore contains three parts as separated by #.</p>
-<p>First node is labeled as 0. Connect node 0 to both nodes 1 and 2.<br>Second node is labeled as 1. Connect node 1 to node 2.<br>Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a self-cycle.<br>Visually, the graph looks like the following:</p>
-<pre><code>   1
-  / \
- /   \
-0 --- 2
-     / \
-     \_/
-</code></pre><p><strong>Thinking:</strong></p>
-<p>In order to clone this graph, we need to traverse the graph either using DFS or BFS. In my solution, I use DFS and graph search which will hold a HashMap to record the explored nodes.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>HashMap&lt;Integer, UndirectedGraphNode&gt; exploredSet = new HashMap&lt;Integer, UndirectedGraphNode&gt;();
-public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
-    return clone(node);
-}
-
-private UndirectedGraphNode clone(UndirectedGraphNode node){
-    if (node == null) return null;
-    UndirectedGraphNode newNode = new UndirectedGraphNode(node.label);
-
-    exploredSet.put(node.label, newNode);
-
-    for (UndirectedGraphNode n: node.neighbors) {
-        if (exploredSet.containsKey(n.label)) {
-            newNode.neighbors.add(exploredSet.get(n.label));
-        } else {
-            newNode.neighbors.add(clone(n));
-        }
-    }
-
-    return newNode;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Clone-Graph-Java/" data-id="cil4k63th0067eroww3npjzp4" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/21/Leetcode-Clone-Graph-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li></ul>
 
     </footer>
   </div>
@@ -493,7 +487,7 @@ private UndirectedGraphNode clone(UndirectedGraphNode node){
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 13.33px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 16.67px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 13.33px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14.29px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -515,6 +509,10 @@ private UndirectedGraphNode clone(UndirectedGraphNode node){
       <ul>
         
           <li>
+            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
           </li>
         
@@ -528,10 +526,6 @@ private UndirectedGraphNode clone(UndirectedGraphNode node){
         
           <li>
             <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
           </li>
         
       </ul>

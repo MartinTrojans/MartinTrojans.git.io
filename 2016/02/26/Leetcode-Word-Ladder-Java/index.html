@@ -5,16 +5,22 @@
   
   <title>Leetcode-Word Ladder(Java) | Martin&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="A rookie write something just for fun.">
+  <meta name="description" content="Question:
+Given two words (beginWord and endWord), and a dictionary’s word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
+Only one letter can be change">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode-Word Ladder(Java)">
 <meta property="og:url" content="http://yoursite.com/2016/02/26/Leetcode-Word-Ladder-Java/index.html">
 <meta property="og:site_name" content="Martin's Blog">
-<meta property="og:description" content="A rookie write something just for fun.">
-<meta property="og:updated_time" content="2016-02-27T03:18:18.000Z">
+<meta property="og:description" content="Question:
+Given two words (beginWord and endWord), and a dictionary’s word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
+Only one letter can be change">
+<meta property="og:updated_time" content="2016-02-27T22:32:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode-Word Ladder(Java)">
-<meta name="twitter:description" content="A rookie write something just for fun.">
+<meta name="twitter:description" content="Question:
+Given two words (beginWord and endWord), and a dictionary’s word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
+Only one letter can be change">
   
     <link rel="alternate" href="/atom.xml" title="Martin&#39;s Blog" type="application/atom+xml">
   
@@ -73,6 +79,10 @@
   <time datetime="2016-02-27T03:18:18.000Z" itemprop="datePublished">2016-02-26</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -89,20 +99,87 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p><strong>Question:</strong></p>
+<p>Given two words (beginWord and endWord), and a dictionary’s word list, find the length of shortest transformation sequence from beginWord to endWord, such that:</p>
+<p>Only one letter can be changed at a time<br>Each intermediate word must exist in the word list<br>For example,</p>
+<p>Given:<br>beginWord = “hit”<br>endWord = “cog”<br>wordList = [“hot”,”dot”,”dog”,”lot”,”log”]<br>As one shortest transformation is “hit” -&gt; “hot” -&gt; “dot” -&gt; “dog” -&gt; “cog”,<br>return its length 5.</p>
+<p>Note:<br>Return 0 if there is no such transformation sequence.<br>All words have the same length.<br>All words contain only lowercase alphabetic characters.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can search the result from the start word. At every step, we change the every index of the start string and check if it’s in the WordList. If it’s in the range, then we add it to our nodes. Do it like a BFS search. Also in order to be more efficient, we can search also from the end word.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int ladderLength(String beginWord, String endWord, Set&lt;String&gt; wordList) {
+    if (beginWord.equals(endWord))    return 1;
+    Set&lt;String&gt; startSet = new HashSet&lt;String&gt;();
+    Set&lt;String&gt; endSet =  new HashSet&lt;String&gt;();
+    int res = 1;
+    startSet.add(beginWord);
+    endSet.add(endWord);
+    while (!wordList.isEmpty() &amp;&amp; !startSet.isEmpty() &amp;&amp; !endSet.isEmpty()) {
+        res++;
+        Set&lt;String&gt; tempSet = new HashSet&lt;String&gt;();
+        for (String nWord: startSet) {
+            wordList.remove(nWord);
+            for (String ele: check(nWord, wordList)) {
+                if (endSet.contains(ele))    return res;
+                tempSet.add(ele);
+            }
+        }
+        startSet = tempSet;
+        tempSet = new HashSet&lt;String&gt;();
+        res++;
+        for (String nWord: endSet) {
+            wordList.remove(nWord);
+            for (String ele: check(nWord, wordList)) {
+                if (startSet.contains(ele))    return res;
+                tempSet.add(ele);
+            }
+        }
+        endSet = tempSet;
+    }
+    return 0;
+}
+private List&lt;String&gt; check(String word, Set&lt;String&gt; wordList) {
+    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+    int len = word.length();
+    if (len == 1)    {
+        res.addAll(wordList);
+        return res;
+    }
+    for (int i = 0; i &lt; len; i++) {
+        char[] chs = word.toCharArray();
+        for (char j = &apos;a&apos;; j &lt;= &apos;z&apos;; j++) {
+            chs[i] = j;
+            String temp = String.valueOf(chs);
+            if (wordList.contains(temp))    res.add(temp);              
+        }
+    }
+    return res;
+}
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/26/Leetcode-Word-Ladder-Java/" data-id="cil4k63qn000werowz90eq1vi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/26/Leetcode-Word-Ladder-Java/" data-id="cil5utozt000wi3owxrz5vlhp" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/26/Leetcode-Word-Ladder-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFS/">BFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
+  
+    <a href="/2016/02/27/Leetcode-Reorder-List-Java/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode-Reorder List(Java)
+        
+      </div>
+    </a>
   
   
     <a href="/2016/02/26/Leetcode-Validate-Binary-Search-Tree-Java/" id="article-nav-older" class="article-nav-link-wrap">
@@ -149,7 +226,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 13.33px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 16.67px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 13.33px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14.29px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -171,6 +248,10 @@
       <ul>
         
           <li>
+            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
           </li>
         
@@ -184,10 +265,6 @@
         
           <li>
             <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
           </li>
         
       </ul>

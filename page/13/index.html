@@ -68,6 +68,120 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-HTTP-method-get-and-post" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/HTTP-method-get-and-post/" class="article-date">
+  <time datetime="2016-01-27T07:08:43.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/HTTP-method-get-and-post/">HTTP method: get and post</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>HTTP:</strong></p>
+<p>HTTP is the foundation of data commnication of the World Wide Web. The basic work method of http is request and response.</p>
+<p>There are two methods of HTTP request: Get and Post.</p>
+<p>Get - get request data from specific source.<br>Post - Push data which will be dealed to specific source.</p>
+<p><strong>GET:</strong></p>
+<p>Note that the query string (name/value pairs) is sent in the URL of a GET request:</p>
+<pre><code>http://www.w3schools.com/tags/ref_httpmethods.asp
+</code></pre><p>Some other notes on GET requests:</p>
+<p>GET requests can be cached</p>
+<p>GET requests remain in the browser history</p>
+<p>GET requests can be bookmarked</p>
+<p>GET requests should never be used when dealing with sensitive data</p>
+<p>GET requests have length restrictions</p>
+<p>GET requests should be used only to retrieve data</p>
+<p><strong>POST:</strong></p>
+<p>Note that the query string (name/value pairs) is sent in the HTTP message body of a POST request:</p>
+<pre><code>POST /test/demo_form.asp HTTP/1.1
+Host: w3schools.com
+name1=value1&amp;name2=value2
+</code></pre><p>Some other notes on POST requests:</p>
+<p>POST requests are never cached</p>
+<p>POST requests do not remain in the browser history</p>
+<p>POST requests cannot be bookmarked</p>
+<p>POST requests have no restrictions on data length</p>
+<p><strong>Compare GET vs. POST:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tables</th>
+<th style="text-align:center">GET</th>
+<th style="text-align:right">POST</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BACK button/Reload</td>
+<td style="text-align:center">Harmless</td>
+<td style="text-align:right">Data will be re-submitted</td>
+</tr>
+<tr>
+<td>Bookmarked</td>
+<td style="text-align:center">can be bookmarked</td>
+<td style="text-align:right">Can not be bookmarked</td>
+</tr>
+<tr>
+<td>Cached</td>
+<td style="text-align:center">Can be cached</td>
+<td style="text-align:right">Can not be cached</td>
+</tr>
+<tr>
+<td>History</td>
+<td style="text-align:center">Parameters remain in browser history</td>
+<td style="text-align:right">Parameters are not saved in browser history</td>
+</tr>
+<tr>
+<td>Restrictions on data length</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:right">No</td>
+</tr>
+<tr>
+<td>Security</td>
+<td style="text-align:center">Less secure</td>
+<td style="text-align:right">Safer</td>
+</tr>
+<tr>
+<td>Visibility</td>
+<td style="text-align:center">Visible</td>
+<td style="text-align:right">Not visible in URL</td>
+</tr>
+</tbody>
+</table>
+<p>Reference: <a href="http://www.w3schools.com/tags/ref_httpmethods.asp" target="_blank" rel="external">http://www.w3schools.com/tags/ref_httpmethods.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/" data-id="cil5utp310078i3owwjmojudy" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" class="article-date">
@@ -156,7 +270,7 @@ private TreeNode dp(int[] preorder, int[] inorder, int preStart, int preEnd, int
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" data-id="cil4k63tb005werowfm0r00no" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/" data-id="cil5utp2j0063i3owr8qodinh" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -236,7 +350,7 @@ private double dp(double x, int n){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/" data-id="cil4k63s60036erow0giuq9ti" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/" data-id="cil5utp1d003fi3owflg8utpg" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/26/Leetcode-Pow-x-n-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -342,7 +456,7 @@ private double dp(double x, int n){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/" data-id="cil4k63sz004xerow4udiysjw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/" data-id="cil5utp260054i3owvtv5a7ep" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -421,92 +535,9 @@ private double dp(double x, int n){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/" data-id="cil4k63ts006zerowet7m6yds" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/" data-id="cil5utp300076i3ow4rmgl72l" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" class="article-date">
-  <time datetime="2016-01-27T00:00:18.000Z" itemprop="datePublished">2016-01-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/">Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
-<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
-<p><strong>Thinking:</strong></p>
-<p>Inorder traversal will search in order: left, root, right;</p>
-<p>Postorder travelsal will search in order: left, right, root.</p>
-<p>So we can find the root in postorder and search it in inorder by the value. And find root’s left child and right child node by recursion.</p>
-<pre><code>public TreeNode buildTree(int[] inorder, int[] postorder) {
-    int l = inorder.length;
-    if (l == 0)
-        return null;
-    TreeNode root = new TreeNode(postorder[l-1]);
-    TreeNode left = null;
-    TreeNode right = null;
-    int index = 0;
-    for (; index &lt; l; index++){
-        if (inorder[index] == postorder[l-1])
-            break;
-    }
-
-
-    if (index &gt; 0){
-        int[] leftinorder = new int[index];
-        int[] leftpostorder = new int[index];
-        System.arraycopy(inorder, 0, leftinorder, 0, index);
-        System.arraycopy(postorder, 0, leftpostorder, 0, index);
-        left = buildTree(leftinorder, leftpostorder);
-    }
-    if (index &lt; l-1){
-        int[] rightinorder = new int[l-index-1];
-        int[] rightpostorder = new int[l-index-1];
-        System.arraycopy(inorder, index+1, rightinorder, 0, l-index-1);
-        System.arraycopy(postorder, index, rightpostorder, 0, l-index-1);
-        right = buildTree(rightinorder, rightpostorder);
-    }
-    root.left = left;
-    root.right = right;
-
-    return root;
-}
-</code></pre><p>By the way, this code can be improved because in Java we can not easily get the subarray and I use the System.arraycopy. It can be replaced by recording the postion of array.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" data-id="cil4k63tc005yerowvhsylqbi" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -549,7 +580,7 @@ private double dp(double x, int n){
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 13.33px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 16.67px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 13.33px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14.29px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -571,6 +602,10 @@ private double dp(double x, int n){
       <ul>
         
           <li>
+            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
           </li>
         
@@ -584,10 +619,6 @@ private double dp(double x, int n){
         
           <li>
             <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
           </li>
         
       </ul>

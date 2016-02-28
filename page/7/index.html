@@ -68,6 +68,90 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Next-Permutation-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/09/Leetcode-Next-Permutation-Java/" class="article-date">
+  <time datetime="2016-02-10T03:38:47.000Z" itemprop="datePublished">2016-02-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/09/Leetcode-Next-Permutation-Java/">Leetcode-Next Permutation(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.</p>
+<p>If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).</p>
+<p>The replacement must be in-place, do not allocate extra memory.</p>
+<p>Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.</p>
+<pre><code>1,2,3 → 1,3,2
+3,2,1 → 1,2,3
+1,1,5 → 1,5,1
+</code></pre><p><strong>Thinking:</strong></p>
+<p>The method can be described as below:</p>
+<p><img src="http://4.bp.blogspot.com/-4zN0u5JG0vs/UN0xPEkP5yI/AAAAAAAAG9Q/O48ZfwB1i_c/s640/Picture4.png" alt=""></p>
+<p><strong>Solution:</strong></p>
+<pre><code>public void nextPermutation(int[] nums) {
+    if (nums == null || nums.length == 0)
+        return;
+    int i = nums.length - 2;
+    while (i &gt;= 0 &amp;&amp; nums[i] &gt;= nums[i+1]){
+        i--;
+    }
+
+    if (i == -1){
+        reverse(nums, 0, nums.length-1);
+        return;
+    }
+
+    int j = i+1;
+    while (j &lt; nums.length &amp;&amp; nums[j] &gt; nums[i]){
+        j++;
+    }
+    j--;
+    swap(nums, i, j);
+    reverse(nums, i+1, nums.length-1);
+
+    return;
+}
+private void swap(int[] nums, int i, int j){
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+private void reverse(int[] nums, int i, int j){
+    while (i &lt; j){
+        swap(nums, i++, j--);
+    }
+}
+</code></pre><p>Reference:<a href="http://fisherlei.blogspot.com/2012/12/leetcode-next-permutation.html" target="_blank" rel="external">http://fisherlei.blogspot.com/2012/12/leetcode-next-permutation.html</a><br><a href="http://www.cnblogs.com/springfor/p/3896245.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3896245.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/" data-id="cil5utp1p0045i3owldpo3cm7" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/09/Leetcode-Next-Permutation-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Minimum-Size-Subarray-Sum-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/" class="article-date">
@@ -199,7 +283,7 @@ private int binarySearch(int lo, int hi, int key, int[] sums) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/" data-id="cil4k63sm0042eroweusr2553" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/" data-id="cil5utp1s004ai3ow2673u00h" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/09/Leetcode-Minimum-Size-Subarray-Sum-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -298,7 +382,7 @@ private int binarySearch(int lo, int hi, int key, int[] sums) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Ugly-Number-II-Java/" data-id="cil4k63qy001ferow532orfml" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Ugly-Number-II-Java/" data-id="cil5utp04001ki3ow1xsk5avs" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/09/Leetcode-Ugly-Number-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -470,7 +554,7 @@ public TreeNode deserialize(String data) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/" data-id="cil4k63rc002cerowiunyl06h" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/" data-id="cil5utp0i002gi3owkwxw0av7" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/09/Leetcode-Serialize-and-Deserialize-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -549,96 +633,12 @@ public TreeNode deserialize(String data) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" data-id="cil4k63s0002zerow2dvrplke" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/" data-id="cil5utp1a0038i3owj2nt3pta" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/08/Leetcode-Remove-Duplicates-from-Sorted-List-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linked-List/">Linked List</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Group-Anagrams-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/08/Leetcode-Group-Anagrams-Java/" class="article-date">
-  <time datetime="2016-02-09T05:02:42.000Z" itemprop="datePublished">2016-02-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/08/Leetcode-Group-Anagrams-Java/">Leetcode-Group Anagrams(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given an array of strings, group anagrams together.</p>
-<p>For example, given: [“eat”, “tea”, “tan”, “ate”, “nat”, “bat”],<br>Return:</p>
-<pre><code>[
-  [&quot;ate&quot;, &quot;eat&quot;,&quot;tea&quot;],
-  [&quot;nat&quot;,&quot;tan&quot;],
-  [&quot;bat&quot;]
-]
-</code></pre><p>Note:<br>For the return value, each inner list’s elements must follow the lexicographic order.<br>All inputs will be in lower-case.</p>
-<p><strong>Thinking:</strong></p>
-<p>This question took me a lot of time. First, I want to get a String from the list, and check its anagrams with the rest of the list. And write the algorithm about the anagrams check. But time exceed. Then I try to change my thinking mode of this problem. We should consider the whole String as a element, and if two strings are anagrams, their new string with sorting are the same. So if we use a hashmap to store its previous string and sorted string, the problem will be easy to solve. So we build a hashmap, its key is the string element from the list, and its value is a new list which contains its key’s anagrams. Finally, we get the results from the hashmap and sort them by Collections.sort method.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;String&gt;&gt; groupAnagrams(String[] strs) {
-    int count = strs.length;
-    List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;List&lt;String&gt;&gt;();
-    if (count == 0)
-        return res;
-    HashMap&lt;String, List&lt;String&gt;&gt; hash = new HashMap&lt;String, List&lt;String&gt;&gt;();
-
-    for (String str: strs){
-        char[] ca = str.toCharArray();
-        Arrays.sort(ca);
-        String temp = new String(ca);
-        if (hash.containsKey(temp)){
-            hash.get(temp).add(str);
-        }else{
-            List&lt;String&gt; tempres = new ArrayList&lt;String&gt;();
-            tempres.add(str);
-            hash.put(temp, tempres);
-        }
-    }
-
-    for (List&lt;String&gt; l: hash.values()){
-        Collections.sort(l);
-        res.add(l);
-    }
-
-    return res;
-}
-</code></pre><p>Reference:<a href="https://en.wikipedia.org/wiki/Anagram" target="_blank" rel="external">https://en.wikipedia.org/wiki/Anagram</a><br><a href="http://javaconceptoftheday.com/anagram-program-in-java/" target="_blank" rel="external">http://javaconceptoftheday.com/anagram-program-in-java/</a><br><a href="http://www.cnblogs.com/springfor/p/3874667.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3874667.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/08/Leetcode-Group-Anagrams-Java/" data-id="cil4k63t20056erowrkwsf5mf" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/08/Leetcode-Group-Anagrams-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
 
     </footer>
   </div>
@@ -680,7 +680,7 @@ public TreeNode deserialize(String data) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 13.33px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 16.67px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 13.33px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14.29px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -702,6 +702,10 @@ public TreeNode deserialize(String data) {
       <ul>
         
           <li>
+            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
           </li>
         
@@ -715,10 +719,6 @@ public TreeNode deserialize(String data) {
         
           <li>
             <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
           </li>
         
       </ul>

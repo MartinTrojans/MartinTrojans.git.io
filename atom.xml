@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-02-27T03:18:18.000Z</updated>
+  <updated>2016-02-28T01:03:28.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,15 +15,139 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Leetcode-Reorder List(Java)]]></title>
+    <link href="http://yoursite.com/2016/02/27/Leetcode-Reorder-List-Java/"/>
+    <id>http://yoursite.com/2016/02/27/Leetcode-Reorder-List-Java/</id>
+    <published>2016-02-28T01:01:11.000Z</published>
+    <updated>2016-02-28T01:03:28.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a singly linked list L: L0→L1→…→Ln-1→Ln,<br>reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…</p>
+<p>You must do this in-place without altering the nodes’ values.</p>
+<p>For example,<br>Given {1,2,3,4}, reorder it to {1,4,2,3}.</p>
+<p><strong>Thinking:</strong></p>
+<p>We need three steps to finish this operation. The first one is to find the middle in the linked list. The second one is to reverse the second half of this linked list. The final one is to link these two parts again.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public void reorderList(ListNode head) {
+    if (head == null || head.next == null)    return;
+    ListNode slow = head, fast = head.next, preMiddle, preCurrent, current, p, q;
+
+    //find the middle
+    while (fast != null &amp;&amp; fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    //reverse the second half
+    preMiddle = slow;
+    preCurrent = slow.next;
+    while (preCurrent.next != null) {
+        current = preCurrent.next;
+        preCurrent.next = current.next;
+        current.next = preMiddle.next;
+        preMiddle.next = current;
+    }
+
+    //connect two parts
+    p = head;
+    q = preMiddle.next;
+    while (p != preMiddle) {
+        preMiddle.next = q.next;
+        q.next = p.next;
+        p.next = q;
+        p = q.next;
+        q = preMiddle.next;
+    }
+
+}
+</code></pre><p>Reference:<a href="https://leetcode.com/discuss/35599/java-solution-with-3-steps" target="_blank" rel="external">https://leetcode.com/discuss/35599/java-solution-with-3-steps</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a singly linked list L: L0→L1→…→Ln-1→Ln,<br>reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…</p>
+<p>You mus]]>
+    </summary>
+    
+      <category term="Linked List" scheme="http://yoursite.com/tags/Linked-List/"/>
+    
+      <category term="Two Pointers" scheme="http://yoursite.com/tags/Two-Pointers/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Leetcode-Word Ladder(Java)]]></title>
     <link href="http://yoursite.com/2016/02/26/Leetcode-Word-Ladder-Java/"/>
     <id>http://yoursite.com/2016/02/26/Leetcode-Word-Ladder-Java/</id>
     <published>2016-02-27T03:18:18.000Z</published>
-    <updated>2016-02-27T03:18:18.000Z</updated>
-    <content type="html"></content>
+    <updated>2016-02-27T22:32:41.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given two words (beginWord and endWord), and a dictionary’s word list, find the length of shortest transformation sequence from beginWord to endWord, such that:</p>
+<p>Only one letter can be changed at a time<br>Each intermediate word must exist in the word list<br>For example,</p>
+<p>Given:<br>beginWord = “hit”<br>endWord = “cog”<br>wordList = [“hot”,”dot”,”dog”,”lot”,”log”]<br>As one shortest transformation is “hit” -&gt; “hot” -&gt; “dot” -&gt; “dog” -&gt; “cog”,<br>return its length 5.</p>
+<p>Note:<br>Return 0 if there is no such transformation sequence.<br>All words have the same length.<br>All words contain only lowercase alphabetic characters.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can search the result from the start word. At every step, we change the every index of the start string and check if it’s in the WordList. If it’s in the range, then we add it to our nodes. Do it like a BFS search. Also in order to be more efficient, we can search also from the end word.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int ladderLength(String beginWord, String endWord, Set&lt;String&gt; wordList) {
+    if (beginWord.equals(endWord))    return 1;
+    Set&lt;String&gt; startSet = new HashSet&lt;String&gt;();
+    Set&lt;String&gt; endSet =  new HashSet&lt;String&gt;();
+    int res = 1;
+    startSet.add(beginWord);
+    endSet.add(endWord);
+    while (!wordList.isEmpty() &amp;&amp; !startSet.isEmpty() &amp;&amp; !endSet.isEmpty()) {
+        res++;
+        Set&lt;String&gt; tempSet = new HashSet&lt;String&gt;();
+        for (String nWord: startSet) {
+            wordList.remove(nWord);
+            for (String ele: check(nWord, wordList)) {
+                if (endSet.contains(ele))    return res;
+                tempSet.add(ele);
+            }
+        }
+        startSet = tempSet;
+        tempSet = new HashSet&lt;String&gt;();
+        res++;
+        for (String nWord: endSet) {
+            wordList.remove(nWord);
+            for (String ele: check(nWord, wordList)) {
+                if (startSet.contains(ele))    return res;
+                tempSet.add(ele);
+            }
+        }
+        endSet = tempSet;
+    }
+    return 0;
+}
+private List&lt;String&gt; check(String word, Set&lt;String&gt; wordList) {
+    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+    int len = word.length();
+    if (len == 1)    {
+        res.addAll(wordList);
+        return res;
+    }
+    for (int i = 0; i &lt; len; i++) {
+        char[] chs = word.toCharArray();
+        for (char j = &apos;a&apos;; j &lt;= &apos;z&apos;; j++) {
+            chs[i] = j;
+            String temp = String.valueOf(chs);
+            if (wordList.contains(temp))    res.add(temp);              
+        }
+    }
+    return res;
+}
+</code></pre>]]></content>
     <summary type="html">
-    
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given two words (beginWord and endWord), and a dictionary’s word list, find the length of shortest tran]]>
     </summary>
+    
+      <category term="BFS" scheme="http://yoursite.com/tags/BFS/"/>
+    
+      <category term="String" scheme="http://yoursite.com/tags/String/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
     
   </entry>
   
@@ -1113,61 +1237,6 @@ private void check(String s, int i, int j, int len){
     </summary>
     
       <category term="Dynamic Programming" scheme="http://yoursite.com/tags/Dynamic-Programming/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Clone Graph(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/21/Leetcode-Clone-Graph-Java/"/>
-    <id>http://yoursite.com/2016/02/21/Leetcode-Clone-Graph-Java/</id>
-    <published>2016-02-22T00:46:04.000Z</published>
-    <updated>2016-02-22T00:48:14.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.</p>
-<p>OJ’s undirected graph serialization:<br>Nodes are labeled uniquely.</p>
-<p>We use # as a separator for each node, and , as a separator for node label and each neighbor of the node.<br>As an example, consider the serialized graph {0,1,2#1,2#2,2}.</p>
-<p>The graph has a total of three nodes, and therefore contains three parts as separated by #.</p>
-<p>First node is labeled as 0. Connect node 0 to both nodes 1 and 2.<br>Second node is labeled as 1. Connect node 1 to node 2.<br>Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a self-cycle.<br>Visually, the graph looks like the following:</p>
-<pre><code>   1
-  / \
- /   \
-0 --- 2
-     / \
-     \_/
-</code></pre><p><strong>Thinking:</strong></p>
-<p>In order to clone this graph, we need to traverse the graph either using DFS or BFS. In my solution, I use DFS and graph search which will hold a HashMap to record the explored nodes.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>HashMap&lt;Integer, UndirectedGraphNode&gt; exploredSet = new HashMap&lt;Integer, UndirectedGraphNode&gt;();
-public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
-    return clone(node);
-}
-
-private UndirectedGraphNode clone(UndirectedGraphNode node){
-    if (node == null) return null;
-    UndirectedGraphNode newNode = new UndirectedGraphNode(node.label);
-
-    exploredSet.put(node.label, newNode);
-
-    for (UndirectedGraphNode n: node.neighbors) {
-        if (exploredSet.containsKey(n.label)) {
-            newNode.neighbors.add(exploredSet.get(n.label));
-        } else {
-            newNode.neighbors.add(clone(n));
-        }
-    }
-
-    return newNode;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.</p>
-<p>]]>
-    </summary>
-    
-      <category term="Graph, DFS, BFS" scheme="http://yoursite.com/tags/Graph-DFS-BFS/"/>
     
       <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
     

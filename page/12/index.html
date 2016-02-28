@@ -68,6 +68,121 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Letter-Combinations-of-a-Phone-Number-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" class="article-date">
+  <time datetime="2016-01-28T00:11:34.000Z" itemprop="datePublished">2016-01-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/">Leetcode-Letter Combinations of a Phone Number(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a digit string, return all possible letter combinations that the number could represent.</p>
+<p>A mapping of digit to letters (just like on the telephone buttons) is given below.</p>
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png" alt=""></p>
+<pre><code>Input:Digit string &quot;23&quot;
+Output: [&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;be&quot;, &quot;bf&quot;, &quot;cd&quot;, &quot;ce&quot;, &quot;cf&quot;].
+</code></pre><p>Note:<br>Although the above answer is in lexicographical order, your answer could be in any order you want.</p>
+<p><strong>Thinking:</strong></p>
+<p>We should get all the possiblities of the comibination so we need use backtracing.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
+public class Solution {
+    static private Map&lt;Character, char[]&gt; hmap = new HashMap&lt;Character, char[]&gt;();
+
+    private Character two = new Character(&apos;2&apos;);
+    private char[] twoC = {&apos;a&apos;, &apos;b&apos;, &apos;c&apos;};
+    private Character three = new Character(&apos;3&apos;);
+    private char[] threeC = {&apos;d&apos;, &apos;e&apos;, &apos;f&apos;};
+    private Character four = new Character(&apos;4&apos;);
+    private char[] fourC = {&apos;g&apos;, &apos;h&apos;, &apos;i&apos;};
+    private Character five = new Character(&apos;5&apos;);
+    private char[] fiveC = {&apos;j&apos;, &apos;k&apos;, &apos;l&apos;};
+    private Character six = new Character(&apos;6&apos;);
+    private char[] sixC = {&apos;m&apos;, &apos;n&apos;, &apos;o&apos;};
+    private Character seven = new Character(&apos;7&apos;);
+    private char[] sevenC = {&apos;p&apos;, &apos;q&apos;, &apos;r&apos;, &apos;s&apos;};
+    private Character eight = new Character(&apos;8&apos;);
+    private char[] eightC = {&apos;t&apos;, &apos;u&apos;, &apos;v&apos;};
+    private Character nine = new Character(&apos;9&apos;);
+    private char[] nineC = {&apos;w&apos;, &apos;x&apos;, &apos;y&apos;, &apos;z&apos;};
+
+    public Solution(){
+        hmap.put(two, twoC);
+        hmap.put(three, threeC);
+        hmap.put(four, fourC);
+        hmap.put(five, fiveC);
+        hmap.put(six, sixC);
+        hmap.put(seven, sevenC);
+        hmap.put(eight, eightC);
+        hmap.put(nine, nineC);
+    }
+
+    public List&lt;String&gt; letterCombinations(String digits) {
+        List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+        backTracing(digits, 0, &quot;&quot;, res);
+
+        return res;
+    }
+
+    private void backTracing(String digits, int index, String cur, List&lt;String&gt; res){
+        int l = digits.length();
+        if (l == 0)
+            return;
+        if (index == l){
+            res.add(cur);
+            return;
+        }
+
+
+        Character tmpc = new Character(digits.charAt(index));
+        if(hmap.containsKey(tmpc)){
+            for (char c :hmap.get(tmpc)){
+                backTracing(digits, index+1, cur+c, res);
+            }
+        }
+
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" data-id="cil5utp23004xi3owebb63150" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Path-Sum-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/27/Leetcode-Path-Sum-II-Java/" class="article-date">
@@ -188,7 +303,7 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/" data-id="cil4k63sb003gerow673cmqvs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/" data-id="cil5utp1j003pi3owt2h7mba0" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -239,7 +354,7 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/hello-world/" data-id="cil4k63q70008erowjt4ap2sy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/27/hello-world/" data-id="cil5utozd0008i3owqkbnhnfe" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/27/hello-world/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -340,7 +455,7 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" data-id="cil4k63q40005erowkscbyi2h" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" data-id="cil5utoz90005i3ow4jdx4qyp" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -465,123 +580,9 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Triangle/" data-id="cil4k63r2001rerowfhyynwjr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Triangle/" data-id="cil5utp08001wi3owca97nqaa" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/27/Leetcode-Triangle/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-HTTP-method-get-and-post" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/26/HTTP-method-get-and-post/" class="article-date">
-  <time datetime="2016-01-27T07:08:43.000Z" itemprop="datePublished">2016-01-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Network/">Network</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/26/HTTP-method-get-and-post/">HTTP method: get and post</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>HTTP:</strong></p>
-<p>HTTP is the foundation of data commnication of the World Wide Web. The basic work method of http is request and response.</p>
-<p>There are two methods of HTTP request: Get and Post.</p>
-<p>Get - get request data from specific source.<br>Post - Push data which will be dealed to specific source.</p>
-<p><strong>GET:</strong></p>
-<p>Note that the query string (name/value pairs) is sent in the URL of a GET request:</p>
-<pre><code>http://www.w3schools.com/tags/ref_httpmethods.asp
-</code></pre><p>Some other notes on GET requests:</p>
-<p>GET requests can be cached</p>
-<p>GET requests remain in the browser history</p>
-<p>GET requests can be bookmarked</p>
-<p>GET requests should never be used when dealing with sensitive data</p>
-<p>GET requests have length restrictions</p>
-<p>GET requests should be used only to retrieve data</p>
-<p><strong>POST:</strong></p>
-<p>Note that the query string (name/value pairs) is sent in the HTTP message body of a POST request:</p>
-<pre><code>POST /test/demo_form.asp HTTP/1.1
-Host: w3schools.com
-name1=value1&amp;name2=value2
-</code></pre><p>Some other notes on POST requests:</p>
-<p>POST requests are never cached</p>
-<p>POST requests do not remain in the browser history</p>
-<p>POST requests cannot be bookmarked</p>
-<p>POST requests have no restrictions on data length</p>
-<p><strong>Compare GET vs. POST:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">GET</th>
-<th style="text-align:right">POST</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>BACK button/Reload</td>
-<td style="text-align:center">Harmless</td>
-<td style="text-align:right">Data will be re-submitted</td>
-</tr>
-<tr>
-<td>Bookmarked</td>
-<td style="text-align:center">can be bookmarked</td>
-<td style="text-align:right">Can not be bookmarked</td>
-</tr>
-<tr>
-<td>Cached</td>
-<td style="text-align:center">Can be cached</td>
-<td style="text-align:right">Can not be cached</td>
-</tr>
-<tr>
-<td>History</td>
-<td style="text-align:center">Parameters remain in browser history</td>
-<td style="text-align:right">Parameters are not saved in browser history</td>
-</tr>
-<tr>
-<td>Restrictions on data length</td>
-<td style="text-align:center">Yes</td>
-<td style="text-align:right">No</td>
-</tr>
-<tr>
-<td>Security</td>
-<td style="text-align:center">Less secure</td>
-<td style="text-align:right">Safer</td>
-</tr>
-<tr>
-<td>Visibility</td>
-<td style="text-align:center">Visible</td>
-<td style="text-align:right">Not visible in URL</td>
-</tr>
-</tbody>
-</table>
-<p>Reference: <a href="http://www.w3schools.com/tags/ref_httpmethods.asp" target="_blank" rel="external">http://www.w3schools.com/tags/ref_httpmethods.asp</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/" data-id="cil4k63tt0071erowbckf3ssd" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -624,7 +625,7 @@ name1=value1&amp;name2=value2
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 13.33px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 13.33px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 16.67px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 13.33px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 10px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14.29px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -646,6 +647,10 @@ name1=value1&amp;name2=value2
       <ul>
         
           <li>
+            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
           </li>
         
@@ -659,10 +664,6 @@ name1=value1&amp;name2=value2
         
           <li>
             <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
           </li>
         
       </ul>
