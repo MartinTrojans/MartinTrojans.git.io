@@ -4,6 +4,200 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode-Evaluate Reverse Polish Notation(Java)]]></title>
+      <url>http://yoursite.com/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Evaluate the value of an arithmetic expression in Reverse Polish Notation.</p>
+<p>Valid operators are +, -, *, /. Each operand may be an integer or another expression.</p>
+<p>Some examples:</p>
+<pre><code>[&quot;2&quot;, &quot;1&quot;, &quot;+&quot;, &quot;3&quot;, &quot;*&quot;] -&gt; ((2 + 1) * 3) -&gt; 9
+[&quot;4&quot;, &quot;13&quot;, &quot;5&quot;, &quot;/&quot;, &quot;+&quot;] -&gt; (4 + (13 / 5)) -&gt; 6
+</code></pre><p><strong>Thinking:</strong></p>
+<p>We should use stack and scan the elements of this string array. Whenever we get the operator, we pop element from the stack and push new element to the stack.</p>
+<p><strong>Solutioin:</strong></p>
+<pre><code>public int evalRPN(String[] tokens) {
+    Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
+
+    for (String s: tokens) {
+        if (s.equals(&quot;+&quot;)) {
+            int num1 = stack.pop();
+            int num2 = stack.pop();
+            stack.push(num1+num2);
+        }
+        else if (s.equals(&quot;-&quot;)) {
+            int num1 = stack.pop();
+            int num2 = stack.pop();
+            stack.push(num2-num1);
+        }
+        else if (s.equals(&quot;*&quot;)) {
+            int num1 = stack.pop();
+            int num2 = stack.pop();
+            stack.push(num1*num2);
+        }
+        else if (s.equals(&quot;/&quot;)) {
+            int num1 = stack.pop();
+            int num2 = stack.pop();
+            stack.push(num2/num1);
+        }
+        else
+            stack.push(Integer.parseInt(s));
+    }
+
+    return stack.pop();
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Increasing Triplet Subsequence(Java)]]></title>
+      <url>http://yoursite.com/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.</p>
+<p>Formally the function should:<br>Return true if there exists i, j, k<br>such that arr[i] &lt; arr[j] &lt; arr[k] given 0 ≤ i &lt; j &lt; k ≤ n-1 else return false.<br>Your algorithm should run in O(n) time complexity and O(1) space complexity.</p>
+<p>Examples:<br>Given [1, 2, 3, 4, 5],<br>return true.</p>
+<p>Given [5, 4, 3, 2, 1],<br>return false.</p>
+<p><strong>Thinking:</strong></p>
+<p>We need to implement this algorithm in linear time and constant space. So we need to scan this array once and record the information needed in one time. We need to variable to record the information, the first one is the minimum of this array, and the second one is the number which is bigger than its previous elements. If one element is bigger than it, the result will be true. Otherwise, we should update the two variables’ values.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean increasingTriplet(int[] nums) {
+    int l = nums.length;
+    if (l &lt; 3)    return false;
+    int min = nums[0];
+    int secmin = Integer.MAX_VALUE;
+
+    for (int i = 1; i &lt; l; i++) {
+        if (nums[i] &gt; secmin)    return true;
+        else if (nums[i] &lt;= min) min = nums[i];
+        else if (nums[i] &lt; secmin)    secmin = nums[i];
+    }
+    return false;
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Shortest Path Problem]]></title>
+      <url>http://yoursite.com/2016/03/06/Shortest-Path-Problem/</url>
+      <content type="html"><![CDATA[<p><strong>Shorstest Path Problem Categories:</strong></p>
+<ol>
+<li>From a speicific start point;</li>
+<li>To a specific end point;</li>
+<li>Start and end with a specific point;</li>
+<li>Search for all the shortest path in every pair nodes.</li>
+</ol>
+<p><strong>Dijkstra:</strong></p>
+<p>This algorithm is aiming at caculating all the shortest paths from every point to a specific start point. And it’s a greedy algorithm.</p>
+<p>Algorithm:</p>
+<ol>
+<li>Set the distance to the start node as infinity to all the nodes except the start node.</li>
+<li>Initial a set which conclude the added nodes, and another set for unvisited nodes.</li>
+<li>For the added nodes set, we find the shortest edge from adjancent nodes crossing this set in unvisited set. And add the adjancent node to the added added nodes.</li>
+<li>Update the distances of nodes from start node which connect to the last added node.</li>
+<li>Do step 3 and 4 repeatedly until all the nodes are in the added set.</li>
+</ol>
+<p>Pseudoode:</p>
+<pre><code>function Dijkstra(Graph, source):
+
+    create vertex set Q
+
+    for each vertex v in Graph:             // Initialization
+    dist[v] ← INFINITY                  // Unknown distance from source to v
+    prev[v] ← UNDEFINED                 // Previous node in optimal path from source
+    add v to Q                          // All nodes initially in Q (unvisited nodes)
+
+    dist[source] ← 0                        // Distance from source to source
+
+    while Q is not empty:
+        u ← vertex in Q with min dist[u]    // Source node will be selected first
+        remove u from Q 
+
+        for each neighbor v of u:           // where v is still in Q.
+            alt ← dist[u] + length(u, v)
+            if alt &lt; dist[v]:               // A shorter path to v has been found
+                dist[v] ← alt 
+                prev[v] ← u 
+
+    return dist[], prev[]
+</code></pre><p>Java Code:</p>
+<pre><code>public static void dijkstra(int[][] edges, int s, int[] dist, int[] pre) {
+    int n = edges.length;
+
+    HashSet&lt;Integer&gt; set = new HashSet&lt;Integer&gt;(n);
+
+    for (int i = 0; i &lt; n; i++) {
+        dist[i] = Integer.MAX_VALUE;
+        set.add(i);
+    }
+    dist[s] = 0;
+
+    while (!set.isEmpty()) {
+        int min = findMin(set, dist);
+        for (int i = 0; i &lt; n; i++) {
+            if (edges[min][i] != -1) { // find the neighbors of the node
+                if (dist[i] &lt; dist[min] + edges[min][i]) { //relaxation
+                    dist[i] = dist[min] + edges[min][i];
+                    pre[i] = min;
+                }
+            }
+        }
+    }
+}
+private static int findMin(Set set, int[] dist) {
+    int min = Integer.MAX_VALUE, minIdx = -1;
+    for (int i = 0; i &lt; dist.length; i++) {
+        if (set.contains(i) &amp;&amp; dist[i] &lt; min) {
+            min = dist[i];
+            minIdx = i;
+        }
+    }
+    set.remove(minIdx);
+    return minIdx;
+}
+</code></pre><p>Running Time:</p>
+<p>O(E*lgv)</p>
+<p>If use the Fibonacci heap -&gt;  O(V*lgV + E)</p>
+<p><strong>Bellman Ford:</strong></p>
+<p>Aimming at searching for the shortest path from a specific start node. It is useful also for the graph containing the negative edges. It’s a dynamic programming algorithm.</p>
+<p>Algorithm:</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Maximal Square(Java)]]></title>
+      <url>http://yoursite.com/2016/02/27/Leetcode-Maximal-Square-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a 2D binary matrix filled with 0’s and 1’s, find the largest square containing all 1’s and return its area.</p>
+<p>For example, given the following matrix:</p>
+<pre><code>1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0
+</code></pre><p>Return 4.</p>
+<p><strong>Thinking:</strong></p>
+<p>IIf the [i-1][j], [i][j-1] and [i-1][j-1] all have the same length of ‘1’ edge and the [i][j] is ‘1’, the length of the square can increase.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int maximalSquare(char[][] matrix) {
+    int m = matrix.length;
+    if (m == 0)    return 0;
+    int n = matrix[0].length;
+    int res = 0;
+    int[][] opt = new int[m+1][n+1];
+
+    for (int i = 1; i &lt;= m; i++){
+        for (int j = 1; j &lt;= n; j++) {
+            if (matrix[i-1][j-1] == &apos;1&apos;) {
+                opt[i][j] = Math.min(opt[i-1][j-1], Math.min(opt[i-1][j], opt[i][j-1])) + 1;
+                res = Math.max(res, opt[i][j]);
+            }
+        }
+    }
+
+    return res * res;
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode-Reorder List(Java)]]></title>
       <url>http://yoursite.com/2016/02/27/Leetcode-Reorder-List-Java/</url>
       <content type="html"><![CDATA[<p><strong>Question:</strong></p>

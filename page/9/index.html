@@ -68,6 +68,383 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Number-of-Islands-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/05/Leetcode-Number-of-Islands-Java/" class="article-date">
+  <time datetime="2016-02-06T07:08:03.000Z" itemprop="datePublished">2016-02-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/05/Leetcode-Number-of-Islands-Java/">Leetcode-Number of Islands(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a 2d grid map of ‘1’s (land) and ‘0’s (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.</p>
+<p>Example 1:</p>
+<pre><code>11110
+11010
+11000
+00000
+</code></pre><p>Answer: 1</p>
+<p>Example 2:</p>
+<pre><code>11000
+11000
+00100
+00011
+</code></pre><p>Answer: 3</p>
+<p><strong>Thinking:</strong></p>
+<p>If we find a island that we didn’t find before, we will use DFS or BFS find the whole land and change its value which will avoid find it again next time.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>private int m, n;
+
+public int numIslands(char[][] grid) {
+    m = grid.length;
+    if (m == 0) return 0;
+    n = grid[0].length;
+    if (n == 0) return 0;
+
+    int ans = 0;
+    for (int i = 0; i &lt; m; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            if (grid[i][j] != &apos;1&apos;) continue;
+
+            ans++;
+            dfs(grid, i, j);
+        }
+    }
+    return ans;
+}
+
+
+public void dfs(char[][] grid, int i, int j) {
+    if (i &lt; 0 || i &gt;= m || j &lt; 0 || j &gt;= n) return;
+
+    if (grid[i][j] == &apos;1&apos;) {
+        grid[i][j] = &apos;2&apos;;
+        dfs(grid, i - 1, j);
+        dfs(grid, i + 1, j);
+        dfs(grid, i, j - 1);
+        dfs(grid, i, j + 1);
+    }
+}
+</code></pre><p>Reference: <a href="http://blog.csdn.net/ljiabin/article/details/44975717" target="_blank" rel="external">http://blog.csdn.net/ljiabin/article/details/44975717</a></p>
+<p><strong>My Stupid Solution::</strong></p>
+<pre><code>int res = 0;
+public int numIslands(char[][] grid) {
+    int rl = grid.length;
+    if (rl == 0)
+        return 0;
+    int cl = grid[0].length;
+    int[][] record = new int[rl][cl];
+    int[][] visited = new int[rl][cl];
+
+
+    for (int i = 0; i &lt; rl; i++) {
+        for (int j = 0; j &lt; cl; j++) {
+            dfsCheck(i, j, grid, record, visited);
+        }
+    }
+    return res;
+}
+
+private void dfsCheck(int m, int n, char[][] grid, int[][] record, int[][] visited){
+    if (visited[m][n] == 1)
+        return;
+    visited[m][n] = 1;
+    int flag = 0;
+    if (grid[m][n] == &apos;1&apos;){
+        if (record[m][n] == 0){
+            for (int i = -1; i &lt; 2; i++){
+                for (int j = -1; j &lt; 2; j++){
+                    if (m+i&gt;=0 &amp;&amp; m+i &lt;grid.length &amp;&amp; n+j&gt;=0 &amp;&amp; n+j&lt;grid[0].length &amp;&amp; (i+j == -1 || i+j == 1)){
+                        if (record[m+i][n+j] != 0){
+                            record[m][n] = record[m+i][n+j];
+                            flag = 1;
+                        }
+                    }
+                }
+            }
+            if (flag == 0)
+                record[m][n] = ++res;
+        }
+
+        //extension
+        for (int i = -1; i &lt; 2; i++){
+            for (int j = -1; j &lt; 2; j++){
+                if (m+i&gt;=0 &amp;&amp; m+i &lt;grid.length &amp;&amp; n+j&gt;=0 &amp;&amp; n+j&lt;grid[0].length &amp;&amp; (i+j == -1 || i+j == 1)){
+                    if (grid[m+i][n+j] == &apos;1&apos; &amp;&amp; visited[m+i][n+j] == 0)
+                        dfsCheck(m+i, n+j, grid, record, visited);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/05/Leetcode-Number-of-Islands-Java/" data-id="ciliod2cm003y9moww4akj19q" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/05/Leetcode-Number-of-Islands-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFS/">BFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DFS/">DFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Gas-Station-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/05/Leetcode-Gas-Station-Java/" class="article-date">
+  <time datetime="2016-02-06T05:53:09.000Z" itemprop="datePublished">2016-02-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/05/Leetcode-Gas-Station-Java/">Leetcode-Gas Station(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>There are N gas stations along a circular route, where the amount of gas at station i is gas[i].</p>
+<p>You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from station i to its next station (i+1). You begin the journey with an empty tank at one of the gas stations.</p>
+<p>Return the starting gas station’s index if you can travel around the circuit once, otherwise return -1.</p>
+<p>Note:<br>The solution is guaranteed to be unique.</p>
+<p><strong>Thinking:</strong></p>
+<p>Nomally, it can be sovled in n^2 time complexity, check every station whether it is possible. But it will be LTE, so we need a greedy method to sovle this problem. In fact, if previous result of total gas is larger than 0, and current gas station don’t meet the needs, it means all of the previous gas station is not valid. What’s more, it assumes there is only one solution, so what we need to do is to record the fisrt valid station index. In order to check whether it is valid, we also need another variable total to determine whether the set is valid.</p>
+<p><strong>Solution1:</strong>(LTM)</p>
+<pre><code>public int canCompleteCircuit1(int[] gas, int[] cost) {
+    int len = gas.length;
+
+    for (int i = 0; i &lt; len; i++){
+        int curGas = 0;
+        for (int j = i; ; j++){
+            curGas += gas[j%len];
+            curGas -= cost[j%len];
+            if (curGas &lt; 0)
+                break;
+            if (j - len == i - 1){
+                return i;
+            }
+        }
+    }
+
+    return -1;
+}
+</code></pre><p><strong>Solution2:</strong>(Greedy)</p>
+<pre><code>public int canCompleteCircuit(int[] gas, int[] cost) {
+    int len = gas.length;
+    int curSum = 0;
+    int total = 0;
+    int index = 0;
+
+    for (int i = 0; i &lt; len; i++){
+        curSum += gas[i] - cost[i];
+        total += gas[i] - cost[i];
+        if (curSum &lt; 0){
+            curSum = 0;
+            index = i + 1;
+        }
+    }
+    if (total &lt; 0)
+        return -1;
+    else
+        return index;
+
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/05/Leetcode-Gas-Station-Java/" data-id="ciliod2dg005o9mowcnhmwhxg" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/05/Leetcode-Gas-Station-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Greedy/">Greedy</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Git-Note" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/02/Git-Note/" class="article-date">
+  <time datetime="2016-02-03T03:13:02.000Z" itemprop="datePublished">2016-02-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/02/Git-Note/">Git Note</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>git branch [-a] look at the branches you’ve visited</li>
+<li>git branch <branch_name> create a new branch from the current commit version</branch_name></li>
+<li>git checkout -b <branch_name></branch_name></li>
+<li>git -d branch_name</li>
+<li>git merge</li>
+<li>git stash</li>
+<li>git push -f</li>
+<li>git checkout <commit_id></commit_id></li>
+<li>git checkout -b new_master</li>
+<li>git branch -d master</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/02/Git-Note/" data-id="ciliod2el007l9mowd91rnydj" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/02/Git-Note/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Restore-IP-Addresses-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" class="article-date">
+  <time datetime="2016-02-02T23:49:57.000Z" itemprop="datePublished">2016-02-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/02/Leetcode-Restore-IP-Addresses-Java/">Leetcode-Restore IP Addresses(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a string containing only digits, restore it by returning all possible valid IP address combinations.</p>
+<p>For example:<br>Given “25525511135”,</p>
+<p>return [“255.255.11.135”, “255.255.111.35”]. (Order does not matter)</p>
+<p><strong>Thinking:</strong></p>
+<p>Valid IP address is between 0 and 255, so we can once detect one to three digits of the string. What’s more, it’s not valid if there is number like “001”. Use bactracing select one to three digits once, and go farther until all the substrings are selected and there are four parts of the result. Then put the result in the list. We should also detect the length of the String because if the length is not between 4 and 12, it’s invalid.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public List&lt;String&gt; restoreIpAddresses(String s) {
+    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+    if (s.length() &lt; 4)
+        return res;
+    if (s.length() &gt; 12)
+        return res;
+
+    backtracing(s, 0, new ArrayList&lt;String&gt;(), res);
+
+    return res;
+}
+
+public void backtracing(String s, int start, List&lt;String&gt; tempres, List&lt;String&gt; res){
+    if (start == s.length()){
+        if (tempres.size() == 4){
+            String tempstr = &quot;&quot;;
+            tempstr = tempres.get(0) + &quot;.&quot; + tempres.get(1) + &quot;.&quot; + tempres.get(2) + &quot;.&quot; + tempres.get(3);
+            res.add(tempstr);
+        }
+        else{
+            return;
+        }
+    }
+
+    for (int i = start+1; i &lt;= s.length(); i++){
+        if (s.charAt(start) == &apos;0&apos; &amp;&amp; i != start+1)
+            continue;
+        if (i - start &gt; 3)
+            break;
+        int num = Integer.parseInt(s.substring(start, i));
+        if (num &gt; 255)
+            break;
+        else{
+            tempres.add(s.substring(start, i));
+            backtracing(s, i, tempres, res);
+            tempres.remove(tempres.size() - 1);
+        }
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/02/Leetcode-Restore-IP-Addresses-Java/" data-id="ciliod2c3002v9mowh471i5jo" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/02/Leetcode-Restore-IP-Addresses-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Combination-Sum-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/02/Leetcode-Combination-Sum-II-Java/" class="article-date">
@@ -179,7 +556,7 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/" data-id="cil5utp2l0067i3ow1g4c78e7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/" data-id="ciliod2e2006h9mow3viy03ze" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/02/Leetcode-Combination-Sum-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -193,351 +570,10 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
 
 
   
-    <article id="post-Leetcode-Reverse-Linked-List-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/" class="article-date">
-  <time datetime="2016-02-02T21:50:10.000Z" itemprop="datePublished">2016-02-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/">Reverse Linked List II(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Reverse a linked list from position m to n. Do it in-place and in one-pass.</p>
-<p>For example:<br>Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, m = 2 and n = 4,</p>
-<p>return 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;NULL.</p>
-<p>Note:<br>Given m, n satisfy the following condition:<br>1 ≤ m ≤ n ≤ length of list.</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s similar with Reverse Linked List, only thing different is to limit the range. So we should to find the start of the reversed linked list and record its previous node. Also, we should add a dummy node for easily operator with the first node. Then use three points as usual pre, cur and next to operate and change the nodes’ next pointers.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public ListNode reverseBetween(ListNode head, int m, int n) {
-    if (m == n)
-        return head;
-    ListNode prehead = new ListNode(0);//dummy
-    prehead.next = head;
-    ListNode pre = prehead;
-    ListNode cur = head;
-    int idx = 1;
-
-    while (idx &lt; m) {
-        pre = cur;
-        cur = cur.next;
-        idx++;
-    }
-    ListNode prerever = pre;
-    ListNode next = null;
-    pre = cur;
-    cur = cur.next;
-    while (idx &lt; n) {
-        next = cur.next;
-        cur.next = pre;
-        pre = cur;
-        cur = next;
-        idx++;
-    }
-    prerever.next.next = cur;
-    prerever.next = pre;
-
-
-    return prehead.next;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/" data-id="cil5utp0p002qi3ow8s1fuay3" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/02/Leetcode-Reverse-Linked-List-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linked-List/">Linked List</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Patching-Array-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/02/Patching-Array-Java/" class="article-date">
-  <time datetime="2016-02-02T21:13:27.000Z" itemprop="datePublished">2016-02-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/02/Patching-Array-Java/">Patching Array(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a sorted positive integer array nums and an integer n, add/patch elements to the array such that any number in range [1, n] inclusive can be formed by the sum of some elements in the array. Return the minimum number of patches required.</p>
-<p>Example 1:<br>nums = [1, 3], n = 6<br>Return 1.</p>
-<p>Combinations of nums are [1], [3], [1,3], which form possible sums of: 1, 3, 4.<br>Now if we add/patch 2 to nums, the combinations are: [1], [2], [3], [1,3], [2,3], [1,2,3].<br>Possible sums are 1, 2, 3, 4, 5, 6, which now covers the range [1, 6].<br>So we only need 1 patch.</p>
-<p>Example 2:<br>nums = [1, 5, 10], n = 20<br>Return 2.<br>The two patches can be [2, 4].</p>
-<p>Example 3:<br>nums = [1, 2, 2], n = 5<br>Return 0.</p>
-<p><strong>Thinking:</strong></p>
-<p>The first range we can cover of an array is total, then if we add a new element to this array and this element add &lt;= total, then the new range is [1, add+total). We should also care about the java maxint value, so if we use bit manipulation, it means it is bigger than maxint if total is smaller than zero.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int minPatches(int[] nums, int n) {
-    int total = 1; //total is the upper bound of the sum
-    int count = 0;
-    int index = 0;
-    int len = nums.length;
-
-    while (total &lt;= n) {
-        if (index &lt; len &amp;&amp; nums[index] &lt;= total){
-            total += nums[index++];
-        }
-        else{
-            total &lt;&lt;= 1;
-            count++;
-            if (total &lt; 0)
-                break;
-        }
-    }
-
-
-    return count;
-} 
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/02/Patching-Array-Java/" data-id="cil5utozl000ji3owuv3noo0c" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/02/Patching-Array-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Greedy/">Greedy</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" class="article-date">
-  <time datetime="2016-02-02T06:40:06.000Z" itemprop="datePublished">2016-02-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/">Leetcode-Verify Preorder Serialization of a Binary Tree(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node’s value. If it is a null node, we record using a sentinel value such as #.</p>
-<pre><code>     _9_
-    /   \
-   3     2
-  / \   / \
- 4   1  #  6
-/ \ / \   / \
-# # # #   # #
-</code></pre><p>For example, the above binary tree can be serialized to the string “9,3,4,#,#,1,#,#,2,#,6,#,#”, where # represents a null node.</p>
-<p>Given a string of comma separated values, verify whether it is a correct preorder traversal serialization of a binary tree. Find an algorithm without reconstructing the tree.</p>
-<p>Each comma separated value in the string must be either an integer or a character ‘#’ representing null pointer.</p>
-<p>You may assume that the input format is always valid, for example it could never contain two consecutive commas such as “1,,3”.</p>
-<p>Example 1:<br>“9,3,4,#,#,1,#,#,2,#,6,#,#”<br>Return true</p>
-<p>Example 2:<br>“1,#”<br>Return false</p>
-<p>Example 3:<br>“9,#,#,1”<br>Return false</p>
-<p><strong>Thinking:</strong></p>
-<p>Accroding to the correct answer given, we can find the pattern. We should start from # and use stack to store it. When get two #, we should get another element from the string. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public boolean isValidSerialization(String preorder) {
-    String[] strlist = preorder.split(&quot;,&quot;);
-    Stack&lt;String&gt; stack = new Stack&lt;String&gt;();
-    Stack&lt;String&gt; tempstack = new Stack&lt;String&gt;();
-
-    for (String s: strlist) {
-        stack.push(s);
-    }
-    while (!stack.isEmpty()) {
-        while (!stack.isEmpty() &amp;&amp; stack.peek().equals(&quot;#&quot;)){
-            tempstack.push(stack.pop());
-        }
-        if (tempstack.size() &lt; 2)
-            break;
-        while (tempstack.size() &gt;= 2 &amp;&amp; !stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
-            tempstack.pop();
-            tempstack.pop();
-            if (!stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
-                stack.pop();
-                tempstack.push(&quot;#&quot;);
-            }
-        }
-    }
-
-    if (tempstack.size() == 1 &amp;&amp; stack.isEmpty())
-        return true;
-    else
-        return false;
-}
-</code></pre><p>There is another simpler solution:</p>
-<pre><code>public boolean isValidSerialization(String preorder) {
-    String[] p = preorder.split(&quot;,&quot;);
-    int idx = 0; // stack
-    for (int i = 0; i &lt; p.length; i++) {
-    if (p[i].equals(&quot;#&quot;)) {
-        idx--;
-    } else {
-        if (idx &lt; 0) { // check
-          return false;
-        }
-        p[idx++] = p[i];
-      }
-    }
-    return idx == -1; // check
-  }
-</code></pre><p>Reference: <a href="https://leetcode.com/discuss/83903/share-my-java-solution" target="_blank" rel="external">https://leetcode.com/discuss/83903/share-my-java-solution</a></p>
-<p>And another much simplier solution which caculate the indegree and outdegree:</p>
-<pre><code>public boolean isValidSerialization2(String preorder) {
-    String[] nodes = preorder.split(&quot;,&quot;);
-    int diff = 1;
-    for (String node: nodes) {
-        if (--diff &lt; 0) return false;
-        if (!node.equals(&quot;#&quot;)) diff += 2;
-    }
-    return diff == 0;
-}
-</code></pre><p>Reference: <a href="https://www.hrwhisper.me/leetcode-algorithm-solution/" target="_blank" rel="external">https://www.hrwhisper.me/leetcode-algorithm-solution/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" data-id="cil5utozz0016i3ow8ugtodeo" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Graph/">Graph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Stack/">Stack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-AI-Note" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/01/AI-Note/" class="article-date">
-  <time datetime="2016-02-01T23:25:11.000Z" itemprop="datePublished">2016-02-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/01/AI-Note/">AI Note</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Lecture 1:</strong></p>
-<p><strong>Lecture 2:</strong></p>
-<ol>
-<li>What’s Agent?</li>
-<li>PEAS</li>
-</ol>
-<p><strong>Lecture 3:</strong></p>
-<ol>
-<li>Difference between tree search and graph search:<br> Graph search will record the explored nodes, and won’t explore them again.</li>
-</ol>
-<p><strong>Lecture 4:</strong></p>
-<ol>
-<li>DFS, BFS, uniform-cost search, interative deepening search, evaluating search performance about completeness, optimality, time and space complexity</li>
-<li>BFS:<br> Completeness: Yes(When b is finite)<br> Optimality: Yes(If path is nondecreasing)<br> Time: O(b^d)<br> Space: O(b^d)</li>
-<li>DFS:<br> Completeness: Yes(If graph search version)<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b*m)</li>
-<li>Uniform-cost search:<br> Completeness: Yes<br> Optimality: Yes(If path is nondecreasing)<br> Uniform-cost search not optimal if it is terminated when some node in the queue has goal state.</li>
-<li>Iterative deepening search:<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^d)<br> Space: O(bd)</li>
-</ol>
-<p><strong>Lecture 5:</strong></p>
-<ol>
-<li>Uniformed search, bi-directional search, informed search, greedy best first search, A*, interative deepening A*, recursive best first search, simplified memory-bounded A*</li>
-<li>Bidirectional search:<br> Search forward from initial state, and backward from goal.<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^(d/2)<br> Space: O(b^(d/2)</li>
-<li>Greedy best first search:<br> Greedy BFS keeps all the nodes generated in the<br>Frontier, which is sorted based on h(n).<br> Completeness: No<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b^m)</li>
-<li>A* Search:<br> Use (approximate) total path cost to guide search<br> Admissible Heurisitic: A heuristic is admissible if it never overestimates the cost to reach the goal<br> e.g. hSLD(n) is admissible because it never overestimates the actual road distance<br> Admissible heuristics does not guarantee that the chosen path is optimal<br> A heuristic is consistent if for every node n and every successor n’ of n generated by any action a<br>h(n) ≤ c(n,a,n’) + h(n’)<br> That is, f(n) is nondecreasing along every path.<br> Completeness: Yes<br> Optimality: Yes(if admissible in tree search or consistent in graph search)</li>
-<li>Recursive Best-Frist Search:<br> Keep track of f value (f-limit) of best sibling of path currently exploring<br> Space: O(bd)</li>
-<li>Memory-Bounded A*:<br>  I.e., expand best leaves until available memory is full;When full, SMA* drops worst leaf node (highest f-value);Like RBFS, backup forgotten node value to its parent</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/01/AI-Note/" data-id="cil5utp35007ei3owgv80nk5i" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/01/AI-Note/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/8/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/10/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/8/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/10/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -567,7 +603,7 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14.29px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 12.86px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15.71px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 14.29px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -576,7 +612,7 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
     </div>
   </div>
 
@@ -589,23 +625,23 @@ ArrayList&lt;List&lt;Integer&gt;&gt; res, boolean[] visited){
       <ul>
         
           <li>
+            <a href="/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/">Leetcode-Evaluate Reverse Polish Notation(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/">Leetcode-Increasing Triplet Subsequence(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/06/Shortest-Path-Problem/">Shortest Path Problem</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/27/Leetcode-Maximal-Square-Java/">Leetcode-Maximal Square(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/26/Leetcode-Validate-Binary-Search-Tree-Java/">Leetcode-Validate Binary Search Tree(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/26/Leetcode-Decode-Ways-Java/">Leetcode-Decode Ways(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
           </li>
         
       </ul>
