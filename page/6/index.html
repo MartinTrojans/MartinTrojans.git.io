@@ -68,6 +68,245 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Add-Two-Numbers-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/21/Leetcode-Add-Two-Numbers-Java/" class="article-date">
+  <time datetime="2016-02-22T02:07:11.000Z" itemprop="datePublished">2016-02-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/21/Leetcode-Add-Two-Numbers-Java/">Leetcode-Add Two Numbers(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
+<p>Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br>Output: 7 -&gt; 0 -&gt; 8</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s like a problem adding two numbers from the low digits to high digits. We need two variable to record the sum of current digit and whether it will incresce the next digit. Then what we should care about is to traverse the linked list and check whether it’s null pointer.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    int num1 = 0;
+    int num2 = 0;
+    int sum = 0;
+    int flag = 0;
+
+    if (l1 != null){
+        num1 = l1.val;
+        l1 = l1.next;
+    }
+    if (l2 != null){
+        num2 = l2.val;
+        l2 = l2.next;
+    }
+    sum = (num1 + num2) % 10;
+    flag = (num1 + num2) / 10;
+    ListNode head = new ListNode(sum);
+    ListNode p = head;
+
+    while (l1 != null || l2 != null){
+        num1 = 0;
+        num2 = 0;
+        if (l1 != null) {
+            num1 = l1.val;
+            l1 = l1.next;
+        }
+        if (l2 != null) {
+            num2 = l2.val;
+            l2 = l2.next;
+        }
+
+        sum = (num1 + num2 + flag) % 10;
+        flag = (num1 + num2 + flag) / 10;
+        p.next = new ListNode(sum);
+        p = p.next;
+    }
+
+    if (flag == 1)
+        p.next = new ListNode(1);
+
+    return head;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Add-Two-Numbers-Java/" data-id="cilkb3f11007c0lowke5ifsqk" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/21/Leetcode-Add-Two-Numbers-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Math/">Math</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Word-Break-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/21/Leetcode-Word-Break-Java/" class="article-date">
+  <time datetime="2016-02-22T01:44:47.000Z" itemprop="datePublished">2016-02-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/21/Leetcode-Word-Break-Java/">Leetcode-Word Break(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a string s and a dictionary of words dict, determine if s can be segmented into a space-separated sequence of one or more dictionary words.</p>
+<p>For example, given<br>s = “leetcode”,<br>dict = [“leet”, “code”].</p>
+<p>Return true because “leetcode” can be segmented as “leet code”.</p>
+<p><strong>Thinking:</strong></p>
+<p>This question can be solved in dynamic programming. We can get parts of the string once and check if it’s in the dictionary words and then check the left. And we can store the result of previous substring with index in the array.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean wordBreak(String s, Set&lt;String&gt; wordDict) {
+    boolean[] valid = new boolean[s.length()+1];
+
+    valid[0] = true;
+
+    for (int i = 1; i &lt;= s.length(); i++) {
+        for (int j = i-1; j &gt;= 0; j--){
+            if (valid[j] &amp;&amp; wordDict.contains(s.substring(j, i))){
+                valid[i] = true;
+                break;
+            }
+        }
+    }
+
+    return valid[s.length()];
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/18904/java-implementation-using-dp-in-two-ways" target="_blank" rel="external">https://leetcode.com/discuss/18904/java-implementation-using-dp-in-two-ways</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Word-Break-Java/" data-id="cilkb3exv00150lowdu19qrkw" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/21/Leetcode-Word-Break-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Clone-Graph-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/21/Leetcode-Clone-Graph-Java/" class="article-date">
+  <time datetime="2016-02-22T00:46:04.000Z" itemprop="datePublished">2016-02-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/21/Leetcode-Clone-Graph-Java/">Leetcode-Clone Graph(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.</p>
+<p>OJ’s undirected graph serialization:<br>Nodes are labeled uniquely.</p>
+<p>We use # as a separator for each node, and , as a separator for node label and each neighbor of the node.<br>As an example, consider the serialized graph {0,1,2#1,2#2,2}.</p>
+<p>The graph has a total of three nodes, and therefore contains three parts as separated by #.</p>
+<p>First node is labeled as 0. Connect node 0 to both nodes 1 and 2.<br>Second node is labeled as 1. Connect node 1 to node 2.<br>Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a self-cycle.<br>Visually, the graph looks like the following:</p>
+<pre><code>   1
+  / \
+ /   \
+0 --- 2
+     / \
+     \_/
+</code></pre><p><strong>Thinking:</strong></p>
+<p>In order to clone this graph, we need to traverse the graph either using DFS or BFS. In my solution, I use DFS and graph search which will hold a HashMap to record the explored nodes.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>HashMap&lt;Integer, UndirectedGraphNode&gt; exploredSet = new HashMap&lt;Integer, UndirectedGraphNode&gt;();
+public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+    return clone(node);
+}
+
+private UndirectedGraphNode clone(UndirectedGraphNode node){
+    if (node == null) return null;
+    UndirectedGraphNode newNode = new UndirectedGraphNode(node.label);
+
+    exploredSet.put(node.label, newNode);
+
+    for (UndirectedGraphNode n: node.neighbors) {
+        if (exploredSet.containsKey(n.label)) {
+            newNode.neighbors.add(exploredSet.get(n.label));
+        } else {
+            newNode.neighbors.add(clone(n));
+        }
+    }
+
+    return newNode;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Clone-Graph-Java/" data-id="cilkb3f0s006x0lowkibllz4z" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/21/Leetcode-Clone-Graph-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Additive-Number-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/02/21/Leetcode-Additive-Number-Java/" class="article-date">
@@ -142,7 +381,7 @@ private boolean isValid(long i, long j, int start, String num){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Additive-Number-Java/" data-id="ciliod2eb00709mowka2prhaf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/21/Leetcode-Additive-Number-Java/" data-id="cilkb3f0z00790lowbcwmpiv5" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/21/Leetcode-Additive-Number-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -205,7 +444,7 @@ private boolean isValid(long i, long j, int start, String num){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/" data-id="ciliod2e4006l9mown9ltmlpd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/" data-id="cilkb3f0r006u0low5k1zb8ma" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/02/14/Leetcode-Coin-Change-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -219,213 +458,10 @@ private boolean isValid(long i, long j, int start, String num){
 
 
   
-    <article id="post-Some-basic-problems" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/13/Some-basic-problems/" class="article-date">
-  <time datetime="2016-02-13T23:55:10.000Z" itemprop="datePublished">2016-02-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/13/Some-basic-problems/">Some basic problems</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li>Hanoi:</li>
-</ol>
-<p><img src="http://my.csdn.net/uploads/201204/23/1335186818_5426.jpg" alt=""></p>
-<pre><code>public  void move(int n,char a,char b,char c){  
-
-    if(n==1){  
-        System.out.println(&quot;move from &quot;+a+&quot; to &quot;+c);  
-    }else{  
-        move(n-1, a,c,b);  
-        move(1, a, b, c);  
-        move(n-1, b, a, c);  
-    }  
-}  
-</code></pre><ol>
-<li>Queue:</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/13/Some-basic-problems/" data-id="ciliod2at000i9mowwpthqy6x" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/13/Some-basic-problems/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Some-thoughts-about-interview" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/13/Some-thoughts-about-interview/" class="article-date">
-  <time datetime="2016-02-13T22:52:22.000Z" itemprop="datePublished">2016-02-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/13/Some-thoughts-about-interview/">Some thoughts about interview</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>These days, I have been asked by some questions in interviews. These are not quite difficult questions, but I suppose I didn’t behavior well. There are some reasons I think, and I have to improve it:</p>
-<ol>
-<li>I am not familiar with the simple and basic question so that I’m not very sure about the solution’s correctness and I have to review it again and again.</li>
-<li>My code is not so effienct and some of the interviewers had to remind me that. That’s really terrible but I think they are very nice to let me know that.</li>
-<li>My code is not so clean because I didn’t keep a clean mind that time. I suppose it’s kind of nervous that time though I didn’t realize that and I want to solve that problem too hurry. I need to relax my minds next time.</li>
-<li>What’s worse, I didn’t have nice communication with interviewers. Because of my bad English and bad preperation for interview. Sorry about that.</li>
-</ol>
-<p>And below are some questions I have to review:</p>
-<ol>
-<li>How to realize a queue or stack using array or linkedlist</li>
-<li>Binary search and whenever mentioning the sorted array, I think it should come into my mind immediately the binary search</li>
-<li>Graph theory about the DFS and BFS</li>
-<li>What’s difference between .equals and == in Java</li>
-<li>Heap and stack in java</li>
-<li>Some detials and desing thoughts of my projects</li>
-<li>ood  object oriented design principles (<a href="https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design" target="_blank" rel="external">https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design</a>)</li>
-<li>The comparasion between the methods of shortest path (<a href="http://developer.51cto.com/art/201105/262170.htm" target="_blank" rel="external">http://developer.51cto.com/art/201105/262170.htm</a>)</li>
-<li>Hanoi (<a href="http://blog.csdn.net/zhutulang/article/details/7491390" target="_blank" rel="external">http://blog.csdn.net/zhutulang/article/details/7491390</a>)</li>
-<li>Maze (<a href="http://baobaoyangzhou.blog.163.com/blog/static/11783125020104147195273/" target="_blank" rel="external">http://baobaoyangzhou.blog.163.com/blog/static/11783125020104147195273/</a>)</li>
-<li>The realization of DFS not using recursive (<a href="http://blog.csdn.net/lalor/article/details/6845788" target="_blank" rel="external">http://blog.csdn.net/lalor/article/details/6845788</a>) which use stack</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/13/Some-thoughts-about-interview/" data-id="ciliod2as000h9mowrbzjf9y2" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/13/Some-thoughts-about-interview/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Majority-Element-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/10/Leetcode-Majority-Element-II-Java/" class="article-date">
-  <time datetime="2016-02-11T02:32:38.000Z" itemprop="datePublished">2016-02-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/10/Leetcode-Majority-Element-II-Java/">Leetcode-Majority Element II(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times. The algorithm should run in linear time and in O(1) space.</p>
-<p>Hint:</p>
-<p>How many majority elements could it possibly have?</p>
-<p><strong>Thinking:</strong></p>
-<p>This question is similar with Majority Element which can be solved by Boyer–Moore majority vote algorithm.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;Integer&gt; majorityElement(int[] nums) {
-    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
-    int count1 = 0, count2 = 0, can1 = 0, can2 = 1;
-
-    for (int num: nums){
-        if (num == can1)
-            count1++;
-        else if (num == can2)
-            count2++;
-        else if (count1 == 0){
-            can1 = num;
-            count1 = 1;
-        }
-        else if (count2 == 0){
-            can2 = num;
-            count2 = 1;
-        }
-        else{
-            count1--;
-            count2--;
-        }
-    }
-    count1 = 0;
-    count2 = 0;
-    for (int num: nums){
-        if (num == can1)
-            count1++;
-        else if (num == can2)
-            count2++;
-    }
-
-    if (count1 &gt; nums.length / 3)
-        res.add(can1);
-    if (count2 &gt; nums.length / 3 &amp;&amp; can1 != can2)
-        res.add(can2);
-
-    return res;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/" data-id="ciliod2cz004o9mowpfn3kr3w" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/10/Leetcode-Majority-Element-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -455,7 +491,7 @@ private boolean isValid(long i, long j, int start, String num){
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15.71px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 14.29px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 16.67px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 15px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 18.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 18.33px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 15px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.67px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -477,23 +513,23 @@ private boolean isValid(long i, long j, int start, String num){
       <ul>
         
           <li>
+            <a href="/2016/03/08/The-Zen-of-Python/">The Zen of Python</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/">Leetcode-Reconstruct Itinerary(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/">Leetcode-Maximum Product Subarray(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/">Leetcode-Evaluate Reverse Polish Notation(Java)</a>
           </li>
         
           <li>
             <a href="/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/">Leetcode-Increasing Triplet Subsequence(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/03/06/Shortest-Path-Problem/">Shortest Path Problem</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/27/Leetcode-Maximal-Square-Java/">Leetcode-Maximal Square(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
           </li>
         
       </ul>

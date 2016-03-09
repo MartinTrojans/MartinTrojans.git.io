@@ -68,6 +68,285 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Two-Sum-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/28/Leetcode-Two-Sum-Java/" class="article-date">
+  <time datetime="2016-01-28T22:55:39.000Z" itemprop="datePublished">2016-01-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/28/Leetcode-Two-Sum-Java/">Leetcode-Two Sum(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
+<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</p>
+<p>You may assume that each input would have exactly one solution.</p>
+<p>Input: numbers={2, 7, 11, 15}, target=9<br>Output: index1=1, index2=2</p>
+<p><strong>Thinking:</strong></p>
+<p>We can use hash map to store the rest of nums[i], and if we find which number is equal to the rest beofore, their sum will be target.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int[] twoSum(int[] nums, int target){
+    HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+    int[] res = new int[2];
+
+    for (int i = 0; i &lt; nums.length; i++){
+        if (map.containsKey(nums[i])){
+            res[0] = map.get(nums[i]) + 1;
+            res[1] = i+1;
+            break;
+        }
+        else{
+            map.put(target-nums[i], i);
+        }
+    }
+
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/28/Leetcode-Two-Sum-Java/" data-id="cilkb3ey6001u0lowvfef624z" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/28/Leetcode-Two-Sum-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Game-of-Life-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/28/Leetcode-Game-of-Life-Java/" class="article-date">
+  <time datetime="2016-01-28T22:17:33.000Z" itemprop="datePublished">2016-01-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/28/Leetcode-Game-of-Life-Java/">Leetcode-Game of Life(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>According to the Wikipedia’s article: “The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.”</p>
+<p>Given a board with m by n cells, each cell has an initial state live (1) or dead (0). Each cell interacts with its eight neighbors (horizontal, vertical, diagonal) using the following four rules (taken from the above Wikipedia article):</p>
+<p>Any live cell with fewer than two live neighbors dies, as if caused by under-population.<br>Any live cell with two or three live neighbors lives on to the next generation.<br>Any live cell with more than three live neighbors dies, as if by over-population..<br>Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.<br>Write a function to compute the next state (after one update) of the board given its current state.</p>
+<p>Follow up:<br>Could you solve it in-place? Remember that the board needs to be updated at the same time: You cannot update some cells first and then use their updated values to update other cells.<br>In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches the border of the array. How would you address these problems?</p>
+<p><strong>Thinkings:</strong></p>
+<p>It’s difficult quesiont, isn’t it? We have to fully understand when cell become live or dead and try to replace them in place. One solution is to present their status using bits, the first bit represents their current status and second bit represents their next status. For example:</p>
+<p>current status is live and next status will be dead is 01<br>current status is dead and next status will be live is 10</p>
+<p>And then we can get the current status by:</p>
+<pre><code>board[i][j] &amp; 1
+</code></pre><p>Get the finnaly status by:</p>
+<pre><code>board[i][j] &gt;&gt;= 1
+</code></pre><p><strong>Solution:</strong></p>
+<pre><code>public void gameOfLife(int[][] board) {
+    int m = board.length;
+    if (m == 0)
+        return;
+    int n = board[0].length;
+
+    //int[][] temp = new int[m][n];
+
+
+    for (int i = 0; i &lt; m; i++){
+        for (int j = 0; j &lt; n; j++){
+            int count = 0;
+            for (int p = -1; p &lt; 2; p++)
+                for (int q = -1; q &lt; 2; q++){
+                    if (i+p&gt;=0 &amp;&amp; i+p&lt;m &amp;&amp; j+q&gt;=0 &amp;&amp; j+q&lt;n &amp;&amp; !(p==0 &amp;&amp; q==0)){
+                        if ((board[i+p][j+q] &amp; 1) == 1)
+                            count++;
+                    }
+                }
+
+            if ((board[i][j] &amp; 1) == 0 &amp;&amp; count == 3){
+                //temp[i][j] = 1;
+                board[i][j] = 2;
+            }
+            else if ((board[i][j] &amp; 1) == 1 &amp;&amp; count &lt;=3 &amp;&amp; count &gt;= 2){
+                    board[i][j] = 3;
+
+            }
+        }
+    }
+
+    for (int i = 0; i &lt; m; i++){
+        for (int j = 0; j &lt; n; j++){
+            //board[i][j] = temp[i][j];
+            board[i][j] &gt;&gt;= 1;
+        }
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/28/Leetcode-Game-of-Life-Java/" data-id="cilkb3f0d00600lowoc3e8jp9" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/28/Leetcode-Game-of-Life-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Letter-Combinations-of-a-Phone-Number-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" class="article-date">
+  <time datetime="2016-01-28T00:11:34.000Z" itemprop="datePublished">2016-01-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/">Leetcode-Letter Combinations of a Phone Number(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a digit string, return all possible letter combinations that the number could represent.</p>
+<p>A mapping of digit to letters (just like on the telephone buttons) is given below.</p>
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png" alt=""></p>
+<pre><code>Input:Digit string &quot;23&quot;
+Output: [&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;be&quot;, &quot;bf&quot;, &quot;cd&quot;, &quot;ce&quot;, &quot;cf&quot;].
+</code></pre><p>Note:<br>Although the above answer is in lexicographical order, your answer could be in any order you want.</p>
+<p><strong>Thinking:</strong></p>
+<p>We should get all the possiblities of the comibination so we need use backtracing.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
+public class Solution {
+    static private Map&lt;Character, char[]&gt; hmap = new HashMap&lt;Character, char[]&gt;();
+
+    private Character two = new Character(&apos;2&apos;);
+    private char[] twoC = {&apos;a&apos;, &apos;b&apos;, &apos;c&apos;};
+    private Character three = new Character(&apos;3&apos;);
+    private char[] threeC = {&apos;d&apos;, &apos;e&apos;, &apos;f&apos;};
+    private Character four = new Character(&apos;4&apos;);
+    private char[] fourC = {&apos;g&apos;, &apos;h&apos;, &apos;i&apos;};
+    private Character five = new Character(&apos;5&apos;);
+    private char[] fiveC = {&apos;j&apos;, &apos;k&apos;, &apos;l&apos;};
+    private Character six = new Character(&apos;6&apos;);
+    private char[] sixC = {&apos;m&apos;, &apos;n&apos;, &apos;o&apos;};
+    private Character seven = new Character(&apos;7&apos;);
+    private char[] sevenC = {&apos;p&apos;, &apos;q&apos;, &apos;r&apos;, &apos;s&apos;};
+    private Character eight = new Character(&apos;8&apos;);
+    private char[] eightC = {&apos;t&apos;, &apos;u&apos;, &apos;v&apos;};
+    private Character nine = new Character(&apos;9&apos;);
+    private char[] nineC = {&apos;w&apos;, &apos;x&apos;, &apos;y&apos;, &apos;z&apos;};
+
+    public Solution(){
+        hmap.put(two, twoC);
+        hmap.put(three, threeC);
+        hmap.put(four, fourC);
+        hmap.put(five, fiveC);
+        hmap.put(six, sixC);
+        hmap.put(seven, sevenC);
+        hmap.put(eight, eightC);
+        hmap.put(nine, nineC);
+    }
+
+    public List&lt;String&gt; letterCombinations(String digits) {
+        List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+
+        backTracing(digits, 0, &quot;&quot;, res);
+
+        return res;
+    }
+
+    private void backTracing(String digits, int index, String cur, List&lt;String&gt; res){
+        int l = digits.length();
+        if (l == 0)
+            return;
+        if (index == l){
+            res.add(cur);
+            return;
+        }
+
+
+        Character tmpc = new Character(digits.charAt(index));
+        if(hmap.containsKey(tmpc)){
+            for (char c :hmap.get(tmpc)){
+                backTracing(digits, index+1, cur+c, res);
+            }
+        }
+
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/" data-id="cilkb3f02005b0lowvgrf1bzq" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/27/Leetcode-Letter-Combinations-of-a-Phone-Number-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Path-Sum-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/27/Leetcode-Path-Sum-II-Java/" class="article-date">
@@ -188,7 +467,7 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/" data-id="ciliod2ci003r9mowb830gztc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/" data-id="cilkb3eze003w0low8rqgov3q" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/27/Leetcode-Path-Sum-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -239,349 +518,9 @@ private void dp(TreeNode root, int sum, List&lt;Integer&gt; cur, List&lt;List&lt
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/hello-world/" data-id="ciliod2an00089mowokki7kv6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/27/hello-world/" data-id="cilkb3ex500080low6v9s3lqy" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/27/hello-world/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-leetcode-flatten-binary-tree-to-linked-list" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" class="article-date">
-  <time datetime="2016-01-27T22:00:06.000Z" itemprop="datePublished">2016-01-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/">Leetcode-Flatten Binary Tree to Linked List(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a binary tree, flatten it to a linked list in-place.</p>
-<p>For example,<br>Given</p>
-<pre><code>    1
-   / \
-  2   5
- / \   \
-3   4   6
-</code></pre><p>The flattened tree should look like:</p>
-<pre><code>1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-         \
-          6
-</code></pre><p>Hint:<br>If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.</p>
-<p><strong>Thinking:</strong> </p>
-<p>It’s a simple dfs question and it’s pre-order. So we need to make the left-child become right-child of root and make right-child become whole left-child’s right-child. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public void flatten(TreeNode root) {
-        if (root == null)
-            return;
-        dfs(root);
-    }
-
-    public TreeNode dfs(TreeNode root){
-
-        if (root.left == null &amp;&amp; root.right == null){
-            return root;
-        }
-
-        TreeNode left = null;
-        TreeNode right = null;
-        TreeNode preleft = root.left;
-        TreeNode preright = root.right;
-        if (preleft == null){
-            return dfs(preright);
-        }
-        else if(preright == null){
-            root.left = null;
-            root.right = preleft;
-            return dfs(preleft);
-        }
-        else{
-            left = dfs(preleft);
-            right = dfs(preright);
-            root.left = null;
-            root.right = preleft;
-            left.right = preright;
-            return right;
-        }
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/" data-id="ciliod2ak00059mowpjnzb15q" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/27/leetcode-flatten-binary-tree-to-linked-list/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Triangle" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/27/Leetcode-Triangle/" class="article-date">
-  <time datetime="2016-01-27T21:58:25.000Z" itemprop="datePublished">2016-01-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/27/Leetcode-Triangle/">Leetcode-Triangle(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.</p>
-<p>For example, given the following triangle:</p>
-<pre><code>[
-       [2],
-     [3,4],
-    [6,5,7],
-   [4,1,8,3]
-]
-</code></pre><p>The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).</p>
-<p>Note:<br>Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.</p>
-<p><strong>Thinking:</strong><br>It’s a simple dynamic programming question. The expression is dp[i][j] = min(d[i-1][j-1], d[i][j]) + triangle[i][j].</p>
-<p>But the first time, my code is time exceed:</p>
-<pre><code>public class Solution {
-    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
-        int lr = triangle.size();
-        if(lr == 0){
-            return 0;
-        }
-        int lc = triangle.get(lr-1).size();
-        int min = 100000;
-        for(int i = 0; i &lt; lc; i++){
-            int tmp = dp(triangle, lr-1, i);
-            if(tmp &lt; min)
-                min = tmp;
-        }
-        return min;
-    }
-
-    public int dp(List&lt;List&lt;Integer&gt;&gt; triangle, int row, int column){
-        if(row == 0){
-            return triangle.get(0).get(0);
-        }
-        int value = triangle.get(row).get(column);
-        int size = triangle.get(row-1).size();
-        if(column &gt;= size){
-            return dp(triangle, row-1, column-1) + value;
-        }
-        else if(column - 1 &lt; 0){
-            return dp(triangle, row-1, column) + value;
-        }
-        else{
-            int res1 = dp(triangle, row-1, column-1) + value;
-            int res2 = dp(triangle, row-1, column) + value;
-            if(res1 &lt; res2){
-                return res1;
-            }
-            else{
-                return res2;
-            }
-        }
-    }
-}
-</code></pre><p>Then I noticed the bonus, so I change my mind to use <em>iteration</em>:</p>
-<pre><code>public class Solution{
-    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle){
-        int lr = triangle.size();
-        int[] min = new int[lr];
-        int[] tempmin = new int[lr];
-        min[0] = triangle.get(0).get(0);
-        for(int i = 1; i &lt; lr; i++){
-            tempmin[0] = min[0] + triangle.get(i).get(0);
-            tempmin[i] = min[i-1] + triangle.get(i).get(i);
-            for(int j = 1; j &lt; i; j++){
-                int res1 = min[j-1] + triangle.get(i).get(j);
-                int res2 = min[j] + triangle.get(i).get(j);
-                if(res1 &lt; res2)
-                    tempmin[j] = res1;
-                else
-                    tempmin[j] = res2;
-            }
-            for(int k = 0; k &lt; i+1; k++){
-                min[k] = tempmin[k];
-            }
-        }
-        int m = 100000;
-        for(int i = 0; i &lt; lr; i++){
-            if(min[i] &lt; m)
-                m = min[i];
-        }
-        return m;
-    }
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/27/Leetcode-Triangle/" data-id="ciliod2bi001y9mowwr6y13y2" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/27/Leetcode-Triangle/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-HTTP-method-get-and-post" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/26/HTTP-method-get-and-post/" class="article-date">
-  <time datetime="2016-01-27T07:08:43.000Z" itemprop="datePublished">2016-01-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Network/">Network</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/26/HTTP-method-get-and-post/">HTTP method: get and post</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>HTTP:</strong></p>
-<p>HTTP is the foundation of data commnication of the World Wide Web. The basic work method of http is request and response.</p>
-<p>There are two methods of HTTP request: Get and Post.</p>
-<p>Get - get request data from specific source.<br>Post - Push data which will be dealed to specific source.</p>
-<p><strong>GET:</strong></p>
-<p>Note that the query string (name/value pairs) is sent in the URL of a GET request:</p>
-<pre><code>http://www.w3schools.com/tags/ref_httpmethods.asp
-</code></pre><p>Some other notes on GET requests:</p>
-<p>GET requests can be cached</p>
-<p>GET requests remain in the browser history</p>
-<p>GET requests can be bookmarked</p>
-<p>GET requests should never be used when dealing with sensitive data</p>
-<p>GET requests have length restrictions</p>
-<p>GET requests should be used only to retrieve data</p>
-<p><strong>POST:</strong></p>
-<p>Note that the query string (name/value pairs) is sent in the HTTP message body of a POST request:</p>
-<pre><code>POST /test/demo_form.asp HTTP/1.1
-Host: w3schools.com
-name1=value1&amp;name2=value2
-</code></pre><p>Some other notes on POST requests:</p>
-<p>POST requests are never cached</p>
-<p>POST requests do not remain in the browser history</p>
-<p>POST requests cannot be bookmarked</p>
-<p>POST requests have no restrictions on data length</p>
-<p><strong>Compare GET vs. POST:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">GET</th>
-<th style="text-align:right">POST</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>BACK button/Reload</td>
-<td style="text-align:center">Harmless</td>
-<td style="text-align:right">Data will be re-submitted</td>
-</tr>
-<tr>
-<td>Bookmarked</td>
-<td style="text-align:center">can be bookmarked</td>
-<td style="text-align:right">Can not be bookmarked</td>
-</tr>
-<tr>
-<td>Cached</td>
-<td style="text-align:center">Can be cached</td>
-<td style="text-align:right">Can not be cached</td>
-</tr>
-<tr>
-<td>History</td>
-<td style="text-align:center">Parameters remain in browser history</td>
-<td style="text-align:right">Parameters are not saved in browser history</td>
-</tr>
-<tr>
-<td>Restrictions on data length</td>
-<td style="text-align:center">Yes</td>
-<td style="text-align:right">No</td>
-</tr>
-<tr>
-<td>Security</td>
-<td style="text-align:center">Less secure</td>
-<td style="text-align:right">Safer</td>
-</tr>
-<tr>
-<td>Visibility</td>
-<td style="text-align:center">Visible</td>
-<td style="text-align:right">Not visible in URL</td>
-</tr>
-</tbody>
-</table>
-<p>Reference: <a href="http://www.w3schools.com/tags/ref_httpmethods.asp" target="_blank" rel="external">http://www.w3schools.com/tags/ref_httpmethods.asp</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/" data-id="ciliod2ej007i9mowl1mo1o0c" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/26/HTTP-method-get-and-post/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -594,7 +533,7 @@ name1=value1&amp;name2=value2
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/14/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/14/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -624,7 +563,7 @@ name1=value1&amp;name2=value2
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15.71px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 14.29px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 16.67px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 15px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 18.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 18.33px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 15px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.67px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -646,23 +585,23 @@ name1=value1&amp;name2=value2
       <ul>
         
           <li>
+            <a href="/2016/03/08/The-Zen-of-Python/">The Zen of Python</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/">Leetcode-Reconstruct Itinerary(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/">Leetcode-Maximum Product Subarray(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/">Leetcode-Evaluate Reverse Polish Notation(Java)</a>
           </li>
         
           <li>
             <a href="/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/">Leetcode-Increasing Triplet Subsequence(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/03/06/Shortest-Path-Problem/">Shortest Path Problem</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/27/Leetcode-Maximal-Square-Java/">Leetcode-Maximal Square(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
           </li>
         
       </ul>

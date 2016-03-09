@@ -68,6 +68,274 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Jump-Game-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Jump-Game-Java/" class="article-date">
+  <time datetime="2016-01-27T04:20:54.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Jump-Game-Java/">Leetcode-Jump Game(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
+<p>Each element in the array represents your maximum jump length at that position.</p>
+<p>Determine if you are able to reach the last index.</p>
+<p>For example:<br>A = [2,3,1,1,4], return true.</p>
+<p>A = [3,2,1,0,4], return false.</p>
+<p><strong>Thinking:</strong></p>
+<p>It’s a problem can be solved in greedy algorithm. Because we should go as far as possible in current position until we can’t go father. And we should gurantee the value of current position + i (steps can be reached from current postion) + nums[cur + i] be as big as possible.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean canJump(int[] nums) {
+    int l = nums.length;
+    if (nums[0] == 0 &amp;&amp; l &gt; 1)
+        return false;
+    int cur = 0;
+    int temp = nums[0];
+    int step = nums[0];
+    int max = nums[0];
+    int tempcur = 0;
+
+    while (cur + step &lt; l-1){
+        for (int i = 1; i &lt;= step; i++){
+            temp = cur + i + nums[cur + i];
+            if (temp &gt;= max){//current max greedy value
+                max = temp;
+                if (max &gt;= l)
+                    return true;
+                tempcur = cur + i;
+            }
+        }
+        if (cur == tempcur)
+            return false;
+        cur = tempcur;
+        step = nums[cur];
+    }
+
+    if (max &gt;= l-1)
+        return true;
+    else
+        return false;
+}
+</code></pre><p>What’s more, we can make it easier by max the value of index. </p>
+<pre><code>public boolean canJump(int[] nums) {
+    if(nums.length &lt;= 1)
+        return true;
+
+    int max = nums[0]; //max stands for the largest index that can be reached.
+
+    for(int i=0; i&lt;nums.length; i++){
+        //if not enough to go to next
+        if(max &lt;= i &amp;&amp; nums[i] == 0) 
+            return false;
+
+        //update max    
+        if(i + nums[i] &gt; max){
+            max = i + nums[i];
+        }
+
+        //max is enough to reach the end
+        if(max &gt;= nums.length-1) 
+            return true;
+    }
+
+    return false;    
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/" data-id="cilkb3f05005i0lowcksn6tbh" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Jump-Game-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-3Sum-Closest-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-3Sum-Closest-Java/" class="article-date">
+  <time datetime="2016-01-27T00:38:28.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-3Sum-Closest-Java/">Leetcode-3Sum Closest(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
+<p>For example, given array S = {-1 2 1 -4}, and target = 1.</p>
+<p>The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</p>
+<p><strong>Thinking:</strong></p>
+<p>In order to improve the performance of algorithm, we should sort the array. Because of that, we can determine where to go using current result.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int threeSumClosest(int[] nums, int target) {
+    int l = nums.length;
+    if (l &lt; 3)
+        return 0;
+    int min = Integer.MAX_VALUE;
+    int res = 0;
+    Arrays.sort(nums);
+
+    for (int i = 0; i &lt; l; i++){
+        int j = i + 1;
+        int k = l - 1;
+
+        while (j &lt; k){
+            int sum = nums[i] + nums[j] + nums[k];
+            if (sum == target)
+                return sum;
+            int diff = Math.abs(sum - target);
+            if (diff &lt; min){
+                min = diff;
+                res = sum;
+            }
+            if (sum &gt; target)
+                k--;
+            else
+                j++;
+        }
+
+    }
+    return res;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/" data-id="cilkb3f16007p0lowrpuu5o01" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-3Sum-Closest-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" class="article-date">
+  <time datetime="2016-01-27T00:00:18.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/">Leetcode-Construct Binary Tree from Inorder and Postorder Traversal(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given inorder and postorder traversal of a tree, construct the binary tree.</p>
+<p>Note:<br>You may assume that duplicates do not exist in the tree.</p>
+<p><strong>Thinking:</strong></p>
+<p>Inorder traversal will search in order: left, root, right;</p>
+<p>Postorder travelsal will search in order: left, right, root.</p>
+<p>So we can find the root in postorder and search it in inorder by the value. And find root’s left child and right child node by recursion.</p>
+<pre><code>public TreeNode buildTree(int[] inorder, int[] postorder) {
+    int l = inorder.length;
+    if (l == 0)
+        return null;
+    TreeNode root = new TreeNode(postorder[l-1]);
+    TreeNode left = null;
+    TreeNode right = null;
+    int index = 0;
+    for (; index &lt; l; index++){
+        if (inorder[index] == postorder[l-1])
+            break;
+    }
+
+
+    if (index &gt; 0){
+        int[] leftinorder = new int[index];
+        int[] leftpostorder = new int[index];
+        System.arraycopy(inorder, 0, leftinorder, 0, index);
+        System.arraycopy(postorder, 0, leftpostorder, 0, index);
+        left = buildTree(leftinorder, leftpostorder);
+    }
+    if (index &lt; l-1){
+        int[] rightinorder = new int[l-index-1];
+        int[] rightpostorder = new int[l-index-1];
+        System.arraycopy(inorder, index+1, rightinorder, 0, l-index-1);
+        System.arraycopy(postorder, index, rightpostorder, 0, l-index-1);
+        right = buildTree(rightinorder, rightpostorder);
+    }
+    root.left = left;
+    root.right = right;
+
+    return root;
+}
+</code></pre><p>By the way, this code can be improved because in Java we can not easily get the subarray and I use the System.arraycopy. It can be replaced by recording the postion of array.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/" data-id="cilkb3f0p006o0low4jx7lz2a" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/26/Leetcode-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" class="article-date">
@@ -127,7 +395,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" data-id="ciliod2d0004r9moww4508lku" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/" data-id="cilkb3ezx00500lowe35fdjhv" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/26/Leetcode-Lowest-Common-Ancestor-of-a-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -456,403 +724,9 @@ fs.readFile(&quot;./lib/saying.md&quot;, &quot;UTF-8&quot;, function(err, conten
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/25/Node-js-study-note/" data-id="ciliod2ay000p9mowb2cx3mdd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/25/Node-js-study-note/" data-id="cilkb3exl000q0lowk18sw3rd" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/25/Node-js-study-note/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Insertion-Sort-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/" class="article-date">
-  <time datetime="2016-01-25T05:07:32.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Insertion-Sort-List-Java/">Leetcode-Insertion Sort List(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Sort a linked list using insertion sort.</p>
-<p><strong>Thinking:</strong></p>
-<p>As the question state, we should apply the insertion sort method to linked list. So we create a ListNode for hold the sorted list, and scan the unsorted list and pick up element to compare the element in the sorted list. Then determine when to insert the value.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public ListNode insertionSortList(ListNode head) {
-        if (head == null || head.next == null)
-            return head;
-        ListNode res = new ListNode(-1);
-        res.next = head;
-        ListNode p = res;
-        ListNode next = head.next;
-        head.next = null;
-        head = next;
-        while (head != null){
-            while (p.next != null){
-                //if the value is smaller than one of the sorted list, insert behind it
-                if (head.val &lt; p.next.val){
-                    next = head.next;
-                    head.next = p.next;
-                    p.next = head;
-                    head = next;
-                    p = res;
-                    break;
-                }
-                p = p.next;
-            }
-            //if the value is bigger than anyone of the sorted list, insert after the whole list
-            if (p.next == null){
-                next = head.next;
-                p.next = head;
-                head.next = null;
-                head = next;
-                p = res;
-            }
-        }
-
-        return res.next;
-    }
-}
-</code></pre><p>I also copy a refining version of this algorithm from reference: <a href="http://www.cnblogs.com/springfor/p/3862468.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3862468.html</a></p>
-<pre><code>public ListNode insertionSortList(ListNode head) {  
-    if(head == null||head.next == null)  
-        return head;  
-    ListNode sortedlisthead = new ListNode(0);  
-    ListNode cur = head;
-    while(cur!=null){  
-        ListNode next = cur.next;  
-        ListNode pre = sortedlisthead;  
-        while(pre.next!=null &amp;&amp; pre.next.val&lt;cur.val)  
-            pre = pre.next;  
-        cur.next = pre.next;  
-        pre.next = cur;  
-        cur = next;  
-    }  
-    return sortedlisthead.next;  
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/" data-id="ciliod2da005b9mowuq1c7rq8" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Insertion-Sort-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Sort-Algorithms" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Sort-Algorithms/" class="article-date">
-  <time datetime="2016-01-25T04:07:31.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Sort-Algorithms/">Sort Algorithms</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Survey_3A"><a href="#Survey_3A" class="headerlink" title="Survey:"></a>Survey:</h2><p>This time, we talk about eight kinds of sort algorithms: insertion sort, shell’s sort, simple selection sort, heap sort, bubble sort, quick sort, merge sort and radix sort.</p>
-<h2 id="Insertion_sort_3A"><a href="#Insertion_sort_3A" class="headerlink" title="Insertion sort:"></a>Insertion sort:</h2><p><strong>Main Idea:</strong></p>
-<p>From the beginning of the list, get one value at a time and insert the value into right position of sorted list until all the values are sorted. And insertion sort is stalbe.</p>
-<p><strong>Process:</strong> (From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
-<p><strong>Pseudocode:</strong></p>
-<pre><code>for i ← 1 to length(A) - 1
-    j ← i
-    while j &gt; 0 and A[j-1] &gt; A[j]
-        swap A[j] and A[j-1]
-        j ← j - 1
-    end while
-end for
-</code></pre><p><strong>Implemention in Java:</strong></p>
-<pre><code>public static void InsertionSort(int[] num)
-{
-     int j;
-     int key;
-     int i;  
-
-     for (j = 1; j &lt; num.length; j++){
-        key = num[j];
-        for(i = j - 1; (i &gt;= 0) &amp;&amp; (num[i] &lt; key); i--){
-            num[i+1] = num[i];
-        }
-        num[i+1] = key;
-    }
-}
-</code></pre><p><strong>Complexity:</strong></p>
-<p><em>Runtime</em>: O(n^2)</p>
-<p><em>Memery</em>: O(1)</p>
-<hr>
-<h2 id="ShellSort_3A"><a href="#ShellSort_3A" class="headerlink" title="ShellSort:"></a>ShellSort:</h2><p><strong>Main Idea:</strong></p>
-<p>The method starts by sorting pairs of elements far apart from each other, then progressively reducing the gap between elements to be compared. Starting with far apart elements can move some out-of-place elements into position faster than a simple nearest neighbor exchange.</p>
-<p><strong>Process:</strong>(From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Sorting_shellsort_anim.gif" alt=""></p>
-<p><strong>Pesedocode:</strong></p>
-<pre><code>gaps = [701, 301, 132, 57, 23, 10, 4, 1]
-
-foreach (gap in gaps)
-{
-    # Do a gapped insertion sort for this gap size.
-    # The first gap elements a[0..gap-1] are already in gapped order
-    # keep adding one more element until the entire array is gap sorted
-    for (i = gap; i &lt; n; i += 1)
-    {
-        # add a[i] to the elements that have been gap sorted
-        # save a[i] in temp and make a hole at position i
-        temp = a[i]
-        # shift earlier gap-sorted elements up until the correct location for a[i] is found
-        for (j = i; j &gt;= gap and a[j - gap] &gt; temp; j -= gap)
-        {
-            a[j] = a[j - gap]
-        }
-        # put temp (the original a[i]) in its correct location
-        a[j] = temp
-        }
-    }
-</code></pre><p> <strong>Implemention in Java:</strong></p>
-<pre><code>public void shellSort() {
-    int inner, outer;
-    long temp;
-    //find initial value of h
-    int h = 1;
-    while (h &lt;= len / 3)
-      h = h * 3 + 1; // (1, 4, 13, 40, 121, ...)
-
-    while (h &gt; 0) // decreasing h, until h=1
-    {
-      // h-sort the file
-      for (outer = h; outer &lt; len; outer++) {
-        temp = data[outer];
-        inner = outer;
-        // one subpass (eg 0, 4, 8)
-        while (inner &gt; h - 1 &amp;&amp; data[inner - h] &gt;= temp) {
-          data[inner] = data[inner - h];
-          inner -= h;
-        }
-        data[inner] = temp;
-      }
-      h = (h - 1) / 3; // decrease h
-    }
-}
-</code></pre><hr>
-<h2 id="Simple_Selection_Sort"><a href="#Simple_Selection_Sort" class="headerlink" title="Simple Selection Sort"></a>Simple Selection Sort</h2><p><strong>Main Idea:</strong></p>
-<p>Find the smallest(biggest) element in array, put it in the first place. Then find the second smallest… Do these until all the element are sorted.(I suppose it’s a little similar with bubble sort)</p>
-<p><strong>Process:</strong>(From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif" alt=""></p>
-<p><strong>Pesedocode:</strong></p>
-<pre><code>for i ← 1 to length(A) - 1
-    j ← i
-    while j &gt; 0 and A[j-1] &gt; A[j]
-        swap A[j] and A[j-1]
-        j ← j - 1
-    end while
-end for
-</code></pre><p><strong>Complexity:</strong></p>
-<p><em>Runtime:</em> O(n^2)<br><em>Memery:</em> O(1)</p>
-<h2 id="Heapsort"><a href="#Heapsort" class="headerlink" title="Heapsort"></a>Heapsort</h2><p><strong>Main Idea:</strong></p>
-<p>Use data structure heap which will store the smallest or biggest value of the array. Then pick up the root of heap   once a time to sort. </p>
-<p>Heapsort is a comparison-based sorting algorithm. Heapsort can be thought of as an improved selection sort: like that algorithm, it divides its input into a sorted and an unsorted region, and it iteratively shrinks the unsorted region by extracting the largest element and moving that to the sorted region. The improvement consists of the use of a heap data structure rather than a linear-time search to find the maximum.</p>
-<p>This sort is the most important part in this article. I’ll talk about the relative operation and its performance and all the code.</p>
-<p><strong>Process:</strong>(From Wikimedia)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif" alt=""></p>
-<p>In the heap view(an example offered):</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Heapsort-example.gif" alt=""></p>
-<p><strong>Data Structure:</strong></p>
-<p>Heap:</p>
-<p>A heap is built out of the data. The heap is often placed in an array with the layout of a complete binary tree. The complete binary tree maps the binary tree structure into the array indices; each array index represents a node; the index of the node’s parent, left child branch, or right child branch are simple expressions. For a zero-based array, the root node is stored at index 0; if i is the index of the current node, then</p>
-<pre><code>iParent(i)     = floor((i-1) / 2)
-iLeftChild(i)  = 2*i + 1
-iRightChild(i) = 2*i + 2
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Sort-Algorithms/" data-id="ciliod2ar000e9mowa3vo9kw3" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Sort-Algorithms/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Search-for-a-Range-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/24/Leetcode-Search-for-a-Range-Java/" class="article-date">
-  <time datetime="2016-01-25T03:50:20.000Z" itemprop="datePublished">2016-01-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/24/Leetcode-Search-for-a-Range-Java/">Leetcode-Search for a Range(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a sorted array of integers, find the starting and ending position of a given target value.</p>
-<p>Your algorithm’s runtime complexity must be in the order of O(log n).</p>
-<p>If the target is not found in the array, return [-1, -1].</p>
-<p>For example,<br>Given [5, 7, 7, 8, 8, 10] and target value 8,<br>return [3, 4].</p>
-<p><strong>Thinking:</strong></p>
-<p>It’s question which should use binary search because it give us a sorted array and it requires O(log n) runtime complexity. Only thing difference between this algorithm and classical binary search is that we should make the range smaller while finding the target instead of returning the index.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public class Solution {
-    public int[] searchRange(int[] nums, int target) {
-        int low = 0;
-        int high = nums.length - 1;
-        int mid;
-        int resl = -1;
-        int resr = -1;
-        while (low &lt;= high){
-            mid = (low + high) / 2;
-            if (nums[mid] == target){
-                if (nums[low] == target){
-                    resl = low;
-                    if (resr != -1)
-                        break;
-                }    
-                else
-                    low++;
-
-                if (nums[high] == target){
-                    resr = high;
-                    if (resl != -1)
-                        break;
-                }
-                else
-                    high--;
-            }
-            else if(nums[mid] &gt; target)
-                high = mid - 1;
-            else
-                low = mid + 1;
-        }
-        int[] res = {resl, resr};
-        return res;
-    }
-
-}
-</code></pre><p>But the algorithm is not so effienct when finding the target so early. In order to make sure the runtime complexity is O(log n), we should also use binary search to find the lower bound and upper bound when finding the target in the array.<br>Reference: <a href="http://www.cnblogs.com/springfor/p/3857704.html" target="_blank" rel="external">http://www.cnblogs.com/springfor/p/3857704.html</a></p>
-<p>Code:</p>
-<pre><code>public int[] searchRange(int[] A, int target) {
-    int [] res = {-1,-1};
-    if(A == null || A.length == 0)
-        return res;
-
-    //first iteration, find target wherever it is
-    int low = 0;
-    int high = A.length-1;
-    int pos = 0;
-    while(low &lt;= high){
-        int mid = (low + high)/2;
-        pos = mid;
-        if(A[mid] &gt; target)
-            high = mid - 1;
-        else if(A[mid] &lt; target)
-            low = mid + 1;
-        else{
-            res[0] = pos;
-            res[1] = pos;
-            break;
-        }
-    }
-
-    if(A[pos] != target)
-        return res;
-
-    //second iteration, find the right boundary of this target
-    int newlow = pos;
-    int newhigh = A.length-1;
-    while(newlow &lt;= newhigh){
-        int newmid = (newlow+newhigh)/2;
-        if(A[newmid] == target)
-            newlow = newmid + 1;
-        else
-            newhigh = newmid - 1;
-    }
-    res[1] = newhigh;
-
-    //third iteration, find the left boundary of this target
-    newlow = 0;
-    newhigh = pos;
-    while(newlow &lt;= newhigh){
-        int newmid = (newlow+newhigh)/2;
-        if(A[newmid] == target)
-            newhigh = newmid - 1;
-        else
-            newlow = newmid + 1;
-    }
-    res[0] = newlow;
-
-    return res;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/" data-id="ciliod2bu002n9mowafqg7eun" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/24/Leetcode-Search-for-a-Range-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
     </footer>
@@ -865,7 +739,7 @@ iRightChild(i) = 2*i + 2
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/14/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/16/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/14/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/16/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -895,7 +769,7 @@ iRightChild(i) = 2*i + 2
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15.71px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 14.29px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 16.67px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 15px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 18.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 18.33px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 15px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.67px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -917,23 +791,23 @@ iRightChild(i) = 2*i + 2
       <ul>
         
           <li>
+            <a href="/2016/03/08/The-Zen-of-Python/">The Zen of Python</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/">Leetcode-Reconstruct Itinerary(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/">Leetcode-Maximum Product Subarray(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/">Leetcode-Evaluate Reverse Polish Notation(Java)</a>
           </li>
         
           <li>
             <a href="/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/">Leetcode-Increasing Triplet Subsequence(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/03/06/Shortest-Path-Problem/">Shortest Path Problem</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/27/Leetcode-Maximal-Square-Java/">Leetcode-Maximal Square(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
           </li>
         
       </ul>

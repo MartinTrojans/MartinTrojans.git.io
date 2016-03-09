@@ -68,6 +68,213 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-The-Zen-of-Python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/08/The-Zen-of-Python/" class="article-date">
+  <time datetime="2016-03-09T03:46:49.000Z" itemprop="datePublished">2016-03-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/08/The-Zen-of-Python/">The Zen of Python</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>The Zen of Python:</strong></p>
+<p>Beautiful is better than ugly.</p>
+<p>Explicit is better than implicit.</p>
+<p>Simple is better than complex.</p>
+<p>Complex is better than complicated.</p>
+<p>Flat is better than nested.</p>
+<p>Sparse is better than dense.</p>
+<p>Readability counts.</p>
+<p>Special cases aren’t special enough to break the rules.</p>
+<p>Although practicality beats purity.</p>
+<p>Errors should never pass silently.</p>
+<p>Unless explicitly silenced.</p>
+<p>In the face of ambiguity, refuse the temptation to guess.</p>
+<p>There should be one– and preferably only one –obvious way to do it.</p>
+<p>Although that way may not be obvious at first unless you’re Dutch.</p>
+<p>Now is better than never.</p>
+<p>Although never is often better than <em>right</em> now.</p>
+<p>If the implementation is hard to explain, it’s a bad idea.</p>
+<p>If the implementation is easy to explain, it may be a good idea.</p>
+<p>Namespaces are one honking great idea – let’s do more of those!</p>
+<p>(Reference: <a href="https://www.python.org/dev/peps/pep-0020/" target="_blank" rel="external">https://www.python.org/dev/peps/pep-0020/</a>)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/08/The-Zen-of-Python/" data-id="cilkb3exb000e0lowl9sbn86a" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/03/08/The-Zen-of-Python/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Reconstruct-Itinerary-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/" class="article-date">
+  <time datetime="2016-03-08T23:43:32.000Z" itemprop="datePublished">2016-03-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/">Leetcode-Reconstruct Itinerary(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given a list of airline tickets represented by pairs of departure and arrival airports [from, to], reconstruct the itinerary in order. All of the tickets belong to a man who departs from JFK. Thus, the itinerary must begin with JFK.</p>
+<p>Note:<br>If there are multiple valid itineraries, you should return the itinerary that has the smallest lexical order when read as a single string. For example, the itinerary </p>
+<p> 1.[“JFK”, “LGA”] has a smaller lexical order than [“JFK”, “LGB”].</p>
+<p> 2.All airports are represented by three capital letters (IATA code).</p>
+<p> 3.You may assume all tickets form at least one valid itinerary.</p>
+<p>Example 1:</p>
+<pre><code>tickets = [[&quot;MUC&quot;, &quot;LHR&quot;], [&quot;JFK&quot;, &quot;MUC&quot;], [&quot;SFO&quot;, &quot;SJC&quot;], [&quot;LHR&quot;, &quot;SFO&quot;]]
+</code></pre><p>Return </p>
+<pre><code>[&quot;JFK&quot;, &quot;MUC&quot;, &quot;LHR&quot;, &quot;SFO&quot;, &quot;SJC&quot;].
+</code></pre><p>Example 2:</p>
+<pre><code>tickets = [[&quot;JFK&quot;,&quot;SFO&quot;],[&quot;JFK&quot;,&quot;ATL&quot;],[&quot;SFO&quot;,&quot;ATL&quot;],[&quot;ATL&quot;,&quot;JFK&quot;],[&quot;ATL&quot;,&quot;SFO&quot;]]
+</code></pre><p>Return </p>
+<pre><code>[&quot;JFK&quot;,&quot;ATL&quot;,&quot;JFK&quot;,&quot;SFO&quot;,&quot;ATL&quot;,&quot;SFO&quot;].
+</code></pre><p>Another possible reconstruction is [“JFK”,”SFO”,”ATL”,”JFK”,”ATL”,”SFO”]. But it is larger in lexical order.</p>
+<p><strong>Thinking:</strong></p>
+<p>We need to use dfs to travse all the graph and record the graph. But we need to record it in order. So it should be stored in PriorityQueue and store the route while visiting. If it’s stuck we back up but also record the previous information, because we know there are other ways to get there. Until all the edges are visited once, it’s finished.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+HashMap&lt;String, PriorityQueue&lt;String&gt;&gt; map = new HashMap&lt;String, PriorityQueue&lt;String&gt;&gt;();
+
+public List&lt;String&gt; findItinerary(String[][] tickets) {
+    for (String[] ticket: tickets)
+        map.computeIfAbsent(ticket[0], k -&gt; new PriorityQueue&lt;String&gt;()).add(ticket[1]);
+    visit(&quot;JFK&quot;);
+
+    return res;
+}
+
+private void visit(String cur) {
+    while (map.containsKey(cur) &amp;&amp; !map.get(cur).isEmpty())
+        visit(map.get(cur).poll());
+    res.add(0, cur);
+}
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/84659/short-ruby-python-java-c" target="_blank" rel="external">https://leetcode.com/discuss/84659/short-ruby-python-java-c</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/" data-id="cilkb3ez9003i0lowfhl20mog" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DFS/">DFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Graph/">Graph</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Maximum-Product-Subarray-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/" class="article-date">
+  <time datetime="2016-03-08T04:39:50.000Z" itemprop="datePublished">2016-03-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/">Leetcode-Maximum Product Subarray(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Find the contiguous subarray within an array (containing at least one number) which has the largest product.</p>
+<p>For example, given the array [2,3,-2,4],<br>the contiguous subarray [2,3] has the largest product = 6.</p>
+<p><strong>Thinking:</strong></p>
+<p>This problem is similiar with the MaxSubArray. One thing we need to notice is that we should maintian another variable which is the minimum value of the negative value. When it multiple the negtive value in the array, it maybe the maximum.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int maxProduct(int[] nums) {
+    int l = nums.length;
+    int max = nums[0];
+    int maxhere = nums[0];
+    int minhere = nums[0];
+
+    for (int i = 1; i &lt; l; i++) {
+        if (nums[i] &gt;= 0) {
+            maxhere = Math.max(maxhere*nums[i], nums[i]);
+            minhere = Math.min(minhere*nums[i], nums[i]);
+        } else {
+            int temp = maxhere;
+            maxhere = Math.max(minhere*nums[i], nums[i]);
+            minhere = Math.min(temp*nums[i], nums[i]);
+        }
+        max = Math.max(maxhere, max);
+    }
+
+    return max;
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/" data-id="cilkb3ezt004q0lowtona33dg" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Evaluate-Reverse-Polish-Notation-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/" class="article-date">
@@ -137,7 +344,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/" data-id="ciliod2dr005v9mow6tswleys" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/" data-id="cilkb3f0g00640lowoze2bzgw" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -202,7 +409,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/" data-id="ciliod2dc005d9mowr0pa4zw2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/" data-id="cilkb3f07005m0lowviuq7ilk" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -214,290 +421,10 @@
 
 
   
-    <article id="post-Shortest-Path-Problem" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/03/06/Shortest-Path-Problem/" class="article-date">
-  <time datetime="2016-03-06T22:37:58.000Z" itemprop="datePublished">2016-03-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/06/Shortest-Path-Problem/">Shortest Path Problem</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Shorstest Path Problem Categories:</strong></p>
-<ol>
-<li>From a speicific start point;</li>
-<li>To a specific end point;</li>
-<li>Start and end with a specific point;</li>
-<li>Search for all the shortest path in every pair nodes.</li>
-</ol>
-<p><strong>Dijkstra:</strong></p>
-<p>This algorithm is aiming at caculating all the shortest paths from every point to a specific start point. And it’s a greedy algorithm.</p>
-<p>Algorithm:</p>
-<ol>
-<li>Set the distance to the start node as infinity to all the nodes except the start node.</li>
-<li>Initial a set which conclude the added nodes, and another set for unvisited nodes.</li>
-<li>For the added nodes set, we find the shortest edge from adjancent nodes crossing this set in unvisited set. And add the adjancent node to the added added nodes.</li>
-<li>Update the distances of nodes from start node which connect to the last added node.</li>
-<li>Do step 3 and 4 repeatedly until all the nodes are in the added set.</li>
-</ol>
-<p>Pseudoode:</p>
-<pre><code>function Dijkstra(Graph, source):
-
-    create vertex set Q
-
-    for each vertex v in Graph:             // Initialization
-    dist[v] ← INFINITY                  // Unknown distance from source to v
-    prev[v] ← UNDEFINED                 // Previous node in optimal path from source
-    add v to Q                          // All nodes initially in Q (unvisited nodes)
-
-    dist[source] ← 0                        // Distance from source to source
-
-    while Q is not empty:
-        u ← vertex in Q with min dist[u]    // Source node will be selected first
-        remove u from Q 
-
-        for each neighbor v of u:           // where v is still in Q.
-            alt ← dist[u] + length(u, v)
-            if alt &lt; dist[v]:               // A shorter path to v has been found
-                dist[v] ← alt 
-                prev[v] ← u 
-
-    return dist[], prev[]
-</code></pre><p>Java Code:</p>
-<pre><code>public static void dijkstra(int[][] edges, int s, int[] dist, int[] pre) {
-    int n = edges.length;
-
-    HashSet&lt;Integer&gt; set = new HashSet&lt;Integer&gt;(n);
-
-    for (int i = 0; i &lt; n; i++) {
-        dist[i] = Integer.MAX_VALUE;
-        set.add(i);
-    }
-    dist[s] = 0;
-
-    while (!set.isEmpty()) {
-        int min = findMin(set, dist);
-        for (int i = 0; i &lt; n; i++) {
-            if (edges[min][i] != -1) { // find the neighbors of the node
-                if (dist[i] &lt; dist[min] + edges[min][i]) { //relaxation
-                    dist[i] = dist[min] + edges[min][i];
-                    pre[i] = min;
-                }
-            }
-        }
-    }
-}
-private static int findMin(Set set, int[] dist) {
-    int min = Integer.MAX_VALUE, minIdx = -1;
-    for (int i = 0; i &lt; dist.length; i++) {
-        if (set.contains(i) &amp;&amp; dist[i] &lt; min) {
-            min = dist[i];
-            minIdx = i;
-        }
-    }
-    set.remove(minIdx);
-    return minIdx;
-}
-</code></pre><p>Running Time:</p>
-<p>O(E*lgv)</p>
-<p>If use the Fibonacci heap -&gt;  O(V*lgV + E)</p>
-<p><strong>Bellman Ford:</strong></p>
-<p>Aimming at searching for the shortest path from a specific start node. It is useful also for the graph containing the negative edges. It’s a dynamic programming algorithm.</p>
-<p>Algorithm:</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/06/Shortest-Path-Problem/" data-id="ciliod2av000j9mowfteimbi3" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/03/06/Shortest-Path-Problem/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Maximal-Square-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/27/Leetcode-Maximal-Square-Java/" class="article-date">
-  <time datetime="2016-02-28T04:51:07.000Z" itemprop="datePublished">2016-02-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/27/Leetcode-Maximal-Square-Java/">Leetcode-Maximal Square(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a 2D binary matrix filled with 0’s and 1’s, find the largest square containing all 1’s and return its area.</p>
-<p>For example, given the following matrix:</p>
-<pre><code>1 0 1 0 0
-1 0 1 1 1
-1 1 1 1 1
-1 0 0 1 0
-</code></pre><p>Return 4.</p>
-<p><strong>Thinking:</strong></p>
-<p>IIf the [i-1][j], [i][j-1] and [i-1][j-1] all have the same length of ‘1’ edge and the [i][j] is ‘1’, the length of the square can increase.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int maximalSquare(char[][] matrix) {
-    int m = matrix.length;
-    if (m == 0)    return 0;
-    int n = matrix[0].length;
-    int res = 0;
-    int[][] opt = new int[m+1][n+1];
-
-    for (int i = 1; i &lt;= m; i++){
-        for (int j = 1; j &lt;= n; j++) {
-            if (matrix[i-1][j-1] == &apos;1&apos;) {
-                opt[i][j] = Math.min(opt[i-1][j-1], Math.min(opt[i-1][j], opt[i][j-1])) + 1;
-                res = Math.max(res, opt[i][j]);
-            }
-        }
-    }
-
-    return res * res;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/27/Leetcode-Maximal-Square-Java/" data-id="ciliod2cy004l9mowwhq667ba" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/27/Leetcode-Maximal-Square-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Reorder-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/27/Leetcode-Reorder-List-Java/" class="article-date">
-  <time datetime="2016-02-28T01:01:11.000Z" itemprop="datePublished">2016-02-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a singly linked list L: L0→L1→…→Ln-1→Ln,<br>reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…</p>
-<p>You must do this in-place without altering the nodes’ values.</p>
-<p>For example,<br>Given {1,2,3,4}, reorder it to {1,4,2,3}.</p>
-<p><strong>Thinking:</strong></p>
-<p>We need three steps to finish this operation. The first one is to find the middle in the linked list. The second one is to reverse the second half of this linked list. The final one is to link these two parts again.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public void reorderList(ListNode head) {
-    if (head == null || head.next == null)    return;
-    ListNode slow = head, fast = head.next, preMiddle, preCurrent, current, p, q;
-
-    //find the middle
-    while (fast != null &amp;&amp; fast.next != null) {
-        slow = slow.next;
-        fast = fast.next.next;
-    }
-
-    //reverse the second half
-    preMiddle = slow;
-    preCurrent = slow.next;
-    while (preCurrent.next != null) {
-        current = preCurrent.next;
-        preCurrent.next = current.next;
-        current.next = preMiddle.next;
-        preMiddle.next = current;
-    }
-
-    //connect two parts
-    p = head;
-    q = preMiddle.next;
-    while (p != preMiddle) {
-        preMiddle.next = q.next;
-        q.next = p.next;
-        p.next = q;
-        p = q.next;
-        q = preMiddle.next;
-    }
-
-}
-</code></pre><p>Reference:<a href="https://leetcode.com/discuss/35599/java-solution-with-3-steps" target="_blank" rel="external">https://leetcode.com/discuss/35599/java-solution-with-3-steps</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/27/Leetcode-Reorder-List-Java/" data-id="ciliod2c800359mow1s7zknri" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/27/Leetcode-Reorder-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -527,7 +454,7 @@ private static int findMin(Set set, int[] dist) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15.71px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 14.29px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 16.67px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 15px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 18.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 18.33px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 15px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.67px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -549,23 +476,23 @@ private static int findMin(Set set, int[] dist) {
       <ul>
         
           <li>
+            <a href="/2016/03/08/The-Zen-of-Python/">The Zen of Python</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/">Leetcode-Reconstruct Itinerary(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/">Leetcode-Maximum Product Subarray(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/">Leetcode-Evaluate Reverse Polish Notation(Java)</a>
           </li>
         
           <li>
             <a href="/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/">Leetcode-Increasing Triplet Subsequence(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/03/06/Shortest-Path-Problem/">Shortest Path Problem</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/27/Leetcode-Maximal-Square-Java/">Leetcode-Maximal Square(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
           </li>
         
       </ul>

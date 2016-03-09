@@ -68,6 +68,324 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" class="article-date">
+  <time datetime="2016-02-02T06:40:06.000Z" itemprop="datePublished">2016-02-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/">Leetcode-Verify Preorder Serialization of a Binary Tree(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node’s value. If it is a null node, we record using a sentinel value such as #.</p>
+<pre><code>     _9_
+    /   \
+   3     2
+  / \   / \
+ 4   1  #  6
+/ \ / \   / \
+# # # #   # #
+</code></pre><p>For example, the above binary tree can be serialized to the string “9,3,4,#,#,1,#,#,2,#,6,#,#”, where # represents a null node.</p>
+<p>Given a string of comma separated values, verify whether it is a correct preorder traversal serialization of a binary tree. Find an algorithm without reconstructing the tree.</p>
+<p>Each comma separated value in the string must be either an integer or a character ‘#’ representing null pointer.</p>
+<p>You may assume that the input format is always valid, for example it could never contain two consecutive commas such as “1,,3”.</p>
+<p>Example 1:<br>“9,3,4,#,#,1,#,#,2,#,6,#,#”<br>Return true</p>
+<p>Example 2:<br>“1,#”<br>Return false</p>
+<p>Example 3:<br>“9,#,#,1”<br>Return false</p>
+<p><strong>Thinking:</strong></p>
+<p>Accroding to the correct answer given, we can find the pattern. We should start from # and use stack to store it. When get two #, we should get another element from the string. </p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean isValidSerialization(String preorder) {
+    String[] strlist = preorder.split(&quot;,&quot;);
+    Stack&lt;String&gt; stack = new Stack&lt;String&gt;();
+    Stack&lt;String&gt; tempstack = new Stack&lt;String&gt;();
+
+    for (String s: strlist) {
+        stack.push(s);
+    }
+    while (!stack.isEmpty()) {
+        while (!stack.isEmpty() &amp;&amp; stack.peek().equals(&quot;#&quot;)){
+            tempstack.push(stack.pop());
+        }
+        if (tempstack.size() &lt; 2)
+            break;
+        while (tempstack.size() &gt;= 2 &amp;&amp; !stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
+            tempstack.pop();
+            tempstack.pop();
+            if (!stack.isEmpty() &amp;&amp; !stack.peek().equals(&quot;#&quot;)){
+                stack.pop();
+                tempstack.push(&quot;#&quot;);
+            }
+        }
+    }
+
+    if (tempstack.size() == 1 &amp;&amp; stack.isEmpty())
+        return true;
+    else
+        return false;
+}
+</code></pre><p>There is another simpler solution:</p>
+<pre><code>public boolean isValidSerialization(String preorder) {
+    String[] p = preorder.split(&quot;,&quot;);
+    int idx = 0; // stack
+    for (int i = 0; i &lt; p.length; i++) {
+    if (p[i].equals(&quot;#&quot;)) {
+        idx--;
+    } else {
+        if (idx &lt; 0) { // check
+          return false;
+        }
+        p[idx++] = p[i];
+      }
+    }
+    return idx == -1; // check
+  }
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/83903/share-my-java-solution" target="_blank" rel="external">https://leetcode.com/discuss/83903/share-my-java-solution</a></p>
+<p>And another much simplier solution which caculate the indegree and outdegree:</p>
+<pre><code>public boolean isValidSerialization2(String preorder) {
+    String[] nodes = preorder.split(&quot;,&quot;);
+    int diff = 1;
+    for (String node: nodes) {
+        if (--diff &lt; 0) return false;
+        if (!node.equals(&quot;#&quot;)) diff += 2;
+    }
+    return diff == 0;
+}
+</code></pre><p>Reference: <a href="https://www.hrwhisper.me/leetcode-algorithm-solution/" target="_blank" rel="external">https://www.hrwhisper.me/leetcode-algorithm-solution/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/" data-id="cilkb3exx00190lowxyffeuwn" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/01/Leetcode-Verify-Preorder-Serialization-of-a-Binary-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Graph/">Graph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Stack/">Stack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-AI-Note" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/01/AI-Note/" class="article-date">
+  <time datetime="2016-02-01T23:25:11.000Z" itemprop="datePublished">2016-02-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/01/AI-Note/">AI Note</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Lecture 1:</strong></p>
+<p><strong>Lecture 2:</strong></p>
+<ol>
+<li>What’s Agent?</li>
+<li>PEAS</li>
+</ol>
+<p><strong>Lecture 3:</strong></p>
+<ol>
+<li>Difference between tree search and graph search:<br> Graph search will record the explored nodes, and won’t explore them again.</li>
+</ol>
+<p><strong>Lecture 4:</strong></p>
+<ol>
+<li>DFS, BFS, uniform-cost search, interative deepening search, evaluating search performance about completeness, optimality, time and space complexity</li>
+<li>BFS:<br> Completeness: Yes(When b is finite)<br> Optimality: Yes(If path is nondecreasing)<br> Time: O(b^d)<br> Space: O(b^d)</li>
+<li>DFS:<br> Completeness: Yes(If graph search version)<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b*m)</li>
+<li>Uniform-cost search:<br> Completeness: Yes<br> Optimality: Yes(If path is nondecreasing)<br> Uniform-cost search not optimal if it is terminated when some node in the queue has goal state.</li>
+<li>Iterative deepening search:<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^d)<br> Space: O(bd)</li>
+</ol>
+<p><strong>Lecture 5:</strong></p>
+<ol>
+<li>Uniformed search, bi-directional search, informed search, greedy best first search, A*, interative deepening A*, recursive best first search, simplified memory-bounded A*</li>
+<li>Bidirectional search:<br> Search forward from initial state, and backward from goal.<br> Completeness: Yes<br> Optimality: Yes<br> Time: O(b^(d/2)<br> Space: O(b^(d/2)</li>
+<li>Greedy best first search:<br> Greedy BFS keeps all the nodes generated in the<br>Frontier, which is sorted based on h(n).<br> Completeness: No<br> Optimality: No<br> Time: O(b^m)<br> Space: O(b^m)</li>
+<li>A* Search:<br> Use (approximate) total path cost to guide search<br> Admissible Heurisitic: A heuristic is admissible if it never overestimates the cost to reach the goal<br> e.g. hSLD(n) is admissible because it never overestimates the actual road distance<br> Admissible heuristics does not guarantee that the chosen path is optimal<br> A heuristic is consistent if for every node n and every successor n’ of n generated by any action a<br>h(n) ≤ c(n,a,n’) + h(n’)<br> That is, f(n) is nondecreasing along every path.<br> Completeness: Yes<br> Optimality: Yes(if admissible in tree search or consistent in graph search)</li>
+<li>Recursive Best-Frist Search:<br> Keep track of f value (f-limit) of best sibling of path currently exploring<br> Space: O(bd)</li>
+<li>Memory-Bounded A*:<br>  I.e., expand best leaves until available memory is full;When full, SMA* drops worst leaf node (highest f-value);Like RBFS, backup forgotten node value to its parent</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/01/AI-Note/" data-id="cilkb3f1b007x0lows6femkdn" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/01/AI-Note/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Kth-Largest-Element-in-an-Array-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/" class="article-date">
+  <time datetime="2016-02-01T05:21:22.000Z" itemprop="datePublished">2016-01-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/">Leetcode-Kth Largest Element in an Array(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.</p>
+<p>For example,<br>Given [3,2,1,5,6,4] and k = 2, return 5.</p>
+<p>Note:<br>You may assume k is always valid, 1 ≤ k ≤ array’s length.</p>
+<p><strong>Thinking:</strong></p>
+<p>There are three ways to solve this problem:</p>
+<ol>
+<li>The first one is to build a max heap with size n, and get the top of the heap k times.</li>
+<li>The second one is to build a min heap with size k, and keep the biggest top k elements of this array. Finally, get the top of it.</li>
+<li>The third one is to use a method called quickselect which uses function partition. It first use a pivot to split the array into two parts, then accroding to this index, choose which part to select.</li>
+</ol>
+<p><strong>Solution:</strong></p>
+<p>Max heap:</p>
+<pre><code>public int findKthLargest1(int[] nums, int k) {
+    int len = nums.length;
+    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;(len, new HeapComparator());
+    for (int i = 0; i &lt; len; i++){
+        heap.add(nums[i]);
+    }
+    for (int i = 0; i &lt; k-1; i++){
+        heap.poll();
+    }
+    return heap.peek();
+}
+
+class HeapComparator implements Comparator {
+
+    @Override
+    public int compare(Object o1, Object o2) {
+        // TODO Auto-generated method stub
+        int i1 = (int)o1;
+        int i2 = (int)o2;
+        if (i1 &gt; i2)
+            return -1;
+        else if (i1 == i2)
+            return 0;
+        else
+            return 1;
+    }
+
+}
+</code></pre><p>Min heap:</p>
+<pre><code>public int findKthLargest2(int[] nums, int k) {
+    int len = nums.length;
+    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;Integer&gt;(k);
+    for (int i = 0; i &lt; k; i++){
+        heap.add(nums[i]);
+    }
+    for (int i = k; i &lt; len; i++){
+        if (nums[i] &gt; heap.peek()){
+            heap.poll();
+            heap.add(nums[i]);
+        }
+    }
+    return heap.peek();
+}
+</code></pre><p>Quickselect:</p>
+<pre><code>public int findKthLargest3(int[] nums, int k) {
+    int len = nums.length;
+    return quickselect(nums, 0, len-1, k);
+}
+
+private int quickselect(int[] nums, int left, int right, int k){
+    int pivotIndex = partition(nums, left, right, left);
+    if (pivotIndex == k-1){
+        return nums[pivotIndex];
+    }
+    else if(pivotIndex &lt; k){
+        return quickselect(nums, pivotIndex+1, right, k);
+    }
+    else{
+        return quickselect(nums, left, pivotIndex-1, k);
+    }
+}
+
+private int partition(int[] nums, int left, int right, int index){
+    int pivotvalue = nums[index];
+    int storeindex = left;
+    nums[index] = nums[right];
+    for (int i = left; i &lt; right; i++){
+        if (nums[i] &gt; pivotvalue){
+            int temp = nums[i];
+            nums[i] = nums[storeindex];
+            nums[storeindex++] = temp;
+        }
+    }
+    nums[right] = nums[storeindex];
+    nums[storeindex] = pivotvalue;
+    return storeindex;
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/" data-id="cilkb3f03005d0lowo4nmw50j" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/01/31/Leetcode-Kth-Largest-Element-in-an-Array-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Heap/">Heap</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Leetcode-Permutations-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/31/Leetcode-Permutations-II-Java/" class="article-date">
@@ -171,7 +489,7 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/" data-id="ciliod2ce003j9mowe8fkwgl1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/" data-id="cilkb3ezc003o0lowhg106225" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/31/Leetcode-Permutations-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -219,7 +537,7 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/31/Algorithm-Note/" data-id="ciliod2em007m9mowcwew08c0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/31/Algorithm-Note/" data-id="cilkb3f1a007v0lowl7b79br8" class="article-share-link">Share</a>
       
         <a href="http://yoursite.com/2016/01/31/Algorithm-Note/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -231,251 +549,10 @@ public void dfs(int[] nums, boolean[] used, List&lt;Integer&gt; list, List&lt;Li
 
 
   
-    <article id="post-VIM" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/30/VIM/" class="article-date">
-  <time datetime="2016-01-31T06:54:24.000Z" itemprop="datePublished">2016-01-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/30/VIM/">VIM</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一、打开文件、保存、关闭文件(vi命令模式下使用)<br>:w       //保存文件<br>:w vpser.net //保存至vpser.net文件<br>:q          //退出编辑器，如果文件已修改请使用下面的命令<br>:q!        //退出编辑器，且不保存<br>:wq         //退出编辑器，且保存文件</p>
-<p>二、插入文本或行(vi命令模式下使用，执行下面命令后将进入插入模式，按ESC键可退出插入模式)<br>一般使用i<br>a      //在当前光标位置的右边添加文本<br>i       //在当前光标位置的左边添加文本<br>A     //在当前行的末尾位置添加文本<br>I      //在当前行的开始处添加文本(非空字符的行首)<br>O     //在当前行的上面新建一行<br>o     //在当前行的下面新建一行<br>R    //替换(覆盖)当前光标位置及后面的若干文本<br>J    //合并光标所在行及下一行为一行(依然在命令模式)</p>
-<p>三、移动光标(vi命令模式下使用)<br>1、使用上下左右方向键</p>
-<p>2、命令模式下：h   向左、j   向下 、k   向上、l  向右。<br>空格键 向右、Backspace  向左、Enter  移动到下一行首、-  移动到上一行首。</p>
-<p>四、删除、恢复字符或行(vi命令模式下使用)<br>x         //删除当前字符<br>nx         //删除从光标开始的n个字符<br>dd      //删除当前行<br>ndd   //向下删除当前行在内的n行<br>u       //撤销上一步操作<br>U      //撤销对当前行的所有操作</p>
-<p>五、搜索(vi命令模式下使用)<br>/vpser     //向光标下搜索vpser字符串，vpser可以是正则表达式<br>?vpser     //向光标上搜索vpser字符串<br>n           //向下搜索前一个搜素动作<br>N         //向上搜索前一个搜索动作</p>
-<p>*(#)      //当光标停留在某个单词上时, 输入这条命令表示查找与该单词匹配的下(上)一个单词. 同样, 再输入 n 查找下一个匹配处, 输入 N 反方向查找.</p>
-<p>g*(g#)        //此命令与上条命令相似, 只不过它不完全匹配光标所在处的单词, 而是匹配包含该单词的所有字符串.</p>
-<p>六、跳至指定行(vi命令模式下使用)<br>n+        //向下跳n行<br>n-         //向上跳n行<br>nG        //跳到行号为n的行<br>G           //跳至文件的底部</p>
-<p>七、设置行号(vi命令模式下使用)<br>:set  nu     //显示行号<br>:set nonu    //取消显示行号</p>
-<p>八、复制、粘贴(vi命令模式下使用)<br>yy    //将当前行复制到缓存区，也可以用 “ayy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>nyy   //将当前行向下n行复制到缓冲区，也可以用 “anyy 复制，”a 为缓冲区，a也可以替换为a到z的任意字母，可以完成多个复制任务。<br>yw    //复制从光标开始到词尾的字符。<br>nyw   //复制从光标开始的n个单词。<br>y^      //复制从光标到行首的内容。  VPS侦探<br>y$      //复制从光标到行尾的内容。<br>p        //粘贴剪切板里的内容在光标后，如果使用了前面的自定义缓冲区，建议使用”ap 进行粘贴。<br>P        //粘贴剪切板里的内容在光标前，如果使用了前面的自定义缓冲区，建议使用”aP 进行粘贴。</p>
-<p>九、替换(vi命令模式下使用)<br>:s/old/new      //用new替换行中首次出现的old<br>:s/old/new/g         //用new替换行中所有的old<br>:n,m s/old/new/g     //用new替换从n到m行里所有的old<br>:%s/old/new/g      //用new替换当前文件里所有的old</p>
-<p>十、编辑其他文件<br>:e otherfilename    //编辑文件名为otherfilename的文件。</p>
-<p>十一、修改文件格式<br>:set fileformat=unix   //将文件修改为unix格式，如win下面的文本文件在linux下会出现^M。</p>
-<p>十二、查找帮助<br>当你不知道怎么处理时，直接输入help可以看到帮助文档的起点，ZZ是退出或者：q，不建议使用<br>查找关于某个字母的命令 ：help x   查找关于x的命令。</p>
-<p>参考：<a href="http://blog.csdn.net/chenxiaochen32/article/details/7378127" target="_blank" rel="external">http://blog.csdn.net/chenxiaochen32/article/details/7378127</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/30/VIM/" data-id="ciliod2ap000b9mow9ny7xm7k" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/30/VIM/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Palindrome-Partitioning-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" class="article-date">
-  <time datetime="2016-01-31T06:25:26.000Z" itemprop="datePublished">2016-01-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/30/Leetcode-Palindrome-Partitioning-Java/">Leetcode-Palindrome Partitioning(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a string s, partition s such that every substring of the partition is a palindrome.</p>
-<p>Return all possible palindrome partitioning of s.</p>
-<p>For example, given s = “aab”,<br>Return</p>
-<pre><code>[
-  [&quot;aa&quot;,&quot;b&quot;],
-  [&quot;a&quot;,&quot;a&quot;,&quot;b&quot;]
-]
-</code></pre><p><strong>Thinking:</strong></p>
-<p>We should get all the possible partition, it’s obvious we should use backtracing. We partition the string from beginning, and check if it’s palindrome, then check the rest of the substring. If all the substrings are palindrome, we put them in the result. We have to notice the API of Java substring(beginIndex, endIndex) that beginIndex is inclusive but endIndex is exclusive.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;String&gt;&gt; partition(String s) {
-    List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;List&lt;String&gt;&gt;();
-    int len = s.length();
-    if (palindrome(s)){
-        List&lt;String&gt; tempres = new ArrayList&lt;String&gt;();
-        tempres.add(s);
-        res.add(tempres);
-    }
-    for (int i = 1; i &lt; len; i++){
-        if (palindrome(s.substring(0, i))){
-            for (List&lt;String&gt; list: partition(s.substring(i))){
-                list.add(0, s.substring(0, i));
-                res.add(list);
-            }
-        }
-    }
-    return res;
-}
-
-private boolean palindrome(String s){
-    int len = s.length();
-    int left = 0;
-    int right = len - 1;
-    while (left &lt; right){
-        if (s.charAt(left) != s.charAt(right)){
-            return false;
-        }
-        left++;
-        right--;
-    }
-    return true;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/30/Leetcode-Palindrome-Partitioning-Java/" data-id="ciliod2ck003v9mowvt5sogah" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/30/Leetcode-Palindrome-Partitioning-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracking/">Backtracing</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" class="article-date">
-  <time datetime="2016-01-31T05:21:37.000Z" itemprop="datePublished">2016-01-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/">Leetcode-Binary Tree Zigzag Level Order Traversal(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a binary tree, return the zigzag level order traversal of its nodes’ values. (ie, from left to right, then right to left for the next level and alternate between).</p>
-<p>For example:<br>Given binary tree {3,9,20,#,#,15,7},</p>
-<pre><code>  3
- / \
-9  20
-  /  \
- 15   7
-</code></pre><p>return its zigzag level order traversal as:</p>
-<pre><code>[
-  [3],
-  [20,9],
-  [15,7]
-]
-</code></pre><p><strong>Thinking:</strong></p>
-<p>It’s a BFS problem. It’s fine if we need use queue, but because we have to record as a zigzag order, it’s more efficient to use stack. What’s more, we should to notice the order of left and right child.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;List&lt;Integer&gt;&gt; zigzagLevelOrder(TreeNode root) {
-    int flag = 0;
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();
-    Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
-    Stack&lt;TreeNode&gt; tempstack = new Stack&lt;TreeNode&gt;();
-    if (root == null)
-        return res;
-    stack.add(root);
-    while (!stack.isEmpty() || !tempstack.isEmpty()){
-        tempstack = new Stack&lt;TreeNode&gt;();
-        List&lt;Integer&gt; tempres = new ArrayList&lt;Integer&gt;();
-        while (!stack.isEmpty()){
-            TreeNode node = stack.pop();
-            tempres.add(node.val);
-            if (flag == 0){
-                if (node.left != null){
-                    tempstack.add(node.left);
-                }
-                if (node.right != null){
-                    tempstack.add(node.right);
-                }
-            }
-            else{
-                if (node.right != null){
-                    tempstack.add(node.right);
-                }
-                if (node.left != null){
-                    tempstack.add(node.left);
-                }
-            }
-
-        }
-        res.add(tempres);
-        stack.addAll(tempstack);
-        flag ^= 1;
-    }
-
-    return res;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/" data-id="ciliod2e8006u9mowsbpubxyy" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/01/30/Leetcode-Binary-Tree-Zigzag-Level-Order-Traversal-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFS/">BFS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/10/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/12/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/10/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/12/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -505,7 +582,7 @@ private boolean palindrome(String s){
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 18.57px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.43px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 12.86px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 15.71px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 12.86px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 14.29px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 16.67px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 15px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 18.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 18.33px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 15px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.67px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -527,23 +604,23 @@ private boolean palindrome(String s){
       <ul>
         
           <li>
+            <a href="/2016/03/08/The-Zen-of-Python/">The Zen of Python</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/">Leetcode-Reconstruct Itinerary(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/">Leetcode-Maximum Product Subarray(Java)</a>
+          </li>
+        
+          <li>
             <a href="/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/">Leetcode-Evaluate Reverse Polish Notation(Java)</a>
           </li>
         
           <li>
             <a href="/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/">Leetcode-Increasing Triplet Subsequence(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/03/06/Shortest-Path-Problem/">Shortest Path Problem</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/27/Leetcode-Maximal-Square-Java/">Leetcode-Maximal Square(Java)</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
           </li>
         
       </ul>

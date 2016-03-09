@@ -4,6 +4,105 @@
   
     
     <entry>
+      <title><![CDATA[The Zen of Python]]></title>
+      <url>http://yoursite.com/2016/03/08/The-Zen-of-Python/</url>
+      <content type="html"><![CDATA[<p><strong>The Zen of Python:</strong></p>
+<p>Beautiful is better than ugly.</p>
+<p>Explicit is better than implicit.</p>
+<p>Simple is better than complex.</p>
+<p>Complex is better than complicated.</p>
+<p>Flat is better than nested.</p>
+<p>Sparse is better than dense.</p>
+<p>Readability counts.</p>
+<p>Special cases aren’t special enough to break the rules.</p>
+<p>Although practicality beats purity.</p>
+<p>Errors should never pass silently.</p>
+<p>Unless explicitly silenced.</p>
+<p>In the face of ambiguity, refuse the temptation to guess.</p>
+<p>There should be one– and preferably only one –obvious way to do it.</p>
+<p>Although that way may not be obvious at first unless you’re Dutch.</p>
+<p>Now is better than never.</p>
+<p>Although never is often better than <em>right</em> now.</p>
+<p>If the implementation is hard to explain, it’s a bad idea.</p>
+<p>If the implementation is easy to explain, it may be a good idea.</p>
+<p>Namespaces are one honking great idea – let’s do more of those!</p>
+<p>(Reference: <a href="https://www.python.org/dev/peps/pep-0020/" target="_blank" rel="external">https://www.python.org/dev/peps/pep-0020/</a>)</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Reconstruct Itinerary(Java)]]></title>
+      <url>http://yoursite.com/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a list of airline tickets represented by pairs of departure and arrival airports [from, to], reconstruct the itinerary in order. All of the tickets belong to a man who departs from JFK. Thus, the itinerary must begin with JFK.</p>
+<p>Note:<br>If there are multiple valid itineraries, you should return the itinerary that has the smallest lexical order when read as a single string. For example, the itinerary </p>
+<p> 1.[“JFK”, “LGA”] has a smaller lexical order than [“JFK”, “LGB”].</p>
+<p> 2.All airports are represented by three capital letters (IATA code).</p>
+<p> 3.You may assume all tickets form at least one valid itinerary.</p>
+<p>Example 1:</p>
+<pre><code>tickets = [[&quot;MUC&quot;, &quot;LHR&quot;], [&quot;JFK&quot;, &quot;MUC&quot;], [&quot;SFO&quot;, &quot;SJC&quot;], [&quot;LHR&quot;, &quot;SFO&quot;]]
+</code></pre><p>Return </p>
+<pre><code>[&quot;JFK&quot;, &quot;MUC&quot;, &quot;LHR&quot;, &quot;SFO&quot;, &quot;SJC&quot;].
+</code></pre><p>Example 2:</p>
+<pre><code>tickets = [[&quot;JFK&quot;,&quot;SFO&quot;],[&quot;JFK&quot;,&quot;ATL&quot;],[&quot;SFO&quot;,&quot;ATL&quot;],[&quot;ATL&quot;,&quot;JFK&quot;],[&quot;ATL&quot;,&quot;SFO&quot;]]
+</code></pre><p>Return </p>
+<pre><code>[&quot;JFK&quot;,&quot;ATL&quot;,&quot;JFK&quot;,&quot;SFO&quot;,&quot;ATL&quot;,&quot;SFO&quot;].
+</code></pre><p>Another possible reconstruction is [“JFK”,”SFO”,”ATL”,”JFK”,”ATL”,”SFO”]. But it is larger in lexical order.</p>
+<p><strong>Thinking:</strong></p>
+<p>We need to use dfs to travse all the graph and record the graph. But we need to record it in order. So it should be stored in PriorityQueue and store the route while visiting. If it’s stuck we back up but also record the previous information, because we know there are other ways to get there. Until all the edges are visited once, it’s finished.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+HashMap&lt;String, PriorityQueue&lt;String&gt;&gt; map = new HashMap&lt;String, PriorityQueue&lt;String&gt;&gt;();
+
+public List&lt;String&gt; findItinerary(String[][] tickets) {
+    for (String[] ticket: tickets)
+        map.computeIfAbsent(ticket[0], k -&gt; new PriorityQueue&lt;String&gt;()).add(ticket[1]);
+    visit(&quot;JFK&quot;);
+
+    return res;
+}
+
+private void visit(String cur) {
+    while (map.containsKey(cur) &amp;&amp; !map.get(cur).isEmpty())
+        visit(map.get(cur).poll());
+    res.add(0, cur);
+}
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/84659/short-ruby-python-java-c" target="_blank" rel="external">https://leetcode.com/discuss/84659/short-ruby-python-java-c</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode-Maximum Product Subarray(Java)]]></title>
+      <url>http://yoursite.com/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Find the contiguous subarray within an array (containing at least one number) which has the largest product.</p>
+<p>For example, given the array [2,3,-2,4],<br>the contiguous subarray [2,3] has the largest product = 6.</p>
+<p><strong>Thinking:</strong></p>
+<p>This problem is similiar with the MaxSubArray. One thing we need to notice is that we should maintian another variable which is the minimum value of the negative value. When it multiple the negtive value in the array, it maybe the maximum.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int maxProduct(int[] nums) {
+    int l = nums.length;
+    int max = nums[0];
+    int maxhere = nums[0];
+    int minhere = nums[0];
+
+    for (int i = 1; i &lt; l; i++) {
+        if (nums[i] &gt;= 0) {
+            maxhere = Math.max(maxhere*nums[i], nums[i]);
+            minhere = Math.min(minhere*nums[i], nums[i]);
+        } else {
+            int temp = maxhere;
+            maxhere = Math.max(minhere*nums[i], nums[i]);
+            minhere = Math.min(temp*nums[i], nums[i]);
+        }
+        max = Math.max(maxhere, max);
+    }
+
+    return max;
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode-Evaluate Reverse Polish Notation(Java)]]></title>
       <url>http://yoursite.com/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/</url>
       <content type="html"><![CDATA[<p><strong>Question:</strong></p>
