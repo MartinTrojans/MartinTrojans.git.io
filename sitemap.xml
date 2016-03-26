@@ -2,6 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/03/25/Leetcode-Counting-Bits-Java/</loc>
+    <lastmod>2016-03-26T03:17:21.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/10/Leetcode-Largest-Number-Java/</loc>
+    <lastmod>2016-03-11T00:44:27.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/10/Leetcode-Reverse-Words-in-a-String-Java/</loc>
+    <lastmod>2016-03-10T18:56:15.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/09/Leetcode-Wiggle-Sort-II-Java/</loc>
+    <lastmod>2016-03-10T18:49:49.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/08/Leetcode-Range-Sum-Query-2D-Immutable-Java/</loc>
+    <lastmod>2016-03-09T05:22:17.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/03/08/The-Zen-of-Python/</loc>
     <lastmod>2016-03-09T03:48:45.000Z</lastmod>
   </url>

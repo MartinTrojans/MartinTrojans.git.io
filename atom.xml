@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2016-03-09T03:48:45.000Z</updated>
+  <updated>2016-03-26T03:17:21.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,276 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Leetcode Counting Bits(Java)]]></title>
+    <link href="http://yoursite.com/2016/03/25/Leetcode-Counting-Bits-Java/"/>
+    <id>http://yoursite.com/2016/03/25/Leetcode-Counting-Bits-Java/</id>
+    <published>2016-03-26T03:13:24.000Z</published>
+    <updated>2016-03-26T03:17:21.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a non negative integer number num. For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1’s in their binary representation and return them as an array.</p>
+<p>Example:<br>For num = 5 you should return [0,1,1,2,1,2].</p>
+<p>Follow up:</p>
+<p>It is very easy to come up with a solution with run time O(n*sizeof(integer)). But can you do it in linear time O(n) /possibly in a single pass?<br>Space complexity should be O(n).<br>Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.<br>Hint:</p>
+<p>You should make use of what you have produced already.<br>Divide the numbers in ranges like [2-3], [4-7], [8-15] and so on. And try to generate new range from previous.<br>Or does the odd/even status of the number help you in calculating the number of 1s?</p>
+<p><strong>Thinking:</strong></p>
+<p>We can divide the numbers into several groups and calculate the current elements based on the prvious ones. For example, in the group of [0-3] and [4-7], the later group’s elements have always one more 1 than the previous group.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int[] countBits(int num) {
+    int[] res = new int[num+1];
+    res[0] = 0;
+
+    int flag = 1;
+    for (int i = 1; i &lt;= num; i++) {
+        if (i / flag == 2)    flag *= 2;
+        res[i] = res[i % flag] + 1;
+    }
+    return res;
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a non negative integer number num. For every numbers i in the range 0 ≤ i ≤ num calculate the num]]>
+    </summary>
+    
+      <category term="Bit Manipulation" scheme="http://yoursite.com/tags/Bit-Manipulation/"/>
+    
+      <category term="Dynamic Programming" scheme="http://yoursite.com/tags/Dynamic-Programming/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode Largest Number(Java)]]></title>
+    <link href="http://yoursite.com/2016/03/10/Leetcode-Largest-Number-Java/"/>
+    <id>http://yoursite.com/2016/03/10/Leetcode-Largest-Number-Java/</id>
+    <published>2016-03-11T00:39:50.000Z</published>
+    <updated>2016-03-11T00:44:27.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a list of non negative integers, arrange them such that they form the largest number.</p>
+<p>For example, given [3, 30, 34, 5, 9], the largest formed number is 9534330.</p>
+<p>Note: The result may be very large, so you need to return a string instead of an integer.</p>
+<p><strong>Thinking:</strong></p>
+<p>I suppose we should sort the numbers in order. For example, if there are two nums, we convert them into strings. Then compare the connection of s1 + s2 and connection s2 + s1. Make sure the compare method. Then what we need is connecting them together.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public String largestNumber(int[] nums) {
+    PriorityQueue&lt;String&gt; maxHeap = new PriorityQueue&lt;String&gt;(new NumComparator());
+    StringBuilder res = new StringBuilder();
+
+    for (int num: nums)
+        maxHeap.add(Integer.toString(num));
+
+    while (!maxHeap.isEmpty())
+        res.append(maxHeap.poll());
+
+    return res.toString().charAt(0) == &apos;0&apos;? &quot;0&quot; : res.toString();
+}
+
+public class NumComparator implements Comparator&lt;String&gt; {
+
+    @Override
+    public int compare(String s1, String s2) {
+        String str1 = s1 + s2;
+        String str2 = s2 + s1;
+
+        return str2.compareTo(str1);
+    }
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a list of non negative integers, arrange them such that they form the largest number.</p>
+<p>For ]]>
+    </summary>
+    
+      <category term="Sort" scheme="http://yoursite.com/tags/Sort/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode Reverse Words in a String(Java)]]></title>
+    <link href="http://yoursite.com/2016/03/10/Leetcode-Reverse-Words-in-a-String-Java/"/>
+    <id>http://yoursite.com/2016/03/10/Leetcode-Reverse-Words-in-a-String-Java/</id>
+    <published>2016-03-10T18:53:50.000Z</published>
+    <updated>2016-03-10T18:56:15.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an input string, reverse the string word by word.</p>
+<p>For example,<br>Given s = “the sky is blue”,<br>return “blue is sky the”.</p>
+<p>Update (2015-02-12):<br>For C programmers: Try to solve it in-place in O(1) space.</p>
+<p>Clarification:<br>What constitutes a word?<br>A sequence of non-space characters constitutes a word.<br>Could the input string contain leading or trailing spaces?<br>Yes. However, your reversed string should not contain leading or trailing spaces.<br>How about multiple spaces between two words?<br>Reduce them to a single space in the reversed string.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can use Java API to easily split the String into pieces with String[] strs = s.trim().split(“\s+”). We should to notice the “\s+” match one or many whitespaces.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public String reverseWords(String s) {
+    String[] strs = s.trim().split(&quot;\\s+&quot;);
+    StringBuilder res = new StringBuilder();
+
+    for (int i = strs.length-1; i &gt;= 0; i--) 
+        res.append(strs[i] + &quot; &quot;);
+
+    return res.toString().trim();
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given an input string, reverse the string word by word.</p>
+<p>For example,<br>Given s = “the sky is bl]]>
+    </summary>
+    
+      <category term="String" scheme="http://yoursite.com/tags/String/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode Wiggle Sort II(Java)]]></title>
+    <link href="http://yoursite.com/2016/03/09/Leetcode-Wiggle-Sort-II-Java/"/>
+    <id>http://yoursite.com/2016/03/09/Leetcode-Wiggle-Sort-II-Java/</id>
+    <published>2016-03-10T02:09:43.000Z</published>
+    <updated>2016-03-10T18:49:49.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an unsorted array nums, reorder it such that nums[0] &lt; nums[1] &gt; nums[2] &lt; nums[3]….</p>
+<p>Example:<br>(1) Given nums = [1, 5, 1, 1, 6, 4], one possible answer is [1, 4, 1, 5, 1, 6].<br>(2) Given nums = [1, 3, 2, 2, 3, 1], one possible answer is [2, 3, 1, 3, 1, 2].</p>
+<p>Note:<br>You may assume all input has valid answer.</p>
+<p>Follow Up:<br>Can you do it in O(n) time and/or in-place with O(1) extra space?</p>
+<p><strong>Thinking:</strong></p>
+<p>Firstly, we get information from the question is that we should divide all the elements into two groups. One is smaller ones, and the other is greater ones. Then we need to get the median to group them.</p>
+<p>So we need the method called quickselect which is used in the kth largest element to get the median. Then rewire the element to new index which use (1+2<em>(i)) % (n|1). It(A(i) = nums[(1+2</em>(i)) % (n|1)]) means:</p>
+<p>If the length of array is 10, then</p>
+<p>Accessing A(0) actually accesses nums[1].<br>Accessing A(1) actually accesses nums[3].<br>Accessing A(2) actually accesses nums[5].<br>Accessing A(3) actually accesses nums[7].<br>Accessing A(4) actually accesses nums[9].<br>Accessing A(5) actually accesses nums[0].<br>Accessing A(6) actually accesses nums[2].<br>Accessing A(7) actually accesses nums[4].<br>Accessing A(8) actually accesses nums[6].<br>Accessing A(9) actually accesses nums[8].</p>
+<p>We firstly put ones greater than median, then median, finally smaller than median. We’ll get the result.</p>
+<p>There are some details to notice:</p>
+<ol>
+<li>In the rewiring process, we need to distinguish whether the length of the array is odd or even. Use the (n|1).</li>
+<li>In the 3 way partition process, when move larger element to the head, we don’t need to check it again. Because the element move from the head to the current position is checked before. On the other hand, the element which is moved from the current position to tail, we need to check it again.</li>
+</ol>
+<p><strong>Solution:</strong></p>
+<pre><code>public void wiggleSort(int[] nums) {
+    int len = nums.length;
+    if (len &lt; 2)    return;
+
+    quickselect(nums, (len-1)/2);
+    int mid = nums[(len-1)/2];
+
+    int i = 0, j = len - 1, cur = 0;
+
+    while (cur &lt;= j) {
+        if (nums[(2*cur+1)%(len|1)] &gt; mid)
+            swap(nums, (2*(cur++)+1)%(len|1), (2*(i++)+1)%(len|1));
+        else if (nums[(2*cur+1)%(len|1)] &lt; mid)    
+            swap(nums, (2*(cur)+1)%(len|1), (2*(j--)+1)%(len|1));
+        else    
+            cur++;
+    }
+}
+
+private void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+
+private void quickselect(int[] nums, int n) {
+    int low = 0, high = nums.length-1;
+
+    while (true) {
+        int i = partition(nums, low, high);
+        if (i == n)    return;
+        else if (i &lt; n) low = i + 1;
+        else    high = i - 1;
+    }
+}
+
+private int partition (int[] nums, int left, int right) {
+    int pivot = nums[left];
+    int storeIndex = left;
+    nums[left] = nums[right];
+    for (int i = left; i &lt; right; i++) {
+        if (nums[i] &lt;= pivot)
+            swap(nums, storeIndex++, i);
+    }
+    nums[right] = nums[storeIndex];
+    nums[storeIndex] = pivot;
+
+    return storeIndex;
+}
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/77133/o-n-o-1-after-median-virtual-indexing" target="_blank" rel="external">https://leetcode.com/discuss/77133/o-n-o-1-after-median-virtual-indexing</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given an unsorted array nums, reorder it such that nums[0] &lt; nums[1] &gt; nums[2] &lt; nums[3]….</p>]]>
+    </summary>
+    
+      <category term="Sort" scheme="http://yoursite.com/tags/Sort/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Leetcode Range Sum Query 2D - Immutable(Java)]]></title>
+    <link href="http://yoursite.com/2016/03/08/Leetcode-Range-Sum-Query-2D-Immutable-Java/"/>
+    <id>http://yoursite.com/2016/03/08/Leetcode-Range-Sum-Query-2D-Immutable-Java/</id>
+    <published>2016-03-09T05:18:20.000Z</published>
+    <updated>2016-03-09T05:22:17.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).</p>
+<p><img src="https://leetcode.com/static/images/courses/range_sum_query_2d.png" alt=""></p>
+<p>Range Sum Query 2D<br>The above rectangle (with the red border) is defined by (row1, col1) = (2, 1) and (row2, col2) = (4, 3), which contains sum = 8.</p>
+<p>Example:</p>
+<pre><code>Given matrix = [
+  [3, 0, 1, 4, 2],
+  [5, 6, 3, 2, 1],
+  [1, 2, 0, 1, 5],
+  [4, 1, 0, 1, 7],
+  [1, 0, 3, 0, 5]
+]
+
+sumRegion(2, 1, 4, 3) -&gt; 8
+sumRegion(1, 1, 2, 2) -&gt; 11
+sumRegion(1, 2, 2, 4) -&gt; 12
+</code></pre><p>Note:</p>
+<p>1.You may assume that the matrix does not change.</p>
+<p>2.There are many calls to sumRegion function.</p>
+<p>3.You may assume that row1 ≤ row2 and col1 ≤ col2.</p>
+<p><strong>Thinking:</strong></p>
+<p>I see this problem as a matrix caculating. We should get the sum of the current i, j (row and column index) from 0, 0. Then caculate the region sum from previous stored values.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>private int[][] sumMatrix = null;
+
+public NumMatrix(int[][] matrix) {
+    if(matrix == null || matrix.length == 0 || matrix[0].length == 0)    return;   
+    int m = matrix.length;
+    int n = matrix[0].length;
+    this.sumMatrix = new int[m+1][n+1];
+
+    for (int i = 1; i &lt;= m; i++) 
+        for (int j = 1; j &lt;= n; j++) 
+            sumMatrix[i][j] = sumMatrix[i-1][j] + sumMatrix[i][j-1] + matrix[i-1][j-1] - sumMatrix[i-1][j-1];
+
+}
+
+public int sumRegion(int row1, int col1, int row2, int col2) {
+    return sumMatrix[row2+1][col2+1] + sumMatrix[row1][col1] - sumMatrix[row2+1][col1] - sumMatrix[row1][col2+1];
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p><strong>Question:</strong></p>
+<p>Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by its upper left c]]>
+    </summary>
+    
+      <category term="Array" scheme="http://yoursite.com/tags/Array/"/>
+    
+      <category term="Dynamic Programming" scheme="http://yoursite.com/tags/Dynamic-Programming/"/>
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[The Zen of Python]]></title>
@@ -885,298 +1155,6 @@ return sb.length() == 0 ? &quot;0&quot; : sb.toString();
       <category term="Math" scheme="http://yoursite.com/tags/Math/"/>
     
       <category term="String" scheme="http://yoursite.com/tags/String/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Rotate List(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/23/Leetcode-Rotate-List-Java/"/>
-    <id>http://yoursite.com/2016/02/23/Leetcode-Rotate-List-Java/</id>
-    <published>2016-02-24T00:27:32.000Z</published>
-    <updated>2016-02-24T00:29:56.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given a list, rotate the list to the right by k places, where k is non-negative.</p>
-<p>For example:<br>Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL and k = 2,<br>return 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL.</p>
-<p><strong>Thinking:</strong></p>
-<p>Firstly, count the length of the linked list. Then get the n-k th node. Finnaly, change the pointer of it and the tail.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public ListNode rotateRight(ListNode head, int k) {
-    if (head == null || head.next == null)    return head;
-    ListNode p = head;
-    int count = 1;
-    while (p.next != null) {
-        p = p.next;
-        count++;
-    }
-    if (k == count)    return head;
-    p.next = head;
-    p = head;
-    for (int i = 1; i &lt; count - k%count; i++) {
-        p = p.next;
-    }
-    ListNode nhead = p.next;
-    p.next = null;
-
-    return nhead;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given a list, rotate the list to the right by k places, where k is non-negative.</p>
-<p>For example:<br]]>
-    </summary>
-    
-      <category term="Linked List" scheme="http://yoursite.com/tags/Linked-List/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Remove Duplicate Letters(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/23/Leetcode-Remove-Duplicate-Letters-Java/"/>
-    <id>http://yoursite.com/2016/02/23/Leetcode-Remove-Duplicate-Letters-Java/</id>
-    <published>2016-02-23T21:56:43.000Z</published>
-    <updated>2016-02-23T22:59:13.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given a string which contains only lowercase letters, remove duplicate letters so that every letter appear once and only once. You must make sure your result is the smallest in lexicographical order among all possible results.</p>
-<p>Example:<br>Given “bcabc”<br>Return “abc”</p>
-<p>Given “cbacdcbc”<br>Return “acdb”</p>
-<p><strong>Thinking:</strong></p>
-<p>Record the times characters emerges in the list and check from left to right.Record the smallest character postion of the list until find the unique character, then delete the bigger characters before smallest one and delete smallest from the rest of list.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public String removeDuplicateLetters(String s) {
-    int[] count = new int[26];
-    int smallest = 0;
-    if (s.length() == 0)    return &quot;&quot;;
-    for (char c: s.toCharArray())    count[c-&apos;a&apos;]++;
-    for (int i = 0; i &lt; s.length(); i++){
-        if (s.charAt(i) &lt; s.charAt(smallest))    smallest = i;
-        if (--count[s.charAt(i) - &apos;a&apos;] == 0)    break;
-    }
-    return s.charAt(smallest) + removeDuplicateLetters(s.substring(smallest+1).replaceAll(s.charAt(smallest)+&quot;&quot;, &quot;&quot;));
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given a string which contains only lowercase letters, remove duplicate letters so that every letter app]]>
-    </summary>
-    
-      <category term="Greedy" scheme="http://yoursite.com/tags/Greedy/"/>
-    
-      <category term="Stack" scheme="http://yoursite.com/tags/Stack/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Number of Digit One(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/23/Leetcode-Number-of-Digit-One-Java/"/>
-    <id>http://yoursite.com/2016/02/23/Leetcode-Number-of-Digit-One-Java/</id>
-    <published>2016-02-23T21:51:33.000Z</published>
-    <updated>2016-02-23T21:56:23.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Given an integer n, count the total number of digit 1 appearing in all non-negative integers less than or equal to n.</p>
-<p>For example:<br>Given n = 13,<br>Return 6, because digit 1 occurred in the following numbers: 1, 10, 11, 12, 13.</p>
-<p>Hint:</p>
-<p>Beware of overflow.</p>
-<p><strong>Thinking:</strong></p>
-<p>This is question to find formula. We should notice that: </p>
-<pre><code>1                   1                                                                                     [1, 9]
-
-11                 10  11  12  13  14  15  16  17  18  19                              [10, 19]
-
-1                   21                                                                                   [20, 29]
-
-1                   31                                                                                   [30, 39]
-
-1                   41                                                                                   [40, 49]
-
-1                   51                                                                                   [50, 59]
-
-1                   61                                                                                   [60, 69]
-
-1                   71                                                                                   [70, 79]
-
-1                   81                                                                                   [80, 89]
-
-1                   91                                                                                   [90, 99]
-
-11                 100  101  102  103  104  105  106  107  108  109          [100, 109]
-
-21                 110  111  112  113  114  115  116  117  118  119             [110, 119]
-
-11                 120  121  122  123  124  125  126  127  128  129          [120, 129]
-</code></pre><p>We should divide it into three situations in every digit division: one is bigger than 2, another is equal to 1 and the rest is less than 0. </p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int countDigitOne(int n) {
-    int res = 0;
-    for (long m = 1; m &lt;= n; m*=10) {
-        res += (n/m + 8) / 10 * m + (n/m % 10 == 1? n%m+1:0);
-    }
-    return res;
-}
-</code></pre><p>Reference: <a href="https://leetcode.com/discuss/44281/4-lines-o-log-n-c-java-python" target="_blank" rel="external">https://leetcode.com/discuss/44281/4-lines-o-log-n-c-java-python</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Given an integer n, count the total number of digit 1 appearing in all non-negative integers less than ]]>
-    </summary>
-    
-      <category term="Math" scheme="http://yoursite.com/tags/Math/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Basic Calculator II(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/22/Leetcode-Basic-Calculator-II-Java/"/>
-    <id>http://yoursite.com/2016/02/22/Leetcode-Basic-Calculator-II-Java/</id>
-    <published>2016-02-23T06:37:46.000Z</published>
-    <updated>2016-02-23T06:40:55.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>Implement a basic calculator to evaluate a simple expression string.</p>
-<p>The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . The integer division should truncate toward zero.</p>
-<p>You may assume that the given expression is always valid.</p>
-<p>Some examples:</p>
-<pre><code>&quot;3+2*2&quot; = 7
-&quot; 3/2 &quot; = 1
-&quot; 3+5 / 2 &quot; = 5
-</code></pre><p>Note: Do not use the eval built-in library function.</p>
-<p><strong>Thinking:</strong></p>
-<p>An efficient way to solve this problem is to use stack get last num for an operation. And in order to delay the operation after get the two numbers, we need a op variable to record the last op until find the second number. What’s more, accroding to their op, numbers push into the stack in different ways. Finnaly, we just need to get the element from stack and add them all.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int calculate(String s) {
-    Stack&lt;Long&gt; stack = new Stack&lt;Long&gt;();
-
-    int i = 0;
-    char op = &apos;+&apos;;
-    long num = 0;
-
-    while (i &lt; s.length()) {
-        if (Character.isDigit(s.charAt(i))) {
-            while (i &lt; s.length() &amp;&amp; Character.isDigit(s.charAt(i)))
-                num = num * 10 + s.charAt(i++) - &apos;0&apos;;
-        }
-        else if (s.charAt(i) == &apos; &apos;)
-            i++;
-        else {
-            if (op == &apos;+&apos;)
-                stack.push(num);
-            else if (op == &apos;-&apos;)
-                stack.push(-num);
-            else if (op == &apos;*&apos;)
-                stack.push(stack.pop() * num);
-            else if (op == &apos;/&apos;)
-                stack.push(stack.pop() / num);
-            num = 0;
-            op = s.charAt(i++);
-        }
-    }
-
-    if (op == &apos;+&apos;)
-        stack.push(num);
-    else if (op == &apos;-&apos;)
-        stack.push(-num);
-    else if (op == &apos;*&apos;)
-        stack.push(stack.pop() * num);
-    else if (op == &apos;/&apos;)
-        stack.push(stack.pop() / num);
-
-    int res = 0;
-    for (Long n: stack)
-        res += n;
-
-    return res;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>Implement a basic calculator to evaluate a simple expression string.</p>
-<p>The expression string conta]]>
-    </summary>
-    
-      <category term="String" scheme="http://yoursite.com/tags/String/"/>
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Leetcode-Repeated DNA Sequences(Java)]]></title>
-    <link href="http://yoursite.com/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/"/>
-    <id>http://yoursite.com/2016/02/22/Leetcode-Repeated-DNA-Sequences-Java/</id>
-    <published>2016-02-23T04:11:24.000Z</published>
-    <updated>2016-02-23T05:09:08.000Z</updated>
-    <content type="html"><![CDATA[<p><strong>Question:</strong></p>
-<p>All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: “ACGAATTCCG”. When studying DNA, it is sometimes useful to identify repeated sequences within the DNA.</p>
-<p>Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.</p>
-<p>For example,</p>
-<pre><code>Given s = &quot;AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT&quot;,
-
-Return:
-[&quot;AAAAACCCCC&quot;, &quot;CCCCCAAAAA&quot;].
-</code></pre><p><strong>Thinking:</strong></p>
-<p>Because it limits the length of repeated substrings, so we can travse the list one time from the left to right. Pick substring from the list to check whether this substring emerge beofe.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;String&gt; findRepeatedDnaSequences(String s) {
-    HashSet&lt;String&gt; set = new HashSet&lt;String&gt;();
-    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
-
-    for (int i = 0; i+10 &lt;= s.length(); i ++) {
-        String temp = s.substring(i, i+10);
-        if (!set.contains(temp)) {
-            set.add(temp);
-        }
-        else {
-            if (!res.contains(temp))
-                res.add(temp);
-        }
-    }
-
-    return res;
-}
-</code></pre><p>More efficient way:(which use the bits to represent map fucntion, reference: <a href="https://leetcode.com/discuss/25399/clean-java-solution-hashmap-bits-manipulation" target="_blank" rel="external">https://leetcode.com/discuss/25399/clean-java-solution-hashmap-bits-manipulation</a>)</p>
-<pre><code>public List&lt;String&gt; findRepeatedDnaSequences(String s) {
-    HashMap&lt;Character, Integer&gt; map = new HashMap&lt;Character, Integer&gt;();
-    HashSet&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();
-    HashSet&lt;Integer&gt; second = new HashSet&lt;Integer&gt;();
-    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
-
-    if (s.length() &lt; 10)    return res;
-
-    map.put(&apos;A&apos;, 0);
-    map.put(&apos;C&apos;, 1);
-    map.put(&apos;G&apos;, 2);
-    map.put(&apos;T&apos;, 3);
-
-    int v = 0;
-
-    for (int i = 0; i &lt; s.length(); i++) {
-        v &lt;&lt;= 2;
-        v |= map.get(s.charAt(i));
-        v &amp;= 0xfffff;
-        if (i &lt; 9)    continue;
-        if (!set.add(v) &amp;&amp; second.add(v)) {
-            res.add(s.substring(i-9, i+1));
-        }
-    }
-
-    return res;
-}
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p><strong>Question:</strong></p>
-<p>All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: “ACGAATTCCG”]]>
-    </summary>
-    
-      <category term="Bit Manipulation" scheme="http://yoursite.com/tags/Bit-Manipulation/"/>
-    
-      <category term="Hash Table" scheme="http://yoursite.com/tags/Hash-Table/"/>
     
       <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
     

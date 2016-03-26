@@ -4,6 +4,210 @@
   
     
     <entry>
+      <title><![CDATA[Leetcode Counting Bits(Java)]]></title>
+      <url>http://yoursite.com/2016/03/25/Leetcode-Counting-Bits-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a non negative integer number num. For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1’s in their binary representation and return them as an array.</p>
+<p>Example:<br>For num = 5 you should return [0,1,1,2,1,2].</p>
+<p>Follow up:</p>
+<p>It is very easy to come up with a solution with run time O(n*sizeof(integer)). But can you do it in linear time O(n) /possibly in a single pass?<br>Space complexity should be O(n).<br>Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.<br>Hint:</p>
+<p>You should make use of what you have produced already.<br>Divide the numbers in ranges like [2-3], [4-7], [8-15] and so on. And try to generate new range from previous.<br>Or does the odd/even status of the number help you in calculating the number of 1s?</p>
+<p><strong>Thinking:</strong></p>
+<p>We can divide the numbers into several groups and calculate the current elements based on the prvious ones. For example, in the group of [0-3] and [4-7], the later group’s elements have always one more 1 than the previous group.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int[] countBits(int num) {
+    int[] res = new int[num+1];
+    res[0] = 0;
+
+    int flag = 1;
+    for (int i = 1; i &lt;= num; i++) {
+        if (i / flag == 2)    flag *= 2;
+        res[i] = res[i % flag] + 1;
+    }
+    return res;
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode Largest Number(Java)]]></title>
+      <url>http://yoursite.com/2016/03/10/Leetcode-Largest-Number-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a list of non negative integers, arrange them such that they form the largest number.</p>
+<p>For example, given [3, 30, 34, 5, 9], the largest formed number is 9534330.</p>
+<p>Note: The result may be very large, so you need to return a string instead of an integer.</p>
+<p><strong>Thinking:</strong></p>
+<p>I suppose we should sort the numbers in order. For example, if there are two nums, we convert them into strings. Then compare the connection of s1 + s2 and connection s2 + s1. Make sure the compare method. Then what we need is connecting them together.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public String largestNumber(int[] nums) {
+    PriorityQueue&lt;String&gt; maxHeap = new PriorityQueue&lt;String&gt;(new NumComparator());
+    StringBuilder res = new StringBuilder();
+
+    for (int num: nums)
+        maxHeap.add(Integer.toString(num));
+
+    while (!maxHeap.isEmpty())
+        res.append(maxHeap.poll());
+
+    return res.toString().charAt(0) == &apos;0&apos;? &quot;0&quot; : res.toString();
+}
+
+public class NumComparator implements Comparator&lt;String&gt; {
+
+    @Override
+    public int compare(String s1, String s2) {
+        String str1 = s1 + s2;
+        String str2 = s2 + s1;
+
+        return str2.compareTo(str1);
+    }
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode Reverse Words in a String(Java)]]></title>
+      <url>http://yoursite.com/2016/03/10/Leetcode-Reverse-Words-in-a-String-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an input string, reverse the string word by word.</p>
+<p>For example,<br>Given s = “the sky is blue”,<br>return “blue is sky the”.</p>
+<p>Update (2015-02-12):<br>For C programmers: Try to solve it in-place in O(1) space.</p>
+<p>Clarification:<br>What constitutes a word?<br>A sequence of non-space characters constitutes a word.<br>Could the input string contain leading or trailing spaces?<br>Yes. However, your reversed string should not contain leading or trailing spaces.<br>How about multiple spaces between two words?<br>Reduce them to a single space in the reversed string.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can use Java API to easily split the String into pieces with String[] strs = s.trim().split(“\s+”). We should to notice the “\s+” match one or many whitespaces.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public String reverseWords(String s) {
+    String[] strs = s.trim().split(&quot;\\s+&quot;);
+    StringBuilder res = new StringBuilder();
+
+    for (int i = strs.length-1; i &gt;= 0; i--) 
+        res.append(strs[i] + &quot; &quot;);
+
+    return res.toString().trim();
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode Wiggle Sort II(Java)]]></title>
+      <url>http://yoursite.com/2016/03/09/Leetcode-Wiggle-Sort-II-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given an unsorted array nums, reorder it such that nums[0] &lt; nums[1] &gt; nums[2] &lt; nums[3]….</p>
+<p>Example:<br>(1) Given nums = [1, 5, 1, 1, 6, 4], one possible answer is [1, 4, 1, 5, 1, 6].<br>(2) Given nums = [1, 3, 2, 2, 3, 1], one possible answer is [2, 3, 1, 3, 1, 2].</p>
+<p>Note:<br>You may assume all input has valid answer.</p>
+<p>Follow Up:<br>Can you do it in O(n) time and/or in-place with O(1) extra space?</p>
+<p><strong>Thinking:</strong></p>
+<p>Firstly, we get information from the question is that we should divide all the elements into two groups. One is smaller ones, and the other is greater ones. Then we need to get the median to group them.</p>
+<p>So we need the method called quickselect which is used in the kth largest element to get the median. Then rewire the element to new index which use (1+2<em>(i)) % (n|1). It(A(i) = nums[(1+2</em>(i)) % (n|1)]) means:</p>
+<p>If the length of array is 10, then</p>
+<p>Accessing A(0) actually accesses nums[1].<br>Accessing A(1) actually accesses nums[3].<br>Accessing A(2) actually accesses nums[5].<br>Accessing A(3) actually accesses nums[7].<br>Accessing A(4) actually accesses nums[9].<br>Accessing A(5) actually accesses nums[0].<br>Accessing A(6) actually accesses nums[2].<br>Accessing A(7) actually accesses nums[4].<br>Accessing A(8) actually accesses nums[6].<br>Accessing A(9) actually accesses nums[8].</p>
+<p>We firstly put ones greater than median, then median, finally smaller than median. We’ll get the result.</p>
+<p>There are some details to notice:</p>
+<ol>
+<li>In the rewiring process, we need to distinguish whether the length of the array is odd or even. Use the (n|1).</li>
+<li>In the 3 way partition process, when move larger element to the head, we don’t need to check it again. Because the element move from the head to the current position is checked before. On the other hand, the element which is moved from the current position to tail, we need to check it again.</li>
+</ol>
+<p><strong>Solution:</strong></p>
+<pre><code>public void wiggleSort(int[] nums) {
+    int len = nums.length;
+    if (len &lt; 2)    return;
+
+    quickselect(nums, (len-1)/2);
+    int mid = nums[(len-1)/2];
+
+    int i = 0, j = len - 1, cur = 0;
+
+    while (cur &lt;= j) {
+        if (nums[(2*cur+1)%(len|1)] &gt; mid)
+            swap(nums, (2*(cur++)+1)%(len|1), (2*(i++)+1)%(len|1));
+        else if (nums[(2*cur+1)%(len|1)] &lt; mid)    
+            swap(nums, (2*(cur)+1)%(len|1), (2*(j--)+1)%(len|1));
+        else    
+            cur++;
+    }
+}
+
+private void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+
+private void quickselect(int[] nums, int n) {
+    int low = 0, high = nums.length-1;
+
+    while (true) {
+        int i = partition(nums, low, high);
+        if (i == n)    return;
+        else if (i &lt; n) low = i + 1;
+        else    high = i - 1;
+    }
+}
+
+private int partition (int[] nums, int left, int right) {
+    int pivot = nums[left];
+    int storeIndex = left;
+    nums[left] = nums[right];
+    for (int i = left; i &lt; right; i++) {
+        if (nums[i] &lt;= pivot)
+            swap(nums, storeIndex++, i);
+    }
+    nums[right] = nums[storeIndex];
+    nums[storeIndex] = pivot;
+
+    return storeIndex;
+}
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/77133/o-n-o-1-after-median-virtual-indexing" target="_blank" rel="external">https://leetcode.com/discuss/77133/o-n-o-1-after-median-virtual-indexing</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Leetcode Range Sum Query 2D - Immutable(Java)]]></title>
+      <url>http://yoursite.com/2016/03/08/Leetcode-Range-Sum-Query-2D-Immutable-Java/</url>
+      <content type="html"><![CDATA[<p><strong>Question:</strong></p>
+<p>Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).</p>
+<p><img src="https://leetcode.com/static/images/courses/range_sum_query_2d.png" alt=""></p>
+<p>Range Sum Query 2D<br>The above rectangle (with the red border) is defined by (row1, col1) = (2, 1) and (row2, col2) = (4, 3), which contains sum = 8.</p>
+<p>Example:</p>
+<pre><code>Given matrix = [
+  [3, 0, 1, 4, 2],
+  [5, 6, 3, 2, 1],
+  [1, 2, 0, 1, 5],
+  [4, 1, 0, 1, 7],
+  [1, 0, 3, 0, 5]
+]
+
+sumRegion(2, 1, 4, 3) -&gt; 8
+sumRegion(1, 1, 2, 2) -&gt; 11
+sumRegion(1, 2, 2, 4) -&gt; 12
+</code></pre><p>Note:</p>
+<p>1.You may assume that the matrix does not change.</p>
+<p>2.There are many calls to sumRegion function.</p>
+<p>3.You may assume that row1 ≤ row2 and col1 ≤ col2.</p>
+<p><strong>Thinking:</strong></p>
+<p>I see this problem as a matrix caculating. We should get the sum of the current i, j (row and column index) from 0, 0. Then caculate the region sum from previous stored values.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>private int[][] sumMatrix = null;
+
+public NumMatrix(int[][] matrix) {
+    if(matrix == null || matrix.length == 0 || matrix[0].length == 0)    return;   
+    int m = matrix.length;
+    int n = matrix[0].length;
+    this.sumMatrix = new int[m+1][n+1];
+
+    for (int i = 1; i &lt;= m; i++) 
+        for (int j = 1; j &lt;= n; j++) 
+            sumMatrix[i][j] = sumMatrix[i-1][j] + sumMatrix[i][j-1] + matrix[i-1][j-1] - sumMatrix[i-1][j-1];
+
+}
+
+public int sumRegion(int row1, int col1, int row2, int col2) {
+    return sumMatrix[row2+1][col2+1] + sumMatrix[row1][col1] - sumMatrix[row2+1][col1] - sumMatrix[row1][col2+1];
+}
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[The Zen of Python]]></title>
       <url>http://yoursite.com/2016/03/08/The-Zen-of-Python/</url>
       <content type="html"><![CDATA[<p><strong>The Zen of Python:</strong></p>

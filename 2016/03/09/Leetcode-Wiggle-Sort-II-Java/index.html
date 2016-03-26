@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Leetcode Wiggle Sort II(Java) | Martin&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Question:
+Given an unsorted array nums, reorder it such that nums[0] &amp;lt; nums[1] &amp;gt; nums[2] &amp;lt; nums[3]….
+Example:(1) Given nums = [1, 5, 1, 1, 6, 4], one possible answer is [1, 4, 1, 5, 1, 6].(2)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode Wiggle Sort II(Java)">
+<meta property="og:url" content="http://yoursite.com/2016/03/09/Leetcode-Wiggle-Sort-II-Java/index.html">
+<meta property="og:site_name" content="Martin's Blog">
+<meta property="og:description" content="Question:
+Given an unsorted array nums, reorder it such that nums[0] &amp;lt; nums[1] &amp;gt; nums[2] &amp;lt; nums[3]….
+Example:(1) Given nums = [1, 5, 1, 1, 6, 4], one possible answer is [1, 4, 1, 5, 1, 6].(2)">
+<meta property="og:updated_time" content="2016-03-10T18:49:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leetcode Wiggle Sort II(Java)">
+<meta name="twitter:description" content="Question:
+Given an unsorted array nums, reorder it such that nums[0] &amp;lt; nums[1] &amp;gt; nums[2] &amp;lt; nums[3]….
+Example:(1) Given nums = [1, 5, 1, 1, 6, 4], one possible answer is [1, 4, 1, 5, 1, 6].(2)">
+  
+    <link rel="alternate" href="/atom.xml" title="Martin&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Martin&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archive">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+          <a class="main-nav-link" href="/tags">tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Leetcode-Wiggle-Sort-II-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/09/Leetcode-Wiggle-Sort-II-Java/" class="article-date">
+  <time datetime="2016-03-10T02:09:43.000Z" itemprop="datePublished">2016-03-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Leetcode Wiggle Sort II(Java)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given an unsorted array nums, reorder it such that nums[0] &lt; nums[1] &gt; nums[2] &lt; nums[3]….</p>
+<p>Example:<br>(1) Given nums = [1, 5, 1, 1, 6, 4], one possible answer is [1, 4, 1, 5, 1, 6].<br>(2) Given nums = [1, 3, 2, 2, 3, 1], one possible answer is [2, 3, 1, 3, 1, 2].</p>
+<p>Note:<br>You may assume all input has valid answer.</p>
+<p>Follow Up:<br>Can you do it in O(n) time and/or in-place with O(1) extra space?</p>
+<p><strong>Thinking:</strong></p>
+<p>Firstly, we get information from the question is that we should divide all the elements into two groups. One is smaller ones, and the other is greater ones. Then we need to get the median to group them.</p>
+<p>So we need the method called quickselect which is used in the kth largest element to get the median. Then rewire the element to new index which use (1+2<em>(i)) % (n|1). It(A(i) = nums[(1+2</em>(i)) % (n|1)]) means:</p>
+<p>If the length of array is 10, then</p>
+<p>Accessing A(0) actually accesses nums[1].<br>Accessing A(1) actually accesses nums[3].<br>Accessing A(2) actually accesses nums[5].<br>Accessing A(3) actually accesses nums[7].<br>Accessing A(4) actually accesses nums[9].<br>Accessing A(5) actually accesses nums[0].<br>Accessing A(6) actually accesses nums[2].<br>Accessing A(7) actually accesses nums[4].<br>Accessing A(8) actually accesses nums[6].<br>Accessing A(9) actually accesses nums[8].</p>
+<p>We firstly put ones greater than median, then median, finally smaller than median. We’ll get the result.</p>
+<p>There are some details to notice:</p>
+<ol>
+<li>In the rewiring process, we need to distinguish whether the length of the array is odd or even. Use the (n|1).</li>
+<li>In the 3 way partition process, when move larger element to the head, we don’t need to check it again. Because the element move from the head to the current position is checked before. On the other hand, the element which is moved from the current position to tail, we need to check it again.</li>
+</ol>
+<p><strong>Solution:</strong></p>
+<pre><code>public void wiggleSort(int[] nums) {
+    int len = nums.length;
+    if (len &lt; 2)    return;
+
+    quickselect(nums, (len-1)/2);
+    int mid = nums[(len-1)/2];
+
+    int i = 0, j = len - 1, cur = 0;
+
+    while (cur &lt;= j) {
+        if (nums[(2*cur+1)%(len|1)] &gt; mid)
+            swap(nums, (2*(cur++)+1)%(len|1), (2*(i++)+1)%(len|1));
+        else if (nums[(2*cur+1)%(len|1)] &lt; mid)    
+            swap(nums, (2*(cur)+1)%(len|1), (2*(j--)+1)%(len|1));
+        else    
+            cur++;
+    }
+}
+
+private void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+
+private void quickselect(int[] nums, int n) {
+    int low = 0, high = nums.length-1;
+
+    while (true) {
+        int i = partition(nums, low, high);
+        if (i == n)    return;
+        else if (i &lt; n) low = i + 1;
+        else    high = i - 1;
+    }
+}
+
+private int partition (int[] nums, int left, int right) {
+    int pivot = nums[left];
+    int storeIndex = left;
+    nums[left] = nums[right];
+    for (int i = left; i &lt; right; i++) {
+        if (nums[i] &lt;= pivot)
+            swap(nums, storeIndex++, i);
+    }
+    nums[right] = nums[storeIndex];
+    nums[storeIndex] = pivot;
+
+    return storeIndex;
+}
+</code></pre><p>Reference: <a href="https://leetcode.com/discuss/77133/o-n-o-1-after-median-virtual-indexing" target="_blank" rel="external">https://leetcode.com/discuss/77133/o-n-o-1-after-median-virtual-indexing</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/09/Leetcode-Wiggle-Sort-II-Java/" data-id="cim8ppxor0019tdow9l0qv0nz" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/03/09/Leetcode-Wiggle-Sort-II-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sort/">Sort</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/10/Leetcode-Reverse-Words-in-a-String-Java/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Leetcode Reverse Words in a String(Java)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/08/Leetcode-Range-Sum-Query-2D-Immutable-Java/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Leetcode Range Sum Query 2D - Immutable(Java)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Leetcode/">Leetcode</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/uncategoried/">uncategoried</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Array/">Array</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BFS/">BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BackTracking/">BackTracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bit-Manipulation/">Bit Manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design/">Design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Divide-and-Conquer/">Divide and Conquer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph-DFS-BFS/">Graph, DFS, BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Greedy/">Greedy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash-Table/">Hash Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Heap/">Heap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Math/">Math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stack/">Stack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/String/">String</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Topological-Sort/">Topological Sort</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Trie/">Trie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Two-Points/">Two Points</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Union-Find/">Union Find</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 12.86px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 14.29px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 18.57px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 14.29px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 12.86px;">Sort</a> <a href="/tags/Stack/" style="font-size: 14.29px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/03/25/Leetcode-Counting-Bits-Java/">Leetcode Counting Bits(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/10/Leetcode-Largest-Number-Java/">Leetcode Largest Number(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/10/Leetcode-Reverse-Words-in-a-String-Java/">Leetcode Reverse Words in a String(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/09/Leetcode-Wiggle-Sort-II-Java/">Leetcode Wiggle Sort II(Java)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/Leetcode-Range-Sum-Query-2D-Immutable-Java/">Leetcode Range Sum Query 2D - Immutable(Java)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Martin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archive" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/tags" class="mobile-nav-link">tags</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'communitydeveloper';
+  
+  var disqus_url = 'http://yoursite.com/2016/03/09/Leetcode-Wiggle-Sort-II-Java/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

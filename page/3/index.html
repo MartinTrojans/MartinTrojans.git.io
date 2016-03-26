@@ -68,14 +68,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Leetcode-Decode-Ways-Java" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Shortest-Path-Problem" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/02/26/Leetcode-Decode-Ways-Java/" class="article-date">
-  <time datetime="2016-02-26T20:35:11.000Z" itemprop="datePublished">2016-02-26</time>
+    <a href="/2016/03/06/Shortest-Path-Problem/" class="article-date">
+  <time datetime="2016-03-06T22:37:58.000Z" itemprop="datePublished">2016-03-06</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
   </div>
 
   </div>
@@ -86,7 +86,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/26/Leetcode-Decode-Ways-Java/">Leetcode-Decode Ways(Java)</a>
+      <a class="article-title" href="/2016/03/06/Shortest-Path-Problem/">Shortest Path Problem</a>
     </h1>
   
 
@@ -94,41 +94,96 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>Question:</strong></p>
-<p>A message containing letters from A-Z is being encoded to numbers using the following mapping:</p>
-<p>‘A’ -&gt; 1<br>‘B’ -&gt; 2<br>…<br>‘Z’ -&gt; 26<br>Given an encoded message containing digits, determine the total number of ways to decode it.</p>
-<p>For example,<br>Given encoded message “12”, it could be decoded as “AB” (1 2) or “L” (12).</p>
-<p>The number of ways decoding “12” is 2.</p>
-<p><strong>Thinking:</strong></p>
-<p>If we use the recursive way, we should see that the search tree will go down like check [0],[0,1], then [1],[1,2] and [2],[2,3] then [2], [2,3] and [3],[3,4] and [3],[3,4] and [4],[4,5] … There are some nodes are repeated. So we can use interation from bottom to root to store the number of paths in every index of string.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public int numDecodings(String s) {
-    int l = s.length();
-    if (l == 0)    return 0;
-    int[] counts = new int[l+1];
+        <p><strong>Shorstest Path Problem Categories:</strong></p>
+<ol>
+<li>From a speicific start point;</li>
+<li>To a specific end point;</li>
+<li>Start and end with a specific point;</li>
+<li>Search for all the shortest path in every pair nodes.</li>
+</ol>
+<p><strong>Dijkstra:</strong></p>
+<p>This algorithm is aiming at caculating all the shortest paths from every point to a specific start point. And it’s a greedy algorithm.</p>
+<p>Algorithm:</p>
+<ol>
+<li>Set the distance to the start node as infinity to all the nodes except the start node.</li>
+<li>Initial a set which conclude the added nodes, and another set for unvisited nodes.</li>
+<li>For the added nodes set, we find the shortest edge from adjancent nodes crossing this set in unvisited set. And add the adjancent node to the added added nodes.</li>
+<li>Update the distances of nodes from start node which connect to the last added node.</li>
+<li>Do step 3 and 4 repeatedly until all the nodes are in the added set.</li>
+</ol>
+<p>Pseudoode:</p>
+<pre><code>function Dijkstra(Graph, source):
 
-    counts[l] = 1;
-    if (s.charAt(l-1) != &apos;0&apos;)    counts[l-1] = 1;
+    create vertex set Q
 
-    for (int i = l-2; i &gt;=0; i--) {
-        if (s.charAt(i) == &apos;0&apos;)    continue;
-        counts[i] = Integer.parseInt(s.substring(i, i+2)) &lt;=26? counts[i+1]+counts[i+2] : counts[i+1];
+    for each vertex v in Graph:             // Initialization
+    dist[v] ← INFINITY                  // Unknown distance from source to v
+    prev[v] ← UNDEFINED                 // Previous node in optimal path from source
+    add v to Q                          // All nodes initially in Q (unvisited nodes)
+
+    dist[source] ← 0                        // Distance from source to source
+
+    while Q is not empty:
+        u ← vertex in Q with min dist[u]    // Source node will be selected first
+        remove u from Q 
+
+        for each neighbor v of u:           // where v is still in Q.
+            alt ← dist[u] + length(u, v)
+            if alt &lt; dist[v]:               // A shorter path to v has been found
+                dist[v] ← alt 
+                prev[v] ← u 
+
+    return dist[], prev[]
+</code></pre><p>Java Code:</p>
+<pre><code>public static void dijkstra(int[][] edges, int s, int[] dist, int[] pre) {
+    int n = edges.length;
+
+    HashSet&lt;Integer&gt; set = new HashSet&lt;Integer&gt;(n);
+
+    for (int i = 0; i &lt; n; i++) {
+        dist[i] = Integer.MAX_VALUE;
+        set.add(i);
     }
+    dist[s] = 0;
 
-    return counts[0];
+    while (!set.isEmpty()) {
+        int min = findMin(set, dist);
+        for (int i = 0; i &lt; n; i++) {
+            if (edges[min][i] != -1) { // find the neighbors of the node
+                if (dist[i] &lt; dist[min] + edges[min][i]) { //relaxation
+                    dist[i] = dist[min] + edges[min][i];
+                    pre[i] = min;
+                }
+            }
+        }
+    }
 }
-</code></pre><p>Reference: <a href="https://leetcode.com/discuss/8527/dp-solution-java-for-reference" target="_blank" rel="external">https://leetcode.com/discuss/8527/dp-solution-java-for-reference</a></p>
+private static int findMin(Set set, int[] dist) {
+    int min = Integer.MAX_VALUE, minIdx = -1;
+    for (int i = 0; i &lt; dist.length; i++) {
+        if (set.contains(i) &amp;&amp; dist[i] &lt; min) {
+            min = dist[i];
+            minIdx = i;
+        }
+    }
+    set.remove(minIdx);
+    return minIdx;
+}
+</code></pre><p>Running Time:</p>
+<p>O(E*lgv)</p>
+<p>If use the Fibonacci heap -&gt;  O(V*lgV + E)</p>
+<p><strong>Bellman Ford:</strong></p>
+<p>Aimming at searching for the shortest path from a specific start node. It is useful also for the graph containing the negative edges. It’s a dynamic programming algorithm.</p>
+<p>Algorithm:</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/26/Leetcode-Decode-Ways-Java/" data-id="cilkb3f0i00670low12i9ubxa" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/06/Shortest-Path-Problem/" data-id="cim8ppxoc000ktdow5lvki51p" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/02/26/Leetcode-Decode-Ways-Java/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/03/06/Shortest-Path-Problem/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
-
     </footer>
   </div>
   
@@ -136,10 +191,10 @@
 
 
   
-    <article id="post-Leetcode-Simplify-Path-Java" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-Maximal-Square-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/02/25/Leetcode-Simplify-Path-Java/" class="article-date">
-  <time datetime="2016-02-25T22:47:27.000Z" itemprop="datePublished">2016-02-25</time>
+    <a href="/2016/02/27/Leetcode-Maximal-Square-Java/" class="article-date">
+  <time datetime="2016-02-28T04:51:07.000Z" itemprop="datePublished">2016-02-27</time>
 </a>
     
   <div class="article-category">
@@ -154,7 +209,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/25/Leetcode-Simplify-Path-Java/">Leetcode-Simplify Path(Java)</a>
+      <a class="article-title" href="/2016/02/27/Leetcode-Maximal-Square-Java/">Leetcode-Maximal Square(Java)</a>
     </h1>
   
 
@@ -163,45 +218,44 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given an absolute path for a file (Unix-style), simplify it.</p>
-<p>For example,<br>path = “/home/“, =&gt; “/home”<br>path = “/a/./b/../../c/“, =&gt; “/c”<br>click to show corner cases.</p>
-<p>Corner Cases:<br>Did you consider the case where path = “/../“?<br>In this case, you should return “/“.<br>Another corner case is the path might contain multiple slashes ‘/‘ together, such as “/home//foo/“.<br>In this case, you should ignore redundant slashes and return “/home/foo”.</p>
+<p>Given a 2D binary matrix filled with 0’s and 1’s, find the largest square containing all 1’s and return its area.</p>
+<p>For example, given the following matrix:</p>
+<pre><code>1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0
+</code></pre><p>Return 4.</p>
 <p><strong>Thinking:</strong></p>
-<p>The file system is like a tree, and finding path of this tree is like a dfs process. So we can use stack to track the node of dfs. If the string is “..”, we go back, otherwise go to the given dirctory.</p>
+<p>IIf the [i-1][j], [i][j-1] and [i-1][j-1] all have the same length of ‘1’ edge and the [i][j] is ‘1’, the length of the square can increase.</p>
 <p><strong>Solution:</strong></p>
-<pre><code>public String simplifyPath(String path) {
-    Stack&lt;String&gt; stack = new Stack&lt;String&gt;();
-    String[] paths = path.split(&quot;/&quot;);
+<pre><code>public int maximalSquare(char[][] matrix) {
+    int m = matrix.length;
+    if (m == 0)    return 0;
+    int n = matrix[0].length;
+    int res = 0;
+    int[][] opt = new int[m+1][n+1];
 
-    for (String p: paths) {
-        p = p.trim();
-        if (p.equals(&quot;&quot;) || p.equals(&quot;.&quot;))    continue;
-        if (p.equals(&quot;..&quot;))    {
-            if (!stack.isEmpty()) {
-                stack.pop();
+    for (int i = 1; i &lt;= m; i++){
+        for (int j = 1; j &lt;= n; j++) {
+            if (matrix[i-1][j-1] == &apos;1&apos;) {
+                opt[i][j] = Math.min(opt[i-1][j-1], Math.min(opt[i-1][j], opt[i][j-1])) + 1;
+                res = Math.max(res, opt[i][j]);
             }
-            continue;
         }
-        stack.push(p);
     }
 
-    StringBuilder res = new StringBuilder();
-    while (!stack.isEmpty()) 
-        res.insert(0, &quot;/&quot;.concat(stack.pop()));
-
-
-    return res.length() == 0? &quot;/&quot;:res.toString();
+    return res * res;
 }
 </code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/25/Leetcode-Simplify-Path-Java/" data-id="cilkb3eyg002f0lowe9ii4w3k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/27/Leetcode-Maximal-Square-Java/" data-id="cim8ppxqu0054tdowz4gsg16k" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/02/25/Leetcode-Simplify-Path-Java/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/02/27/Leetcode-Maximal-Square-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Stack/">Stack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li></ul>
 
     </footer>
   </div>
@@ -210,10 +264,10 @@
 
 
   
-    <article id="post-Leetcode-Word-Search-Java" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-Reorder-List-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/02/25/Leetcode-Word-Search-Java/" class="article-date">
-  <time datetime="2016-02-25T21:44:36.000Z" itemprop="datePublished">2016-02-25</time>
+    <a href="/2016/02/27/Leetcode-Reorder-List-Java/" class="article-date">
+  <time datetime="2016-02-28T01:01:11.000Z" itemprop="datePublished">2016-02-27</time>
 </a>
     
   <div class="article-category">
@@ -228,7 +282,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/25/Leetcode-Word-Search-Java/">Leetcode-Word Search(Java)</a>
+      <a class="article-title" href="/2016/02/27/Leetcode-Reorder-List-Java/">Leetcode-Reorder List(Java)</a>
     </h1>
   
 
@@ -237,182 +291,155 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given a 2D board and a word, find if the word exists in the grid.</p>
-<p>The word can be constructed from letters of sequentially adjacent cell, where “adjacent” cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.</p>
-<p>For example,<br>Given board =</p>
-<p>[<br>  [‘A’,’B’,’C’,’E’],<br>  [‘S’,’F’,’C’,’S’],<br>  [‘A’,’D’,’E’,’E’]<br>]<br>word = “ABCCED”, -&gt; returns true,<br>word = “SEE”, -&gt; returns true,<br>word = “ABCB”, -&gt; returns false.</p>
+<p>Given a singly linked list L: L0→L1→…→Ln-1→Ln,<br>reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…</p>
+<p>You must do this in-place without altering the nodes’ values.</p>
+<p>For example,<br>Given {1,2,3,4}, reorder it to {1,4,2,3}.</p>
 <p><strong>Thinking:</strong></p>
-<p>I assume it’s graph and do dfs in this 2d array. Start from every point and search the result until find the solution or failure. In this process, we need to record the visitied set. In my solution, I used the hashset. But in more efficient way, we can use bit manipulate to mask the visited element.</p>
+<p>We need three steps to finish this operation. The first one is to find the middle in the linked list. The second one is to reverse the second half of this linked list. The final one is to link these two parts again.</p>
 <p><strong>Solution:</strong></p>
-<p>My solution(use HashSet):</p>
-<pre><code>public boolean exist(char[][] board, String word) {
-    int m = board.length;
-    if (m == 0)    return false;
-    int n = board[0].length;
-    Set&lt;Integer&gt; record = new HashSet&lt;Integer&gt;();
-    for (int i = 0; i &lt; m; i++)
-        for (int j = 0; j &lt; n; j++)
-            if (backtracking(board, word, 0, i, j, record))    return true;
-    return false;
-}
+<pre><code>public void reorderList(ListNode head) {
+    if (head == null || head.next == null)    return;
+    ListNode slow = head, fast = head.next, preMiddle, preCurrent, current, p, q;
 
-private boolean backtracking(char[][] board, String word, int index, int i, int j, Set&lt;Integer&gt; record) {
-    if (board[i][j] == word.charAt(index) &amp;&amp; !record.contains(i*board[0].length+j)){
-        if (index == word.length()-1)    return true;
-        boolean res = false;
-        record.add(i*board[0].length+j);
-        if (i-1&gt;=0)    res |= backtracking(board, word, index+1, i-1, j, record);
-        if (!res &amp;&amp; i+1&lt;board.length) res |= backtracking(board, word, index+1, i+1, j, record);
-        if (!res &amp;&amp; j-1&gt;=0)    res |= backtracking(board, word, index+1, i, j-1, record);
-        if (!res &amp;&amp; j+1&lt;board[0].length) res |= backtracking(board, word, index+1, i, j+1, record);
-        record.remove(i*board[0].length+j);
+    //find the middle
+    while (fast != null &amp;&amp; fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    //reverse the second half
+    preMiddle = slow;
+    preCurrent = slow.next;
+    while (preCurrent.next != null) {
+        current = preCurrent.next;
+        preCurrent.next = current.next;
+        current.next = preMiddle.next;
+        preMiddle.next = current;
+    }
+
+    //connect two parts
+    p = head;
+    q = preMiddle.next;
+    while (p != preMiddle) {
+        preMiddle.next = q.next;
+        q.next = p.next;
+        p.next = q;
+        p = q.next;
+        q = preMiddle.next;
+    }
+
+}
+</code></pre><p>Reference:<a href="https://leetcode.com/discuss/35599/java-solution-with-3-steps" target="_blank" rel="external">https://leetcode.com/discuss/35599/java-solution-with-3-steps</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/02/27/Leetcode-Reorder-List-Java/" data-id="cim8ppxq2003ctdowj2t3y7g9" class="article-share-link">Share</a>
+      
+        <a href="http://yoursite.com/2016/02/27/Leetcode-Reorder-List-Java/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linked-List/">Linked List</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Two-Pointers/">Two Pointers</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Leetcode-Word-Ladder-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/26/Leetcode-Word-Ladder-Java/" class="article-date">
+  <time datetime="2016-02-27T03:18:18.000Z" itemprop="datePublished">2016-02-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/26/Leetcode-Word-Ladder-Java/">Leetcode-Word Ladder(Java)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Question:</strong></p>
+<p>Given two words (beginWord and endWord), and a dictionary’s word list, find the length of shortest transformation sequence from beginWord to endWord, such that:</p>
+<p>Only one letter can be changed at a time<br>Each intermediate word must exist in the word list<br>For example,</p>
+<p>Given:<br>beginWord = “hit”<br>endWord = “cog”<br>wordList = [“hot”,”dot”,”dog”,”lot”,”log”]<br>As one shortest transformation is “hit” -&gt; “hot” -&gt; “dot” -&gt; “dog” -&gt; “cog”,<br>return its length 5.</p>
+<p>Note:<br>Return 0 if there is no such transformation sequence.<br>All words have the same length.<br>All words contain only lowercase alphabetic characters.</p>
+<p><strong>Thinking:</strong></p>
+<p>We can search the result from the start word. At every step, we change the every index of the start string and check if it’s in the WordList. If it’s in the range, then we add it to our nodes. Do it like a BFS search. Also in order to be more efficient, we can search also from the end word.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public int ladderLength(String beginWord, String endWord, Set&lt;String&gt; wordList) {
+    if (beginWord.equals(endWord))    return 1;
+    Set&lt;String&gt; startSet = new HashSet&lt;String&gt;();
+    Set&lt;String&gt; endSet =  new HashSet&lt;String&gt;();
+    int res = 1;
+    startSet.add(beginWord);
+    endSet.add(endWord);
+    while (!wordList.isEmpty() &amp;&amp; !startSet.isEmpty() &amp;&amp; !endSet.isEmpty()) {
+        res++;
+        Set&lt;String&gt; tempSet = new HashSet&lt;String&gt;();
+        for (String nWord: startSet) {
+            wordList.remove(nWord);
+            for (String ele: check(nWord, wordList)) {
+                if (endSet.contains(ele))    return res;
+                tempSet.add(ele);
+            }
+        }
+        startSet = tempSet;
+        tempSet = new HashSet&lt;String&gt;();
+        res++;
+        for (String nWord: endSet) {
+            wordList.remove(nWord);
+            for (String ele: check(nWord, wordList)) {
+                if (startSet.contains(ele))    return res;
+                tempSet.add(ele);
+            }
+        }
+        endSet = tempSet;
+    }
+    return 0;
+}
+private List&lt;String&gt; check(String word, Set&lt;String&gt; wordList) {
+    List&lt;String&gt; res = new ArrayList&lt;String&gt;();
+    int len = word.length();
+    if (len == 1)    {
+        res.addAll(wordList);
         return res;
     }
-    return false;
-}
-</code></pre><p>use the mask:</p>
-<pre><code>public boolean exist(char[][] board, String word) {
-    char[] w = word.toCharArray();
-    for (int y=0; y&lt;board.length; y++) {
-        for (int x=0; x&lt;board[y].length; x++) {
-            if (exist(board, y, x, w, 0)) return true;
+    for (int i = 0; i &lt; len; i++) {
+        char[] chs = word.toCharArray();
+        for (char j = &apos;a&apos;; j &lt;= &apos;z&apos;; j++) {
+            chs[i] = j;
+            String temp = String.valueOf(chs);
+            if (wordList.contains(temp))    res.add(temp);              
         }
     }
-    return false;
-}
-
-private boolean exist(char[][] board, int y, int x, char[] word, int i) {
-    if (i == word.length) return true;
-    if (y&lt;0 || x&lt;0 || y == board.length || x == board[y].length) return false;
-    if (board[y][x] != word[i]) return false;
-        board[y][x] ^= 256;
-    boolean exist = exist(board, y, x+1, word, i+1)
-    || exist(board, y, x-1, word, i+1)
-    || exist(board, y+1, x, word, i+1)
-    || exist(board, y-1, x, word, i+1);
-    board[y][x] ^= 256;
-    return exist;
-}
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/25/Leetcode-Word-Search-Java/" data-id="cilkb3exn000t0lowj55pm96d" class="article-share-link">Share</a>
-      
-        <a href="http://yoursite.com/2016/02/25/Leetcode-Word-Search-Java/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backtracking/">Backtracking</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Leetcode-Spiral-Matrix-Java" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/23/Leetcode-Spiral-Matrix-Java/" class="article-date">
-  <time datetime="2016-02-24T04:12:38.000Z" itemprop="datePublished">2016-02-23</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/23/Leetcode-Spiral-Matrix-Java/">Leetcode-Spiral Matrix(Java)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Question:</strong></p>
-<p>Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.</p>
-<p>For example,<br>Given the following matrix:</p>
-<pre><code>[
- [ 1, 2, 3 ],
- [ 4, 5, 6 ],
- [ 7, 8, 9 ]
-]
-</code></pre><p>You should return [1,2,3,6,9,8,7,4,5].</p>
-<p><strong>Thinking:</strong></p>
-<p>There are four directions can go, move according to the order of right, down, left, up and check the bound of moving.</p>
-<p><strong>Solution:</strong></p>
-<pre><code>public List&lt;Integer&gt; spiralOrder(int[][] matrix) {
-    List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
-    int m = matrix.length;
-    if (m == 0)    return res;
-    int n = matrix[0].length;
-    int direction = 0;//0right, 1down, 2left, 3up
-    int i = 0, j = 0;//position
-    int c0 = 1, c1 = 1, c2 = 0, c3 = 1;//row and column limit
-
-    while (c0 + c2 - 1 &lt;= n &amp;&amp; c1 + c3 - 1 &lt;= m) {
-        res.add(matrix[i][j]);
-        switch (direction) {
-        case 0:
-            if (j == n-c0){
-                direction = (direction+1) % 4;
-                c0++;
-                res.remove(res.size()-1);
-            }
-            else
-                j++;
-            break;
-        case 1:
-            if (i == m-c1){
-                direction = (direction+1) % 4;
-                c1++;
-                res.remove(res.size()-1);
-            }
-            else
-                i++;
-            break;
-        case 2:
-            if (j == c2){
-                direction = (direction+1) % 4;
-                c2++;
-                res.remove(res.size()-1);
-            }
-            else
-                j--;
-            break;
-        case 3:
-            if (i == c3){
-                direction = (direction+1) % 4;
-                c3++;
-                res.remove(res.size()-1);
-            }
-            else
-                i--;
-            break;
-        }
-    }
-    res.add(matrix[i][j]);
-
     return res;
 }
 </code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/23/Leetcode-Spiral-Matrix-Java/" data-id="cilkb3eyc00260lowt45cpicu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/26/Leetcode-Word-Ladder-Java/" data-id="cim8ppxon000ztdowob4rw8pf" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/02/23/Leetcode-Spiral-Matrix-Java/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/02/26/Leetcode-Word-Ladder-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Array/">Array</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BFS/">BFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
 
     </footer>
   </div>
@@ -421,10 +448,10 @@ private boolean exist(char[][] board, int y, int x, char[] word, int i) {
 
 
   
-    <article id="post-Leetcode-Multiply-Strings-Java" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Leetcode-Validate-Binary-Search-Tree-Java" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/02/23/Leetcode-Multiply-Strings-Java/" class="article-date">
-  <time datetime="2016-02-24T03:09:09.000Z" itemprop="datePublished">2016-02-23</time>
+    <a href="/2016/02/26/Leetcode-Validate-Binary-Search-Tree-Java/" class="article-date">
+  <time datetime="2016-02-27T03:12:44.000Z" itemprop="datePublished">2016-02-26</time>
 </a>
     
   <div class="article-category">
@@ -439,7 +466,7 @@ private boolean exist(char[][] board, int y, int x, char[] word, int i) {
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/23/Leetcode-Multiply-Strings-Java/">Leetcode-Multiply Strings(Java)</a>
+      <a class="article-title" href="/2016/02/26/Leetcode-Validate-Binary-Search-Tree-Java/">Leetcode-Validate Binary Search Tree(Java)</a>
     </h1>
   
 
@@ -448,59 +475,31 @@ private boolean exist(char[][] board, int y, int x, char[] word, int i) {
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Question:</strong></p>
-<p>Given two numbers represented as strings, return multiplication of the numbers as a string.</p>
-<p>Note: The numbers can be arbitrarily large and are non-negative.</p>
+<p>Given a binary tree, determine if it is a valid binary search tree (BST).</p>
+<p>Assume a BST is defined as follows:</p>
+<p>The left subtree of a node contains only nodes with keys less than the node’s key.<br>The right subtree of a node contains only nodes with keys greater than the node’s key.<br>Both the left and right subtrees must also be binary search trees.</p>
 <p><strong>Thinking:</strong></p>
-<p>Simulate the process of multiplying.</p>
-<p><img src="https://drscdn.500px.org/photo/130178585/m%3D2048/300d71f784f679d5e70fadda8ad7d68f" alt=""></p>
-<p><strong>Solution:</strong> (Record the result from low digits to high digits in array)</p>
-<pre><code>public String multiply(String num1, String num2) {
-    int l1 = num1.length(), l2 = num2.length();
-    int[] res = new int[l1+l2];
-
-    for (int i = l1-1; i &gt;= 0; i--) {
-        for (int j = l2-1; j &gt;= 0; j--){
-            int index = l1+l2-i-j-2;
-            res[index] += (num1.charAt(i) - &apos;0&apos;) * (num2.charAt(j) - &apos;0&apos;);
-            res[index+1] += res[index] / 10;
-            res[index] = res[index] % 10;
-        }
-    }
-
-    StringBuilder fres = new StringBuilder();
-    for (int i = res.length-1; i &gt;= 0; i--)
-        if (!(fres.length() == 0 &amp;&amp; res[i] == 0))   fres.append(res[i]);
-
-    return fres.length() == 0? &quot;0&quot;:fres.toString();
+<p>We should use dfs check the root of the range and both its left child and right child.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>public boolean isValidBST(TreeNode root) {
+    return helper(root, Long.MIN_VALUE, Long.MAX_VALUE);
 }
-</code></pre><p>A little improvement which record the result from high to low digits in array:</p>
-<p>public String multiply(String num1, String num2) {<br>    int m = num1.length(), n = num2.length();<br>    int[] pos = new int[m + n];</p>
-<pre><code>for(int i = m - 1; i &gt;= 0; i--) {
-    for(int j = n - 1; j &gt;= 0; j--) {
-        int mul = (num1.charAt(i) - &apos;0&apos;) * (num2.charAt(j) - &apos;0&apos;); 
-        int p1 = i + j, p2 = i + j + 1;
-        int sum = mul + pos[p2];
 
-        pos[p1] += sum / 10;
-        pos[p2] = (sum) % 10;
-    }
-}  
-
-StringBuilder sb = new StringBuilder();
-for(int p : pos) if(!(sb.length() == 0 &amp;&amp; p == 0)) sb.append(p);
-return sb.length() == 0 ? &quot;0&quot; : sb.toString();
-</code></pre><p>}</p>
-<p>Reference: <a href="https://leetcode.com/discuss/71593/easiest-java-solution-with-graph-explanation" target="_blank" rel="external">https://leetcode.com/discuss/71593/easiest-java-solution-with-graph-explanation</a></p>
-
+private boolean helper(TreeNode root, long a, long b) {
+    if (root == null)    return true;
+    if (root.val &lt;= a || root.val &gt;= b)    return false;        
+    return helper(root.left, a, root.val&lt;b? root.val:b) &amp;&amp; helper(root.right, root.val&gt;a? root.val:a, b);
+}
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/23/Leetcode-Multiply-Strings-Java/" data-id="cilkb3ezm004d0lowsj4zscem" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/26/Leetcode-Validate-Binary-Search-Tree-Java/" data-id="cim8ppxow001jtdowxv43ixwh" class="article-share-link">Share</a>
       
-        <a href="http://yoursite.com/2016/02/23/Leetcode-Multiply-Strings-Java/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2016/02/26/Leetcode-Validate-Binary-Search-Tree-Java/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Math/">Math</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DFS/">DFS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tree/">Tree</a></li></ul>
 
     </footer>
   </div>
@@ -512,7 +511,7 @@ return sb.length() == 0 ? &quot;0&quot; : sb.toString();
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
   </nav>
 </section>
         
@@ -542,7 +541,7 @@ return sb.length() == 0 ? &quot;0&quot; : sb.toString();
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 16.67px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 15px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 13.33px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 11.67px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 15px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.67px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 18.33px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 15px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 13.33px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 16.67px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.67px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 18.33px;">Linked List</a> <a href="/tags/Math/" style="font-size: 18.33px;">Math</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Stack/" style="font-size: 15px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 13.33px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.67px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 13.33px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
+      <a href="/tags/Array/" style="font-size: 20px;">Array</a> <a href="/tags/BFS/" style="font-size: 15.71px;">BFS</a> <a href="/tags/BackTracking/" style="font-size: 10px;">BackTracking</a> <a href="/tags/Backtracking/" style="font-size: 14.29px;">Backtracing</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/Binary-Search/" style="font-size: 12.86px;">Binary Search</a> <a href="/tags/Bit-Manipulation/" style="font-size: 12.86px;">Bit Manipulation</a> <a href="/tags/DFS/" style="font-size: 14.29px;">DFS</a> <a href="/tags/Design/" style="font-size: 11.43px;">Design</a> <a href="/tags/Divide-and-Conquer/" style="font-size: 10px;">Divide and Conquer</a> <a href="/tags/Dynamic-Programming/" style="font-size: 18.57px;">Dynamic Programming</a> <a href="/tags/Graph/" style="font-size: 14.29px;">Graph</a> <a href="/tags/Graph-DFS-BFS/" style="font-size: 10px;">Graph, DFS, BFS</a> <a href="/tags/Greedy/" style="font-size: 12.86px;">Greedy</a> <a href="/tags/Hash-Table/" style="font-size: 15.71px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 11.43px;">Heap</a> <a href="/tags/Linked-List/" style="font-size: 17.14px;">Linked List</a> <a href="/tags/Math/" style="font-size: 17.14px;">Math</a> <a href="/tags/Sort/" style="font-size: 12.86px;">Sort</a> <a href="/tags/Stack/" style="font-size: 14.29px;">Stack</a> <a href="/tags/String/" style="font-size: 20px;">String</a> <a href="/tags/Topological-Sort/" style="font-size: 10px;">Topological Sort</a> <a href="/tags/Tree/" style="font-size: 12.86px;">Tree</a> <a href="/tags/Trie/" style="font-size: 10px;">Trie</a> <a href="/tags/Two-Pointers/" style="font-size: 11.43px;">Two Pointers</a> <a href="/tags/Two-Points/" style="font-size: 12.86px;">Two Points</a> <a href="/tags/Union-Find/" style="font-size: 10px;">Union Find</a>
     </div>
   </div>
 
@@ -564,23 +563,23 @@ return sb.length() == 0 ? &quot;0&quot; : sb.toString();
       <ul>
         
           <li>
-            <a href="/2016/03/08/The-Zen-of-Python/">The Zen of Python</a>
+            <a href="/2016/03/25/Leetcode-Counting-Bits-Java/">Leetcode Counting Bits(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/03/08/Leetcode-Reconstruct-Itinerary-Java/">Leetcode-Reconstruct Itinerary(Java)</a>
+            <a href="/2016/03/10/Leetcode-Largest-Number-Java/">Leetcode Largest Number(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/03/07/Leetcode-Maximum-Product-Subarray-Java/">Leetcode-Maximum Product Subarray(Java)</a>
+            <a href="/2016/03/10/Leetcode-Reverse-Words-in-a-String-Java/">Leetcode Reverse Words in a String(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/03/07/Leetcode-Evaluate-Reverse-Polish-Notation-Java/">Leetcode-Evaluate Reverse Polish Notation(Java)</a>
+            <a href="/2016/03/09/Leetcode-Wiggle-Sort-II-Java/">Leetcode Wiggle Sort II(Java)</a>
           </li>
         
           <li>
-            <a href="/2016/03/07/Leetcode-Increasing-Triplet-Subsequence-Java/">Leetcode-Increasing Triplet Subsequence(Java)</a>
+            <a href="/2016/03/08/Leetcode-Range-Sum-Query-2D-Immutable-Java/">Leetcode Range Sum Query 2D - Immutable(Java)</a>
           </li>
         
       </ul>
